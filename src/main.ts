@@ -1714,6 +1714,7 @@ function renderRoadmap(): string {
         <h3>Nästa stora steg</h3>
         <p>${nextAction}</p>
         <div class="inline-controls">
+          <button class="primary" data-action="start-next-pass">Starta nästa rekommenderade pass</button>
           <button class="primary" data-view="mock">Öppna Mockprov</button>
           <button class="secondary" data-view="bank">Öppna Frågebank</button>
           <button class="secondary" data-view="research">Öppna Research</button>
@@ -1998,6 +1999,17 @@ app.addEventListener("click", (event) => {
       todayQuestions.map((question) => question.id),
       Number.isNaN(preferredMinutes) ? todayPlan.totalMinutes : Math.max(30, Math.min(45, preferredMinutes))
     );
+    return;
+  }
+
+  if (action === "start-next-pass") {
+    const sessions = loadStudySessions();
+    const suggestion = createAdaptiveSuggestion(sessions);
+    if (suggestion.questionIds.length === 0) {
+      setStorageNotice("Kunde inte skapa rekommenderat pass just nu.");
+      return;
+    }
+    startSession(suggestion.mode, suggestion.questionIds, suggestion.durationMinutes);
     return;
   }
 
