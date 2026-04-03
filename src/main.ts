@@ -14,7 +14,7 @@ import {
 } from "./storage";
 import type { Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId } from "./types";
 
-type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design";
+type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design" | "roadmap";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
 interface ProfileOption {
@@ -97,6 +97,16 @@ interface SharedExamTheme {
   drillHint: string;
 }
 
+type RoadmapStatus = "done" | "active" | "next";
+
+interface RoadmapStep {
+  id: string;
+  title: string;
+  scope: string;
+  doneWhen: string;
+  status: RoadmapStatus;
+}
+
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) {
   throw new Error("App container saknas");
@@ -111,11 +121,12 @@ const pageLabels: Record<Page, string> = {
   research: "Research",
   logic: "Logik",
   walkthrough: "Genomgång",
-  design: "Design"
+  design: "Design",
+  roadmap: "Roadmap"
 };
 const urlParams = new URLSearchParams(window.location.search);
 const THEME_KEY = "yh.ui-theme";
-const UI_BUILD = "2026-04-04-0115";
+const UI_BUILD = "2026-04-04-0205";
 const BUILD_MARKER_KEY = "yh.ui-build-marker";
 const THEME_PRESETS: ThemePreset[] = [
   {
@@ -157,6 +168,43 @@ const SHARED_EXAM_THEMES: SharedExamTheme[] = [
     title: "Felsökning och felanalys",
     whyItMatters: "Förmågan att hitta vad som gick fel återkommer i både IT-säkerhet och programmering.",
     drillHint: "Efter varje pass: skriv en rad om varför varje fel svar blev fel."
+  }
+];
+const ROADMAP_STEPS: RoadmapStep[] = [
+  {
+    id: "step-1",
+    title: "Stabil grund",
+    scope: "Mobil först, användarbyte, sparad progress, fungerande kärnflöde.",
+    doneWhen: "Du kan starta, pausa, byta vy och fortsätta utan att tappa data.",
+    status: "done"
+  },
+  {
+    id: "step-2",
+    title: "Lugn testmotor",
+    scope: "Mini-test med tydlig layout, låg stress och konsekvent navigering.",
+    doneWhen: "Svarsalternativ är stabila och sessionen känns fokuserad.",
+    status: "done"
+  },
+  {
+    id: "step-3",
+    title: "Innehållsbredd",
+    scope: "Fler frågor, fler mockvarianter och bättre täckning mellan spår.",
+    doneWhen: "Alla spår har bred frågebank och minst en snabb plus en längre mock.",
+    status: "active"
+  },
+  {
+    id: "step-4",
+    title: "Adaptiv coachning",
+    scope: "Smartare nästa-pass förslag baserat på felmönster och tidsläge.",
+    doneWhen: "Appen väljer nästa bästa övning automatiskt med tydlig motivering.",
+    status: "next"
+  },
+  {
+    id: "step-5",
+    title: "Publiceringsspår",
+    scope: "Stabil delningslänk, enklare deployrutin och återkommande verifiering.",
+    doneWhen: "Samma länk fungerar för mobiltest utan versionsstrul.",
+    status: "next"
   }
 ];
 
@@ -1624,6 +1672,74 @@ function renderDesign(): string {
   `;
 }
 
+function renderRoadmap(): string {
+  const sessions = loadStudySessions();
+  const totalQuestions = QUESTIONS.length;
+  const totalMocks = MOCK_EXAMS.length;
+  const countsByTrack = {
+    nackademin_ux: QUESTIONS.filter((question) => question.track_id === "nackademin_ux").length,
+    iths_itsec: QUESTIONS.filter((question) => question.track_id === "iths_itsec").length,
+    prog1a: QUESTIONS.filter((question) => question.track_id === "prog1a").length
+  };
+  const doneCount = ROADMAP_STEPS.filter((step) => step.status === "done").length;
+  const progressPercent = Math.round((doneCount / ROADMAP_STEPS.length) * 100);
+  const weakTopicHits = sessions
+    .slice(0, 8)
+    .flatMap((session) => session.weak_topics)
+    .reduce<Record<string, number>>((acc, topic) => {
+      acc[topic] = (acc[topic] || 0) + 1;
+      return acc;
+    }, {});
+  const topWeakTopic = Object.entries(weakTopicHits).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const nextAction = topWeakTopic
+    ? `Kör 20-30 min Drill i ämnet "${topWeakTopic}" och följ upp med Mini-check 10 min.`
+    : "Kör Mini-check 10 min för att få en snabb nulägesbild inför nästa pass.";
+
+  const statusLabel: Record<RoadmapStatus, string> = {
+    done: "Klar",
+    active: "Pågår",
+    next: "Nästa"
+  };
+
+  return `
+    <div class="grid">
+      <section class="card span-12">
+        <h3>Övergripande läge</h3>
+        <p class="muted">Det här är stora steg-planen så du ser var vi ligger utan att behöva gissa.</p>
+        <p><strong>Framdrift:</strong> ${doneCount}/${ROADMAP_STEPS.length} steg klara (${progressPercent}%).</p>
+        <p><strong>Innehåll:</strong> ${totalQuestions} frågor • ${totalMocks} mockprov.</p>
+        <p><strong>Täckning:</strong> UX ${countsByTrack.nackademin_ux} • IT ${countsByTrack.iths_itsec} • Prog ${countsByTrack.prog1a} frågor.</p>
+      </section>
+      <section class="card span-12">
+        <h3>Nästa stora steg</h3>
+        <p>${nextAction}</p>
+        <div class="inline-controls">
+          <button class="primary" data-view="mock">Öppna Mockprov</button>
+          <button class="secondary" data-view="bank">Öppna Frågebank</button>
+          <button class="secondary" data-view="research">Öppna Research</button>
+        </div>
+      </section>
+      <section class="card span-12">
+        <h3>Stegplan</h3>
+        <div class="review-list">
+          ${ROADMAP_STEPS.map(
+            (step) => `
+              <article class="review-item roadmap-step roadmap-${step.status}">
+                <p>
+                  <span class="research-tag">${statusLabel[step.status]}</span>
+                  <strong>${step.title}</strong>
+                </p>
+                <p>${step.scope}</p>
+                <p class="muted">Klart när: ${step.doneWhen}</p>
+              </article>
+            `
+          ).join("")}
+        </div>
+      </section>
+    </div>
+  `;
+}
+
 function renderActiveSession(): string {
   if (!activeSession) {
     return "";
@@ -1769,6 +1885,8 @@ function renderPage(): string {
       return renderWalkthrough();
     case "design":
       return renderDesign();
+    case "roadmap":
+      return renderRoadmap();
     default:
       return renderOverview();
   }

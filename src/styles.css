@@ -619,6 +619,25 @@ button.danger {
   border-left: 3px solid #e7a6a6;
 }
 
+.roadmap-step {
+  border-left-width: 3px;
+}
+
+.roadmap-done {
+  border-left-color: #9ccfa9;
+  background: #f8fff9;
+}
+
+.roadmap-active {
+  border-left-color: #8bcfc1;
+  background: #f7fffc;
+}
+
+.roadmap-next {
+  border-left-color: #d4d4d8;
+  background: #fcfcfd;
+}
+
 .review-item p {
   margin: 0.32rem 0;
 }

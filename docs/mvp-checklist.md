@@ -27,11 +27,14 @@ Den här listan visar vad som redan finns i nuvarande MVP.
 - [x] UX scenario-generator med workflowstöd
 - [x] Frågor tillagda från Gemini-exempel (IKEA-case, OSI-router, Boolean)
 - [x] Programmeringstillägg: code tracing och debugging-frågor
+- [x] Mini-check 10 min (balanserad mix)
+- [x] Roadmap-vy i appen för stora steg och nuläge
+- [x] `npm run verify` för standardverifiering
 
 ## Delvis klar
 
-- [ ] Mer komplett frågebank
-- [ ] Fler mockprov och fler varianter per spår
+- [~] Mer komplett frågebank (40 frågor nu, fortsätter byggas ut)
+- [~] Fler mockprov och fler varianter per spår (5 mockprov nu)
 - [ ] Tydligare återkoppling per svagt område
 - [ ] Bättre jämförelsevy mellan olika pass
 

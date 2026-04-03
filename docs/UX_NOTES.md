@@ -178,3 +178,9 @@ Den viktigaste lärdomen i nattens pass var att vi behövde gå från "iterera e
 
 - Beslut: Huvudtypsnitt harmoniserat till en konsekvent UI-font (`Public Sans`) i huvudappens visuella bas.
   Why: Minska upplevelsen av blandade typografier i kritiska lägen.
+
+- Beslut: Lägg till en tydlig `Roadmap`-vy i appen för stora steg, status och nästa fokus.
+  Why: Användaren ska slippa gissa var projektet ligger och vad nästa stora steg är.
+
+- Beslut: Standardisera verifiering med `npm run verify`.
+  Why: Varje autopilot-runda ska avslutas med samma test/build-kontroll innan nästa steg.

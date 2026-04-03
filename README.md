@@ -15,6 +15,7 @@ Personlig träningsportal för:
 ## Dokumentation
 - [Gemini-plan jämförelse](docs/gemini-gap-analysis.md)
 - [MVP-checklista](docs/mvp-checklist.md)
+- [Roadmap (stora steg)](docs/ROADMAP.md)
 - [Claude-intake checklista](docs/claude-intake-checklist.md)
 - [UX Notes](docs/UX_NOTES.md)
 - [UX Build Log 2026-04-03](docs/ux-build-logs/2026-04-03.md)
@@ -76,6 +77,7 @@ Om du vill visa sidan på mobilen:
 ```bash
 npm test
 npm run build
+npm run verify
 ```
 
 ## Verifiering
