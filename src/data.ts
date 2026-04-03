@@ -149,6 +149,73 @@ export const QUESTIONS: Question[] = [
       "Bra svar är konkret, kort och kopplar testmål till observerbart beteende." 
   },
   {
+    id: "ux-9",
+    track_id: "nackademin_ux",
+    topic: "Logik/analys",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Sekundär",
+    estimated_minutes: 3,
+    prompt: "Vilket alternativ beskriver bäst en hypotes som går att testa?",
+    options: [
+      { id: "a", text: "Användarna gillar bättre design" },
+      { id: "b", text: "Om vi kortar formuläret från 8 till 4 fält ökar slutförandegraden med minst 10%" },
+      { id: "c", text: "Webbplatsen borde kännas mer modern" },
+      { id: "d", text: "Vi behöver tänka mer UX" }
+    ],
+    answer_key: "b",
+    explanation: "En testbar hypotes ska vara mätbar och ha tydlig förändring + förväntad effekt."
+  },
+  {
+    id: "ux-10",
+    track_id: "nackademin_ux",
+    topic: "Problemlösning",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Sekundär",
+    estimated_minutes: 3,
+    prompt: "Tre förbättringar är möjliga. Vilken bör prioriteras först i en pressad sprint?",
+    options: [
+      { id: "a", text: "Hög effekt, låg implementationstid" },
+      { id: "b", text: "Låg effekt, hög implementationstid" },
+      { id: "c", text: "Oklar effekt, medelhög implementationstid" },
+      { id: "d", text: "Visuellt mest imponerande förändring" }
+    ],
+    answer_key: "a",
+    explanation: "I kort sprint maximerar man värde per tidsenhet."
+  },
+  {
+    id: "ux-11",
+    track_id: "nackademin_ux",
+    topic: "Teststrategi",
+    format: "short",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 4,
+    prompt: "Skriv två observationer du skulle notera i ett 10-min användartest av checkout.",
+    answer_key:
+      "Exempel: 1) Var användaren tvekar eller backar. 2) Om användaren förstår leverans- och betalningssteg utan hjälp.",
+    explanation: "Bra svar fokuserar på observerbart beteende snarare än antaganden."
+  },
+  {
+    id: "ux-12",
+    track_id: "nackademin_ux",
+    topic: "Informationsarkitektur",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vilket mål är mest relevant när du omstrukturerar en komplex meny?",
+    options: [
+      { id: "a", text: "Fler nivåer i menyn" },
+      { id: "b", text: "Kortare väg till användarens vanligaste uppgifter" },
+      { id: "c", text: "Exakt samma struktur som konkurrenten" },
+      { id: "d", text: "Längre rubriker i varje menyval" }
+    ],
+    answer_key: "b",
+    explanation: "Informationsarkitektur ska minska friktion för de viktigaste uppgifterna."
+  },
+  {
     id: "it-1",
     track_id: "iths_itsec",
     topic: "Dator- och nätverksteknik",
@@ -268,6 +335,73 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "b",
     explanation: "Social engineering handlar om att manipulera människor, inte system." 
+  },
+  {
+    id: "it-9",
+    track_id: "iths_itsec",
+    topic: "Dator- och nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Sekundär",
+    estimated_minutes: 3,
+    prompt: "Hur många användbara värdar finns normalt i ett IPv4 /24-nät?",
+    options: [
+      { id: "a", text: "128" },
+      { id: "b", text: "254" },
+      { id: "c", text: "256" },
+      { id: "d", text: "510" }
+    ],
+    answer_key: "b",
+    explanation: "/24 ger 256 adresser totalt, där nätverks- och broadcastadress inte används som värdar."
+  },
+  {
+    id: "it-10",
+    track_id: "iths_itsec",
+    topic: "Säkerhet och social engineering",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 3,
+    prompt: "Vilken kontroll är bäst mot phishing i vardagen?",
+    options: [
+      { id: "a", text: "Öppna bilagor snabbt för att hinna svara" },
+      { id: "b", text: "Verifiera avsändare/länk och rapportera misstänkta meddelanden" },
+      { id: "c", text: "Stäng av tvåfaktorsautentisering" },
+      { id: "d", text: "Dela lösenord inom teamet för snabbare arbete" }
+    ],
+    answer_key: "b",
+    explanation: "Beteende och verifiering är centralt skydd mot social engineering."
+  },
+  {
+    id: "it-11",
+    track_id: "iths_itsec",
+    topic: "Svenska/Engelska/Matte",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Sekundär",
+    estimated_minutes: 2,
+    prompt: "If availability is low, what is the most direct effect?",
+    options: [
+      { id: "a", text: "Data integrity increases" },
+      { id: "b", text: "Users cannot reliably access the service" },
+      { id: "c", text: "Encryption gets stronger" },
+      { id: "d", text: "IP addresses are hidden" }
+    ],
+    answer_key: "b",
+    explanation: "Availability handlar om att system och data finns tillgängliga när de behövs."
+  },
+  {
+    id: "it-12",
+    track_id: "iths_itsec",
+    topic: "Dator- och nätverksteknik",
+    format: "short",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 4,
+    prompt: "Förklara kort skillnaden mellan en switch och en router.",
+    answer_key:
+      "Switch kopplar enheter inom samma lokala nät (främst lager 2). Router kopplar trafik mellan olika nät (lager 3).",
+    explanation: "Bra svar nämner lokal trafik kontra trafik mellan nät."
   },
   {
     id: "prog-1",
@@ -492,6 +626,91 @@ export const QUESTIONS: Question[] = [
       "En metod samlar kod som kan återanvändas. Exempel: en method som tar emot två tal och returnerar summan.",
     explanation:
       "Svar ska visa förståelse för återanvändning, input/return och ett konkret användningsfall." 
+  },
+  {
+    id: "prog-11",
+    track_id: "prog1a",
+    topic: "Loopar",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Sekundär",
+    estimated_minutes: 3,
+    prompt: "Vad skrivs ut?\nint i = 0;\nwhile (i < 3) {\n  System.out.print(i);\n  i++;\n}",
+    options: [
+      { id: "a", text: "012" },
+      { id: "b", text: "123" },
+      { id: "c", text: "03" },
+      { id: "d", text: "Inget" }
+    ],
+    answer_key: "a",
+    explanation: "Loopen skriver ut 0,1,2 innan villkoret blir falskt."
+  },
+  {
+    id: "prog-12",
+    track_id: "prog1a",
+    topic: "Variabler och datatyper",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vilken deklaration är korrekt för en decimal i Java?",
+    options: [
+      { id: "a", text: "int price = 19.9;" },
+      { id: "b", text: "double price = 19.9;" },
+      { id: "c", text: "boolean price = 19.9;" },
+      { id: "d", text: "String price = 19.9;" }
+    ],
+    answer_key: "b",
+    explanation: "Decimalvärden lagras normalt i double (eller float)."
+  },
+  {
+    id: "prog-13",
+    track_id: "prog1a",
+    topic: "Felsökning",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Sekundär",
+    estimated_minutes: 3,
+    prompt: "Vad är det första rimliga debug-steget när programmet kraschar med NullPointerException?",
+    options: [
+      { id: "a", text: "Ta bort alla if-satser" },
+      { id: "b", text: "Identifiera vilken referens som är null och var den ska initieras" },
+      { id: "c", text: "Byt språk direkt" },
+      { id: "d", text: "Ignorera felet om programmet startar ibland" }
+    ],
+    answer_key: "b",
+    explanation: "Felet beror på null-referens; hitta var objektet saknas och initiera säkert."
+  },
+  {
+    id: "prog-14",
+    track_id: "prog1a",
+    topic: "Code tracing",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Sekundär",
+    estimated_minutes: 3,
+    prompt: "Vad returnerar metoden?\nstatic int f(int n){\n  int s = 0;\n  for(int i=1;i<=n;i++){ s += i; }\n  return s;\n}\nAnrop: f(4)",
+    options: [
+      { id: "a", text: "4" },
+      { id: "b", text: "6" },
+      { id: "c", text: "10" },
+      { id: "d", text: "16" }
+    ],
+    answer_key: "c",
+    explanation: "Summan 1+2+3+4 blir 10."
+  },
+  {
+    id: "prog-15",
+    track_id: "prog1a",
+    topic: "Metoder",
+    format: "short",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 4,
+    prompt: "Skriv pseudokod för en funktion som räknar antal jämna tal i en lista.",
+    answer_key:
+      "Exempel: starta count=0, loopa igenom varje tal, om tal % 2 == 0 öka count, returnera count.",
+    explanation: "Bra svar visar loop, villkor och returvärde tydligt."
   }
 ];
 
@@ -506,7 +725,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "UX-snabb",
         track_id: "nackademin_ux",
         topics: ["Logik/analys", "Problemlösning"],
-        question_ids: ["ux-1", "ux-2"],
+        question_ids: ["ux-1", "ux-9"],
         minutes: 2,
         weight: 0.34
       },
@@ -514,15 +733,15 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "IT-snabb",
         track_id: "iths_itsec",
         topics: ["Dator- och nätverksteknik", "Svenska/Engelska/Matte"],
-        question_ids: ["it-1", "core-1"],
+        question_ids: ["it-1", "it-11"],
         minutes: 2,
         weight: 0.33
       },
       {
         title: "Prog-snabb",
         track_id: "prog1a",
-        topics: ["Variabler och datatyper"],
-        question_ids: ["prog-1"],
+        topics: ["Variabler och datatyper", "Code tracing"],
+        question_ids: ["prog-12", "prog-14"],
         minutes: 1,
         weight: 0.33
       }
@@ -539,7 +758,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Analys & logik",
         track_id: "nackademin_ux",
         topics: ["Logik/analys", "Problemlösning", "Teststrategi", "Scenario-övning"],
-        question_ids: ["ux-1", "ux-2", "ux-3", "ux-4", "ux-5", "ux-6"],
+        question_ids: ["ux-1", "ux-2", "ux-3", "ux-4", "ux-5", "ux-6", "ux-9", "ux-10", "ux-11", "ux-12"],
         minutes: 60,
         weight: 1
       }
@@ -556,7 +775,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 1: Svenska/Engelska/Matte",
         track_id: "iths_itsec",
         topics: ["Svenska/Engelska/Matte"],
-        question_ids: ["it-3", "core-1"],
+        question_ids: ["it-3", "it-11", "core-1"],
         minutes: 20,
         weight: 0.2
       },
@@ -564,7 +783,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 2: Dator- och nätverksteknik",
         track_id: "iths_itsec",
         topics: ["Dator- och nätverksteknik"],
-        question_ids: ["it-1", "it-2", "it-4", "it-5", "it-6"],
+        question_ids: ["it-1", "it-2", "it-4", "it-5", "it-6", "it-7", "it-8", "it-9", "it-10", "it-12"],
         minutes: 70,
         weight: 0.8
       }
@@ -581,7 +800,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 1: Grunder",
         track_id: "prog1a",
         topics: ["Variabler och datatyper", "Villkor"],
-        question_ids: ["prog-1", "prog-2", "prog-6"],
+        question_ids: ["prog-1", "prog-2", "prog-6", "prog-12"],
         minutes: 15,
         weight: 0.33
       },
@@ -589,7 +808,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 2: Flöde och läsning",
         track_id: "prog1a",
         topics: ["Loopar", "Code tracing"],
-        question_ids: ["prog-3", "prog-7", "prog-9"],
+        question_ids: ["prog-3", "prog-7", "prog-9", "prog-11", "prog-14"],
         minutes: 15,
         weight: 0.33
       },
@@ -597,7 +816,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 3: Metoder och felsökning",
         track_id: "prog1a",
         topics: ["Metoder", "Felsökning", "Debugging-game"],
-        question_ids: ["prog-4", "prog-5", "prog-8", "prog-10"],
+        question_ids: ["prog-4", "prog-5", "prog-8", "prog-10", "prog-13", "prog-15"],
         minutes: 15,
         weight: 0.34
       }
