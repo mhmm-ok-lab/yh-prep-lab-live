@@ -749,6 +749,39 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
     scoring_rules: "Snabb nulägeskoll. Kort mix av UX, IT och Programmering 1/A."
   },
   {
+    id: "mock-mini-10",
+    name: "Mini-check 10 min (balanserad mix)",
+    track_id: "nackademin_ux",
+    total_minutes: 10,
+    sections: [
+      {
+        title: "UX fokus",
+        track_id: "nackademin_ux",
+        topics: ["Logik/analys", "Problemlösning", "Informationsarkitektur"],
+        question_ids: ["ux-1", "ux-10", "ux-12"],
+        minutes: 4,
+        weight: 0.4
+      },
+      {
+        title: "IT fokus",
+        track_id: "iths_itsec",
+        topics: ["Dator- och nätverksteknik", "Säkerhet och social engineering"],
+        question_ids: ["it-2", "it-9", "it-10"],
+        minutes: 3,
+        weight: 0.3
+      },
+      {
+        title: "Programmering fokus",
+        track_id: "prog1a",
+        topics: ["Villkor", "Loopar", "Code tracing"],
+        question_ids: ["prog-2", "prog-11", "prog-14"],
+        minutes: 3,
+        weight: 0.3
+      }
+    ],
+    scoring_rules: "Balanserad snabbdiagnos för att hitta nästa prioritet inom 10 minuter."
+  },
+  {
     id: "mock-nack-60",
     name: "Nackademin-liknande 60 min",
     track_id: "nackademin_ux",

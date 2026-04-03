@@ -91,6 +91,12 @@ interface ThemePreset {
   description: string;
 }
 
+interface SharedExamTheme {
+  title: string;
+  whyItMatters: string;
+  drillHint: string;
+}
+
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) {
   throw new Error("App container saknas");
@@ -129,6 +135,28 @@ const THEME_PRESETS: ThemePreset[] = [
     name: "Slate Focus",
     reference: "Data-heavy dashboard-stil",
     description: "Sval grå skala med tydlig hierarki och stramare former."
+  }
+];
+const SHARED_EXAM_THEMES: SharedExamTheme[] = [
+  {
+    title: "Tidsdisciplin under press",
+    whyItMatters: "Alla tre spår kräver att du prioriterar snabbt och håller tempo.",
+    drillHint: "Kör korta tidsprov med tydligt stopp och snabb rättning."
+  },
+  {
+    title: "Läsning av instruktioner",
+    whyItMatters: "Missad detalj i frågetexten leder ofta till fel svar även med rätt kunskap.",
+    drillHint: "Markera nyckelord i varje fråga innan du svarar."
+  },
+  {
+    title: "Strukturerat resonemang",
+    whyItMatters: "UX, IT och Programmering belönar logisk motivering, inte bara magkänsla.",
+    drillHint: "Öva formatet: problem -> antagande -> testbart nästa steg."
+  },
+  {
+    title: "Felsökning och felanalys",
+    whyItMatters: "Förmågan att hitta vad som gick fel återkommer i både IT-säkerhet och programmering.",
+    drillHint: "Efter varje pass: skriv en rad om varför varje fel svar blev fel."
   }
 ];
 
@@ -415,7 +443,7 @@ function getLogicQuestions(): Question[] {
 }
 
 function getWalkthroughQuestions(): Question[] {
-  const walkthroughIds = ["ux-1", "ux-7", "it-1", "core-1", "prog-1", "prog-8"];
+  const walkthroughIds = ["ux-1", "ux-9", "it-1", "it-11", "core-1", "prog-1", "prog-12", "prog-8"];
   return walkthroughIds
     .map((id) => QUESTIONS.find((question) => question.id === id))
     .filter((question): question is Question => Boolean(question));
@@ -1455,6 +1483,21 @@ function renderResearch(): string {
       <section class="card span-12">
         <h3>Evidence-kort: tidigare års prov och mönster</h3>
         <p class="muted">Officiell: ${officialCount} • Sekundär: ${secondaryCount} • Community: ${communityCount}</p>
+      </section>
+      <section class="card span-12">
+        <h3>Gemensamt mellan proven (cross-training)</h3>
+        <p class="muted">Det här är kärnan du kan träna en gång och få nytta i flera spår.</p>
+        <div class="review-list">
+          ${SHARED_EXAM_THEMES.map(
+            (theme) => `
+              <article class="review-item">
+                <p><strong>${theme.title}</strong></p>
+                <p>${theme.whyItMatters}</p>
+                <p class="muted">Drilltips: ${theme.drillHint}</p>
+              </article>
+            `
+          ).join("")}
+        </div>
       </section>
       ${RESEARCH_EVIDENCE.map(
         (entry) => `
