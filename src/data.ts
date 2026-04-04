@@ -2558,6 +2558,109 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
       }
     ],
     scoring_rules: "Separat poäng per del, fokus på grunder först och tydlig återkoppling på feltyper."
+  },
+
+  // ── ⚡ IT-H separata delarna ──────────────────────────
+  {
+    id: "mock-iths-d1-sv",
+    name: "⚡ IT-H Del 1 – Bara Svenska (10 min)",
+    track_id: "iths_itsec",
+    total_minutes: 10,
+    sections: [
+      {
+        title: "Svenska – ordval, grammatik och meningsbyggnad",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Svenska"],
+        question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        minutes: 10,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på grammatik, syftning och stavning. Varje rätt svar ger lika vikt."
+  },
+  {
+    id: "mock-iths-d1-en",
+    name: "⚡ IT-H Del 1 – Bara Engelska (10 min)",
+    track_id: "iths_itsec",
+    total_minutes: 10,
+    sections: [
+      {
+        title: "Engelska – teknisk ordförståelse och grammatik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Engelska"],
+        question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        minutes: 10,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på teknisk engelska och meningsstruktur. Varje rätt svar ger lika vikt."
+  },
+  {
+    id: "mock-iths-d1-ma",
+    name: "⚡ IT-H Del 1 – Bara Matematik (15 min)",
+    track_id: "iths_itsec",
+    total_minutes: 15,
+    sections: [
+      {
+        title: "Matematik – procent, binärt och nätverksräkning",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Matematik"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        minutes: 15,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på grundläggande matematisk förmåga och nätverksräkning. Varje rätt svar ger lika vikt."
+  },
+  {
+    id: "mock-iths-d1-all",
+    name: "⚡ IT-H Del 1 komplett – Svenska + Engelska + Matte (35 min)",
+    track_id: "iths_itsec",
+    total_minutes: 35,
+    sections: [
+      {
+        title: "Del 1 Svenska",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Svenska"],
+        question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        minutes: 10,
+        weight: 0.33
+      },
+      {
+        title: "Del 1 Engelska",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Engelska"],
+        question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        minutes: 10,
+        weight: 0.33
+      },
+      {
+        title: "Del 1 Matematik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Matematik"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        minutes: 15,
+        weight: 0.34
+      }
+    ],
+    scoring_rules: "Svenska, Engelska och Matematik väger lika (33/33/34%). Separat återkoppling per ämne."
+  },
+  {
+    id: "mock-iths-d2",
+    name: "⚡ IT-H Del 2 – Bara Nätverksteknik (45 min)",
+    track_id: "iths_itsec",
+    total_minutes: 45,
+    sections: [
+      {
+        title: "Del 2: Dator- och nätverksteknik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 2: Nätverksteknik"],
+        question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        minutes: 45,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på nätverksprotokoll, säkerhet och nätverksarkitektur. Varje rätt svar ger lika vikt."
   }
 ];
 
