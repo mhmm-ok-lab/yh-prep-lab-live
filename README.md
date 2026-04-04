@@ -16,6 +16,7 @@ Personlig träningsportal för:
 - [Gemini-plan jämförelse](docs/gemini-gap-analysis.md)
 - [MVP-checklista](docs/mvp-checklist.md)
 - [Roadmap (stora steg)](docs/ROADMAP.md)
+- [Repo-status och separeringsplan](docs/repo-status.md)
 - [Claude-intake checklista](docs/claude-intake-checklist.md)
 - [UX Notes](docs/UX_NOTES.md)
 - [UX Build Log 2026-04-03](docs/ux-build-logs/2026-04-03.md)

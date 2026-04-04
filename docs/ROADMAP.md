@@ -6,8 +6,8 @@ Det här är övergripande planen i stora steg.
 
 - Klar: Stabil grund
 - Klar: Lugn testmotor
-- Pågår: Innehållsbredd
-- Nästa: Adaptiv coachning
+- Klar: Innehållsbredd
+- Pågår: Adaptiv coachning
 - Nästa: Publiceringsspår
 
 ## Steg 1 - Stabil grund (klar)
@@ -22,7 +22,7 @@ Det här är övergripande planen i stora steg.
 - Mjuk tidsindikator
 - Minskat visuellt brus i aktiv session
 
-## Steg 3 - Innehållsbredd (pågår)
+## Steg 3 - Innehållsbredd (klar)
 
 - Utökad frågebank i UX, IT och Programmering
 - Fler mockprov (kort + längre varianter)
@@ -33,7 +33,7 @@ Definition of done:
 - Minst 2 snabbmocks + 3 längre mocks
 - Bättre täckning av svåra ämnen per spår
 
-## Steg 4 - Adaptiv coachning (nästa)
+## Steg 4 - Adaptiv coachning (pågår)
 
 - Mer exakt rekommendation efter svagheter
 - "Nästa bästa pass" med tydlig motivering

@@ -190,14 +190,14 @@ const ROADMAP_STEPS: RoadmapStep[] = [
     title: "Innehållsbredd",
     scope: "Fler frågor, fler mockvarianter och bättre täckning mellan spår.",
     doneWhen: "Alla spår har bred frågebank och minst en snabb plus en längre mock.",
-    status: "active"
+    status: "done"
   },
   {
     id: "step-4",
     title: "Adaptiv coachning",
     scope: "Smartare nästa-pass förslag baserat på felmönster och tidsläge.",
     doneWhen: "Appen väljer nästa bästa övning automatiskt med tydlig motivering.",
-    status: "next"
+    status: "active"
   },
   {
     id: "step-5",
@@ -637,6 +637,31 @@ function createAdaptiveSuggestion(sessions: StudySession[]): AdaptiveSuggestion 
   };
 
   const sortedByDate = [...sessions].sort((a, b) => +new Date(b.date) - +new Date(a.date));
+  const topTrackBySession = sortedByDate
+    .map((session) => {
+      const top = Object.entries(session.track_mix).sort((a, b) => b[1] - a[1])[0];
+      if (!top) {
+        return null;
+      }
+      const [trackId, mix] = top;
+      return mix >= 50 ? (trackId as TrackId) : null;
+    })
+    .filter((trackId): trackId is TrackId => Boolean(trackId));
+
+  let recentSameTrackStreak = 0;
+  let streakTrack: TrackId | null = null;
+  for (const trackId of topTrackBySession) {
+    if (!streakTrack) {
+      streakTrack = trackId;
+      recentSameTrackStreak = 1;
+      continue;
+    }
+    if (trackId === streakTrack) {
+      recentSameTrackStreak += 1;
+      continue;
+    }
+    break;
+  }
 
   for (const session of sessions) {
     for (const trackId of TRACKS.map((track) => track.id)) {
@@ -669,6 +694,8 @@ function createAdaptiveSuggestion(sessions: StudySession[]): AdaptiveSuggestion 
     }
   }
 
+  const minMinutes = Math.min(...TRACKS.map((track) => stats[track.id].minutes));
+
   for (const track of TRACKS) {
     const info = stats[track.id];
     let score = 0;
@@ -684,15 +711,27 @@ function createAdaptiveSuggestion(sessions: StudySession[]): AdaptiveSuggestion 
     if (info.minutes < 20) {
       score += 1.2;
     }
+    if (info.minutes <= minMinutes + 10) {
+      score += 0.35;
+    }
     score += info.weakHits * 0.75;
     score -= info.recentHeavy * 1.1;
+    if (streakTrack && recentSameTrackStreak >= 2 && track.id === streakTrack) {
+      score -= 1.2;
+    }
     if (info.avgScore > 75 && info.minutes > 80) {
       score -= 0.6;
     }
     info.score = score;
   }
 
-  const chosenTrack = (Object.entries(stats).sort((a, b) => b[1].score - a[1].score)[0]?.[0] as TrackId) || targetTrack;
+  const scoreRanking = Object.entries(stats).sort((a, b) => b[1].score - a[1].score);
+  let chosenTrack = (scoreRanking[0]?.[0] as TrackId) || targetTrack;
+  const secondTrack = scoreRanking[1]?.[0] as TrackId | undefined;
+  const scoreGap = (scoreRanking[0]?.[1].score || 0) - (scoreRanking[1]?.[1].score || 0);
+  if (streakTrack && recentSameTrackStreak >= 3 && chosenTrack === streakTrack && secondTrack && scoreGap <= 0.85) {
+    chosenTrack = secondTrack;
+  }
   const ranking = (Object.entries(stats)
     .sort((a, b) => b[1].score - a[1].score)
     .map(([trackId]) => trackId) as TrackId[]).slice(0, TRACKS.length);
@@ -710,7 +749,24 @@ function createAdaptiveSuggestion(sessions: StudySession[]): AdaptiveSuggestion 
   });
   const questionIds = prioritized.slice(0, 10).map((question) => question.id);
 
-  const reason = `${getTrackName(chosenTrack)} prioriteras nu (${stats[chosenTrack].weakHits} svaghetsträffar, senaste fokus balanseras).`;
+  const reasonParts: string[] = [];
+  if (chosenTrack === targetTrack) {
+    reasonParts.push("matchar ditt primära mål");
+  }
+  if (stats[chosenTrack].weakHits > 0) {
+    reasonParts.push(`${stats[chosenTrack].weakHits} svaghetsträffar`);
+  }
+  if (stats[chosenTrack].minutes < 20) {
+    reasonParts.push("låg träningstid hittills");
+  }
+  if (streakTrack && recentSameTrackStreak >= 2 && chosenTrack !== streakTrack) {
+    reasonParts.push(`rotation efter ${recentSameTrackStreak} pass i ${getTrackName(streakTrack)}`);
+  }
+  if (reasonParts.length === 0) {
+    reasonParts.push("balanserad progression");
+  }
+
+  const reason = `${getTrackName(chosenTrack)} prioriteras nu: ${reasonParts.join(" • ")}.`;
 
   return {
     trackId: chosenTrack,
@@ -1273,6 +1329,7 @@ function renderOverview(): string {
             )
             .join("")}
         </div>
+        <p class="muted priority-reason">${suggestion.reason}</p>
       </section>
 
       <section class="card span-12">

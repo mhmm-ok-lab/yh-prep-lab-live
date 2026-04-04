@@ -762,6 +762,11 @@ button.danger {
   gap: 0.38rem;
 }
 
+.priority-reason {
+  margin-top: 0.38rem;
+  font-size: 0.79rem;
+}
+
 .track-priority-btn {
   text-align: left;
   width: 100%;
