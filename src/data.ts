@@ -1340,6 +1340,235 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "b",
     explanation: "'Det var inte förrän X som Y' = Y hände TILL FÖLJD AV X, inte tidigare. Korrekt omformulering: samtalet med chefen var orsaken till förståelsen."
+  },
+
+  // ─────────────────────────────────────────────────
+  // EXTRA TRÄNINGSFRÅGOR – Aptitudprov (nack-b serien)
+  // 3 extra per del, för riktad träning efter fel
+  // ─────────────────────────────────────────────────
+
+  // DEL A EXTRA – Induktiv logik
+  {
+    id: "nack-b1",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal saknas?\n100, 50, 25, ___",
+    options: [
+      { id: "a", text: "10" },
+      { id: "b", text: "12" },
+      { id: "c", text: "12.5" },
+      { id: "d", text: "15" }
+    ],
+    answer_key: "c",
+    explanation: "Varje tal divideras med 2: 100÷2=50, 50÷2=25, 25÷2=12.5."
+  },
+  {
+    id: "nack-b2",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal kommer härnäst?\n1, 1, 2, 3, 5, 8, ___",
+    options: [
+      { id: "a", text: "11" },
+      { id: "b", text: "12" },
+      { id: "c", text: "13" },
+      { id: "d", text: "16" }
+    ],
+    answer_key: "c",
+    explanation: "Fibonacci: 5+8=13. Varje tal är summan av de två föregående."
+  },
+  {
+    id: "nack-b3",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket mönster fortsätter?\n2, 6, 12, 20, 30, ___",
+    options: [
+      { id: "a", text: "36" },
+      { id: "b", text: "40" },
+      { id: "c", text: "42" },
+      { id: "d", text: "44" }
+    ],
+    answer_key: "c",
+    explanation: "Skillnaderna ökar: +4, +6, +8, +10, +12. Alltså 30+12=42."
+  },
+
+  // DEL B EXTRA – Deduktiv logik
+  {
+    id: "nack-b4",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Alla fåglar har vingar.\nPingviner är fåglar.\nPingviner kan inte flyga.\nVad kan vi säkert sluta oss till?",
+    options: [
+      { id: "a", text: "Alla djur med vingar kan flyga" },
+      { id: "b", text: "Pingviner har vingar men kan inte flyga" },
+      { id: "c", text: "Fåglar som inte flyger är inte riktiga fåglar" },
+      { id: "d", text: "Inga fåglar kan flyga" }
+    ],
+    answer_key: "b",
+    explanation: "Pingviner är fåglar → de har vingar (premiss 1). Men att ha vingar garanterar inte flyg – det framgår av premiss 3."
+  },
+  {
+    id: "nack-b5",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Om det är vardag stänger affären kl 20.\nIdag är det lördag.\nVad vet vi säkert om affären?",
+    options: [
+      { id: "a", text: "Affären stänger kl 20" },
+      { id: "b", text: "Affären stänger inte kl 20" },
+      { id: "c", text: "Vi kan inte säga något om stängningstiden" },
+      { id: "d", text: "Affären är stängd hela dagen" }
+    ],
+    answer_key: "c",
+    explanation: "Regeln gäller vardagar. Lördag är inte en vardag – men vi vet inte vad som gäller på lördagar. Vi kan inte dra slutsatsen att affären stänger vid annan tid, bara att regeln inte gäller."
+  },
+  {
+    id: "nack-b6",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Premiss 1: Alla X är Y.\nPremiss 2: Alla Y är Z.\nVad kan vi säkert sluta oss till?",
+    options: [
+      { id: "a", text: "Alla Z är X" },
+      { id: "b", text: "Alla X är Z" },
+      { id: "c", text: "Inga X är Z" },
+      { id: "d", text: "Alla Y är X" }
+    ],
+    answer_key: "b",
+    explanation: "Transitiv slutledning: X⊆Y och Y⊆Z → X⊆Z. Alltså är alla X också Z."
+  },
+
+  // DEL C EXTRA – Verbal förmåga
+  {
+    id: "nack-b7",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj det ord som är närmast i betydelse till 'enigmatisk':",
+    options: [
+      { id: "a", text: "Tydlig" },
+      { id: "b", text: "Gåtfull" },
+      { id: "c", text: "Snabb" },
+      { id: "d", text: "Generös" }
+    ],
+    answer_key: "b",
+    explanation: "Enigmatisk = svår att förstå, gåtfull, mystisk."
+  },
+  {
+    id: "nack-b8",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Läkare är till patient som lärare är till ___?",
+    options: [
+      { id: "a", text: "Skola" },
+      { id: "b", text: "Kursplan" },
+      { id: "c", text: "Elev" },
+      { id: "d", text: "Kunskap" }
+    ],
+    answer_key: "c",
+    explanation: "Läkaren hjälper patienten direkt. Läraren arbetar direkt med eleven. Relation: yrkesperson → den de betjänar."
+  },
+  {
+    id: "nack-b9",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "'Hon bemötte kritiken med ___.' Vilket ord ger mest positiv innebörd?",
+    options: [
+      { id: "a", text: "likgiltighet" },
+      { id: "b", text: "ilska" },
+      { id: "c", text: "värdighet" },
+      { id: "d", text: "förakt" }
+    ],
+    answer_key: "c",
+    explanation: "Värdighet = lugn och respektfull hållning under press. De övriga alternativen har negativ laddning."
+  },
+
+  // DEL D EXTRA – Svensk språkfärdighet
+  {
+    id: "nack-b10",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket ord stavas korrekt?",
+    options: [
+      { id: "a", text: "Exkursion" },
+      { id: "b", text: "Exkurssion" },
+      { id: "c", text: "Excursion" },
+      { id: "d", text: "Exkursjon" }
+    ],
+    answer_key: "a",
+    explanation: "Korrekt stavning: Exkursion. Låneordet har anpassats till svensk stavning med k (inte c) och -ion (inte -sion eller -jon)."
+  },
+  {
+    id: "nack-b11",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilken mening har korrekt ordföljd?\n(Tidsadverbial inleder meningen)",
+    options: [
+      { id: "a", text: "Nästa vecka vi ska resa till Stockholm." },
+      { id: "b", text: "Nästa vecka ska vi resa till Stockholm." },
+      { id: "c", text: "Vi ska resa nästa vecka till Stockholm." },
+      { id: "d", text: "Till Stockholm nästa vecka vi reser." }
+    ],
+    answer_key: "b",
+    explanation: "Inversionsregeln: tidsadverbial i inledning → verbet kommer före subjektet. 'Nästa vecka ska vi' är korrekt."
+  },
+  {
+    id: "nack-b12",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilken mening är grammatiskt korrekt?",
+    options: [
+      { id: "a", text: "Varken Anna eller Björn har inte lämnat in sina uppgifter." },
+      { id: "b", text: "Varken Anna eller Björn har lämnat in sina uppgifter." },
+      { id: "c", text: "Inte varken Anna eller Björn har lämnat uppgifterna." },
+      { id: "d", text: "Anna och Björn har varken inte lämnat sina uppgifter." }
+    ],
+    answer_key: "b",
+    explanation: "'Varken...eller' är redan en negation – man lägger inte till 'inte' också. Dubbel negation är fel på svenska i detta sammanhang."
   }
 ];
 

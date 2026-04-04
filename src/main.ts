@@ -36,6 +36,10 @@ interface SectionResult {
   correct: number;
   total: number;
   weight: number;
+  /** Antal fel i sektionen */
+  missed?: number;
+  /** Rekommenderade extra träningsfråge-ID:n baserat på antal fel */
+  extraPracticeIds?: string[];
 }
 
 interface SessionResult {
@@ -544,6 +548,22 @@ function saveStudyProfile(profile: StudyProfile, userId = currentUserId): void {
   localStorage.setItem(profileKeyFor(userId), JSON.stringify(profile));
 }
 
+/** Mappar aptitudprovets sektion-topics till extra träningsfrågor (nack-b serien) */
+const APTITUDE_EXTRA_QUESTIONS: Record<string, string[]> = {
+  "Aptitud: Induktiv logik":     ["nack-b1", "nack-b2", "nack-b3"],
+  "Aptitud: Deduktiv logik":     ["nack-b4", "nack-b5", "nack-b6"],
+  "Aptitud: Verbal förmåga":     ["nack-b7", "nack-b8", "nack-b9"],
+  "Aptitud: Svensk språkfärdighet": ["nack-b10", "nack-b11", "nack-b12"]
+};
+
+/** Hur många extra frågor rekommenderas baserat på antal fel */
+function extraPracticeCount(missed: number): number {
+  if (missed >= 3) return 3;
+  if (missed === 2) return 2;
+  if (missed === 1) return 1;
+  return 0;
+}
+
 function calculateMockSectionResults(
   templateId: string | undefined,
   questions: Question[],
@@ -568,12 +588,22 @@ function calculateMockSectionResults(
   const sectionResults = template.sections.map((section) => {
     const sectionQuestions = questions.filter((question) => section.question_ids.includes(question.id));
     const sectionScored = scoreAnswers(sectionQuestions, answers);
+    const missed = sectionScored.total - sectionScored.correct;
+
+    // Bygg lista med rekommenderade extra frågor om sektionen är aptitud-typ
+    const extraPool = section.topics
+      .flatMap((topic) => APTITUDE_EXTRA_QUESTIONS[topic] ?? []);
+    const count = extraPracticeCount(missed);
+    const extraPracticeIds = extraPool.slice(0, count);
+
     return {
       title: section.title,
       scorePercent: sectionScored.scorePercent,
       correct: sectionScored.correct,
       total: sectionScored.total,
-      weight: section.weight
+      weight: section.weight,
+      missed,
+      extraPracticeIds: extraPracticeIds.length > 0 ? extraPracticeIds : undefined
     };
   });
 
@@ -1910,6 +1940,12 @@ function renderLastResult(): string {
   const sessions = loadStudySessions();
   const suggestion = createAdaptiveSuggestion(sessions);
 
+  // Sektionsrapport med riktad träningsrekommendation om aptitudprov
+  const sectionsWithExtra = lastResult.sectionResults.filter(
+    (s) => s.extraPracticeIds && s.extraPracticeIds.length > 0
+  );
+  const hasAptitudeFeedback = sectionsWithExtra.length > 0;
+
   const sectionLines =
     lastResult.sectionResults.length === 0
       ? ""
@@ -1917,12 +1953,38 @@ function renderLastResult(): string {
         <p><strong>Sektionsrapport:</strong></p>
         <ul class="list-clean">
           ${lastResult.sectionResults
-            .map(
-              (section) =>
-                `<li>${section.title}: ${section.correct}/${section.total} (${section.scorePercent}%) • Vikt ${Math.round(section.weight * 100)}%</li>`
-            )
+            .map((section) => {
+              const missedBadge = section.missed && section.missed > 0
+                ? `<span class="missed-badge">${section.missed} fel</span>`
+                : `<span class="ok-badge">✓</span>`;
+              return `<li>${missedBadge} ${section.title}: ${section.correct}/${section.total} (${section.scorePercent}%)</li>`;
+            })
             .join("")}
         </ul>
+        ${hasAptitudeFeedback ? `
+        <div class="practice-report">
+          <p><strong>📋 Rekommenderad träning efter detta prov:</strong></p>
+          ${sectionsWithExtra.map((section) => `
+            <div class="practice-section-row">
+              <div class="practice-section-info">
+                <span class="practice-section-title">${section.title.replace(/Del [A-D] – /, "")}</span>
+                <span class="practice-section-count">${section.extraPracticeIds!.length} extra ${section.extraPracticeIds!.length === 1 ? "fråga" : "frågor"} rekommenderas</span>
+              </div>
+              <button class="secondary practice-btn"
+                data-action="start-aptitude-drill"
+                data-question-ids="${section.extraPracticeIds!.join(",")}">
+                Träna nu
+              </button>
+            </div>
+          `).join("")}
+          ${sectionsWithExtra.length > 1 ? `
+          <button class="primary"
+            data-action="start-aptitude-drill"
+            data-question-ids="${sectionsWithExtra.flatMap((s) => s.extraPracticeIds!).join(",")}">
+            Träna alla svaga delar (${sectionsWithExtra.flatMap((s) => s.extraPracticeIds!).length} frågor)
+          </button>` : ""}
+        </div>` : `
+        <p class="muted">✓ Inga svaga delar – inga extra frågor rekommenderas.</p>`}
       `;
   const reviewLines =
     lastResult.questionReviews.length === 0
@@ -2230,6 +2292,15 @@ app.addEventListener("click", (event) => {
     }
     const ids = template.sections.flatMap((section) => section.question_ids);
     startSession("Tidsprov", ids, template.total_minutes, template.id);
+    return;
+  }
+
+  if (action === "start-aptitude-drill") {
+    const rawIds = actionEl.dataset.questionIds ?? "";
+    const ids = rawIds.split(",").map((s) => s.trim()).filter(Boolean);
+    if (ids.length === 0) return;
+    const minutes = Math.max(3, ids.length * 1);
+    startSession("Drill", ids, minutes);
     return;
   }
 

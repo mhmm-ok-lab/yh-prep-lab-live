@@ -713,6 +713,78 @@ button.danger {
   margin: 0.4rem 0;
 }
 
+/* ── Aptitudprov träningsrapport ── */
+.practice-report {
+  margin-top: 0.7rem;
+  padding: 0.6rem 0.7rem;
+  background: #f0f4ff;
+  border: 1px solid #c7d2fe;
+  border-radius: var(--radius-card);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.practice-section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1px solid #e0e7ff;
+  border-radius: var(--radius-btn);
+  padding: 0.4rem 0.6rem;
+}
+
+.practice-section-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.practice-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e1b4b;
+}
+
+.practice-section-count {
+  font-size: 0.75rem;
+  color: #6366f1;
+}
+
+.practice-btn {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.7rem;
+}
+
+.missed-badge {
+  display: inline-flex;
+  min-width: 42px;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.06rem 0.4rem;
+  font-size: 0.72rem;
+  background: #fdf1f1;
+  border: 1px solid #efc5c5;
+  color: #991b1b;
+  margin-right: 0.3rem;
+}
+
+.ok-badge {
+  display: inline-flex;
+  min-width: 22px;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.06rem 0.3rem;
+  font-size: 0.72rem;
+  background: #eef9f1;
+  border: 1px solid #b7dfc0;
+  color: #166534;
+  margin-right: 0.3rem;
+}
+
 .roadmap-step {
   border-left-width: 3px;
 }
