@@ -184,3 +184,9 @@ Den viktigaste lärdomen i nattens pass var att vi behövde gå från "iterera e
 
 - Beslut: Standardisera verifiering med `npm run verify`.
   Why: Varje autopilot-runda ska avslutas med samma test/build-kontroll innan nästa steg.
+
+- Beslut: `Roadmap` ska alltid kunna visas även om ett pass är aktivt.
+  Why: Användaren behöver lägesbilden utan att först stänga eller tappa fokus på aktiv session.
+
+- Beslut: Visa tydligt "Aktivt pass pausat i bakgrunden" + knapp för att återgå till passet.
+  Why: Förhindrar känslan av att passet försvunnit när man växlar till planeringsvyer.

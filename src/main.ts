@@ -126,7 +126,7 @@ const pageLabels: Record<Page, string> = {
 };
 const urlParams = new URLSearchParams(window.location.search);
 const THEME_KEY = "yh.ui-theme";
-const UI_BUILD = "2026-04-04-0205";
+const UI_BUILD = "2026-04-04-0245";
 const BUILD_MARKER_KEY = "yh.ui-build-marker";
 const THEME_PRESETS: ThemePreset[] = [
   {
@@ -1700,9 +1700,23 @@ function renderRoadmap(): string {
     active: "Pågår",
     next: "Nästa"
   };
+  const activeSessionNotice = activeSession
+    ? `
+      <section class="card span-12">
+        <h3>Aktivt pass pausat i bakgrunden</h3>
+        <p class="muted">
+          Ditt ${activeSession.mode}-pass är kvar: ${Object.keys(activeSession.answers).length}/${activeSession.questionIds.length} besvarade.
+        </p>
+        <div class="inline-controls">
+          <button class="primary" data-action="resume-active-session">Återgå till aktivt pass</button>
+        </div>
+      </section>
+    `
+    : "";
 
   return `
     <div class="grid">
+      ${activeSessionNotice}
       <section class="card span-12">
         <h3>Övergripande läge</h3>
         <p class="muted">Det här är stora steg-planen så du ser var vi ligger utan att behöva gissa.</p>
@@ -1713,7 +1727,7 @@ function renderRoadmap(): string {
       <section class="card span-12">
         <h3>Nästa stora steg</h3>
         <p>${nextAction}</p>
-        <div class="inline-controls">
+        <div class="inline-controls roadmap-actions">
           <button class="primary" data-action="start-next-pass">Starta nästa rekommenderade pass</button>
           <button class="primary" data-view="mock">Öppna Mockprov</button>
           <button class="secondary" data-view="bank">Öppna Frågebank</button>
@@ -1896,6 +1910,8 @@ function renderPage(): string {
 function render(): void {
   const plan = createDailyPlan();
   const isSessionFocus = Boolean(activeSession);
+  const showSessionCard = isSessionFocus && page !== "roadmap";
+  const showPageContent = !isSessionFocus || page === "roadmap";
   app.innerHTML = `
     <div class="app">
       <header class="hero">
@@ -1958,9 +1974,9 @@ function render(): void {
       </header>
 
       <main>
-        ${renderActiveSession()}
+        ${showSessionCard ? renderActiveSession() : ""}
         ${isSessionFocus ? "" : renderLastResult()}
-        ${isSessionFocus ? "" : renderPage()}
+        ${showPageContent ? renderPage() : ""}
       </main>
     </div>
   `;
@@ -2010,6 +2026,16 @@ app.addEventListener("click", (event) => {
       return;
     }
     startSession(suggestion.mode, suggestion.questionIds, suggestion.durationMinutes);
+    return;
+  }
+
+  if (action === "resume-active-session") {
+    if (!activeSession) {
+      setStorageNotice("Ingen aktiv session att återgå till.");
+      return;
+    }
+    page = activeSession.templateId ? "mock" : "bank";
+    render();
     return;
   }
 

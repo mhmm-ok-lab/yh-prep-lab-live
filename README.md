@@ -80,6 +80,15 @@ npm run build
 npm run verify
 ```
 
+## Visuell verifiering
+```bash
+# starta först preview i separat terminal
+npm run preview -- --host 127.0.0.1 --port 4173
+
+# kör sedan visuell audit (desktop + mobil screenshots till /tmp)
+npm run audit:visual
+```
+
 ## Verifiering
 
 - `npm test` verifierar frågor, planering och poängräkning.

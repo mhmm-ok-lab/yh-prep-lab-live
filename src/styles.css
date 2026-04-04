@@ -638,6 +638,20 @@ button.danger {
   background: #fcfcfd;
 }
 
+.roadmap-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.roadmap-actions button {
+  min-height: 42px;
+  width: 100%;
+  font-size: 0.83rem;
+  line-height: 1.2;
+  padding: 0.38rem 0.45rem;
+}
+
 .review-item p {
   margin: 0.32rem 0;
 }
@@ -929,6 +943,10 @@ details:not(.mini-menu)[open] {
 
   .session-actions {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .roadmap-actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .research-tag {
