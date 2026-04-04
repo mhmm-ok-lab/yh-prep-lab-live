@@ -1723,31 +1723,46 @@ function renderWalkthrough(): string {
   return `
     <div class="grid">
       <section class="card span-12">
-        <h3>Guidad test-genomgång</h3>
-        <p>
-          Kör detta när du vill förstå <strong>hela upplägget</strong> och samtidigt testa nivå:
-          först en snabb rundtur i appens delar, sedan ett kort lärtest med facit och förklaring.
-        </p>
-        <ol class="list-clean">
-          <li><strong>Översikt:</strong> dagligt pass, prioritering och snabbstart.</li>
-          <li><strong>Spår:</strong> välj Nackademin UX, IT-H IT-säkerhet eller Programmering 1/A.</li>
-          <li><strong>Frågebank:</strong> filtrera frågor på spår, ämne, svårighet, källnivå.</li>
-          <li><strong>Mockprov:</strong> kör tidsprov (inkl. mini-check 5 min).</li>
-          <li><strong>Research:</strong> se vad som är officiellt, sekundärt och community.</li>
-          <li><strong>Logik:</strong> extra övningar för resonemang.</li>
-          <li><strong>Python-minikurs:</strong> öppnas via toppmenyn när du vill byta del.</li>
-        </ol>
+        <h3>Hur funkar appen? En snabb genomgång</h3>
+        <p>Du har tre spår att träna inför:</p>
+        <ul class="list-clean">
+          <li>🎨 <strong>Nackademin UX</strong> — UX-design och användarfokus</li>
+          <li>🔒 <strong>IT-H IT-säkerhet</strong> — nätverk, säkerhet och teknik</li>
+          <li>💻 <strong>Programmering 1/A</strong> — Python-grunder</li>
+        </ul>
+        <p>Navigera med menyn uppe till höger. Du kan alltid byta sida — ett pågående test sparas och visas längst upp.</p>
+      </section>
+
+      <section class="card span-6">
+        <h3>🧠 Lär-läget</h3>
+        <p>Du svarar på en fråga. Direkt efteråt visas förklaring och vad som var rätt. Inget tidspress — perfekt för att faktiskt förstå.</p>
         <div class="inline-controls">
           <button class="primary" data-action="start-walkthrough-learn">
-            Starta guidat test (Lär, 8 min)
-          </button>
-          <button class="secondary" data-action="start-walkthrough-timed">
-            Starta snabbtest (Tidsprov, 5 min)
+            Starta lärtest (8 frågor)
           </button>
         </div>
-        <p class="muted">
-          Guidat test: ${walkthroughQuestions.length} frågor från UX, IT-H, matte/språk och programmering.
-        </p>
+        <p class="muted">${walkthroughQuestions.length} frågor från UX, IT-H och programmering. Förklaring visas efter varje svar.</p>
+      </section>
+
+      <section class="card span-6">
+        <h3>⏱ Tidsprov-läget</h3>
+        <p>Klockan tickar. Du svarar på alla frågor och får ett samlat resultat på slutet — precis som ett riktigt antagningsprov.</p>
+        <div class="inline-controls">
+          <button class="secondary" data-action="start-walkthrough-timed">
+            Starta snabbprov (5 min)
+          </button>
+        </div>
+        <p class="muted">Mini-check med 5 frågor. Bra för att vänja sig vid tidspressformat.</p>
+      </section>
+
+      <section class="card span-12">
+        <h3>📋 De andra sidorna</h3>
+        <ul class="list-clean">
+          <li><strong>Frågebank</strong> — bläddra och filtrera alla frågor. Bra för att se vad som finns.</li>
+          <li><strong>Mockprov</strong> — välj ett av de färdiga proven (5 min till 90 min) och kör.</li>
+          <li><strong>Spår</strong> — snabbstart per ämne, plus daglig studieplan.</li>
+          <li><strong>Research</strong> — källmaterial bakom frågorna.</li>
+        </ul>
       </section>
     </div>
   `;
@@ -1906,15 +1921,25 @@ function renderActiveSession(): string {
               <legend class="sr-only">Välj ett svar</legend>
               <div class="answer-options">${(currentQuestion.options || [])
               .map(
-                (option) => `
-                  <label class="answer-option ${answerValue === option.id ? "is-selected" : ""}">
+                (option) => {
+                  const isSelected = answerValue === option.id;
+                  const isCorrect = option.id === currentQuestion.answer_key;
+                  const showResult = activeSession!.mode === "Lär" && answerValue !== "";
+                  let cls = "answer-option";
+                  if (isSelected) cls += " is-selected";
+                  if (showResult && isCorrect) cls += " is-correct-answer";
+                  if (showResult && isSelected && !isCorrect) cls += " is-wrong-answer";
+                  return `
+                  <label class="${cls}">
                     <input type="radio" name="answer-${currentQuestion.id}" data-action="answer" data-qid="${currentQuestion.id}" value="${option.id}" ${
-                      answerValue === option.id ? "checked" : ""
+                      isSelected ? "checked" : ""
                     } />
                     <span class="answer-option-key">${option.id.toUpperCase()}</span>
                     <span class="answer-option-text">${option.text}</span>
+                    ${showResult && isCorrect ? '<span class="answer-correct-mark">✓ Rätt svar</span>' : ""}
                   </label>
-                `
+                `;
+                }
               )
               .join("")}</div>
             </fieldset>`
@@ -1922,13 +1947,18 @@ function renderActiveSession(): string {
       }
       ${
         activeSession.mode === "Lär"
-          ? `
-            <details open>
-              <summary>Förklaring i lärläge</summary>
-              <p><strong>Facit:</strong> ${currentQuestion.answer_key}</p>
-              <p>${currentQuestion.explanation}</p>
-            </details>
-          `
+          ? answerValue
+            ? `<div class="learn-explanation">
+                <p class="learn-result-label">${
+                  currentQuestion.format === "mcq" && answerValue === currentQuestion.answer_key
+                    ? "✅ Rätt!"
+                    : currentQuestion.format === "mcq"
+                    ? `❌ Fel — rätt svar var <strong>${currentQuestion.answer_key.toUpperCase()}</strong>`
+                    : "📝 Ditt svar noterat"
+                }</p>
+                <p class="learn-explanation-text">${currentQuestion.explanation}</p>
+              </div>`
+            : `<p class="learn-hint">💡 Välj ett svar ovan — förklaring visas efteråt.</p>`
           : ""
       }
 
@@ -2087,8 +2117,7 @@ function renderPage(): string {
 function render(): void {
   const plan = createDailyPlan();
   const isSessionFocus = Boolean(activeSession);
-  const showSessionCard = isSessionFocus && page !== "roadmap";
-  const showPageContent = !isSessionFocus || page === "roadmap";
+  const showSessionCard = isSessionFocus;
   app.innerHTML = `
     <div class="app">
       <header class="hero">
@@ -2152,8 +2181,8 @@ function render(): void {
 
       <main>
         ${showSessionCard ? renderActiveSession() : ""}
-        ${isSessionFocus ? "" : renderLastResult()}
-        ${showPageContent ? renderPage() : ""}
+        ${!isSessionFocus ? renderLastResult() : ""}
+        ${renderPage()}
       </main>
     </div>
   `;
