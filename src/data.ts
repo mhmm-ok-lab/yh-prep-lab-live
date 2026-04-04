@@ -1569,6 +1569,325 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "b",
     explanation: "'Varken...eller' är redan en negation – man lägger inte till 'inte' också. Dubbel negation är fel på svenska i detta sammanhang."
+  },
+
+  // ─────────────────────────────────────────────────
+  // APTITUDPROV – Utökat bank (nack-c serien)
+  // Fler frågor per del för variation, Medel–Svår
+  // ─────────────────────────────────────────────────
+
+  // DEL A EXTRA 2 – Induktiv logik
+  {
+    id: "nack-c1",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal saknas i serien?\n81, 27, 9, 3, ___",
+    options: [
+      { id: "a", text: "1" },
+      { id: "b", text: "2" },
+      { id: "c", text: "0" },
+      { id: "d", text: "0.5" }
+    ],
+    answer_key: "a",
+    explanation: "Varje tal divideras med 3: 81÷3=27, 27÷3=9, 9÷3=3, 3÷3=1."
+  },
+  {
+    id: "nack-c2",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket par bokstäver kommer härnäst?\nAZ, BY, CX, DW, ___",
+    options: [
+      { id: "a", text: "EV" },
+      { id: "b", text: "EW" },
+      { id: "c", text: "FV" },
+      { id: "d", text: "EU" }
+    ],
+    answer_key: "a",
+    explanation: "Första bokstaven går framåt (A,B,C,D,E) och andra bakåt (Z,Y,X,W,V) i alfabetet."
+  },
+  {
+    id: "nack-c3",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal saknas?\n4, 9, 25, 49, 121, ___",
+    options: [
+      { id: "a", text: "144" },
+      { id: "b", text: "169" },
+      { id: "c", text: "196" },
+      { id: "d", text: "225" }
+    ],
+    answer_key: "b",
+    explanation: "Serien är kvadraterna av primtal: 2²=4, 3²=9, 5²=25, 7²=49, 11²=121, 13²=169."
+  },
+  {
+    id: "nack-c4",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vad är nästa tal i serien?\n1, 3, 7, 13, 21, 31, ___",
+    options: [
+      { id: "a", text: "40" },
+      { id: "b", text: "41" },
+      { id: "c", text: "43" },
+      { id: "d", text: "45" }
+    ],
+    answer_key: "c",
+    explanation: "Skillnaderna ökar jämnt: +2, +4, +6, +8, +10, +12. Alltså 31+12=43."
+  },
+  {
+    id: "nack-c5",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal kommer härnäst?\n2, 5, 11, 23, 47, ___",
+    options: [
+      { id: "a", text: "89" },
+      { id: "b", text: "94" },
+      { id: "c", text: "95" },
+      { id: "d", text: "96" }
+    ],
+    answer_key: "c",
+    explanation: "Varje tal = föregående × 2 + 1: 2×2+1=5, 5×2+1=11, 11×2+1=23, 23×2+1=47, 47×2+1=95."
+  },
+
+  // DEL B EXTRA 2 – Deduktiv logik
+  {
+    id: "nack-c6",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Om en triangel är liksidig, är alla vinklar 60°.\nDenna triangel har inte alla vinklar 60°.\nVad kan vi sluta oss till?",
+    options: [
+      { id: "a", text: "Triangeln är liksidig" },
+      { id: "b", text: "Triangeln är inte liksidig" },
+      { id: "c", text: "Triangeln har inga vinklar alls" },
+      { id: "d", text: "Inget kan slutas om triangeln" }
+    ],
+    answer_key: "b",
+    explanation: "Modus tollens: Om P→Q och ¬Q, då ¬P. Liksidig→60°, men inte 60°, alltså inte liksidig."
+  },
+  {
+    id: "nack-c7",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Tre personer: Ali, Bo och Cleo.\nEndast en av dem ljuger alltid.\nAli säger: 'Bo ljuger.'\nBo säger: 'Cleo ljuger.'\nCleo säger: 'Ali och Bo talar sanning.'\nVem ljuger?",
+    options: [
+      { id: "a", text: "Ali" },
+      { id: "b", text: "Bo" },
+      { id: "c", text: "Cleo" },
+      { id: "d", text: "Det är omöjligt att avgöra" }
+    ],
+    answer_key: "b",
+    explanation: "Om Bo ljuger: Ali talar sanning (rätt), Bos påstående att Cleo ljuger är falskt (Cleo talar sanning), Cleos bekräftelse att båda talar sanning stämmer. Konsistent – Bo ljuger."
+  },
+  {
+    id: "nack-c8",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Alla som tränar 5 dagar/vecka är i bra form.\nIngen i bra form äter fastfood dagligen.\nMaria äter fastfood dagligen.\nVad vet vi om Maria?",
+    options: [
+      { id: "a", text: "Maria tränar 5 dagar/vecka" },
+      { id: "b", text: "Maria är i bra form" },
+      { id: "c", text: "Maria tränar inte 5 dagar/vecka" },
+      { id: "d", text: "Maria gillar inte träning" }
+    ],
+    answer_key: "c",
+    explanation: "Maria äter fastfood dagligen → Maria är inte i bra form (premiss 2 kontrapositivt) → Maria tränar inte 5 dagar/vecka (premiss 1 kontrapositivt)."
+  },
+  {
+    id: "nack-c9",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Antingen är A sant eller B sant (men inte båda).\nA är falskt.\nVad vet vi?",
+    options: [
+      { id: "a", text: "B är falskt" },
+      { id: "b", text: "B är sant" },
+      { id: "c", text: "Varken A eller B är sant" },
+      { id: "d", text: "Både A och B är sanna" }
+    ],
+    answer_key: "b",
+    explanation: "Exklusiv disjunktion (XOR): exakt ett av A/B är sant. A=falskt → B måste vara sant."
+  },
+
+  // DEL C EXTRA 2 – Verbal förmåga
+  {
+    id: "nack-c10",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj det ord som är närmast i betydelse till 'flegmatisk':",
+    options: [
+      { id: "a", text: "Upphetsad" },
+      { id: "b", text: "Lugn och orörd" },
+      { id: "c", text: "Arg" },
+      { id: "d", text: "Kvick" }
+    ],
+    answer_key: "b",
+    explanation: "Flegmatisk = avslappnad, sansad, svår att uppröra. En av de fyra temperamentstyper­na i klassisk psykologi."
+  },
+  {
+    id: "nack-c11",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Taktpinne är till orkester som _____ är till kör?",
+    options: [
+      { id: "a", text: "Notblad" },
+      { id: "b", text: "Scen" },
+      { id: "c", text: "Körledare" },
+      { id: "d", text: "Mikrofon" }
+    ],
+    answer_key: "c",
+    explanation: "Taktpinnen är dirigentens redskap för att leda orkestern. Körledaren är den person som leder kören. Relation: ledarskapsinstrument/person → ensemble."
+  },
+  {
+    id: "nack-c12",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "'Beslutet togs trots _____ om konsekvenserna.' Vilket ord ger mest logisk mening?",
+    options: [
+      { id: "a", text: "visshet" },
+      { id: "b", text: "kunskap" },
+      { id: "c", text: "ovetskap" },
+      { id: "d", text: "entusiasm" }
+    ],
+    answer_key: "c",
+    explanation: "'Trots' indikerar ett hinder eller en nackdel. 'Ovetskap' (brist på kunskap) är ett rimligt hinder – beslutet togs utan full information. 'Visshet' och 'kunskap' är fördelar."
+  },
+  {
+    id: "nack-c13",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj det ord som INTE passar in bland de andra:",
+    options: [
+      { id: "a", text: "Melankolisk" },
+      { id: "b", text: "Dystert" },
+      { id: "c", text: "Vemodigt" },
+      { id: "d", text: "Energisk" }
+    ],
+    answer_key: "d",
+    explanation: "Melankolisk, dystert och vemodigt är alla synonymer för nedstämt/sorgset. Energisk är en positiv, aktiv term och hör inte till gruppen."
+  },
+
+  // DEL D EXTRA 2 – Svensk språkfärdighet
+  {
+    id: "nack-c14",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj rätt ordform:\n'Det var en ___ upplevelse.'",
+    options: [
+      { id: "a", text: "oförglömlig" },
+      { id: "b", text: "oförgömlig" },
+      { id: "c", text: "oförglömbar" },
+      { id: "d", text: "oförglömbar" }
+    ],
+    answer_key: "a",
+    explanation: "Korrekt form: oförglömlig (från 'glömma'). 'Oförgömlig' existerar inte. 'Oförglömbar' används men är ovanligare och delvis omtvistat i modern svenska."
+  },
+  {
+    id: "nack-c15",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj den mening som undviker pleonasm (onödig upprepning):",
+    options: [
+      { id: "a", text: "Han återvände tillbaka hem igen." },
+      { id: "b", text: "De samarbetade tillsammans på projektet." },
+      { id: "c", text: "Hon planerade mötet noggrant i förväg." },
+      { id: "d", text: "Projektet avslutades och är nu färdigt klart." }
+    ],
+    answer_key: "c",
+    explanation: "'Planerade i förväg' är rimligt – planering sker ofta explicit i förväg. De andra har pleonasmfel: 'återvände tillbaka', 'samarbetade tillsammans', 'färdigt klart' är alla dubbleringar."
+  },
+  {
+    id: "nack-c16",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilken mening har korrekt syftning och är tydligast formulerad?",
+    options: [
+      { id: "a", text: "När Emma träffade Lisa visade hon sin nya bok." },
+      { id: "b", text: "Emma visade sin nya bok för Lisa när de träffades." },
+      { id: "c", text: "När de träffades visade hon Lisa sin bok." },
+      { id: "d", text: "Lisa och Emma träffades och hon visade boken." }
+    ],
+    answer_key: "b",
+    explanation: "I alternativ B är det tydligt att Emma visade boken. I A, C och D är 'hon' tvetydigt – det är oklart vem som visade boken."
+  },
+  {
+    id: "nack-c17",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket ord passar bäst i meningen för att visa orsakssamband?\n'Projektet misslyckades, _____ teamet saknade tydliga mål.'",
+    options: [
+      { id: "a", text: "trots att" },
+      { id: "b", text: "eftersom" },
+      { id: "c", text: "men" },
+      { id: "d", text: "fast" }
+    ],
+    answer_key: "b",
+    explanation: "'Eftersom' anger orsak. 'Trots att' och 'fast' anger kontrast/motgång. 'Men' är en svag kontrast utan kausalitet. Frågan efterfrågar orsakssamband."
   }
 ];
 

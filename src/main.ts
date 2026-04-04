@@ -548,12 +548,13 @@ function saveStudyProfile(profile: StudyProfile, userId = currentUserId): void {
   localStorage.setItem(profileKeyFor(userId), JSON.stringify(profile));
 }
 
-/** Mappar aptitudprovets sektion-topics till extra träningsfrågor (nack-b serien) */
+/** Mappar aptitudprovets sektion-topics till extra träningsfrågor (nack-b + nack-c serien).
+ *  Poolen blandas så att man får variation varje gång. */
 const APTITUDE_EXTRA_QUESTIONS: Record<string, string[]> = {
-  "Aptitud: Induktiv logik":     ["nack-b1", "nack-b2", "nack-b3"],
-  "Aptitud: Deduktiv logik":     ["nack-b4", "nack-b5", "nack-b6"],
-  "Aptitud: Verbal förmåga":     ["nack-b7", "nack-b8", "nack-b9"],
-  "Aptitud: Svensk språkfärdighet": ["nack-b10", "nack-b11", "nack-b12"]
+  "Aptitud: Induktiv logik":        ["nack-b1", "nack-c1", "nack-b2", "nack-c2", "nack-b3", "nack-c3", "nack-c4", "nack-c5"],
+  "Aptitud: Deduktiv logik":        ["nack-b4", "nack-c6", "nack-b5", "nack-c7", "nack-b6", "nack-c8", "nack-c9"],
+  "Aptitud: Verbal förmåga":        ["nack-b7", "nack-c10", "nack-b8", "nack-c11", "nack-b9", "nack-c12", "nack-c13"],
+  "Aptitud: Svensk språkfärdighet": ["nack-b10", "nack-c14", "nack-b11", "nack-c15", "nack-b12", "nack-c16", "nack-c17"]
 };
 
 /** Hur många extra frågor rekommenderas baserat på antal fel */
@@ -591,10 +592,12 @@ function calculateMockSectionResults(
     const missed = sectionScored.total - sectionScored.correct;
 
     // Bygg lista med rekommenderade extra frågor om sektionen är aptitud-typ
+    // Blandas slumpmässigt för variation varje gång
     const extraPool = section.topics
       .flatMap((topic) => APTITUDE_EXTRA_QUESTIONS[topic] ?? []);
+    const shuffled = [...extraPool].sort(() => Math.random() - 0.5);
     const count = extraPracticeCount(missed);
-    const extraPracticeIds = extraPool.slice(0, count);
+    const extraPracticeIds = shuffled.slice(0, count);
 
     return {
       title: section.title,
