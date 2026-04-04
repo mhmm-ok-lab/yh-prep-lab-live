@@ -4,6 +4,19 @@
 
 ---
 
+## Projektidentifikation
+
+> ⚠️ **OBS för framtida agenter och läsare:**
+> Det här dokumentet tillhör projektet **YH Prep Lab**.
+>
+> - **Rätt projektmapp:** `/Users/martinhammarberg/Documents/yh-prep-lab/`
+> - **Git remote (live/produktion):** `https://github.com/mhmm-ok-lab/yh-prep-lab-live.git`
+> - **Claude startas ibland från fel mapp:** `/Users/martinhammarberg/code/codex-pulse/` — det är ett *annat projekt* (Codex Pulse) och ska inte blandas ihop med detta.
+>
+> Alla kodfiler, commits och ändringar för YH Prep Lab ska göras med absoluta sökvägar till `/Users/martinhammarberg/Documents/yh-prep-lab/`.
+
+---
+
 ## Projektöversikt
 
 **Vad:** En single-page webb-app för att träna inför antagningsprov till Nackademin UX, IT-Högskolan IT-säkerhet och Gymnasiekurs Programmering 1/A.
