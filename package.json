@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "verify": "npm run test && npm run build",
-    "audit:visual": "node playwright-visual-audit.mjs"
+    "audit:visual": "node playwright-visual-audit.mjs",
+    "audit:visual:headless": "node playwright-visual-audit.mjs",
+    "audit:visual:headed": "node playwright-visual-audit.mjs --headed"
   },
   "devDependencies": {
     "playwright": "^1.59.1",

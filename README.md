@@ -86,8 +86,11 @@ npm run verify
 # starta först preview i separat terminal
 npm run preview -- --host 127.0.0.1 --port 4173
 
-# kör sedan visuell audit (desktop + mobil screenshots till /tmp)
+# kör sedan visuell audit utan GUI (snabbast, desktop + mobil screenshots till /tmp)
 npm run audit:visual
+
+# kör visuell audit med öppna browser-fönster
+npm run audit:visual:headed
 ```
 
 ## Publicering (pågår)

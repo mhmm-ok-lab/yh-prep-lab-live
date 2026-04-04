@@ -5,6 +5,7 @@ const mainTs = fs.readFileSync(new URL('./src/main.ts', import.meta.url), 'utf8'
 const buildMatch = mainTs.match(/const UI_BUILD = "([^"]+)";/);
 const build = buildMatch ? buildMatch[1] : 'dev';
 const base = `http://127.0.0.1:4173/?v=${build}`;
+const headed = process.argv.includes('--headed');
 
 async function clearData(page) {
   await page.goto(base, { waitUntil: 'networkidle' });
@@ -16,7 +17,7 @@ async function clearData(page) {
 }
 
 async function runOne(name, mobile = false) {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: !headed, slowMo: headed ? 150 : 0 });
   const context = mobile
     ? await browser.newContext({ ...devices['iPhone 13'] })
     : await browser.newContext({ viewport: { width: 1366, height: 900 } });

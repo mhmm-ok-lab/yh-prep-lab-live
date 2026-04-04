@@ -1303,14 +1303,29 @@ function renderOverview(): string {
     <div class="grid overview-grid">
       <section class="card critical-card span-12">
         <h3>Snabbstart idag</h3>
-        <p class="muted">Status: ${isOnline ? "Online" : "Offline"} • ${plan.totalMinutes} min</p>
-        <div class="critical-kpis">
-          <p><strong>Prov:</strong> ${firstExamCountdown}</p>
-          <p><strong>Nästa mock:</strong> ${nextMock.minutes} min</p>
+        <p class="muted quickstart-subline">Mål idag: håll fokus i ett kort pass och följ upp med snabb rättning.</p>
+        <div class="quick-metrics">
+          <div class="indicator-chip">
+            <span class="indicator-label">Tid till prov</span>
+            <strong class="indicator-value">${firstExamCountdown}</strong>
+          </div>
+          <div class="indicator-chip">
+            <span class="indicator-label">Nästa mock</span>
+            <strong class="indicator-value">${nextMock.minutes} min</strong>
+          </div>
+          <div class="indicator-chip">
+            <span class="indicator-label">Fokus nu</span>
+            <strong class="indicator-value">${priorityTrackName}</strong>
+          </div>
+          <div class="indicator-chip">
+            <span class="indicator-label">Passlängd</span>
+            <strong class="indicator-value">${preferenceMinutes} min</strong>
+          </div>
         </div>
-        <p class="muted">Nu: ${priorityTrackName} • ${preferenceMinutes} min • ${blockerLabel}</p>
-        <div class="inline-controls">
+        <p class="muted quickstart-subline">Status: ${isOnline ? "Online" : "Offline"} • Hinder just nu: ${blockerLabel}</p>
+        <div class="inline-controls quickstart-actions">
           <button class="primary" data-action="start-today-drill">Starta dagens pass</button>
+          <button class="secondary" data-view="mock">Öppna mockprov</button>
         </div>
       </section>
 

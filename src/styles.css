@@ -21,6 +21,16 @@
   --radius-card: 14px;
   --bg-top: #f5faf7;
   --bg-bottom: #eef7f4;
+  --hero-start: #f7fdfb;
+  --hero-end: #f1fcf8;
+  --surface-card-start: #fffefd;
+  --surface-card-end: #fbfffd;
+  --surface-critical-start: #f6fffb;
+  --surface-critical-end: #f1fbf6;
+  --indicator-bg: #e9f8f2;
+  --indicator-border: #b8ddd1;
+  --indicator-ink: #1f4d43;
+  --field-bg: #ffffff;
 }
 
 * {
@@ -66,6 +76,16 @@ body[data-theme="calm-public"] {
   --radius-card: 12px;
   --bg-top: #f5f9f6;
   --bg-bottom: #edf3ef;
+  --hero-start: #f3faf7;
+  --hero-end: #edf7f3;
+  --surface-card-start: #ffffff;
+  --surface-card-end: #f8fcfa;
+  --surface-critical-start: #f2fbf8;
+  --surface-critical-end: #ecf8f3;
+  --indicator-bg: #e8f4ef;
+  --indicator-border: #bfd9ce;
+  --indicator-ink: #244f45;
+  --field-bg: #ffffff;
 }
 
 body[data-theme="calm-slate"] {
@@ -82,6 +102,16 @@ body[data-theme="calm-slate"] {
   --radius-card: 12px;
   --bg-top: #f4f7fb;
   --bg-bottom: #ebf0f8;
+  --hero-start: #eef3fa;
+  --hero-end: #e7eef8;
+  --surface-card-start: #fdfefe;
+  --surface-card-end: #f5f8fd;
+  --surface-critical-start: #edf3fb;
+  --surface-critical-end: #e8eff9;
+  --indicator-bg: #e6edf7;
+  --indicator-border: #c4d1e4;
+  --indicator-ink: #2b4a72;
+  --field-bg: #ffffff;
 }
 
 .pull-refresh-indicator {
@@ -140,7 +170,7 @@ textarea {
   font: inherit;
   border-radius: var(--radius-btn);
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--field-bg);
   color: inherit;
   min-height: var(--tap-height);
   max-width: 100%;
@@ -159,7 +189,7 @@ button {
 
 .hero {
   border: 1px solid var(--border);
-  background: linear-gradient(120deg, #f7fdfb, #f1fcf8);
+  background: linear-gradient(120deg, var(--hero-start), var(--hero-end));
   border-radius: 16px;
   padding: 0.7rem;
   display: grid;
@@ -344,7 +374,7 @@ main {
 }
 
 .card {
-  background: var(--card);
+  background: linear-gradient(180deg, var(--surface-card-start), var(--surface-card-end));
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   padding: 0.65rem;
@@ -358,27 +388,50 @@ main {
 .critical-card {
   border-width: 1.5px;
   border-color: #9adccd;
-  background: linear-gradient(120deg, #f8fffd, #f7fdf9);
+  background: linear-gradient(120deg, var(--surface-critical-start), var(--surface-critical-end));
   padding: 0.7rem;
 }
 
-.critical-kpis {
+.quickstart-subline {
+  margin: 0.18rem 0 0.45rem;
+  font-size: 0.8rem;
+}
+
+.quick-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.35rem;
+  margin-bottom: 0.35rem;
 }
 
-.critical-kpis p {
+.indicator-chip {
   margin: 0;
-  padding: 0.3rem 0.4rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  font-size: 0.8rem;
-  line-height: 1.18;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--indicator-border);
+  border-radius: 12px;
+  background: var(--indicator-bg);
+  color: var(--indicator-ink);
+  min-height: 52px;
+  display: grid;
+  align-content: center;
+  gap: 0.08rem;
+}
+
+.indicator-label {
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  opacity: 0.88;
+}
+
+.indicator-value {
+  font-size: 0.9rem;
+  line-height: 1.15;
+  color: inherit;
+}
+
+.quickstart-actions button {
+  flex: 1 1 10rem;
 }
 
 .track-pill {
@@ -467,7 +520,7 @@ button.primary {
 }
 
 button.secondary {
-  background: #f9fdfb;
+  background: var(--field-bg);
   border-color: #c9ddd6;
   font-weight: 500;
 }
@@ -901,11 +954,17 @@ details:not(.mini-menu)[open] {
     font-size: 1.1rem;
   }
 
-  .critical-kpis p {
+  .quickstart-subline {
+    font-size: 0.86rem;
+  }
+
+  .indicator-chip {
+    min-height: 58px;
+    padding: 0.48rem 0.62rem;
+  }
+
+  .indicator-value {
     font-size: 0.95rem;
-    padding: 0.45rem 0.6rem;
-    min-height: auto;
-    display: block;
   }
 
   .kpi {
@@ -1035,7 +1094,7 @@ details:not(.mini-menu)[open] {
     padding: 0.72rem;
   }
 
-  .critical-kpis {
+  .quick-metrics {
     grid-template-columns: 1fr 1fr;
   }
 
