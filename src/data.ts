@@ -1340,6 +1340,1418 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "b",
     explanation: "'Det var inte förrän X som Y' = Y hände TILL FÖLJD AV X, inte tidigare. Korrekt omformulering: samtalet med chefen var orsaken till förståelsen."
+  },
+
+  // ─────────────────────────────────────────────────
+  // EXTRA TRÄNINGSFRÅGOR – Aptitudprov (nack-b serien)
+  // 3 extra per del, för riktad träning efter fel
+  // ─────────────────────────────────────────────────
+
+  // DEL A EXTRA – Induktiv logik
+  {
+    id: "nack-b1",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal saknas?\n100, 50, 25, ___",
+    options: [
+      { id: "a", text: "10" },
+      { id: "b", text: "12" },
+      { id: "c", text: "12.5" },
+      { id: "d", text: "15" }
+    ],
+    answer_key: "c",
+    explanation: "Varje tal divideras med 2: 100÷2=50, 50÷2=25, 25÷2=12.5."
+  },
+  {
+    id: "nack-b2",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal kommer härnäst?\n1, 1, 2, 3, 5, 8, ___",
+    options: [
+      { id: "a", text: "11" },
+      { id: "b", text: "12" },
+      { id: "c", text: "13" },
+      { id: "d", text: "16" }
+    ],
+    answer_key: "c",
+    explanation: "Fibonacci: 5+8=13. Varje tal är summan av de två föregående."
+  },
+  {
+    id: "nack-b3",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket mönster fortsätter?\n2, 6, 12, 20, 30, ___",
+    options: [
+      { id: "a", text: "36" },
+      { id: "b", text: "40" },
+      { id: "c", text: "42" },
+      { id: "d", text: "44" }
+    ],
+    answer_key: "c",
+    explanation: "Skillnaderna ökar: +4, +6, +8, +10, +12. Alltså 30+12=42."
+  },
+
+  // DEL B EXTRA – Deduktiv logik
+  {
+    id: "nack-b4",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Alla fåglar har vingar.\nPingviner är fåglar.\nPingviner kan inte flyga.\nVad kan vi säkert sluta oss till?",
+    options: [
+      { id: "a", text: "Alla djur med vingar kan flyga" },
+      { id: "b", text: "Pingviner har vingar men kan inte flyga" },
+      { id: "c", text: "Fåglar som inte flyger är inte riktiga fåglar" },
+      { id: "d", text: "Inga fåglar kan flyga" }
+    ],
+    answer_key: "b",
+    explanation: "Pingviner är fåglar → de har vingar (premiss 1). Men att ha vingar garanterar inte flyg – det framgår av premiss 3."
+  },
+  {
+    id: "nack-b5",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Om det är vardag stänger affären kl 20.\nIdag är det lördag.\nVad vet vi säkert om affären?",
+    options: [
+      { id: "a", text: "Affären stänger kl 20" },
+      { id: "b", text: "Affären stänger inte kl 20" },
+      { id: "c", text: "Vi kan inte säga något om stängningstiden" },
+      { id: "d", text: "Affären är stängd hela dagen" }
+    ],
+    answer_key: "c",
+    explanation: "Regeln gäller vardagar. Lördag är inte en vardag – men vi vet inte vad som gäller på lördagar. Vi kan inte dra slutsatsen att affären stänger vid annan tid, bara att regeln inte gäller."
+  },
+  {
+    id: "nack-b6",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Premiss 1: Alla X är Y.\nPremiss 2: Alla Y är Z.\nVad kan vi säkert sluta oss till?",
+    options: [
+      { id: "a", text: "Alla Z är X" },
+      { id: "b", text: "Alla X är Z" },
+      { id: "c", text: "Inga X är Z" },
+      { id: "d", text: "Alla Y är X" }
+    ],
+    answer_key: "b",
+    explanation: "Transitiv slutledning: X⊆Y och Y⊆Z → X⊆Z. Alltså är alla X också Z."
+  },
+
+  // DEL C EXTRA – Verbal förmåga
+  {
+    id: "nack-b7",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj det ord som är närmast i betydelse till 'enigmatisk':",
+    options: [
+      { id: "a", text: "Tydlig" },
+      { id: "b", text: "Gåtfull" },
+      { id: "c", text: "Snabb" },
+      { id: "d", text: "Generös" }
+    ],
+    answer_key: "b",
+    explanation: "Enigmatisk = svår att förstå, gåtfull, mystisk."
+  },
+  {
+    id: "nack-b8",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Läkare är till patient som lärare är till ___?",
+    options: [
+      { id: "a", text: "Skola" },
+      { id: "b", text: "Kursplan" },
+      { id: "c", text: "Elev" },
+      { id: "d", text: "Kunskap" }
+    ],
+    answer_key: "c",
+    explanation: "Läkaren hjälper patienten direkt. Läraren arbetar direkt med eleven. Relation: yrkesperson → den de betjänar."
+  },
+  {
+    id: "nack-b9",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "'Hon bemötte kritiken med ___.' Vilket ord ger mest positiv innebörd?",
+    options: [
+      { id: "a", text: "likgiltighet" },
+      { id: "b", text: "ilska" },
+      { id: "c", text: "värdighet" },
+      { id: "d", text: "förakt" }
+    ],
+    answer_key: "c",
+    explanation: "Värdighet = lugn och respektfull hållning under press. De övriga alternativen har negativ laddning."
+  },
+
+  // DEL D EXTRA – Svensk språkfärdighet
+  {
+    id: "nack-b10",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket ord stavas korrekt?",
+    options: [
+      { id: "a", text: "Exkursion" },
+      { id: "b", text: "Exkurssion" },
+      { id: "c", text: "Excursion" },
+      { id: "d", text: "Exkursjon" }
+    ],
+    answer_key: "a",
+    explanation: "Korrekt stavning: Exkursion. Låneordet har anpassats till svensk stavning med k (inte c) och -ion (inte -sion eller -jon)."
+  },
+  {
+    id: "nack-b11",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilken mening har korrekt ordföljd?\n(Tidsadverbial inleder meningen)",
+    options: [
+      { id: "a", text: "Nästa vecka vi ska resa till Stockholm." },
+      { id: "b", text: "Nästa vecka ska vi resa till Stockholm." },
+      { id: "c", text: "Vi ska resa nästa vecka till Stockholm." },
+      { id: "d", text: "Till Stockholm nästa vecka vi reser." }
+    ],
+    answer_key: "b",
+    explanation: "Inversionsregeln: tidsadverbial i inledning → verbet kommer före subjektet. 'Nästa vecka ska vi' är korrekt."
+  },
+  {
+    id: "nack-b12",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilken mening är grammatiskt korrekt?",
+    options: [
+      { id: "a", text: "Varken Anna eller Björn har inte lämnat in sina uppgifter." },
+      { id: "b", text: "Varken Anna eller Björn har lämnat in sina uppgifter." },
+      { id: "c", text: "Inte varken Anna eller Björn har lämnat uppgifterna." },
+      { id: "d", text: "Anna och Björn har varken inte lämnat sina uppgifter." }
+    ],
+    answer_key: "b",
+    explanation: "'Varken...eller' är redan en negation – man lägger inte till 'inte' också. Dubbel negation är fel på svenska i detta sammanhang."
+  },
+
+  // ─────────────────────────────────────────────────
+  // APTITUDPROV – Utökat bank (nack-c serien)
+  // Fler frågor per del för variation, Medel–Svår
+  // ─────────────────────────────────────────────────
+
+  // DEL A EXTRA 2 – Induktiv logik
+  {
+    id: "nack-c1",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal saknas i serien?\n81, 27, 9, 3, ___",
+    options: [
+      { id: "a", text: "1" },
+      { id: "b", text: "2" },
+      { id: "c", text: "0" },
+      { id: "d", text: "0.5" }
+    ],
+    answer_key: "a",
+    explanation: "Varje tal divideras med 3: 81÷3=27, 27÷3=9, 9÷3=3, 3÷3=1."
+  },
+  {
+    id: "nack-c2",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket par bokstäver kommer härnäst?\nAZ, BY, CX, DW, ___",
+    options: [
+      { id: "a", text: "EV" },
+      { id: "b", text: "EW" },
+      { id: "c", text: "FV" },
+      { id: "d", text: "EU" }
+    ],
+    answer_key: "a",
+    explanation: "Första bokstaven går framåt (A,B,C,D,E) och andra bakåt (Z,Y,X,W,V) i alfabetet."
+  },
+  {
+    id: "nack-c3",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal saknas?\n4, 9, 25, 49, 121, ___",
+    options: [
+      { id: "a", text: "144" },
+      { id: "b", text: "169" },
+      { id: "c", text: "196" },
+      { id: "d", text: "225" }
+    ],
+    answer_key: "b",
+    explanation: "Serien är kvadraterna av primtal: 2²=4, 3²=9, 5²=25, 7²=49, 11²=121, 13²=169."
+  },
+  {
+    id: "nack-c4",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vad är nästa tal i serien?\n1, 3, 7, 13, 21, 31, ___",
+    options: [
+      { id: "a", text: "40" },
+      { id: "b", text: "41" },
+      { id: "c", text: "43" },
+      { id: "d", text: "45" }
+    ],
+    answer_key: "c",
+    explanation: "Skillnaderna ökar jämnt: +2, +4, +6, +8, +10, +12. Alltså 31+12=43."
+  },
+  {
+    id: "nack-c5",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Induktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket tal kommer härnäst?\n2, 5, 11, 23, 47, ___",
+    options: [
+      { id: "a", text: "89" },
+      { id: "b", text: "94" },
+      { id: "c", text: "95" },
+      { id: "d", text: "96" }
+    ],
+    answer_key: "c",
+    explanation: "Varje tal = föregående × 2 + 1: 2×2+1=5, 5×2+1=11, 11×2+1=23, 23×2+1=47, 47×2+1=95."
+  },
+
+  // DEL B EXTRA 2 – Deduktiv logik
+  {
+    id: "nack-c6",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Om en triangel är liksidig, är alla vinklar 60°.\nDenna triangel har inte alla vinklar 60°.\nVad kan vi sluta oss till?",
+    options: [
+      { id: "a", text: "Triangeln är liksidig" },
+      { id: "b", text: "Triangeln är inte liksidig" },
+      { id: "c", text: "Triangeln har inga vinklar alls" },
+      { id: "d", text: "Inget kan slutas om triangeln" }
+    ],
+    answer_key: "b",
+    explanation: "Modus tollens: Om P→Q och ¬Q, då ¬P. Liksidig→60°, men inte 60°, alltså inte liksidig."
+  },
+  {
+    id: "nack-c7",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Tre personer: Ali, Bo och Cleo.\nEndast en av dem ljuger alltid.\nAli säger: 'Bo ljuger.'\nBo säger: 'Cleo ljuger.'\nCleo säger: 'Ali och Bo talar sanning.'\nVem ljuger?",
+    options: [
+      { id: "a", text: "Ali" },
+      { id: "b", text: "Bo" },
+      { id: "c", text: "Cleo" },
+      { id: "d", text: "Det är omöjligt att avgöra" }
+    ],
+    answer_key: "b",
+    explanation: "Om Bo ljuger: Ali talar sanning (rätt), Bos påstående att Cleo ljuger är falskt (Cleo talar sanning), Cleos bekräftelse att båda talar sanning stämmer. Konsistent – Bo ljuger."
+  },
+  {
+    id: "nack-c8",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Alla som tränar 5 dagar/vecka är i bra form.\nIngen i bra form äter fastfood dagligen.\nMaria äter fastfood dagligen.\nVad vet vi om Maria?",
+    options: [
+      { id: "a", text: "Maria tränar 5 dagar/vecka" },
+      { id: "b", text: "Maria är i bra form" },
+      { id: "c", text: "Maria tränar inte 5 dagar/vecka" },
+      { id: "d", text: "Maria gillar inte träning" }
+    ],
+    answer_key: "c",
+    explanation: "Maria äter fastfood dagligen → Maria är inte i bra form (premiss 2 kontrapositivt) → Maria tränar inte 5 dagar/vecka (premiss 1 kontrapositivt)."
+  },
+  {
+    id: "nack-c9",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Deduktiv logik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Antingen är A sant eller B sant (men inte båda).\nA är falskt.\nVad vet vi?",
+    options: [
+      { id: "a", text: "B är falskt" },
+      { id: "b", text: "B är sant" },
+      { id: "c", text: "Varken A eller B är sant" },
+      { id: "d", text: "Både A och B är sanna" }
+    ],
+    answer_key: "b",
+    explanation: "Exklusiv disjunktion (XOR): exakt ett av A/B är sant. A=falskt → B måste vara sant."
+  },
+
+  // DEL C EXTRA 2 – Verbal förmåga
+  {
+    id: "nack-c10",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj det ord som är närmast i betydelse till 'flegmatisk':",
+    options: [
+      { id: "a", text: "Upphetsad" },
+      { id: "b", text: "Lugn och orörd" },
+      { id: "c", text: "Arg" },
+      { id: "d", text: "Kvick" }
+    ],
+    answer_key: "b",
+    explanation: "Flegmatisk = avslappnad, sansad, svår att uppröra. En av de fyra temperamentstyper­na i klassisk psykologi."
+  },
+  {
+    id: "nack-c11",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Taktpinne är till orkester som _____ är till kör?",
+    options: [
+      { id: "a", text: "Notblad" },
+      { id: "b", text: "Scen" },
+      { id: "c", text: "Körledare" },
+      { id: "d", text: "Mikrofon" }
+    ],
+    answer_key: "c",
+    explanation: "Taktpinnen är dirigentens redskap för att leda orkestern. Körledaren är den person som leder kören. Relation: ledarskapsinstrument/person → ensemble."
+  },
+  {
+    id: "nack-c12",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "'Beslutet togs trots _____ om konsekvenserna.' Vilket ord ger mest logisk mening?",
+    options: [
+      { id: "a", text: "visshet" },
+      { id: "b", text: "kunskap" },
+      { id: "c", text: "ovetskap" },
+      { id: "d", text: "entusiasm" }
+    ],
+    answer_key: "c",
+    explanation: "'Trots' indikerar ett hinder eller en nackdel. 'Ovetskap' (brist på kunskap) är ett rimligt hinder – beslutet togs utan full information. 'Visshet' och 'kunskap' är fördelar."
+  },
+  {
+    id: "nack-c13",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Verbal förmåga",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj det ord som INTE passar in bland de andra:",
+    options: [
+      { id: "a", text: "Melankolisk" },
+      { id: "b", text: "Dystert" },
+      { id: "c", text: "Vemodigt" },
+      { id: "d", text: "Energisk" }
+    ],
+    answer_key: "d",
+    explanation: "Melankolisk, dystert och vemodigt är alla synonymer för nedstämt/sorgset. Energisk är en positiv, aktiv term och hör inte till gruppen."
+  },
+
+  // DEL D EXTRA 2 – Svensk språkfärdighet
+  {
+    id: "nack-c14",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj rätt ordform:\n'Det var en ___ upplevelse.'",
+    options: [
+      { id: "a", text: "oförglömlig" },
+      { id: "b", text: "oförgömlig" },
+      { id: "c", text: "oförglömbar" },
+      { id: "d", text: "oförglömbar" }
+    ],
+    answer_key: "a",
+    explanation: "Korrekt form: oförglömlig (från 'glömma'). 'Oförgömlig' existerar inte. 'Oförglömbar' används men är ovanligare och delvis omtvistat i modern svenska."
+  },
+  {
+    id: "nack-c15",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Välj den mening som undviker pleonasm (onödig upprepning):",
+    options: [
+      { id: "a", text: "Han återvände tillbaka hem igen." },
+      { id: "b", text: "De samarbetade tillsammans på projektet." },
+      { id: "c", text: "Hon planerade mötet noggrant i förväg." },
+      { id: "d", text: "Projektet avslutades och är nu färdigt klart." }
+    ],
+    answer_key: "c",
+    explanation: "'Planerade i förväg' är rimligt – planering sker ofta explicit i förväg. De andra har pleonasmfel: 'återvände tillbaka', 'samarbetade tillsammans', 'färdigt klart' är alla dubbleringar."
+  },
+  {
+    id: "nack-c16",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilken mening har korrekt syftning och är tydligast formulerad?",
+    options: [
+      { id: "a", text: "När Emma träffade Lisa visade hon sin nya bok." },
+      { id: "b", text: "Emma visade sin nya bok för Lisa när de träffades." },
+      { id: "c", text: "När de träffades visade hon Lisa sin bok." },
+      { id: "d", text: "Lisa och Emma träffades och hon visade boken." }
+    ],
+    answer_key: "b",
+    explanation: "I alternativ B är det tydligt att Emma visade boken. I A, C och D är 'hon' tvetydigt – det är oklart vem som visade boken."
+  },
+  {
+    id: "nack-c17",
+    track_id: "nackademin_ux",
+    topic: "Aptitud: Svensk språkfärdighet",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 1,
+    prompt: "Vilket ord passar bäst i meningen för att visa orsakssamband?\n'Projektet misslyckades, _____ teamet saknade tydliga mål.'",
+    options: [
+      { id: "a", text: "trots att" },
+      { id: "b", text: "eftersom" },
+      { id: "c", text: "men" },
+      { id: "d", text: "fast" }
+    ],
+    answer_key: "b",
+    explanation: "'Eftersom' anger orsak. 'Trots att' och 'fast' anger kontrast/motgång. 'Men' är en svag kontrast utan kausalitet. Frågan efterfrågar orsakssamband."
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // ⚡ IT-HÖGSKOLAN – Förbättrad frågbank (iths-v2 serien)
+  // Del 1: Svenska/Engelska/Matte (iths-d1-*)
+  // Del 2: Dator- och nätverksteknik (iths-d2-*)
+  // Baserat på verifierade mönster från utbildningens innehåll
+  // ═══════════════════════════════════════════════════════
+
+  // ── DEL 1: SVENSKA ──────────────────────────────────
+  {
+    id: "iths-d1-sv1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Välj den mening med korrekt syftning:\nEn tekniker tog emot servern och sedan konfigurerade han den.",
+    options: [
+      { id: "a", text: "En tekniker tog emot servern och sedan konfigurerade han den." },
+      { id: "b", text: "En tekniker tog emot servern och sedan konfigurerade den han." },
+      { id: "c", text: "En tekniker han tog emot servern och konfigurerade." },
+      { id: "d", text: "Servern togs emot och sedan konfigurerade tekniker han den." }
+    ],
+    answer_key: "a",
+    explanation: "'Han' syftar tydligt på teknikern. Alternativ A är grammatiskt korrekt med tydlig ordföljd och syftning."
+  },
+  {
+    id: "iths-d1-sv2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket ord stavas rätt i en IT-kontext?",
+    options: [
+      { id: "a", text: "Krypterning" },
+      { id: "b", text: "Kryptering" },
+      { id: "c", text: "Kryptearing" },
+      { id: "d", text: "Kryptring" }
+    ],
+    answer_key: "b",
+    explanation: "Korrekt stavning: kryptering (av kryptera + -ing). Vanliga fel är att lägga in extra 'n' eller utelämna 'e'."
+  },
+  {
+    id: "iths-d1-sv3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken mening har korrekt ordföljd med bisatsinversion?\n(Välj den grammatiskt korrekta meningen.)",
+    options: [
+      { id: "a", text: "Han sa att han inte förstod problemet." },
+      { id: "b", text: "Han sa att inte han förstod problemet." },
+      { id: "c", text: "Han sa att problemet han förstod inte." },
+      { id: "d", text: "Inte han sa att förstod problemet." }
+    ],
+    answer_key: "a",
+    explanation: "I bisatser (efter 'att') placeras negationen 'inte' FÖRE det finita verbet: 'att han inte förstod'. Detta är bisatsordföljd – till skillnad från huvudsats där 'inte' kommer efter verbet."
+  },
+  {
+    id: "iths-d1-sv4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket alternativ använder korrekt skiljetecken och stor/liten bokstav?",
+    options: [
+      { id: "a", text: "Systemet kraschade, Och inga loggar sparades." },
+      { id: "b", text: "Systemet kraschade och inga loggar sparades." },
+      { id: "c", text: "Systemet kraschade. och inga loggar sparades." },
+      { id: "d", text: "systemet kraschade och Inga loggar sparades." }
+    ],
+    answer_key: "b",
+    explanation: "Två huvudsatser kopplade med 'och' behöver inte komma före 'och' om de delar subjekt. Stor bokstav används bara efter punkt. Alternativ B är korrekt."
+  },
+
+  // ── DEL 1: ENGELSKA ─────────────────────────────────
+  {
+    id: "iths-d1-en1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "What does 'bandwidth' mean in a networking context?",
+    options: [
+      { id: "a", text: "The physical width of a network cable" },
+      { id: "b", text: "The maximum rate of data transfer across a network" },
+      { id: "c", text: "The number of devices connected to a router" },
+      { id: "d", text: "The encryption strength of a connection" }
+    ],
+    answer_key: "b",
+    explanation: "Bandwidth = maximum data transfer rate, measured in bits per second (bps, Mbps, Gbps). Not related to physical dimensions."
+  },
+  {
+    id: "iths-d1-en2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Choose the correct sentence in a professional IT report:",
+    options: [
+      { id: "a", text: "The server, it was compromised last Tuesday." },
+      { id: "b", text: "The server was compromised last Tuesday." },
+      { id: "c", text: "Last Tuesday the server it was compromised." },
+      { id: "d", text: "Was the server compromised last Tuesday it was." }
+    ],
+    answer_key: "b",
+    explanation: "Correct English sentence structure: Subject + Verb + Time. Option A has a redundant pronoun 'it', C is garbled, D is question format mixed with statement."
+  },
+  {
+    id: "iths-d1-en3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "What does 'latency' refer to in networking?",
+    options: [
+      { id: "a", text: "The total storage capacity of a server" },
+      { id: "b", text: "The time delay between sending and receiving data" },
+      { id: "c", text: "The number of packets lost during transmission" },
+      { id: "d", text: "The speed at which a CPU processes requests" }
+    ],
+    answer_key: "b",
+    explanation: "Latency = the time delay (often measured in milliseconds) it takes for data to travel from source to destination. High latency causes lag in real-time applications."
+  },
+  {
+    id: "iths-d1-en4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Which sentence correctly uses a conditional structure for an IT scenario?",
+    options: [
+      { id: "a", text: "If the firewall would have been updated, the breach had been prevented." },
+      { id: "b", text: "If the firewall had been updated, the breach would have been prevented." },
+      { id: "c", text: "If the firewall was updated, the breach would been prevented." },
+      { id: "d", text: "Had the firewall would be updated, the breach was prevented." }
+    ],
+    answer_key: "b",
+    explanation: "Third conditional (past unreal): 'If + had + past participle, would have + past participle'. Option B is the only grammatically correct form."
+  },
+
+  // ── DEL 1: MATEMATIK ────────────────────────────────
+  {
+    id: "iths-d1-ma1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "En server har 512 GB lagring. 30 % är använt. Hur många GB är ledigt?",
+    options: [
+      { id: "a", text: "153,6 GB" },
+      { id: "b", text: "358,4 GB" },
+      { id: "c", text: "182 GB" },
+      { id: "d", text: "204,8 GB" }
+    ],
+    answer_key: "b",
+    explanation: "30 % av 512 = 153,6 GB använt. Ledigt = 512 − 153,6 = 358,4 GB."
+  },
+  {
+    id: "iths-d1-ma2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Omvandla binärtalet 10110 till decimaltal.",
+    options: [
+      { id: "a", text: "20" },
+      { id: "b", text: "22" },
+      { id: "c", text: "24" },
+      { id: "d", text: "26" }
+    ],
+    answer_key: "b",
+    explanation: "10110 binärt: 1×16 + 0×8 + 1×4 + 1×2 + 0×1 = 16+4+2 = 22."
+  },
+  {
+    id: "iths-d1-ma3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Hur många IP-adresser ryms i ett /26-nät?",
+    options: [
+      { id: "a", text: "32" },
+      { id: "b", text: "64" },
+      { id: "c", text: "128" },
+      { id: "d", text: "256" }
+    ],
+    answer_key: "b",
+    explanation: "/26 innebär 32-26=6 hostbitar. 2⁶ = 64 totala adresser (62 användbara värdar + nätverks- och broadcastadress)."
+  },
+  {
+    id: "iths-d1-ma4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Ett nätverk har adressen 192.168.10.0/25.\nVilket är det högsta användbara värdadressen i detta nät?",
+    options: [
+      { id: "a", text: "192.168.10.127" },
+      { id: "b", text: "192.168.10.126" },
+      { id: "c", text: "192.168.10.128" },
+      { id: "d", text: "192.168.10.255" }
+    ],
+    answer_key: "b",
+    explanation: "/25 = 128 adresser (0–127). Nätverksadress: .0. Broadcastadress: .127. Högsta värdhosta: .126."
+  },
+
+  // ── DEL 2: DATOR- OCH NÄTVERKSTEKNIK ────────────────
+  {
+    id: "iths-d2-1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket protokoll används för att automatiskt tilldela IP-adresser till enheter i ett nätverk?",
+    options: [
+      { id: "a", text: "DNS" },
+      { id: "b", text: "DHCP" },
+      { id: "c", text: "FTP" },
+      { id: "d", text: "SMTP" }
+    ],
+    answer_key: "b",
+    explanation: "DHCP (Dynamic Host Configuration Protocol) delar automatiskt ut IP-adresser, nätmask, gateway och DNS till klienter i ett nätverk."
+  },
+  {
+    id: "iths-d2-2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket OSI-lager ansvarar för end-to-end-kommunikation och felkontroll mellan applikationer?",
+    options: [
+      { id: "a", text: "Lager 2 – Datalänk" },
+      { id: "b", text: "Lager 3 – Nätverk" },
+      { id: "c", text: "Lager 4 – Transport" },
+      { id: "d", text: "Lager 7 – Applikation" }
+    ],
+    answer_key: "c",
+    explanation: "Transportlagret (lager 4) hanterar end-to-end-kommunikation. TCP på detta lager ger felkontroll, flödeskontroll och garanterad leverans."
+  },
+  {
+    id: "iths-d2-3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan ett hubben och en switch i ett lokalt nätverk?",
+    options: [
+      { id: "a", text: "En hubb skickar data till alla portar; en switch skickar bara till rätt mottagare" },
+      { id: "b", text: "En switch är trådlös; en hubb är kabelbunden" },
+      { id: "c", text: "En hubb routar trafik; en switch fungerar som brandvägg" },
+      { id: "d", text: "Det finns ingen skillnad, de används synonymt" }
+    ],
+    answer_key: "a",
+    explanation: "En hubb sänder all trafik till alla portar (broadcast). En switch läser MAC-adressen och levererar paketet bara till rätt port – mer effektivt och säkert."
+  },
+  {
+    id: "iths-d2-4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken typ av attack försöker överbelasta en server med trafik så att den slutar svara?",
+    options: [
+      { id: "a", text: "Phishing" },
+      { id: "b", text: "Man-in-the-middle" },
+      { id: "c", text: "DoS/DDoS" },
+      { id: "d", text: "SQL-injektion" }
+    ],
+    answer_key: "c",
+    explanation: "DoS (Denial of Service) och DDoS (Distributed DoS) syftar till att göra en tjänst otillgänglig genom att översvämma den med förfrågningar. DDoS använder många datorer (botnät) simultant."
+  },
+  {
+    id: "iths-d2-5",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad innebär 'kryptering med publik nyckel' (asymmetrisk kryptering)?",
+    options: [
+      { id: "a", text: "Samma nyckel används för att kryptera och dekryptera" },
+      { id: "b", text: "En publik nyckel krypterar, en privat nyckel dekrypterar" },
+      { id: "c", text: "Ingen nyckel behövs – krypteringen är automatisk" },
+      { id: "d", text: "Den privata nyckeln krypterar och den publika dekrypterar alltid" }
+    ],
+    answer_key: "b",
+    explanation: "Asymmetrisk kryptering använder nyckelpar: publik nyckel (dela fritt) för kryptering och privat nyckel (hemlig) för dekryptering. Används i t.ex. HTTPS och e-postsignering."
+  },
+  {
+    id: "iths-d2-6",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket protokoll används för säker webbkommunikation (HTTPS)?",
+    options: [
+      { id: "a", text: "FTP" },
+      { id: "b", text: "SSH" },
+      { id: "c", text: "TLS/SSL" },
+      { id: "d", text: "SMTP" }
+    ],
+    answer_key: "c",
+    explanation: "HTTPS = HTTP + TLS (Transport Layer Security). TLS/SSL krypterar kommunikationen mellan webbläsare och server och verifierar serverns identitet via certifikat."
+  },
+  {
+    id: "iths-d2-7",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "En angripare placerar sig mellan klient och server och läser/ändrar trafiken utan att parterna märker det. Vad kallas detta?",
+    options: [
+      { id: "a", text: "Brute force" },
+      { id: "b", text: "Man-in-the-middle (MITM)" },
+      { id: "c", text: "Cross-site scripting (XSS)" },
+      { id: "d", text: "ARP-spoofing (variant av samma)" }
+    ],
+    answer_key: "b",
+    explanation: "MITM-attack: angriparen avlyssnar och kan manipulera kommunikationen. ARP-spoofing är en vanlig teknik för att genomföra MITM på lokalt nätverk, men attacktypen i frågan är MITM."
+  },
+  {
+    id: "iths-d2-8",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vad är syftet med en DMZ (demilitariserad zon) i ett nätverks­arkitektur?",
+    options: [
+      { id: "a", text: "Att kryptera all intern trafik" },
+      { id: "b", text: "Att isolera publika servrar från det interna nätverket" },
+      { id: "c", text: "Att ersätta brandväggen i moderna nätverk" },
+      { id: "d", text: "Att tilldela IP-adresser automatiskt" }
+    ],
+    answer_key: "b",
+    explanation: "En DMZ är ett delnätverk som håller publikt exponerade servrar (webb, mail) separerade från det interna nätverket. Om en publik server komprometteras kan angriparen inte nå interna system direkt."
+  },
+  {
+    id: "iths-d2-9",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vilket påstående om IPv6 jämfört med IPv4 är korrekt?",
+    options: [
+      { id: "a", text: "IPv6 har färre tillgängliga adresser än IPv4" },
+      { id: "b", text: "IPv6-adresser är 128 bitar långa mot IPv4:s 32 bitar" },
+      { id: "c", text: "IPv6 kräver NAT för att fungera på internet" },
+      { id: "d", text: "IPv6 är inkompatibelt med TCP" }
+    ],
+    answer_key: "b",
+    explanation: "IPv6 använder 128-bitarsadresser (≈3,4 × 10³⁸ möjliga adresser) mot IPv4:s 32 bitar (ca 4,3 miljarder). IPv6 eliminerar behovet av NAT och har inbyggt stöd för IPsec."
+  },
+  {
+    id: "iths-d2-10",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vilket lager i OSI-modellen hanterar logisk adressering (IP) och routing av paket mellan nätverk?",
+    options: [
+      { id: "a", text: "Lager 1 – Fysiskt" },
+      { id: "b", text: "Lager 2 – Datalänk" },
+      { id: "c", text: "Lager 3 – Nätverk" },
+      { id: "d", text: "Lager 5 – Session" }
+    ],
+    answer_key: "c",
+    explanation: "Nätverkslagret (lager 3) hanterar IP-adressering och routing – det bestämmer den bästa vägen för ett paket mellan olika nätverk. Routrar arbetar på detta lager."
+  },
+
+  // ── DEL 2: NÄTVERKSTEKNIK – utökad pool (iths-d2-11 till iths-d2-35) ──
+
+  {
+    id: "iths-d2-11",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är den viktigaste skillnaden mellan TCP och UDP?",
+    options: [
+      { id: "a", text: "TCP är snabbare än UDP" },
+      { id: "b", text: "TCP garanterar leverans och ordning, UDP gör det inte" },
+      { id: "c", text: "UDP används bara för webbsidor" },
+      { id: "d", text: "TCP används bara för video-streaming" }
+    ],
+    answer_key: "b",
+    explanation: "TCP (Transmission Control Protocol) är ett tillförlitligt protokoll som bekräftar leverans och ser till att paket kommer i rätt ordning. UDP (User Datagram Protocol) skickar utan bekräftelse – snabbare men utan garanti. UDP används exempelvis för video-streaming och DNS-förfrågningar."
+  },
+  {
+    id: "iths-d2-12",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "På vilket OSI-lager arbetar en MAC-adress?",
+    options: [
+      { id: "a", text: "Lager 1 – Fysiskt" },
+      { id: "b", text: "Lager 2 – Datalänk" },
+      { id: "c", text: "Lager 3 – Nätverk" },
+      { id: "d", text: "Lager 4 – Transport" }
+    ],
+    answer_key: "b",
+    explanation: "MAC-adresser (Media Access Control) används på datalänklagret (lager 2) för att identifiera enheter inom ett lokalt nätverk (LAN). En switch använder MAC-adresser för att vidarebefordra ramar till rätt port."
+  },
+  {
+    id: "iths-d2-13",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör ARP-protokollet (Address Resolution Protocol)?",
+    options: [
+      { id: "a", text: "Tilldelar IP-adresser till enheter automatiskt" },
+      { id: "b", text: "Översätter domännamn till IP-adresser" },
+      { id: "c", text: "Översätter IP-adresser till MAC-adresser" },
+      { id: "d", text: "Krypterar nätverkstrafik" }
+    ],
+    answer_key: "c",
+    explanation: "ARP översätter en känd IP-adress till motsvarande MAC-adress på det lokala nätverket. Enheten skickar en broadcast ('Vem har IP x.x.x.x?') och den som har den IP:n svarar med sin MAC-adress."
+  },
+  {
+    id: "iths-d2-14",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är DNS primära uppgift?",
+    options: [
+      { id: "a", text: "Kryptera webbtrafik" },
+      { id: "b", text: "Tilldela IP-adresser dynamiskt" },
+      { id: "c", text: "Översätta domännamn (t.ex. google.com) till IP-adresser" },
+      { id: "d", text: "Blockera obehörig trafik" }
+    ],
+    answer_key: "c",
+    explanation: "DNS (Domain Name System) fungerar som internets 'telefonbok'. Det omvandlar läsbara domännamn (som www.iths.se) till numeriska IP-adresser som datorer förstår (som 93.188.2.4)."
+  },
+  {
+    id: "iths-d2-15",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket portnummer används standardmässigt av HTTPS?",
+    options: [
+      { id: "a", text: "21" },
+      { id: "b", text: "80" },
+      { id: "c", text: "443" },
+      { id: "d", text: "3389" }
+    ],
+    answer_key: "c",
+    explanation: "HTTPS (HTTP Secure) använder port 443. HTTP använder port 80. Port 21 är FTP och port 3389 är RDP (Remote Desktop Protocol). Portnummer är som 'dörrar' – olika tjänster lyssnar på olika portar."
+  },
+  {
+    id: "iths-d2-16",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken port använder SSH (Secure Shell) som standard?",
+    options: [
+      { id: "a", text: "22" },
+      { id: "b", text: "23" },
+      { id: "c", text: "25" },
+      { id: "d", text: "53" }
+    ],
+    answer_key: "a",
+    explanation: "SSH använder port 22. Port 23 är Telnet (osäker föregångare till SSH), port 25 är SMTP (e-post) och port 53 är DNS. SSH krypterar all kommunikation och används för säker fjärrinloggning på servrar."
+  },
+  {
+    id: "iths-d2-17",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en brandväggs (firewall) primära funktion?",
+    options: [
+      { id: "a", text: "Öka internethastigheten" },
+      { id: "b", text: "Filtrera nätverkstrafik baserat på regler" },
+      { id: "c", text: "Tilldela IP-adresser till enheter" },
+      { id: "d", text: "Kryptera hårddisken" }
+    ],
+    answer_key: "b",
+    explanation: "En brandvägg kontrollerar inkommande och utgående nätverkstrafik enligt förutbestämda regler. Den kan blockera trafik från specifika IP-adresser, portar eller protokoll. Det är nätverkets 'grindvakt'."
+  },
+  {
+    id: "iths-d2-18",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är den viktigaste säkerhetsfördelen med ett VPN?",
+    options: [
+      { id: "a", text: "Det gör internetet snabbare" },
+      { id: "b", text: "Det krypterar trafiken och döljer din IP-adress" },
+      { id: "c", text: "Det blockerar alla virus automatiskt" },
+      { id: "d", text: "Det ger dig administratörsrättigheter på distans" }
+    ],
+    answer_key: "b",
+    explanation: "VPN (Virtual Private Network) skapar en krypterad tunnel för din nätverkstrafik och maskerar din faktiska IP-adress. Det skyddar kommunikation på osäkra nätverk (t.ex. offentliga WiFi) och används också för fjärråtkomst till företagsnätverk."
+  },
+  {
+    id: "iths-d2-19",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är syftet med ett VLAN (Virtual LAN)?",
+    options: [
+      { id: "a", text: "Att öka WiFi-räckvidden" },
+      { id: "b", text: "Att logiskt segmentera ett nätverk oberoende av fysisk placering" },
+      { id: "c", text: "Att kryptera all nätverkstrafik" },
+      { id: "d", text: "Att tilldela dynamiska IP-adresser" }
+    ],
+    answer_key: "b",
+    explanation: "VLAN delar upp ett fysiskt nätverk i flera logiska nätverk. Enheter i olika VLAN kan inte kommunicera direkt med varandra utan att gå via en router. Det förbättrar säkerhet, minskar broadcast-trafik och möjliggör flexibel nätverksdesign."
+  },
+  {
+    id: "iths-d2-20",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör NAT (Network Address Translation)?",
+    options: [
+      { id: "a", text: "Krypterar data som skickas över internet" },
+      { id: "b", text: "Översätter privata IP-adresser till en publik IP-adress (och vice versa)" },
+      { id: "c", text: "Tilldelar domännamn till IP-adresser" },
+      { id: "d", text: "Dirigerar paket baserat på MAC-adresser" }
+    ],
+    answer_key: "b",
+    explanation: "NAT gör att många enheter på ett lokalt nätverk (med privata IP-adresser som 192.168.x.x) kan dela en enda publik IP-adress mot internet. Det sparar IPv4-adresser och lägger till ett lager av anonymitet."
+  },
+  {
+    id: "iths-d2-21",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket protokoll används av kommandot 'ping'?",
+    options: [
+      { id: "a", text: "TCP" },
+      { id: "b", text: "UDP" },
+      { id: "c", text: "ICMP" },
+      { id: "d", text: "HTTP" }
+    ],
+    answer_key: "c",
+    explanation: "Ping använder ICMP (Internet Control Message Protocol) – specifikt 'Echo Request' och 'Echo Reply'. ICMP är ett protokoll för diagnos och felhantering i IP-nätverk, inte för datatransport. Det används för att testa om en enhet är nåbar och mäta svarstid."
+  },
+  {
+    id: "iths-d2-22",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är den huvudsakliga förbättringen i WPA3 jämfört med WPA2?",
+    options: [
+      { id: "a", text: "Snabbare WiFi-hastighet" },
+      { id: "b", text: "Stöd för fler enheter" },
+      { id: "c", text: "Skydd mot brute-force-attacker och bättre kryptering (SAE)" },
+      { id: "d", text: "Längre räckvidd" }
+    ],
+    answer_key: "c",
+    explanation: "WPA3 introducerade SAE (Simultaneous Authentication of Equals) som ersätter WPA2:s PSK-handskakning. Det skyddar mot offline brute-force-attacker och ger 'forward secrecy' – gamla sessioner kan inte dekrypteras även om lösenordet läcker."
+  },
+  {
+    id: "iths-d2-23",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är phishing?",
+    options: [
+      { id: "a", text: "En teknik för att överlasta en server med trafik" },
+      { id: "b", text: "Ett sätt att knäcka krypteringsnycklar matematiskt" },
+      { id: "c", text: "Bedrägliga meddelanden som lurar användare att lämna ut känslig information" },
+      { id: "d", text: "En metod för att avlyssna nätverkstrafik" }
+    ],
+    answer_key: "c",
+    explanation: "Phishing är social engineering via e-post, SMS eller falska webbsidor. Angriparen utger sig för att vara en betrodd avsändare (bank, IT-support, chef) för att lura offret att klicka på skadliga länkar eller lämna ut lösenord och kontoinformation."
+  },
+  {
+    id: "iths-d2-24",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör ransomware när det infekterar ett system?",
+    options: [
+      { id: "a", text: "Stänger av internet-anslutningen" },
+      { id: "b", text: "Krypterar offrets filer och kräver betalning för dekrypteringsnyckeln" },
+      { id: "c", text: "Skickar spam-mail från offrets konto" },
+      { id: "d", text: "Spionerar på tangentbordsinmatning" }
+    ],
+    answer_key: "b",
+    explanation: "Ransomware krypterar viktiga filer eller låser hela systemet och kräver sedan en lösensumma (ofta i kryptovaluta) för att återställa åtkomsten. Regelbundna offline-backuper är det bästa skyddet – då kan man återställa utan att betala."
+  },
+  {
+    id: "iths-d2-25",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad utmärker en hashfunktion (t.ex. SHA-256)?",
+    options: [
+      { id: "a", text: "Den är reversibel – man kan alltid återskapa originaldata" },
+      { id: "b", text: "Den producerar en fixt stor output oavsett input-storlek, och är envägs" },
+      { id: "c", text: "Den kräver en hemlig nyckel för att fungera" },
+      { id: "d", text: "Den komprimerar data för att spara utrymme" }
+    ],
+    answer_key: "b",
+    explanation: "En hashfunktion tar indata av godtycklig storlek och producerar alltid en fast lång output (t.ex. 256 bitar för SHA-256). Det är en envägsfunktion – man kan inte räkna baklänges. Används för att lagra lösenord, verifiera filintegritet och i digitala signaturer."
+  },
+  {
+    id: "iths-d2-26",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en CA (Certificate Authority) roll i ett PKI-system?",
+    options: [
+      { id: "a", text: "Att kryptera all webbtrafik direkt" },
+      { id: "b", text: "Att utfärda och signera digitala certifikat som styrker identiteter" },
+      { id: "c", text: "Att tilldela IP-adresser till domäner" },
+      { id: "d", text: "Att blockera skadlig trafik i realtid" }
+    ],
+    answer_key: "b",
+    explanation: "En Certificate Authority är en betrodd tredje part som utfärdar digitala certifikat. Ett certifikat binder en publik nyckel till en identitet (t.ex. en domän). Din webbläsare litar på HTTPS-siter för att CA:n har signerat deras certifikat."
+  },
+  {
+    id: "iths-d2-27",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en default gateway?",
+    options: [
+      { id: "a", text: "Den snabbaste DNS-servern på nätverket" },
+      { id: "b", text: "Enheten (oftast en router) som trafik skickas till när destinationen är utanför det lokala nätverket" },
+      { id: "c", text: "Den primära DNS-servern som tilldelas av DHCP" },
+      { id: "d", text: "En säkerhetsenhet som blockerar oönskad trafik" }
+    ],
+    answer_key: "b",
+    explanation: "Default gateway är 'utgångsporten' ur det lokala nätverket. Om din dator vill kommunicera med en IP som inte finns i det lokala subnätet skickas paketet till default gateway (routern), som sedan vidarebefordrar det rätt."
+  },
+  {
+    id: "iths-d2-28",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad anger en nätmask (subnet mask) på /24 (255.255.255.0)?",
+    options: [
+      { id: "a", text: "Att nätverket har plats för max 24 enheter" },
+      { id: "b", text: "Att de tre första oktetterna identifierar nätverket, den sista identifierar hostar" },
+      { id: "c", text: "Att 24 routrar är anslutna" },
+      { id: "d", text: "Att nätverket använder IPv6" }
+    ],
+    answer_key: "b",
+    explanation: "/24 innebär att 24 bitar används för nätverksdelen och 8 bitar för hostar (256 adresser, varav 254 användbara). Exempelvis är 192.168.1.x ett typiskt /24-nätverk där 192.168.1 är nätverksdelen och de sista siffrorna identifierar enskilda enheter."
+  },
+  {
+    id: "iths-d2-29",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan HTTP och HTTPS?",
+    options: [
+      { id: "a", text: "HTTPS är snabbare än HTTP" },
+      { id: "b", text: "HTTPS krypterar kommunikationen med TLS, HTTP skickar i klartext" },
+      { id: "c", text: "HTTP stöder bara text, HTTPS stöder bilder också" },
+      { id: "d", text: "HTTPS kräver en inloggning" }
+    ],
+    answer_key: "b",
+    explanation: "HTTPS (HTTP Secure) lägger till TLS-kryptering ovanpå HTTP. Det innebär att kommunikationen mellan webbläsaren och servern är krypterad och skyddad mot avlyssning. HTTP skickar allt i klartext – lösenord, kakor och data kan ses av vem som helst som avlyssnar trafiken."
+  },
+  {
+    id: "iths-d2-30",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan IDS och IPS?",
+    options: [
+      { id: "a", text: "IDS blockerar attacker, IPS rapporterar dem" },
+      { id: "b", text: "IDS upptäcker och rapporterar, IPS kan även aktivt blockera attacker" },
+      { id: "c", text: "De är identiska system med olika namn" },
+      { id: "d", text: "IPS används bara för trådlösa nätverk" }
+    ],
+    answer_key: "b",
+    explanation: "IDS (Intrusion Detection System) övervakar och larmar vid misstänkt aktivitet – men agerar inte. IPS (Intrusion Prevention System) kan dessutom aktivt blockera skadlig trafik i realtid. IPS är mer aggressivt men riskerar fler falska positiva."
+  },
+  {
+    id: "iths-d2-31",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vad är en zero-day-sårbarhet?",
+    options: [
+      { id: "a", text: "En bugg som har funnits i ett system i exakt ett dygn" },
+      { id: "b", text: "En okänd sårbarhet som utnyttjas innan tillverkaren vet om den och har hunnit patcha" },
+      { id: "c", text: "En attack som startar exakt vid midnatt" },
+      { id: "d", text: "En sårbarhet som kräver fysisk åtkomst till datorn" }
+    ],
+    answer_key: "b",
+    explanation: "Zero-day refererar till att tillverkaren har haft noll dagar på sig att åtgärda problemet. Angriparen känner till och utnyttjar sårbarheten innan en säkerhetsuppdatering finns. Zero-days är extremt värdefulla för angripare och mycket svåra att försvara sig mot."
+  },
+  {
+    id: "iths-d2-32",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en SQL-injection-attack?",
+    options: [
+      { id: "a", text: "En attack som injicerar virus i SQL Server-programvaran" },
+      { id: "b", text: "En attack där skadlig SQL-kod infogas i ett inmatningsfält för att manipulera databasen" },
+      { id: "c", text: "En överbelastningsattack mot databasservrar" },
+      { id: "d", text: "En metod för att avlyssna databasanslutningar" }
+    ],
+    answer_key: "b",
+    explanation: "SQL injection utnyttjar inmatningsfält (t.ex. sökrutor eller inloggningsformulär) som inte validerar input. Angriparen skriver SQL-kommandon i fältet, och om appen är sårbar körs dessa mot databasen – vilket kan avslöja all data, kringgå inloggning eller radera tabeller."
+  },
+  {
+    id: "iths-d2-33",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör tvåfaktorsautentisering (2FA) säkrare än enbart lösenord?",
+    options: [
+      { id: "a", text: "Lösenordet krypteras dubbelt" },
+      { id: "b", text: "Inloggningen kräver något du vet (lösenord) OCH något du har/är (t.ex. en kod eller fingeravtryck)" },
+      { id: "c", text: "Inloggningen tar dubbelt så lång tid" },
+      { id: "d", text: "Lösenordet byts automatiskt var 30:e sekund" }
+    ],
+    answer_key: "b",
+    explanation: "2FA kräver två separata faktorer: typiskt 'något du vet' (lösenord) och 'något du har' (t.ex. en engångskod via SMS eller en authenticator-app) eller 'något du är' (biometri). Även om lösenordet läcker kan angriparen inte logga in utan den andra faktorn."
+  },
+  {
+    id: "iths-d2-34",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "En organisation vill separera sin publika webbserver från det interna nätverket men ändå tillåta internetåtkomst till servern. Vilket nätverkskoncept bör de använda?",
+    options: [
+      { id: "a", text: "VLAN inom det interna nätverket" },
+      { id: "b", text: "DMZ (Demilitariserad zon) med brandväggsregler som begränsar åtkomst till interna system" },
+      { id: "c", text: "VPN-tunnel direkt till webbservern" },
+      { id: "d", text: "NAT-konfiguration utan brandvägg" }
+    ],
+    answer_key: "b",
+    explanation: "DMZ placerar publikt tillgängliga servrar i en separat nätverkszon. Brandväggen tillåter internettrafik till DMZ men blockerar DMZ-trafik till det interna nätverket. Även om webbservern komprometteras kan angriparen inte direkt nå interna system."
+  },
+  {
+    id: "iths-d2-35",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vilket påstående om symmetrisk kryptering är korrekt?",
+    options: [
+      { id: "a", text: "Den använder en publik och en privat nyckel" },
+      { id: "b", text: "Den är långsammare än asymmetrisk kryptering men säkrare" },
+      { id: "c", text: "Samma nyckel används för både kryptering och dekryptering" },
+      { id: "d", text: "Den kan inte användas för att kryptera stora datamängder" }
+    ],
+    answer_key: "c",
+    explanation: "Symmetrisk kryptering (t.ex. AES) använder samma nyckel för att kryptera och dekryptera. Det är mycket snabbt och lämpat för stora datamängder – men utmaningen är att säkert dela nyckeln. Asymmetrisk kryptering löser nyckeldelningsproblemet men är långsammare, varför TLS kombinerar båda."
   }
 ];
 
@@ -1527,6 +2939,49 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
     scoring_rules: "Separat delpoäng, total viktad poäng enligt 20/80."
   },
   {
+    id: "mock-iths-cc",
+    name: "⚡ IT-H Fullständigt antagningsprov (90 min)",
+    track_id: "iths_itsec",
+    total_minutes: 90,
+    sections: [
+      {
+        title: "Del 1 Svenska – ordval, grammatik och meningsbyggnad",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Svenska"],
+        question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        minutes: 10,
+        weight: 0.11
+      },
+      {
+        title: "Del 1 Engelska – ordförståelse och grammatik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Engelska"],
+        question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        minutes: 10,
+        weight: 0.11
+      },
+      {
+        title: "Del 1 Matematik – procent, binärt och nätverksräkning",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Matematik"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        minutes: 15,
+        weight: 0.11
+      },
+      {
+        title: "Del 2: Dator- och nätverksteknik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 2: Nätverksteknik"],
+        question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        question_pool: ["iths-d2-1","iths-d2-2","iths-d2-3","iths-d2-4","iths-d2-5","iths-d2-6","iths-d2-7","iths-d2-8","iths-d2-9","iths-d2-10","iths-d2-11","iths-d2-12","iths-d2-13","iths-d2-14","iths-d2-15","iths-d2-16","iths-d2-17","iths-d2-18","iths-d2-19","iths-d2-20","iths-d2-21","iths-d2-22","iths-d2-23","iths-d2-24","iths-d2-25","iths-d2-26","iths-d2-27","iths-d2-28","iths-d2-29","iths-d2-30","iths-d2-31","iths-d2-32","iths-d2-33","iths-d2-34","iths-d2-35"],
+        questions_count: 10,
+        minutes: 45,
+        weight: 0.67
+      }
+    ],
+    scoring_rules: "Del 1 Svenska/Engelska/Matematik väger 33% sammanlagt (11% vardera). Del 2 väger 67%. Separat poäng per del med återkoppling."
+  },
+  {
     id: "mock-prog-45",
     name: "Programmering 1/A delprov (45 min)",
     track_id: "prog1a",
@@ -1558,6 +3013,111 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
       }
     ],
     scoring_rules: "Separat poäng per del, fokus på grunder först och tydlig återkoppling på feltyper."
+  },
+
+  // ── ⚡ IT-H separata delarna ──────────────────────────
+  {
+    id: "mock-iths-d1-sv",
+    name: "⚡ IT-H Del 1 – Bara Svenska (10 min)",
+    track_id: "iths_itsec",
+    total_minutes: 10,
+    sections: [
+      {
+        title: "Svenska – ordval, grammatik och meningsbyggnad",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Svenska"],
+        question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        minutes: 10,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på grammatik, syftning och stavning. Varje rätt svar ger lika vikt."
+  },
+  {
+    id: "mock-iths-d1-en",
+    name: "⚡ IT-H Del 1 – Bara Engelska (10 min)",
+    track_id: "iths_itsec",
+    total_minutes: 10,
+    sections: [
+      {
+        title: "Engelska – teknisk ordförståelse och grammatik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Engelska"],
+        question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        minutes: 10,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på teknisk engelska och meningsstruktur. Varje rätt svar ger lika vikt."
+  },
+  {
+    id: "mock-iths-d1-ma",
+    name: "⚡ IT-H Del 1 – Bara Matematik (15 min)",
+    track_id: "iths_itsec",
+    total_minutes: 15,
+    sections: [
+      {
+        title: "Matematik – procent, binärt och nätverksräkning",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Matematik"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        minutes: 15,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på grundläggande matematisk förmåga och nätverksräkning. Varje rätt svar ger lika vikt."
+  },
+  {
+    id: "mock-iths-d1-all",
+    name: "⚡ IT-H Del 1 komplett – Svenska + Engelska + Matte (35 min)",
+    track_id: "iths_itsec",
+    total_minutes: 35,
+    sections: [
+      {
+        title: "Del 1 Svenska",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Svenska"],
+        question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        minutes: 10,
+        weight: 0.33
+      },
+      {
+        title: "Del 1 Engelska",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Engelska"],
+        question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        minutes: 10,
+        weight: 0.33
+      },
+      {
+        title: "Del 1 Matematik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Matematik"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        minutes: 15,
+        weight: 0.34
+      }
+    ],
+    scoring_rules: "Svenska, Engelska och Matematik väger lika (33/33/34%). Separat återkoppling per ämne."
+  },
+  {
+    id: "mock-iths-d2",
+    name: "⚡ IT-H Del 2 – Bara Nätverksteknik (45 min)",
+    track_id: "iths_itsec",
+    total_minutes: 45,
+    sections: [
+      {
+        title: "Del 2: Dator- och nätverksteknik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 2: Nätverksteknik"],
+        question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        question_pool: ["iths-d2-1","iths-d2-2","iths-d2-3","iths-d2-4","iths-d2-5","iths-d2-6","iths-d2-7","iths-d2-8","iths-d2-9","iths-d2-10","iths-d2-11","iths-d2-12","iths-d2-13","iths-d2-14","iths-d2-15","iths-d2-16","iths-d2-17","iths-d2-18","iths-d2-19","iths-d2-20","iths-d2-21","iths-d2-22","iths-d2-23","iths-d2-24","iths-d2-25","iths-d2-26","iths-d2-27","iths-d2-28","iths-d2-29","iths-d2-30","iths-d2-31","iths-d2-32","iths-d2-33","iths-d2-34","iths-d2-35"],
+        questions_count: 10,
+        minutes: 45,
+        weight: 1.0
+      }
+    ],
+    scoring_rules: "Fokus på nätverksprotokoll, säkerhet och nätverksarkitektur. 10 frågor slumpas ur en pool på 35 – varje körning ger ny variation."
   }
 ];
 

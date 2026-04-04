@@ -36,6 +36,10 @@ interface SectionResult {
   correct: number;
   total: number;
   weight: number;
+  /** Antal fel i sektionen */
+  missed?: number;
+  /** Rekommenderade extra träningsfråge-ID:n baserat på antal fel */
+  extraPracticeIds?: string[];
 }
 
 interface SessionResult {
@@ -544,6 +548,23 @@ function saveStudyProfile(profile: StudyProfile, userId = currentUserId): void {
   localStorage.setItem(profileKeyFor(userId), JSON.stringify(profile));
 }
 
+/** Mappar aptitudprovets sektion-topics till extra träningsfrågor (nack-b + nack-c serien).
+ *  Poolen blandas så att man får variation varje gång. */
+const APTITUDE_EXTRA_QUESTIONS: Record<string, string[]> = {
+  "Aptitud: Induktiv logik":        ["nack-b1", "nack-c1", "nack-b2", "nack-c2", "nack-b3", "nack-c3", "nack-c4", "nack-c5"],
+  "Aptitud: Deduktiv logik":        ["nack-b4", "nack-c6", "nack-b5", "nack-c7", "nack-b6", "nack-c8", "nack-c9"],
+  "Aptitud: Verbal förmåga":        ["nack-b7", "nack-c10", "nack-b8", "nack-c11", "nack-b9", "nack-c12", "nack-c13"],
+  "Aptitud: Svensk språkfärdighet": ["nack-b10", "nack-c14", "nack-b11", "nack-c15", "nack-b12", "nack-c16", "nack-c17"]
+};
+
+/** Hur många extra frågor rekommenderas baserat på antal fel */
+function extraPracticeCount(missed: number): number {
+  if (missed >= 3) return 3;
+  if (missed === 2) return 2;
+  if (missed === 1) return 1;
+  return 0;
+}
+
 function calculateMockSectionResults(
   templateId: string | undefined,
   questions: Question[],
@@ -566,14 +587,27 @@ function calculateMockSectionResults(
   }
 
   const sectionResults = template.sections.map((section) => {
-    const sectionQuestions = questions.filter((question) => section.question_ids.includes(question.id));
+    const sectionIdSet = new Set(section.question_pool ?? section.question_ids);
+    const sectionQuestions = questions.filter((question) => sectionIdSet.has(question.id));
     const sectionScored = scoreAnswers(sectionQuestions, answers);
+    const missed = sectionScored.total - sectionScored.correct;
+
+    // Bygg lista med rekommenderade extra frågor om sektionen är aptitud-typ
+    // Blandas slumpmässigt för variation varje gång
+    const extraPool = section.topics
+      .flatMap((topic) => APTITUDE_EXTRA_QUESTIONS[topic] ?? []);
+    const shuffled = [...extraPool].sort(() => Math.random() - 0.5);
+    const count = extraPracticeCount(missed);
+    const extraPracticeIds = shuffled.slice(0, count);
+
     return {
       title: section.title,
       scorePercent: sectionScored.scorePercent,
       correct: sectionScored.correct,
       total: sectionScored.total,
-      weight: section.weight
+      weight: section.weight,
+      missed,
+      extraPracticeIds: extraPracticeIds.length > 0 ? extraPracticeIds : undefined
     };
   });
 
@@ -1565,7 +1599,10 @@ function renderBank(): string {
 
 function renderMock(): string {
   const template = MOCK_EXAMS.find((item) => item.id === chosenMockId) || MOCK_EXAMS[0];
-  const questionCount = template.sections.reduce((sum, section) => sum + section.question_ids.length, 0);
+  const questionCount = template.sections.reduce(
+    (sum, section) => sum + (section.questions_count ?? section.question_ids.length),
+    0
+  );
   return `
     <div class="grid">
       <section class="card span-12">
@@ -1590,7 +1627,9 @@ function renderMock(): string {
               <p><span class="track-pill ${getTrackClass(section.track_id)}">${getTrackName(section.track_id)}</span></p>
               <p>Tid: ${section.minutes} min • Vikt: ${Math.round(section.weight * 100)}%</p>
               <p>Ämnen: ${section.topics.join(" • ")}</p>
-              <p class="muted">Frågor: ${section.question_ids.join(", ")}</p>
+              <p class="muted">${section.question_pool
+                ? `🎲 ${section.questions_count} slumpade frågor ur pool om ${section.question_pool.length} st`
+                : `Frågor: ${section.question_ids.join(", ")}`}</p>
             </section>
           `
         )
@@ -1910,6 +1949,12 @@ function renderLastResult(): string {
   const sessions = loadStudySessions();
   const suggestion = createAdaptiveSuggestion(sessions);
 
+  // Sektionsrapport med riktad träningsrekommendation om aptitudprov
+  const sectionsWithExtra = lastResult.sectionResults.filter(
+    (s) => s.extraPracticeIds && s.extraPracticeIds.length > 0
+  );
+  const hasAptitudeFeedback = sectionsWithExtra.length > 0;
+
   const sectionLines =
     lastResult.sectionResults.length === 0
       ? ""
@@ -1917,12 +1962,38 @@ function renderLastResult(): string {
         <p><strong>Sektionsrapport:</strong></p>
         <ul class="list-clean">
           ${lastResult.sectionResults
-            .map(
-              (section) =>
-                `<li>${section.title}: ${section.correct}/${section.total} (${section.scorePercent}%) • Vikt ${Math.round(section.weight * 100)}%</li>`
-            )
+            .map((section) => {
+              const missedBadge = section.missed && section.missed > 0
+                ? `<span class="missed-badge">${section.missed} fel</span>`
+                : `<span class="ok-badge">✓</span>`;
+              return `<li>${missedBadge} ${section.title}: ${section.correct}/${section.total} (${section.scorePercent}%)</li>`;
+            })
             .join("")}
         </ul>
+        ${hasAptitudeFeedback ? `
+        <div class="practice-report">
+          <p><strong>📋 Rekommenderad träning efter detta prov:</strong></p>
+          ${sectionsWithExtra.map((section) => `
+            <div class="practice-section-row">
+              <div class="practice-section-info">
+                <span class="practice-section-title">${section.title.replace(/Del [A-D] – /, "")}</span>
+                <span class="practice-section-count">${section.extraPracticeIds!.length} extra ${section.extraPracticeIds!.length === 1 ? "fråga" : "frågor"} rekommenderas</span>
+              </div>
+              <button class="secondary practice-btn"
+                data-action="start-aptitude-drill"
+                data-question-ids="${section.extraPracticeIds!.join(",")}">
+                Träna nu
+              </button>
+            </div>
+          `).join("")}
+          ${sectionsWithExtra.length > 1 ? `
+          <button class="primary"
+            data-action="start-aptitude-drill"
+            data-question-ids="${sectionsWithExtra.flatMap((s) => s.extraPracticeIds!).join(",")}">
+            Träna alla svaga delar (${sectionsWithExtra.flatMap((s) => s.extraPracticeIds!).length} frågor)
+          </button>` : ""}
+        </div>` : `
+        <p class="muted">✓ Inga svaga delar – inga extra frågor rekommenderas.</p>`}
       `;
   const reviewLines =
     lastResult.questionReviews.length === 0
@@ -2185,7 +2256,13 @@ app.addEventListener("click", (event) => {
     if (!template) {
       return;
     }
-    const ids = template.sections.flatMap((section) => section.question_ids);
+    const ids = template.sections.flatMap((section) => {
+      if (section.question_pool && section.questions_count) {
+        const shuffled = [...section.question_pool].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, section.questions_count);
+      }
+      return section.question_ids;
+    });
     startSession("Tidsprov", ids, template.total_minutes, template.id);
     return;
   }
@@ -2228,8 +2305,23 @@ app.addEventListener("click", (event) => {
     if (!template) {
       return;
     }
-    const ids = template.sections.flatMap((section) => section.question_ids);
+    const ids = template.sections.flatMap((section) => {
+      if (section.question_pool && section.questions_count) {
+        const shuffled = [...section.question_pool].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, section.questions_count);
+      }
+      return section.question_ids;
+    });
     startSession("Tidsprov", ids, template.total_minutes, template.id);
+    return;
+  }
+
+  if (action === "start-aptitude-drill") {
+    const rawIds = actionEl.dataset.questionIds ?? "";
+    const ids = rawIds.split(",").map((s) => s.trim()).filter(Boolean);
+    if (ids.length === 0) return;
+    const minutes = Math.max(3, ids.length * 1);
+    startSession("Drill", ids, minutes);
     return;
   }
 
