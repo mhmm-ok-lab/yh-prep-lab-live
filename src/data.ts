@@ -1888,6 +1888,417 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "b",
     explanation: "'Eftersom' anger orsak. 'Trots att' och 'fast' anger kontrast/motgång. 'Men' är en svag kontrast utan kausalitet. Frågan efterfrågar orsakssamband."
+  },
+
+  // ═══════════════════════════════════════════════════════
+  // ⚡ IT-HÖGSKOLAN – Förbättrad frågbank (iths-v2 serien)
+  // Del 1: Svenska/Engelska/Matte (iths-d1-*)
+  // Del 2: Dator- och nätverksteknik (iths-d2-*)
+  // Baserat på verifierade mönster från utbildningens innehåll
+  // ═══════════════════════════════════════════════════════
+
+  // ── DEL 1: SVENSKA ──────────────────────────────────
+  {
+    id: "iths-d1-sv1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Välj den mening med korrekt syftning:\nEn tekniker tog emot servern och sedan konfigurerade han den.",
+    options: [
+      { id: "a", text: "En tekniker tog emot servern och sedan konfigurerade han den." },
+      { id: "b", text: "En tekniker tog emot servern och sedan konfigurerade den han." },
+      { id: "c", text: "En tekniker han tog emot servern och konfigurerade." },
+      { id: "d", text: "Servern togs emot och sedan konfigurerade tekniker han den." }
+    ],
+    answer_key: "a",
+    explanation: "'Han' syftar tydligt på teknikern. Alternativ A är grammatiskt korrekt med tydlig ordföljd och syftning."
+  },
+  {
+    id: "iths-d1-sv2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket ord stavas rätt i en IT-kontext?",
+    options: [
+      { id: "a", text: "Krypterning" },
+      { id: "b", text: "Kryptering" },
+      { id: "c", text: "Kryptearing" },
+      { id: "d", text: "Kryptring" }
+    ],
+    answer_key: "b",
+    explanation: "Korrekt stavning: kryptering (av kryptera + -ing). Vanliga fel är att lägga in extra 'n' eller utelämna 'e'."
+  },
+  {
+    id: "iths-d1-sv3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken mening har korrekt ordföljd med bisatsinversion?\n(Välj den grammatiskt korrekta meningen.)",
+    options: [
+      { id: "a", text: "Han sa att han inte förstod problemet." },
+      { id: "b", text: "Han sa att inte han förstod problemet." },
+      { id: "c", text: "Han sa att problemet han förstod inte." },
+      { id: "d", text: "Inte han sa att förstod problemet." }
+    ],
+    answer_key: "a",
+    explanation: "I bisatser (efter 'att') placeras negationen 'inte' FÖRE det finita verbet: 'att han inte förstod'. Detta är bisatsordföljd – till skillnad från huvudsats där 'inte' kommer efter verbet."
+  },
+  {
+    id: "iths-d1-sv4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket alternativ använder korrekt skiljetecken och stor/liten bokstav?",
+    options: [
+      { id: "a", text: "Systemet kraschade, Och inga loggar sparades." },
+      { id: "b", text: "Systemet kraschade och inga loggar sparades." },
+      { id: "c", text: "Systemet kraschade. och inga loggar sparades." },
+      { id: "d", text: "systemet kraschade och Inga loggar sparades." }
+    ],
+    answer_key: "b",
+    explanation: "Två huvudsatser kopplade med 'och' behöver inte komma före 'och' om de delar subjekt. Stor bokstav används bara efter punkt. Alternativ B är korrekt."
+  },
+
+  // ── DEL 1: ENGELSKA ─────────────────────────────────
+  {
+    id: "iths-d1-en1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "What does 'bandwidth' mean in a networking context?",
+    options: [
+      { id: "a", text: "The physical width of a network cable" },
+      { id: "b", text: "The maximum rate of data transfer across a network" },
+      { id: "c", text: "The number of devices connected to a router" },
+      { id: "d", text: "The encryption strength of a connection" }
+    ],
+    answer_key: "b",
+    explanation: "Bandwidth = maximum data transfer rate, measured in bits per second (bps, Mbps, Gbps). Not related to physical dimensions."
+  },
+  {
+    id: "iths-d1-en2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Choose the correct sentence in a professional IT report:",
+    options: [
+      { id: "a", text: "The server, it was compromised last Tuesday." },
+      { id: "b", text: "The server was compromised last Tuesday." },
+      { id: "c", text: "Last Tuesday the server it was compromised." },
+      { id: "d", text: "Was the server compromised last Tuesday it was." }
+    ],
+    answer_key: "b",
+    explanation: "Correct English sentence structure: Subject + Verb + Time. Option A has a redundant pronoun 'it', C is garbled, D is question format mixed with statement."
+  },
+  {
+    id: "iths-d1-en3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "What does 'latency' refer to in networking?",
+    options: [
+      { id: "a", text: "The total storage capacity of a server" },
+      { id: "b", text: "The time delay between sending and receiving data" },
+      { id: "c", text: "The number of packets lost during transmission" },
+      { id: "d", text: "The speed at which a CPU processes requests" }
+    ],
+    answer_key: "b",
+    explanation: "Latency = the time delay (often measured in milliseconds) it takes for data to travel from source to destination. High latency causes lag in real-time applications."
+  },
+  {
+    id: "iths-d1-en4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Which sentence correctly uses a conditional structure for an IT scenario?",
+    options: [
+      { id: "a", text: "If the firewall would have been updated, the breach had been prevented." },
+      { id: "b", text: "If the firewall had been updated, the breach would have been prevented." },
+      { id: "c", text: "If the firewall was updated, the breach would been prevented." },
+      { id: "d", text: "Had the firewall would be updated, the breach was prevented." }
+    ],
+    answer_key: "b",
+    explanation: "Third conditional (past unreal): 'If + had + past participle, would have + past participle'. Option B is the only grammatically correct form."
+  },
+
+  // ── DEL 1: MATEMATIK ────────────────────────────────
+  {
+    id: "iths-d1-ma1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "En server har 512 GB lagring. 30 % är använt. Hur många GB är ledigt?",
+    options: [
+      { id: "a", text: "153,6 GB" },
+      { id: "b", text: "358,4 GB" },
+      { id: "c", text: "182 GB" },
+      { id: "d", text: "204,8 GB" }
+    ],
+    answer_key: "b",
+    explanation: "30 % av 512 = 153,6 GB använt. Ledigt = 512 − 153,6 = 358,4 GB."
+  },
+  {
+    id: "iths-d1-ma2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Omvandla binärtalet 10110 till decimaltal.",
+    options: [
+      { id: "a", text: "20" },
+      { id: "b", text: "22" },
+      { id: "c", text: "24" },
+      { id: "d", text: "26" }
+    ],
+    answer_key: "b",
+    explanation: "10110 binärt: 1×16 + 0×8 + 1×4 + 1×2 + 0×1 = 16+4+2 = 22."
+  },
+  {
+    id: "iths-d1-ma3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Hur många IP-adresser ryms i ett /26-nät?",
+    options: [
+      { id: "a", text: "32" },
+      { id: "b", text: "64" },
+      { id: "c", text: "128" },
+      { id: "d", text: "256" }
+    ],
+    answer_key: "b",
+    explanation: "/26 innebär 32-26=6 hostbitar. 2⁶ = 64 totala adresser (62 användbara värdar + nätverks- och broadcastadress)."
+  },
+  {
+    id: "iths-d1-ma4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Ett nätverk har adressen 192.168.10.0/25.\nVilket är det högsta användbara värdadressen i detta nät?",
+    options: [
+      { id: "a", text: "192.168.10.127" },
+      { id: "b", text: "192.168.10.126" },
+      { id: "c", text: "192.168.10.128" },
+      { id: "d", text: "192.168.10.255" }
+    ],
+    answer_key: "b",
+    explanation: "/25 = 128 adresser (0–127). Nätverksadress: .0. Broadcastadress: .127. Högsta värdhosta: .126."
+  },
+
+  // ── DEL 2: DATOR- OCH NÄTVERKSTEKNIK ────────────────
+  {
+    id: "iths-d2-1",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket protokoll används för att automatiskt tilldela IP-adresser till enheter i ett nätverk?",
+    options: [
+      { id: "a", text: "DNS" },
+      { id: "b", text: "DHCP" },
+      { id: "c", text: "FTP" },
+      { id: "d", text: "SMTP" }
+    ],
+    answer_key: "b",
+    explanation: "DHCP (Dynamic Host Configuration Protocol) delar automatiskt ut IP-adresser, nätmask, gateway och DNS till klienter i ett nätverk."
+  },
+  {
+    id: "iths-d2-2",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket OSI-lager ansvarar för end-to-end-kommunikation och felkontroll mellan applikationer?",
+    options: [
+      { id: "a", text: "Lager 2 – Datalänk" },
+      { id: "b", text: "Lager 3 – Nätverk" },
+      { id: "c", text: "Lager 4 – Transport" },
+      { id: "d", text: "Lager 7 – Applikation" }
+    ],
+    answer_key: "c",
+    explanation: "Transportlagret (lager 4) hanterar end-to-end-kommunikation. TCP på detta lager ger felkontroll, flödeskontroll och garanterad leverans."
+  },
+  {
+    id: "iths-d2-3",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan ett hubben och en switch i ett lokalt nätverk?",
+    options: [
+      { id: "a", text: "En hubb skickar data till alla portar; en switch skickar bara till rätt mottagare" },
+      { id: "b", text: "En switch är trådlös; en hubb är kabelbunden" },
+      { id: "c", text: "En hubb routar trafik; en switch fungerar som brandvägg" },
+      { id: "d", text: "Det finns ingen skillnad, de används synonymt" }
+    ],
+    answer_key: "a",
+    explanation: "En hubb sänder all trafik till alla portar (broadcast). En switch läser MAC-adressen och levererar paketet bara till rätt port – mer effektivt och säkert."
+  },
+  {
+    id: "iths-d2-4",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken typ av attack försöker överbelasta en server med trafik så att den slutar svara?",
+    options: [
+      { id: "a", text: "Phishing" },
+      { id: "b", text: "Man-in-the-middle" },
+      { id: "c", text: "DoS/DDoS" },
+      { id: "d", text: "SQL-injektion" }
+    ],
+    answer_key: "c",
+    explanation: "DoS (Denial of Service) och DDoS (Distributed DoS) syftar till att göra en tjänst otillgänglig genom att översvämma den med förfrågningar. DDoS använder många datorer (botnät) simultant."
+  },
+  {
+    id: "iths-d2-5",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad innebär 'kryptering med publik nyckel' (asymmetrisk kryptering)?",
+    options: [
+      { id: "a", text: "Samma nyckel används för att kryptera och dekryptera" },
+      { id: "b", text: "En publik nyckel krypterar, en privat nyckel dekrypterar" },
+      { id: "c", text: "Ingen nyckel behövs – krypteringen är automatisk" },
+      { id: "d", text: "Den privata nyckeln krypterar och den publika dekrypterar alltid" }
+    ],
+    answer_key: "b",
+    explanation: "Asymmetrisk kryptering använder nyckelpar: publik nyckel (dela fritt) för kryptering och privat nyckel (hemlig) för dekryptering. Används i t.ex. HTTPS och e-postsignering."
+  },
+  {
+    id: "iths-d2-6",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket protokoll används för säker webbkommunikation (HTTPS)?",
+    options: [
+      { id: "a", text: "FTP" },
+      { id: "b", text: "SSH" },
+      { id: "c", text: "TLS/SSL" },
+      { id: "d", text: "SMTP" }
+    ],
+    answer_key: "c",
+    explanation: "HTTPS = HTTP + TLS (Transport Layer Security). TLS/SSL krypterar kommunikationen mellan webbläsare och server och verifierar serverns identitet via certifikat."
+  },
+  {
+    id: "iths-d2-7",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "En angripare placerar sig mellan klient och server och läser/ändrar trafiken utan att parterna märker det. Vad kallas detta?",
+    options: [
+      { id: "a", text: "Brute force" },
+      { id: "b", text: "Man-in-the-middle (MITM)" },
+      { id: "c", text: "Cross-site scripting (XSS)" },
+      { id: "d", text: "ARP-spoofing (variant av samma)" }
+    ],
+    answer_key: "b",
+    explanation: "MITM-attack: angriparen avlyssnar och kan manipulera kommunikationen. ARP-spoofing är en vanlig teknik för att genomföra MITM på lokalt nätverk, men attacktypen i frågan är MITM."
+  },
+  {
+    id: "iths-d2-8",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vad är syftet med en DMZ (demilitariserad zon) i ett nätverks­arkitektur?",
+    options: [
+      { id: "a", text: "Att kryptera all intern trafik" },
+      { id: "b", text: "Att isolera publika servrar från det interna nätverket" },
+      { id: "c", text: "Att ersätta brandväggen i moderna nätverk" },
+      { id: "d", text: "Att tilldela IP-adresser automatiskt" }
+    ],
+    answer_key: "b",
+    explanation: "En DMZ är ett delnätverk som håller publikt exponerade servrar (webb, mail) separerade från det interna nätverket. Om en publik server komprometteras kan angriparen inte nå interna system direkt."
+  },
+  {
+    id: "iths-d2-9",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vilket påstående om IPv6 jämfört med IPv4 är korrekt?",
+    options: [
+      { id: "a", text: "IPv6 har färre tillgängliga adresser än IPv4" },
+      { id: "b", text: "IPv6-adresser är 128 bitar långa mot IPv4:s 32 bitar" },
+      { id: "c", text: "IPv6 kräver NAT för att fungera på internet" },
+      { id: "d", text: "IPv6 är inkompatibelt med TCP" }
+    ],
+    answer_key: "b",
+    explanation: "IPv6 använder 128-bitarsadresser (≈3,4 × 10³⁸ möjliga adresser) mot IPv4:s 32 bitar (ca 4,3 miljarder). IPv6 eliminerar behovet av NAT och har inbyggt stöd för IPsec."
+  },
+  {
+    id: "iths-d2-10",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vilket lager i OSI-modellen hanterar logisk adressering (IP) och routing av paket mellan nätverk?",
+    options: [
+      { id: "a", text: "Lager 1 – Fysiskt" },
+      { id: "b", text: "Lager 2 – Datalänk" },
+      { id: "c", text: "Lager 3 – Nätverk" },
+      { id: "d", text: "Lager 5 – Session" }
+    ],
+    answer_key: "c",
+    explanation: "Nätverkslagret (lager 3) hanterar IP-adressering och routing – det bestämmer den bästa vägen för ett paket mellan olika nätverk. Routrar arbetar på detta lager."
   }
 ];
 
@@ -2073,6 +2484,47 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
       }
     ],
     scoring_rules: "Separat delpoäng, total viktad poäng enligt 20/80."
+  },
+  {
+    id: "mock-iths-cc",
+    name: "⚡ IT-H Fullständigt antagningsprov (90 min)",
+    track_id: "iths_itsec",
+    total_minutes: 90,
+    sections: [
+      {
+        title: "Del 1 Svenska – ordval, grammatik och meningsbyggnad",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Svenska"],
+        question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        minutes: 10,
+        weight: 0.11
+      },
+      {
+        title: "Del 1 Engelska – ordförståelse och grammatik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Engelska"],
+        question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        minutes: 10,
+        weight: 0.11
+      },
+      {
+        title: "Del 1 Matematik – procent, binärt och nätverksräkning",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 1: Matematik"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        minutes: 15,
+        weight: 0.11
+      },
+      {
+        title: "Del 2: Dator- och nätverksteknik",
+        track_id: "iths_itsec",
+        topics: ["⚡ IT-H Del 2: Nätverksteknik"],
+        question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        minutes: 45,
+        weight: 0.67
+      }
+    ],
+    scoring_rules: "Del 1 Svenska/Engelska/Matematik väger 33% sammanlagt (11% vardera). Del 2 väger 67%. Separat poäng per del med återkoppling."
   },
   {
     id: "mock-prog-45",
