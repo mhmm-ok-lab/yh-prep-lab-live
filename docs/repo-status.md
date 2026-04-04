@@ -11,6 +11,7 @@ Det betyder:
 ## Live-länk just nu
 - Ingen stabil publicerings-URL är aktiv i repo-inställningarna just nu.
 - Därför kan samma länk inte garanteras förrän publiceringsspåret är klart.
+- CI/CD-workflow för Pages finns nu i `.github/workflows/deploy-pages.yml` (verify + build + deploy).
 
 ## Plan för separering (nästa session)
 1. Skapa nytt dedikerat repo (exempel: `yh-prep-lab`).

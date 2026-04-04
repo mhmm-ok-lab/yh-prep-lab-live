@@ -7,8 +7,8 @@ Det här är övergripande planen i stora steg.
 - Klar: Stabil grund
 - Klar: Lugn testmotor
 - Klar: Innehållsbredd
-- Pågår: Adaptiv coachning
-- Nästa: Publiceringsspår
+- Klar: Adaptiv coachning
+- Pågår: Publiceringsspår
 
 ## Steg 1 - Stabil grund (klar)
 
@@ -33,7 +33,7 @@ Definition of done:
 - Minst 2 snabbmocks + 3 längre mocks
 - Bättre täckning av svåra ämnen per spår
 
-## Steg 4 - Adaptiv coachning (pågår)
+## Steg 4 - Adaptiv coachning (klar)
 
 - Mer exakt rekommendation efter svagheter
 - "Nästa bästa pass" med tydlig motivering
@@ -42,10 +42,11 @@ Definition of done:
 - Varje avslutat pass ger ett konkret nästa pass
 - Rekommendationen byter fokus när felmönster ändras
 
-## Steg 5 - Publiceringsspår (nästa)
+## Steg 5 - Publiceringsspår (pågår)
 
 - Stabil länk och enklare deploy
 - Standardiserad verifiering före publicering
+- GitHub Actions-workflow för verify + build + deploy till Pages
 
 Definition of done:
 - Samma länk fungerar konsekvent på mobil

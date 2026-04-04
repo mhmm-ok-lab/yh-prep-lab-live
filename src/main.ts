@@ -197,14 +197,14 @@ const ROADMAP_STEPS: RoadmapStep[] = [
     title: "Adaptiv coachning",
     scope: "Smartare nästa-pass förslag baserat på felmönster och tidsläge.",
     doneWhen: "Appen väljer nästa bästa övning automatiskt med tydlig motivering.",
-    status: "active"
+    status: "done"
   },
   {
     id: "step-5",
     title: "Publiceringsspår",
     scope: "Stabil delningslänk, enklare deployrutin och återkommande verifiering.",
     doneWhen: "Samma länk fungerar för mobiltest utan versionsstrul.",
-    status: "next"
+    status: "active"
   }
 ];
 
@@ -1886,6 +1886,8 @@ function renderLastResult(): string {
   if (!lastResult) {
     return "";
   }
+  const sessions = loadStudySessions();
+  const suggestion = createAdaptiveSuggestion(sessions);
 
   const sectionLines =
     lastResult.sectionResults.length === 0
@@ -1934,6 +1936,11 @@ function renderLastResult(): string {
       ${lastResult.templateName ? `<p class="muted">Mall: ${lastResult.templateName}</p>` : ""}
       ${sectionLines}
       <p><strong>Svaga områden:</strong> ${lastResult.weakTopics.length > 0 ? lastResult.weakTopics.join(" • ") : "Inga tydliga svagheter"}</p>
+      <p><strong>Nästa pass:</strong> ${getTrackName(suggestion.trackId)} • ${suggestion.mode} • ${suggestion.durationMinutes} min</p>
+      <p class="muted">${suggestion.reason}</p>
+      <div class="inline-controls">
+        <button class="primary" data-action="start-next-pass">Starta nästa rekommenderade pass</button>
+      </div>
       ${reviewLines}
     </section>
   `;

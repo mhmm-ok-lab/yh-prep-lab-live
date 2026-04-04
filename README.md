@@ -90,6 +90,11 @@ npm run preview -- --host 127.0.0.1 --port 4173
 npm run audit:visual
 ```
 
+## Publicering (pågår)
+- Workflow finns i `.github/workflows/deploy-pages.yml`.
+- Den kör `npm run verify` och deployar till GitHub Pages vid push till `main` och `codex/yh-prep-autopilot-night`.
+- Förväntad stabil URL när Pages är aktiv: `https://davidshore.github.io/jobbsok/`
+
 ## Verifiering
 
 - `npm test` verifierar frågor, planering och poängräkning.
