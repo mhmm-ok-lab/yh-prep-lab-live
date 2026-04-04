@@ -1,6 +1,6 @@
 import "./styles.css";
 import { MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS } from "./data";
-import { createDailyPlan, createTrackMix, formatFirstExamDate, getFirstExamCountdown, getNextMockExam } from "./planner";
+import { createDailyPlan, formatFirstExamDate, getFirstExamCountdown, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
   clearActiveSession,
@@ -121,8 +121,8 @@ if (!appRoot) {
 const app: HTMLDivElement = appRoot;
 
 const pageLabels: Record<Page, string> = {
-  overview: "Översikt",
-  tracks: "Spår",
+  overview: "Hem",
+  tracks: "Träna",
   bank: "Frågebank",
   mock: "Mockprov",
   research: "Research",
@@ -131,6 +131,9 @@ const pageLabels: Record<Page, string> = {
   design: "Design",
   roadmap: "Roadmap"
 };
+
+// Sidor som syns i navigationsmenyn. Resten nås via "Mer"-sektionen.
+const PRIMARY_NAV: Page[] = ["overview", "tracks", "mock", "bank"];
 const urlParams = new URLSearchParams(window.location.search);
 const THEME_KEY = "yh.ui-theme";
 const UI_BUILD = "2026-04-04-0245";
@@ -381,7 +384,7 @@ if (requestedMock && MOCK_EXAMS.some((mock) => mock.id === requestedMock)) {
 let activeSession: SessionDraft | null = loadActiveSession();
 let lastResult: SessionResult | null = null;
 let sessionEndTimeoutRef: number | null = null;
-let isOnline = navigator.onLine;
+let _isOnline = navigator.onLine;
 let storageNotice = "";
 const PULL_REFRESH_TRIGGER_PX = 82;
 const PULL_REFRESH_MAX_PX = 112;
@@ -624,9 +627,6 @@ function calculateMockSectionResults(
   };
 }
 
-function getProfileLabel(questionId: (typeof PROFILE_QUESTION_ORDER)[number], optionId: string): string {
-  return PROFILE_OPTIONS[questionId].find((option) => option.id === optionId)?.label || optionId;
-}
 
 function getPriorityTrackFromProfile(priority: string): TrackId {
   if (priority === "iths") {
@@ -1322,16 +1322,12 @@ function cancelSession(): void {
 function renderOverview(): string {
   const sessions = loadStudySessions();
   const plan = createDailyPlan();
-  const trackMix = createTrackMix(plan.blocks);
   const progress = buildTrackProgress(sessions);
   const firstExamCountdown = getFirstExamCountdown();
   const firstExamDateLabel = formatFirstExamDate();
-  const nextMock = getNextMockExam();
-  const todayQuestions = getTodayDrillQuestions();
   const priorityTrack = getPriorityTrackFromProfile(studyProfile.targetPriority);
   const priorityTrackName = getTrackName(priorityTrack);
   const preferenceMinutes = Number.parseInt(studyProfile.sessionPreference, 10) || plan.totalMinutes;
-  const blockerLabel = getProfileLabel("blocker", studyProfile.blocker);
   const suggestion = createAdaptiveSuggestion(sessions);
   const statuses = getTrackStatuses(sessions, suggestion);
   const rankPos = new Map<TrackId, number>(suggestion.ranking.map((trackId, index) => [trackId, index]));
@@ -1341,65 +1337,68 @@ function renderOverview(): string {
 
   return `
     <div class="grid overview-grid">
+
+      <!-- ── HUVUDKORT: nästa steg ── -->
       <section class="card critical-card span-12">
-        <h3>Snabbstart idag</h3>
-        <p class="muted quickstart-subline">Mål idag: håll fokus i ett kort pass och följ upp med snabb rättning.</p>
-        <div class="quick-metrics">
-          <div class="indicator-chip">
-            <span class="indicator-label">Tid till prov</span>
-            <strong class="indicator-value">${firstExamCountdown}</strong>
+        <div class="overview-hero">
+          <div class="overview-hero-text">
+            <h2 class="overview-heading">Träna idag</h2>
+            <p class="overview-sub">Fokus: <strong>${priorityTrackName}</strong> · ${preferenceMinutes} min · ${firstExamCountdown} till prov</p>
+            <p class="muted overview-reason">${suggestion.reason}</p>
           </div>
-          <div class="indicator-chip">
-            <span class="indicator-label">Nästa mock</span>
-            <strong class="indicator-value">${nextMock.minutes} min</strong>
+          <div class="overview-hero-actions">
+            <button class="primary btn-lg" data-action="start-today-drill">▶ Starta dagens pass</button>
+            <button class="secondary" data-view="mock">Kör mockprov</button>
           </div>
-          <div class="indicator-chip">
-            <span class="indicator-label">Fokus nu</span>
-            <strong class="indicator-value">${priorityTrackName}</strong>
-          </div>
-          <div class="indicator-chip">
-            <span class="indicator-label">Passlängd</span>
-            <strong class="indicator-value">${preferenceMinutes} min</strong>
-          </div>
-        </div>
-        <p class="muted quickstart-subline">Status: ${isOnline ? "Online" : "Offline"} • Hinder just nu: ${blockerLabel}</p>
-        <div class="inline-controls quickstart-actions">
-          <button class="primary" data-action="start-today-drill">Starta dagens pass</button>
-          <button class="secondary" data-view="mock">Öppna mockprov</button>
         </div>
       </section>
 
+      <!-- ── PROGRESSION ── -->
       <section class="card span-12">
-        <p class="muted">Prioritering</p>
+        <h3 class="section-label">Din progression</h3>
+        <div class="progress-grid">
+          <div class="progress-row">
+            <span class="track-pill track-nackademin_ux">UX</span>
+            <div class="progress"><div style="width:${progress.nackademin_ux}%"></div></div>
+            <span class="progress-pct">${progress.nackademin_ux}%</span>
+          </div>
+          <div class="progress-row">
+            <span class="track-pill track-iths_itsec">IT-H</span>
+            <div class="progress"><div style="width:${progress.iths_itsec}%"></div></div>
+            <span class="progress-pct">${progress.iths_itsec}%</span>
+          </div>
+          <div class="progress-row">
+            <span class="track-pill track-prog1a">Prog</span>
+            <div class="progress"><div style="width:${progress.prog1a}%"></div></div>
+            <span class="progress-pct">${progress.prog1a}%</span>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:0.5rem">${sessions.length} pass genomförda · ${totalCompletedMinutes(sessions)} min totalt</p>
+      </section>
+
+      <!-- ── PRIORITERING ── -->
+      <section class="card span-12">
+        <h3 class="section-label">Vilket spår härnäst?</h3>
         <div class="priority-strip">
           ${orderedStatuses
             .map(
               (status) => `
                 <button class="track-priority-btn ${stageButtonClass(status.stage)} ${status.priority ? "is-recommended" : ""}"
                   data-action="focus-priority-track" data-track="${status.trackId}">
-                  <strong>${status.priority ? "(R) " : ""}${getTrackName(status.trackId)}</strong>
-                  <span>${status.priority ? suggestion.mode : "Drill"} • ${stageLabel(status.stage)} • ${status.avgScore}% • ${status.minutes} min</span>
+                  <strong>${status.priority ? "★ " : ""}${getTrackName(status.trackId)}</strong>
+                  <span>${stageLabel(status.stage)} · ${status.avgScore}% snitt · ${status.minutes} min</span>
                 </button>
               `
             )
             .join("")}
         </div>
-        <p class="muted priority-reason">${suggestion.reason}</p>
       </section>
 
-      <section class="card span-12">
-        <h3>Ny här? Kör guidat test</h3>
-        <p class="muted">Snabb genomgång av hur sidan funkar + mini-test i lärläge.</p>
-        <div class="inline-controls">
-          <button class="secondary" data-view="walkthrough">Öppna genomgång</button>
-        </div>
-      </section>
-
+      <!-- ── INSTÄLLNINGAR (kollapsad) ── -->
       <section class="card span-12">
         <details>
-          <summary>Intervju</summary>
-          <p class="muted">Flervalsfrågor med fritext för "Annat". Svaren styr rekommenderad träning i appen.</p>
-          <div class="inline-controls">
+          <summary>⚙️ Mina inställningar</summary>
+          <div class="inline-controls" style="margin-top:0.75rem">
             <label for="profile-sessionPreference">Passlängd</label>
             <select id="profile-sessionPreference" data-profile="sessionPreference">
               ${PROFILE_OPTIONS.sessionPreference
@@ -1409,7 +1408,6 @@ function renderOverview(): string {
                 )
                 .join("")}
             </select>
-
             <label for="profile-blocker">Största hinder</label>
             <select id="profile-blocker" data-profile="blocker">
               ${PROFILE_OPTIONS.blocker
@@ -1418,7 +1416,6 @@ function renderOverview(): string {
                 )
                 .join("")}
             </select>
-
             <label for="profile-confidence">Nuvarande nivå</label>
             <select id="profile-confidence" data-profile="confidence">
               ${PROFILE_OPTIONS.confidence
@@ -1428,7 +1425,6 @@ function renderOverview(): string {
                 )
                 .join("")}
             </select>
-
             <label for="profile-targetPriority">Primärt mål</label>
             <select id="profile-targetPriority" data-profile="targetPriority">
               ${PROFILE_OPTIONS.targetPriority
@@ -1438,87 +1434,62 @@ function renderOverview(): string {
                 )
                 .join("")}
             </select>
-
-            <label for="profile-notes">Annat du vill att planen tar hänsyn till</label>
-            <textarea id="profile-notes" data-profile="notes" rows="3" placeholder="Skriv fritt här (valfritt)">${studyProfile.notes}</textarea>
-            <button class="primary" data-action="save-profile">Spara intervju</button>
+            <label for="profile-notes">Övrigt att ta hänsyn till</label>
+            <textarea id="profile-notes" data-profile="notes" rows="2" placeholder="Valfritt">${studyProfile.notes}</textarea>
+            <button class="primary" data-action="save-profile">Spara</button>
           </div>
-          <p class="muted">Valt just nu: ${getProfileLabel("sessionPreference", studyProfile.sessionPreference)} • ${getProfileLabel("blocker", studyProfile.blocker)}</p>
-        </details>
-      </section>
-
-      <section class="card span-6">
-        <details>
-          <summary>Dagens plan</summary>
-          <p class="muted">${plan.title}</p>
-          <ol class="list-clean">
-            ${plan.blocks
-              .map(
-                (block) =>
-                  `<li><span class="track-pill ${getTrackClass(block.trackId)}">${getTrackName(block.trackId)}</span> ${block.topic} (${block.minutes} min)</li>`
-              )
-              .join("")}
-          </ol>
-          <p class="muted">Fördelning: UX ${trackMix.nackademin_ux}% • IT-H ${trackMix.iths_itsec}% • Prog1/A ${trackMix.prog1a}%</p>
-          <p class="muted">Frågor i dagens pass: ${todayQuestions.length}</p>
-        </details>
-      </section>
-
-      <section class="card span-6">
-        <details>
-          <summary>Visa progression</summary>
-          <p><span class="track-pill track-nackademin_ux">UX</span> ${progress.nackademin_ux}%</p>
-          <div class="progress"><div style="width:${progress.nackademin_ux}%"></div></div>
-          <p><span class="track-pill track-iths_itsec">IT</span> ${progress.iths_itsec}%</p>
-          <div class="progress"><div style="width:${progress.iths_itsec}%"></div></div>
-          <p><span class="track-pill track-prog1a">Prog</span> ${progress.prog1a}%</p>
-          <div class="progress"><div style="width:${progress.prog1a}%"></div></div>
-          <p><span class="track-pill">Logik</span> ${Math.round((progress.nackademin_ux + progress.iths_itsec) / 2)}%</p>
-          <div class="progress"><div style="width:${Math.round((progress.nackademin_ux + progress.iths_itsec) / 2)}%"></div></div>
-        </details>
-      </section>
-
-      <section class="card span-6">
-        <details>
-          <summary>Visa provdetaljer och backup</summary>
-          <p><strong>Första provdatum:</strong> ${firstExamDateLabel}</p>
-          <p><strong>Genomförd tid:</strong> ${totalCompletedMinutes(sessions)} min (${sessions.length} pass)</p>
-          <div class="inline-controls">
-            <button class="secondary" data-action="export-progress">Exportera backup</button>
+          <p class="muted" style="margin-top:0.5rem">
+            Provdatum: ${firstExamDateLabel} ·
+            <button class="secondary" data-action="export-progress" style="display:inline;padding:0.2rem 0.5rem;font-size:0.8rem">Exportera backup</button>
             <input type="file" accept="application/json" data-input="import-progress" />
-          </div>
+          </p>
           ${storageNotice ? `<p class="success">${storageNotice}</p>` : ""}
         </details>
       </section>
+
     </div>
   `;
 }
 
 function renderTracks(): string {
-  const sharedCore = ["Logik/analys", "Mattebas", "Teststrategi", "Programmeringsgrunder"];
+  const logicQuestions = getLogicQuestions();
   return `
     <div class="grid">
+      <section class="card span-12">
+        <h3 class="section-label">Välj ett spår att träna</h3>
+        <p class="muted">Lär-läget visar förklaring direkt efter varje svar. Drill är snabbare utan förklaring.</p>
+      </section>
+
       ${TRACKS.map(
         (track) => `
           <section class="card span-4">
             <h3>${track.name}</h3>
-            <p class="muted">Mål: ${track.goal_exam}</p>
-            <p>Språk: ${track.language_mode === "sv" ? "Svenska" : "Svenska + English terms"}</p>
-            <p><strong>Gemensam kärna:</strong> ${sharedCore.join(" • ")}</p>
+            <p class="muted">${track.goal_exam}</p>
             <div class="inline-controls">
-              <button class="primary" data-action="start-track-learn" data-track="${track.id}">Starta Lär</button>
-              <button class="secondary" data-action="start-track-drill" data-track="${track.id}">Starta Drill</button>
+              <button class="primary" data-action="start-track-learn" data-track="${track.id}">🧠 Lär</button>
+              <button class="secondary" data-action="start-track-drill" data-track="${track.id}">⚡ Drill</button>
             </div>
           </section>
         `
       ).join("")}
+
       <section class="card span-12">
-        <h3>UX scenario-generator</h3>
-        <p>${generatedUxScenario}</p>
-        <p class="muted">
-          Workflow: 1) Målgruppsanalys → 2) Enkel wireframe-idé (text/skiss) → 3) Motivering.
-        </p>
-        <button class="primary" data-action="generate-ux-case">Generera nytt case</button>
+        <h3>Logik &amp; resonemang</h3>
+        <p class="muted">Extra träning i logiskt tänkande — relevant för både Nackademin och IT-H antagningsprov.</p>
+        <div class="inline-controls">
+          <button class="primary" data-action="start-logic-drill">
+            Starta logik-drill (${estimateDrillMinutes(logicQuestions)} min)
+          </button>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <details>
+          <summary>UX scenario-generator (för Nackademin-träning)</summary>
+          <p style="margin-top:0.5rem">${generatedUxScenario}</p>
+          <p class="muted">Workflow: 1) Målgruppsanalys → 2) Enkel wireframe-idé → 3) Motivering.</p>
+          <button class="secondary" data-action="generate-ux-case">Generera nytt case</button>
+        </details>
       </section>
     </div>
   `;
@@ -1603,37 +1574,51 @@ function renderMock(): string {
     (sum, section) => sum + (section.questions_count ?? section.question_ids.length),
     0
   );
+
+  // Gruppera prov per skola/kategori baserat på track_id
+  const grouped: Record<string, typeof MOCK_EXAMS> = {};
+  for (const exam of MOCK_EXAMS) {
+    const key = getTrackName(exam.track_id);
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(exam);
+  }
+
   return `
     <div class="grid">
       <section class="card span-12">
-        <h3>Mockprov (tidsprov)</h3>
+        <h3>Kör ett mockprov</h3>
+        <p class="muted">Välj ett prov nedan och tryck Starta. Klockan tickar — precis som på riktigt.</p>
         <div class="inline-controls">
           <select data-mock-select="true">
-            ${MOCK_EXAMS.map(
-              (item) => `<option value="${item.id}" ${item.id === template.id ? "selected" : ""}>${item.name}</option>`
-            ).join("")}
+            ${Object.entries(grouped).map(([groupName, exams]) => `
+              <optgroup label="${groupName}">
+                ${exams.map((item) => `<option value="${item.id}" ${item.id === template.id ? "selected" : ""}>${item.name}</option>`).join("")}
+              </optgroup>
+            `).join("")}
           </select>
-          <button class="primary" data-action="start-mock">Starta ${template.total_minutes} min</button>
+          <button class="primary btn-lg" data-action="start-mock">▶ Starta ${template.total_minutes} min</button>
         </div>
-        <p class="muted">${questionCount} frågor i detta mockprov.</p>
-        <p class="muted">Poängregel: ${template.scoring_rules}</p>
       </section>
 
-      ${template.sections
-        .map(
-          (section) => `
-            <section class="card span-6">
-              <h3>${section.title}</h3>
-              <p><span class="track-pill ${getTrackClass(section.track_id)}">${getTrackName(section.track_id)}</span></p>
-              <p>Tid: ${section.minutes} min • Vikt: ${Math.round(section.weight * 100)}%</p>
-              <p>Ämnen: ${section.topics.join(" • ")}</p>
-              <p class="muted">${section.question_pool
-                ? `🎲 ${section.questions_count} slumpade frågor ur pool om ${section.question_pool.length} st`
-                : `Frågor: ${section.question_ids.join(", ")}`}</p>
-            </section>
-          `
-        )
-        .join("")}
+      <section class="card span-12">
+        <h3>${template.name}</h3>
+        <p class="muted">${questionCount} frågor · ${template.total_minutes} min · ${template.scoring_rules}</p>
+        <div class="mock-sections-grid">
+          ${template.sections
+            .map(
+              (section) => `
+                <div class="mock-section-item">
+                  <strong>${section.title}</strong>
+                  <span class="muted">${section.minutes} min · ${Math.round(section.weight * 100)}% av betyget</span>
+                  <span class="muted">${section.question_pool
+                    ? `🎲 ${section.questions_count} av ${section.question_pool.length} frågor slumpas`
+                    : `${section.question_ids.length} frågor`}</span>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
     </div>
   `;
 }
@@ -2129,25 +2114,32 @@ function render(): void {
           </div>
           <div class="hero-actions">
             <span class="badge">${plan.sprint === "A" ? "Sprint A: Nackademin först" : "Sprint B: IT-H fokus"}</span>
-            <details class="mini-menu context-menu">
-              <summary>${pageLabels[page]}</summary>
-              <div class="mini-menu-body">
-                ${Object.entries(pageLabels)
-                  .map(
-                    ([key, label]) =>
-                      `<button class="secondary ${page === key ? "active" : ""}" data-view="${key}">${label}</button>`
-                  )
-                  .join("")}
-                <button class="secondary" data-action="open-python-course">Python-minikurs</button>
-              </div>
-            </details>
+            <nav class="primary-nav">
+              ${PRIMARY_NAV.map(
+                (key) =>
+                  `<button class="nav-btn ${page === key ? "active" : ""}" data-view="${key}">${pageLabels[key]}</button>`
+              ).join("")}
+              <details class="mini-menu context-menu">
+                <summary class="nav-btn">Mer</summary>
+                <div class="mini-menu-body">
+                  <p class="muted mini-menu-section-label">Verktyg</p>
+                  <button class="secondary ${page === "logic" ? "active" : ""}" data-view="logic">Logik-drill</button>
+                  <button class="secondary ${page === "walkthrough" ? "active" : ""}" data-view="walkthrough">Genomgång</button>
+                  <button class="secondary" data-action="open-python-course">Python-minikurs</button>
+                  <p class="muted mini-menu-section-label">Övrigt</p>
+                  <button class="secondary ${page === "research" ? "active" : ""}" data-view="research">Research</button>
+                  <button class="secondary ${page === "design" ? "active" : ""}" data-view="design">Teman</button>
+                  <button class="secondary ${page === "roadmap" ? "active" : ""}" data-view="roadmap">Roadmap</button>
+                </div>
+              </details>
+            </nav>
             <details class="mini-menu user-menu">
               <summary class="user-avatar" title="Byt användare">
                 <span class="user-avatar-icon" aria-hidden="true">👤</span>
                 <span class="user-avatar-initial">${userBadge(currentUserId)}</span>
               </summary>
               <div class="mini-menu-body">
-                <p class="muted">Aktiv: ${formatUserLabel(currentUserId)}</p>
+                <p class="muted">Aktiv: ${formatUserLabel(currentUserId)}${_isOnline ? "" : " · Offline"}</p>
                 <button class="secondary" data-action="quick-switch-user">Välj användare i lista</button>
                 <button class="secondary" data-action="quick-create-user">Skapa ny användare</button>
                 <button class="secondary" data-action="quick-switch-guest">Byt till gäst</button>
@@ -2500,12 +2492,12 @@ app.addEventListener("change", (event) => {
 });
 
 window.addEventListener("online", () => {
-  isOnline = true;
+  _isOnline = true;
   render();
 });
 
 window.addEventListener("offline", () => {
-  isOnline = false;
+  _isOnline = false;
   render();
 });
 

@@ -1274,3 +1274,182 @@ details:not(.mini-menu)[open] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* ═══════════════════════════════════════════════
+   PRIMARY NAV
+═══════════════════════════════════════════════ */
+.primary-nav {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 40;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-soft-ink);
+  cursor: pointer;
+  min-height: 32px;
+  transition: background 0.15s, border-color 0.15s;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-border);
+}
+
+.nav-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-border);
+  font-weight: 700;
+}
+
+/* "Mer"-knappen är en details/summary */
+.primary-nav > details.mini-menu > summary.nav-btn {
+  border: 1px solid transparent;
+}
+
+.primary-nav > details.mini-menu > summary.nav-btn::after {
+  content: " ▾";
+  font-size: 0.7rem;
+}
+
+.mini-menu-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin: 0.25rem 0 0;
+  padding: 0 0.2rem;
+}
+
+/* ═══════════════════════════════════════════════
+   OVERVIEW – motiverande hero
+═══════════════════════════════════════════════ */
+.overview-heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  color: var(--ink);
+}
+
+.overview-sub {
+  font-size: 0.95rem;
+  margin: 0 0 0.2rem;
+}
+
+.overview-reason {
+  font-size: 0.8rem;
+  margin: 0 0 0.75rem;
+}
+
+.overview-hero {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.overview-hero-text {
+  flex: 1 1 200px;
+}
+
+.overview-hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+}
+
+.btn-lg {
+  font-size: 1rem;
+  padding: 0.65rem 1.2rem;
+  min-height: 48px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin: 0 0 0.6rem;
+}
+
+/* ═══════════════════════════════════════════════
+   PROGRESSION GRID
+═══════════════════════════════════════════════ */
+.progress-grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.progress-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2.5rem;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.progress-pct {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════════════
+   MOCKPROV – sektionsöversikt
+═══════════════════════════════════════════════ */
+.mock-sections-grid {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.mock-section-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 500px) {
+  .overview-hero {
+    flex-direction: column;
+  }
+
+  .overview-hero-actions {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .primary-nav {
+    gap: 0.15rem;
+  }
+
+  .nav-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .mock-section-item {
+    grid-template-columns: 1fr;
+  }
+}
