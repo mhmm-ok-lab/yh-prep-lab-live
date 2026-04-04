@@ -56,6 +56,10 @@ export interface MockExamSection {
   track_id: TrackId;
   topics: string[];
   question_ids: string[];
+  /** Större pool att slumpa ifrån – om satt används question_pool + questions_count istället för question_ids */
+  question_pool?: string[];
+  /** Hur många frågor som slumpas ur question_pool per körning */
+  questions_count?: number;
   minutes: number;
   weight: number;
 }

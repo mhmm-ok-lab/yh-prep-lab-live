@@ -587,7 +587,8 @@ function calculateMockSectionResults(
   }
 
   const sectionResults = template.sections.map((section) => {
-    const sectionQuestions = questions.filter((question) => section.question_ids.includes(question.id));
+    const sectionIdSet = new Set(section.question_pool ?? section.question_ids);
+    const sectionQuestions = questions.filter((question) => sectionIdSet.has(question.id));
     const sectionScored = scoreAnswers(sectionQuestions, answers);
     const missed = sectionScored.total - sectionScored.correct;
 
@@ -1598,7 +1599,10 @@ function renderBank(): string {
 
 function renderMock(): string {
   const template = MOCK_EXAMS.find((item) => item.id === chosenMockId) || MOCK_EXAMS[0];
-  const questionCount = template.sections.reduce((sum, section) => sum + section.question_ids.length, 0);
+  const questionCount = template.sections.reduce(
+    (sum, section) => sum + (section.questions_count ?? section.question_ids.length),
+    0
+  );
   return `
     <div class="grid">
       <section class="card span-12">
@@ -1623,7 +1627,9 @@ function renderMock(): string {
               <p><span class="track-pill ${getTrackClass(section.track_id)}">${getTrackName(section.track_id)}</span></p>
               <p>Tid: ${section.minutes} min • Vikt: ${Math.round(section.weight * 100)}%</p>
               <p>Ämnen: ${section.topics.join(" • ")}</p>
-              <p class="muted">Frågor: ${section.question_ids.join(", ")}</p>
+              <p class="muted">${section.question_pool
+                ? `🎲 ${section.questions_count} slumpade frågor ur pool om ${section.question_pool.length} st`
+                : `Frågor: ${section.question_ids.join(", ")}`}</p>
             </section>
           `
         )
@@ -2250,7 +2256,13 @@ app.addEventListener("click", (event) => {
     if (!template) {
       return;
     }
-    const ids = template.sections.flatMap((section) => section.question_ids);
+    const ids = template.sections.flatMap((section) => {
+      if (section.question_pool && section.questions_count) {
+        const shuffled = [...section.question_pool].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, section.questions_count);
+      }
+      return section.question_ids;
+    });
     startSession("Tidsprov", ids, template.total_minutes, template.id);
     return;
   }
@@ -2293,7 +2305,13 @@ app.addEventListener("click", (event) => {
     if (!template) {
       return;
     }
-    const ids = template.sections.flatMap((section) => section.question_ids);
+    const ids = template.sections.flatMap((section) => {
+      if (section.question_pool && section.questions_count) {
+        const shuffled = [...section.question_pool].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, section.questions_count);
+      }
+      return section.question_ids;
+    });
     startSession("Tidsprov", ids, template.total_minutes, template.id);
     return;
   }

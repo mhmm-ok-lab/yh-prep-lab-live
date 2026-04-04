@@ -2299,6 +2299,459 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "c",
     explanation: "Nätverkslagret (lager 3) hanterar IP-adressering och routing – det bestämmer den bästa vägen för ett paket mellan olika nätverk. Routrar arbetar på detta lager."
+  },
+
+  // ── DEL 2: NÄTVERKSTEKNIK – utökad pool (iths-d2-11 till iths-d2-35) ──
+
+  {
+    id: "iths-d2-11",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är den viktigaste skillnaden mellan TCP och UDP?",
+    options: [
+      { id: "a", text: "TCP är snabbare än UDP" },
+      { id: "b", text: "TCP garanterar leverans och ordning, UDP gör det inte" },
+      { id: "c", text: "UDP används bara för webbsidor" },
+      { id: "d", text: "TCP används bara för video-streaming" }
+    ],
+    answer_key: "b",
+    explanation: "TCP (Transmission Control Protocol) är ett tillförlitligt protokoll som bekräftar leverans och ser till att paket kommer i rätt ordning. UDP (User Datagram Protocol) skickar utan bekräftelse – snabbare men utan garanti. UDP används exempelvis för video-streaming och DNS-förfrågningar."
+  },
+  {
+    id: "iths-d2-12",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "På vilket OSI-lager arbetar en MAC-adress?",
+    options: [
+      { id: "a", text: "Lager 1 – Fysiskt" },
+      { id: "b", text: "Lager 2 – Datalänk" },
+      { id: "c", text: "Lager 3 – Nätverk" },
+      { id: "d", text: "Lager 4 – Transport" }
+    ],
+    answer_key: "b",
+    explanation: "MAC-adresser (Media Access Control) används på datalänklagret (lager 2) för att identifiera enheter inom ett lokalt nätverk (LAN). En switch använder MAC-adresser för att vidarebefordra ramar till rätt port."
+  },
+  {
+    id: "iths-d2-13",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör ARP-protokollet (Address Resolution Protocol)?",
+    options: [
+      { id: "a", text: "Tilldelar IP-adresser till enheter automatiskt" },
+      { id: "b", text: "Översätter domännamn till IP-adresser" },
+      { id: "c", text: "Översätter IP-adresser till MAC-adresser" },
+      { id: "d", text: "Krypterar nätverkstrafik" }
+    ],
+    answer_key: "c",
+    explanation: "ARP översätter en känd IP-adress till motsvarande MAC-adress på det lokala nätverket. Enheten skickar en broadcast ('Vem har IP x.x.x.x?') och den som har den IP:n svarar med sin MAC-adress."
+  },
+  {
+    id: "iths-d2-14",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är DNS primära uppgift?",
+    options: [
+      { id: "a", text: "Kryptera webbtrafik" },
+      { id: "b", text: "Tilldela IP-adresser dynamiskt" },
+      { id: "c", text: "Översätta domännamn (t.ex. google.com) till IP-adresser" },
+      { id: "d", text: "Blockera obehörig trafik" }
+    ],
+    answer_key: "c",
+    explanation: "DNS (Domain Name System) fungerar som internets 'telefonbok'. Det omvandlar läsbara domännamn (som www.iths.se) till numeriska IP-adresser som datorer förstår (som 93.188.2.4)."
+  },
+  {
+    id: "iths-d2-15",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket portnummer används standardmässigt av HTTPS?",
+    options: [
+      { id: "a", text: "21" },
+      { id: "b", text: "80" },
+      { id: "c", text: "443" },
+      { id: "d", text: "3389" }
+    ],
+    answer_key: "c",
+    explanation: "HTTPS (HTTP Secure) använder port 443. HTTP använder port 80. Port 21 är FTP och port 3389 är RDP (Remote Desktop Protocol). Portnummer är som 'dörrar' – olika tjänster lyssnar på olika portar."
+  },
+  {
+    id: "iths-d2-16",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken port använder SSH (Secure Shell) som standard?",
+    options: [
+      { id: "a", text: "22" },
+      { id: "b", text: "23" },
+      { id: "c", text: "25" },
+      { id: "d", text: "53" }
+    ],
+    answer_key: "a",
+    explanation: "SSH använder port 22. Port 23 är Telnet (osäker föregångare till SSH), port 25 är SMTP (e-post) och port 53 är DNS. SSH krypterar all kommunikation och används för säker fjärrinloggning på servrar."
+  },
+  {
+    id: "iths-d2-17",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en brandväggs (firewall) primära funktion?",
+    options: [
+      { id: "a", text: "Öka internethastigheten" },
+      { id: "b", text: "Filtrera nätverkstrafik baserat på regler" },
+      { id: "c", text: "Tilldela IP-adresser till enheter" },
+      { id: "d", text: "Kryptera hårddisken" }
+    ],
+    answer_key: "b",
+    explanation: "En brandvägg kontrollerar inkommande och utgående nätverkstrafik enligt förutbestämda regler. Den kan blockera trafik från specifika IP-adresser, portar eller protokoll. Det är nätverkets 'grindvakt'."
+  },
+  {
+    id: "iths-d2-18",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är den viktigaste säkerhetsfördelen med ett VPN?",
+    options: [
+      { id: "a", text: "Det gör internetet snabbare" },
+      { id: "b", text: "Det krypterar trafiken och döljer din IP-adress" },
+      { id: "c", text: "Det blockerar alla virus automatiskt" },
+      { id: "d", text: "Det ger dig administratörsrättigheter på distans" }
+    ],
+    answer_key: "b",
+    explanation: "VPN (Virtual Private Network) skapar en krypterad tunnel för din nätverkstrafik och maskerar din faktiska IP-adress. Det skyddar kommunikation på osäkra nätverk (t.ex. offentliga WiFi) och används också för fjärråtkomst till företagsnätverk."
+  },
+  {
+    id: "iths-d2-19",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är syftet med ett VLAN (Virtual LAN)?",
+    options: [
+      { id: "a", text: "Att öka WiFi-räckvidden" },
+      { id: "b", text: "Att logiskt segmentera ett nätverk oberoende av fysisk placering" },
+      { id: "c", text: "Att kryptera all nätverkstrafik" },
+      { id: "d", text: "Att tilldela dynamiska IP-adresser" }
+    ],
+    answer_key: "b",
+    explanation: "VLAN delar upp ett fysiskt nätverk i flera logiska nätverk. Enheter i olika VLAN kan inte kommunicera direkt med varandra utan att gå via en router. Det förbättrar säkerhet, minskar broadcast-trafik och möjliggör flexibel nätverksdesign."
+  },
+  {
+    id: "iths-d2-20",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör NAT (Network Address Translation)?",
+    options: [
+      { id: "a", text: "Krypterar data som skickas över internet" },
+      { id: "b", text: "Översätter privata IP-adresser till en publik IP-adress (och vice versa)" },
+      { id: "c", text: "Tilldelar domännamn till IP-adresser" },
+      { id: "d", text: "Dirigerar paket baserat på MAC-adresser" }
+    ],
+    answer_key: "b",
+    explanation: "NAT gör att många enheter på ett lokalt nätverk (med privata IP-adresser som 192.168.x.x) kan dela en enda publik IP-adress mot internet. Det sparar IPv4-adresser och lägger till ett lager av anonymitet."
+  },
+  {
+    id: "iths-d2-21",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket protokoll används av kommandot 'ping'?",
+    options: [
+      { id: "a", text: "TCP" },
+      { id: "b", text: "UDP" },
+      { id: "c", text: "ICMP" },
+      { id: "d", text: "HTTP" }
+    ],
+    answer_key: "c",
+    explanation: "Ping använder ICMP (Internet Control Message Protocol) – specifikt 'Echo Request' och 'Echo Reply'. ICMP är ett protokoll för diagnos och felhantering i IP-nätverk, inte för datatransport. Det används för att testa om en enhet är nåbar och mäta svarstid."
+  },
+  {
+    id: "iths-d2-22",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är den huvudsakliga förbättringen i WPA3 jämfört med WPA2?",
+    options: [
+      { id: "a", text: "Snabbare WiFi-hastighet" },
+      { id: "b", text: "Stöd för fler enheter" },
+      { id: "c", text: "Skydd mot brute-force-attacker och bättre kryptering (SAE)" },
+      { id: "d", text: "Längre räckvidd" }
+    ],
+    answer_key: "c",
+    explanation: "WPA3 introducerade SAE (Simultaneous Authentication of Equals) som ersätter WPA2:s PSK-handskakning. Det skyddar mot offline brute-force-attacker och ger 'forward secrecy' – gamla sessioner kan inte dekrypteras även om lösenordet läcker."
+  },
+  {
+    id: "iths-d2-23",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är phishing?",
+    options: [
+      { id: "a", text: "En teknik för att överlasta en server med trafik" },
+      { id: "b", text: "Ett sätt att knäcka krypteringsnycklar matematiskt" },
+      { id: "c", text: "Bedrägliga meddelanden som lurar användare att lämna ut känslig information" },
+      { id: "d", text: "En metod för att avlyssna nätverkstrafik" }
+    ],
+    answer_key: "c",
+    explanation: "Phishing är social engineering via e-post, SMS eller falska webbsidor. Angriparen utger sig för att vara en betrodd avsändare (bank, IT-support, chef) för att lura offret att klicka på skadliga länkar eller lämna ut lösenord och kontoinformation."
+  },
+  {
+    id: "iths-d2-24",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör ransomware när det infekterar ett system?",
+    options: [
+      { id: "a", text: "Stänger av internet-anslutningen" },
+      { id: "b", text: "Krypterar offrets filer och kräver betalning för dekrypteringsnyckeln" },
+      { id: "c", text: "Skickar spam-mail från offrets konto" },
+      { id: "d", text: "Spionerar på tangentbordsinmatning" }
+    ],
+    answer_key: "b",
+    explanation: "Ransomware krypterar viktiga filer eller låser hela systemet och kräver sedan en lösensumma (ofta i kryptovaluta) för att återställa åtkomsten. Regelbundna offline-backuper är det bästa skyddet – då kan man återställa utan att betala."
+  },
+  {
+    id: "iths-d2-25",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad utmärker en hashfunktion (t.ex. SHA-256)?",
+    options: [
+      { id: "a", text: "Den är reversibel – man kan alltid återskapa originaldata" },
+      { id: "b", text: "Den producerar en fixt stor output oavsett input-storlek, och är envägs" },
+      { id: "c", text: "Den kräver en hemlig nyckel för att fungera" },
+      { id: "d", text: "Den komprimerar data för att spara utrymme" }
+    ],
+    answer_key: "b",
+    explanation: "En hashfunktion tar indata av godtycklig storlek och producerar alltid en fast lång output (t.ex. 256 bitar för SHA-256). Det är en envägsfunktion – man kan inte räkna baklänges. Används för att lagra lösenord, verifiera filintegritet och i digitala signaturer."
+  },
+  {
+    id: "iths-d2-26",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en CA (Certificate Authority) roll i ett PKI-system?",
+    options: [
+      { id: "a", text: "Att kryptera all webbtrafik direkt" },
+      { id: "b", text: "Att utfärda och signera digitala certifikat som styrker identiteter" },
+      { id: "c", text: "Att tilldela IP-adresser till domäner" },
+      { id: "d", text: "Att blockera skadlig trafik i realtid" }
+    ],
+    answer_key: "b",
+    explanation: "En Certificate Authority är en betrodd tredje part som utfärdar digitala certifikat. Ett certifikat binder en publik nyckel till en identitet (t.ex. en domän). Din webbläsare litar på HTTPS-siter för att CA:n har signerat deras certifikat."
+  },
+  {
+    id: "iths-d2-27",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en default gateway?",
+    options: [
+      { id: "a", text: "Den snabbaste DNS-servern på nätverket" },
+      { id: "b", text: "Enheten (oftast en router) som trafik skickas till när destinationen är utanför det lokala nätverket" },
+      { id: "c", text: "Den primära DNS-servern som tilldelas av DHCP" },
+      { id: "d", text: "En säkerhetsenhet som blockerar oönskad trafik" }
+    ],
+    answer_key: "b",
+    explanation: "Default gateway är 'utgångsporten' ur det lokala nätverket. Om din dator vill kommunicera med en IP som inte finns i det lokala subnätet skickas paketet till default gateway (routern), som sedan vidarebefordrar det rätt."
+  },
+  {
+    id: "iths-d2-28",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad anger en nätmask (subnet mask) på /24 (255.255.255.0)?",
+    options: [
+      { id: "a", text: "Att nätverket har plats för max 24 enheter" },
+      { id: "b", text: "Att de tre första oktetterna identifierar nätverket, den sista identifierar hostar" },
+      { id: "c", text: "Att 24 routrar är anslutna" },
+      { id: "d", text: "Att nätverket använder IPv6" }
+    ],
+    answer_key: "b",
+    explanation: "/24 innebär att 24 bitar används för nätverksdelen och 8 bitar för hostar (256 adresser, varav 254 användbara). Exempelvis är 192.168.1.x ett typiskt /24-nätverk där 192.168.1 är nätverksdelen och de sista siffrorna identifierar enskilda enheter."
+  },
+  {
+    id: "iths-d2-29",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan HTTP och HTTPS?",
+    options: [
+      { id: "a", text: "HTTPS är snabbare än HTTP" },
+      { id: "b", text: "HTTPS krypterar kommunikationen med TLS, HTTP skickar i klartext" },
+      { id: "c", text: "HTTP stöder bara text, HTTPS stöder bilder också" },
+      { id: "d", text: "HTTPS kräver en inloggning" }
+    ],
+    answer_key: "b",
+    explanation: "HTTPS (HTTP Secure) lägger till TLS-kryptering ovanpå HTTP. Det innebär att kommunikationen mellan webbläsaren och servern är krypterad och skyddad mot avlyssning. HTTP skickar allt i klartext – lösenord, kakor och data kan ses av vem som helst som avlyssnar trafiken."
+  },
+  {
+    id: "iths-d2-30",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan IDS och IPS?",
+    options: [
+      { id: "a", text: "IDS blockerar attacker, IPS rapporterar dem" },
+      { id: "b", text: "IDS upptäcker och rapporterar, IPS kan även aktivt blockera attacker" },
+      { id: "c", text: "De är identiska system med olika namn" },
+      { id: "d", text: "IPS används bara för trådlösa nätverk" }
+    ],
+    answer_key: "b",
+    explanation: "IDS (Intrusion Detection System) övervakar och larmar vid misstänkt aktivitet – men agerar inte. IPS (Intrusion Prevention System) kan dessutom aktivt blockera skadlig trafik i realtid. IPS är mer aggressivt men riskerar fler falska positiva."
+  },
+  {
+    id: "iths-d2-31",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vad är en zero-day-sårbarhet?",
+    options: [
+      { id: "a", text: "En bugg som har funnits i ett system i exakt ett dygn" },
+      { id: "b", text: "En okänd sårbarhet som utnyttjas innan tillverkaren vet om den och har hunnit patcha" },
+      { id: "c", text: "En attack som startar exakt vid midnatt" },
+      { id: "d", text: "En sårbarhet som kräver fysisk åtkomst till datorn" }
+    ],
+    answer_key: "b",
+    explanation: "Zero-day refererar till att tillverkaren har haft noll dagar på sig att åtgärda problemet. Angriparen känner till och utnyttjar sårbarheten innan en säkerhetsuppdatering finns. Zero-days är extremt värdefulla för angripare och mycket svåra att försvara sig mot."
+  },
+  {
+    id: "iths-d2-32",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är en SQL-injection-attack?",
+    options: [
+      { id: "a", text: "En attack som injicerar virus i SQL Server-programvaran" },
+      { id: "b", text: "En attack där skadlig SQL-kod infogas i ett inmatningsfält för att manipulera databasen" },
+      { id: "c", text: "En överbelastningsattack mot databasservrar" },
+      { id: "d", text: "En metod för att avlyssna databasanslutningar" }
+    ],
+    answer_key: "b",
+    explanation: "SQL injection utnyttjar inmatningsfält (t.ex. sökrutor eller inloggningsformulär) som inte validerar input. Angriparen skriver SQL-kommandon i fältet, och om appen är sårbar körs dessa mot databasen – vilket kan avslöja all data, kringgå inloggning eller radera tabeller."
+  },
+  {
+    id: "iths-d2-33",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad gör tvåfaktorsautentisering (2FA) säkrare än enbart lösenord?",
+    options: [
+      { id: "a", text: "Lösenordet krypteras dubbelt" },
+      { id: "b", text: "Inloggningen kräver något du vet (lösenord) OCH något du har/är (t.ex. en kod eller fingeravtryck)" },
+      { id: "c", text: "Inloggningen tar dubbelt så lång tid" },
+      { id: "d", text: "Lösenordet byts automatiskt var 30:e sekund" }
+    ],
+    answer_key: "b",
+    explanation: "2FA kräver två separata faktorer: typiskt 'något du vet' (lösenord) och 'något du har' (t.ex. en engångskod via SMS eller en authenticator-app) eller 'något du är' (biometri). Även om lösenordet läcker kan angriparen inte logga in utan den andra faktorn."
+  },
+  {
+    id: "iths-d2-34",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "En organisation vill separera sin publika webbserver från det interna nätverket men ändå tillåta internetåtkomst till servern. Vilket nätverkskoncept bör de använda?",
+    options: [
+      { id: "a", text: "VLAN inom det interna nätverket" },
+      { id: "b", text: "DMZ (Demilitariserad zon) med brandväggsregler som begränsar åtkomst till interna system" },
+      { id: "c", text: "VPN-tunnel direkt till webbservern" },
+      { id: "d", text: "NAT-konfiguration utan brandvägg" }
+    ],
+    answer_key: "b",
+    explanation: "DMZ placerar publikt tillgängliga servrar i en separat nätverkszon. Brandväggen tillåter internettrafik till DMZ men blockerar DMZ-trafik till det interna nätverket. Även om webbservern komprometteras kan angriparen inte direkt nå interna system."
+  },
+  {
+    id: "iths-d2-35",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 2: Nätverksteknik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Vilket påstående om symmetrisk kryptering är korrekt?",
+    options: [
+      { id: "a", text: "Den använder en publik och en privat nyckel" },
+      { id: "b", text: "Den är långsammare än asymmetrisk kryptering men säkrare" },
+      { id: "c", text: "Samma nyckel används för både kryptering och dekryptering" },
+      { id: "d", text: "Den kan inte användas för att kryptera stora datamängder" }
+    ],
+    answer_key: "c",
+    explanation: "Symmetrisk kryptering (t.ex. AES) använder samma nyckel för att kryptera och dekryptera. Det är mycket snabbt och lämpat för stora datamängder – men utmaningen är att säkert dela nyckeln. Asymmetrisk kryptering löser nyckeldelningsproblemet men är långsammare, varför TLS kombinerar båda."
   }
 ];
 
@@ -2520,6 +2973,8 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 2: Nätverksteknik"],
         question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        question_pool: ["iths-d2-1","iths-d2-2","iths-d2-3","iths-d2-4","iths-d2-5","iths-d2-6","iths-d2-7","iths-d2-8","iths-d2-9","iths-d2-10","iths-d2-11","iths-d2-12","iths-d2-13","iths-d2-14","iths-d2-15","iths-d2-16","iths-d2-17","iths-d2-18","iths-d2-19","iths-d2-20","iths-d2-21","iths-d2-22","iths-d2-23","iths-d2-24","iths-d2-25","iths-d2-26","iths-d2-27","iths-d2-28","iths-d2-29","iths-d2-30","iths-d2-31","iths-d2-32","iths-d2-33","iths-d2-34","iths-d2-35"],
+        questions_count: 10,
         minutes: 45,
         weight: 0.67
       }
@@ -2656,11 +3111,13 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 2: Nätverksteknik"],
         question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        question_pool: ["iths-d2-1","iths-d2-2","iths-d2-3","iths-d2-4","iths-d2-5","iths-d2-6","iths-d2-7","iths-d2-8","iths-d2-9","iths-d2-10","iths-d2-11","iths-d2-12","iths-d2-13","iths-d2-14","iths-d2-15","iths-d2-16","iths-d2-17","iths-d2-18","iths-d2-19","iths-d2-20","iths-d2-21","iths-d2-22","iths-d2-23","iths-d2-24","iths-d2-25","iths-d2-26","iths-d2-27","iths-d2-28","iths-d2-29","iths-d2-30","iths-d2-31","iths-d2-32","iths-d2-33","iths-d2-34","iths-d2-35"],
+        questions_count: 10,
         minutes: 45,
         weight: 1.0
       }
     ],
-    scoring_rules: "Fokus på nätverksprotokoll, säkerhet och nätverksarkitektur. Varje rätt svar ger lika vikt."
+    scoring_rules: "Fokus på nätverksprotokoll, säkerhet och nätverksarkitektur. 10 frågor slumpas ur en pool på 35 – varje körning ger ny variation."
   }
 ];
 
