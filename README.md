@@ -93,7 +93,7 @@ npm run audit:visual
 ## Publicering (pågår)
 - Workflow finns i `.github/workflows/deploy-pages.yml`.
 - Den kör `npm run verify` och deployar till GitHub Pages vid push till `main` och `codex/yh-prep-autopilot-night`.
-- Förväntad stabil URL när Pages är aktiv: `https://davidshore.github.io/jobbsok/`
+- Förväntad stabil URL när Pages är aktiv: `https://<github-user>.github.io/<repo-namn>/`
 
 ## Verifiering
 
