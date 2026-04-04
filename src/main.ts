@@ -63,6 +63,9 @@ interface QuestionReview {
   expectedAnswer: string;
   explanation: string;
   isCorrect: boolean;
+  scoringCriteria?: string[];
+  strongAnswerExample?: string;
+  commonMistakes?: string;
 }
 
 interface AdaptiveSuggestion {
@@ -1238,7 +1241,10 @@ function finishSession(autoSubmitted = false): void {
       userAnswer,
       expectedAnswer: question.answer_key,
       explanation: question.explanation,
-      isCorrect: isAnswerCorrect(question, userAnswer)
+      isCorrect: isAnswerCorrect(question, userAnswer),
+      scoringCriteria: question.scoring_criteria,
+      strongAnswerExample: question.strong_answer_example,
+      commonMistakes: question.common_mistakes
     };
   });
 
@@ -1927,16 +1933,37 @@ function renderLastResult(): string {
           ${lastResult.questionReviews
             .map(
               (review, index) => `
-                <details class="review-item ${review.isCorrect ? "is-correct" : "is-wrong"}">
+                <details class="review-item ${review.format === "short" ? "is-manual" : review.isCorrect ? "is-correct" : "is-wrong"}">
                   <summary>
-                    <span class="review-status">${review.isCorrect ? "Rätt" : "Fel"}</span>
+                    <span class="review-status">${review.format === "short" ? "Fritext" : review.isCorrect ? "Rätt" : "Fel"}</span>
                     <span>Fråga ${index + 1}: ${review.topic}</span>
                   </summary>
                   <p><strong>Spår:</strong> ${getTrackName(review.trackId)} • ${review.difficulty} • ${review.sourceTier}</p>
                   <p><strong>Fråga:</strong> ${review.prompt}</p>
                   <p><strong>Ditt svar:</strong> ${formatReviewUserAnswer(review)}</p>
+                  ${review.format === "short" ? `
+                  <hr>
+                  <p><strong>Modellsvar (jämförelsepunkt, inte facit att memorera):</strong><br>${review.expectedAnswer}</p>
+                  ${review.scoringCriteria && review.scoringCriteria.length > 0 ? `
+                  <p><strong>Bedömningspunkter – vad ett starkt svar innehåller:</strong></p>
+                  <ul class="scoring-list">
+                    ${review.scoringCriteria.map(c => `<li>${c}</li>`).join("")}
+                  </ul>` : ""}
+                  ${review.strongAnswerExample ? `
+                  <details class="inner-details">
+                    <summary>Resonemangsexempel (starkt svar)</summary>
+                    <p class="muted">${review.strongAnswerExample.replace(/\n/g, "<br>")}</p>
+                  </details>` : ""}
+                  ${review.commonMistakes ? `
+                  <details class="inner-details">
+                    <summary>Vanliga svagheter att undvika</summary>
+                    <p class="muted">${review.commonMistakes}</p>
+                  </details>` : ""}
+                  <p class="muted"><em>Fritext bedöms mot kriterierna ovan – sätt ett eget betyg på ditt svar.</em></p>
+                  ` : `
                   <p><strong>Facit:</strong> ${review.expectedAnswer}</p>
                   <p><strong>Förklaring:</strong> ${review.explanation}</p>
+                  `}
                 </details>
               `
             )
