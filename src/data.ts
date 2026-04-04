@@ -121,7 +121,7 @@ export const QUESTIONS: Question[] = [
     topic: "Informationsarkitektur",
     format: "mcq",
     difficulty: "Medel",
-    source_tier: "Officiell",
+    source_tier: "Sekundär",
     estimated_minutes: 3,
     prompt: "Vad är det mest rimliga första steget när en tjänst känns otydlig och har många menyer?",
     options: [
@@ -203,7 +203,7 @@ export const QUESTIONS: Question[] = [
     topic: "Informationsarkitektur",
     format: "mcq",
     difficulty: "Lätt",
-    source_tier: "Officiell",
+    source_tier: "Sekundär",
     estimated_minutes: 2,
     prompt: "Vilket mål är mest relevant när du omstrukturerar en komplex meny?",
     options: [
@@ -711,6 +711,73 @@ export const QUESTIONS: Question[] = [
     answer_key:
       "Exempel: starta count=0, loopa igenom varje tal, om tal % 2 == 0 öka count, returnera count.",
     explanation: "Bra svar visar loop, villkor och returvärde tydligt."
+  },
+  {
+    id: "prog-16",
+    track_id: "prog1a",
+    topic: "Verktyg och versionshantering",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vilket är ett vanligt syfte med versionshantering (t.ex. Git)?",
+    options: [
+      { id: "a", text: "Att översätta kod automatiskt till alla språk" },
+      { id: "b", text: "Att kunna spara, jämföra och återställa kodändringar över tid" },
+      { id: "c", text: "Att ersätta all testning av program" },
+      { id: "d", text: "Att göra datorn snabbare i spel" }
+    ],
+    answer_key: "b",
+    explanation: "Versionshantering hjälper dig följa historik, samarbeta och backa vid fel."
+  },
+  {
+    id: "prog-17",
+    track_id: "prog1a",
+    topic: "Undantagshantering",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 3,
+    prompt: "Vad är huvudidén med undantagshantering (try/catch) i programmering?",
+    options: [
+      { id: "a", text: "Att ignorera alla fel så programmet aldrig stannar" },
+      { id: "b", text: "Att fånga och hantera fel på ett kontrollerat sätt" },
+      { id: "c", text: "Att förhindra att variabler används" },
+      { id: "d", text: "Att automatiskt optimera koden" }
+    ],
+    answer_key: "b",
+    explanation: "Undantagshantering gör fel tydliga och låter programmet hantera dem säkrare."
+  },
+  {
+    id: "prog-18",
+    track_id: "prog1a",
+    topic: "Problemlösning och pseudokod",
+    format: "short",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 4,
+    prompt: "Skriv enkel pseudokod för att läsa tre tal och skriva ut det största.",
+    answer_key:
+      "Exempel: läs a,b,c; sätt max=a; om b>max sätt max=b; om c>max sätt max=c; skriv ut max.",
+    explanation: "Bra svar visar tydlig struktur med stegvis jämförelse."
+  },
+  {
+    id: "prog-19",
+    track_id: "prog1a",
+    topic: "Kodkvalitet och namngivning",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vilken namngivning är mest läsbar i produktionskod?",
+    options: [
+      { id: "a", text: "int x1 = 0;" },
+      { id: "b", text: "int customerAge = 0;" },
+      { id: "c", text: "int zz = 0;" },
+      { id: "d", text: "int _ = 0;" }
+    ],
+    answer_key: "b",
+    explanation: "Beskrivande namn gör kod lättare att förstå, testa och underhålla."
   }
 ];
 
@@ -841,7 +908,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 2: Flöde och läsning",
         track_id: "prog1a",
         topics: ["Loopar", "Code tracing"],
-        question_ids: ["prog-3", "prog-7", "prog-9", "prog-11", "prog-14"],
+        question_ids: ["prog-3", "prog-7", "prog-9", "prog-11", "prog-14", "prog-18"],
         minutes: 15,
         weight: 0.33
       },
@@ -849,7 +916,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         title: "Del 3: Metoder och felsökning",
         track_id: "prog1a",
         topics: ["Metoder", "Felsökning", "Debugging-game"],
-        question_ids: ["prog-4", "prog-5", "prog-8", "prog-10", "prog-13", "prog-15"],
+        question_ids: ["prog-4", "prog-5", "prog-8", "prog-10", "prog-13", "prog-15", "prog-16", "prog-17", "prog-19"],
         minutes: 15,
         weight: 0.34
       }
@@ -868,7 +935,7 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Hög",
     source_tier: "Officiell",
     track_id: "nackademin_ux",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-nack-2",
@@ -879,7 +946,18 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Medel",
     source_tier: "Officiell",
     track_id: "nackademin_ux",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
+  },
+  {
+    id: "ev-nack-3",
+    provider: "Nackademin",
+    url: "https://nackademin.se/antagning/urval-och-antagningsprov/",
+    claim:
+      "Nackademin anger att antagningsprovet mäter analys- och problemlösningsförmåga, tar cirka 60 minuter och att tidigare prov inte delas.",
+    confidence: "Hög",
+    source_tier: "Officiell",
+    track_id: "nackademin_ux",
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-iths-1",
@@ -890,7 +968,18 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Hög",
     source_tier: "Officiell",
     track_id: "iths_itsec",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
+  },
+  {
+    id: "ev-iths-4",
+    provider: "IT-Högskolan",
+    url: "https://www.iths.se/antagningsprovet/",
+    claim:
+      "IT-Högskolans prov är 90 minuter med Del 1 (svenska, engelska, matematik) och Del 2 som är utbildningsspecifik. För IT-säkerhetsspecialist är Del 2 dator- och nätverksteknik.",
+    confidence: "Hög",
+    source_tier: "Officiell",
+    track_id: "iths_itsec",
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-iths-3",
@@ -901,7 +990,7 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Medel",
     source_tier: "Officiell",
     track_id: "iths_itsec",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-iths-2",
@@ -912,7 +1001,7 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Hög",
     source_tier: "Officiell",
     track_id: "iths_itsec",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-prog-1",
@@ -924,7 +1013,29 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Medel",
     source_tier: "Sekundär",
     track_id: "prog1a",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
+  },
+  {
+    id: "ev-prog-3",
+    provider: "Skolverket",
+    url: "https://syllabuswebb.skolverket.se/syllabuscw/jsp/subject.htm?date=2025-07-01&subjectCode=PROG&tos=vuxgy",
+    claim:
+      "Ämnet Programmering nivå 1 (PROG1000X) omfattar bland annat kontrollstrukturer, pseudokod/diagram, enklare felhantering, undantagshantering, namngivning/kommentarer och användning av utvecklingsverktyg.",
+    confidence: "Hög",
+    source_tier: "Officiell",
+    track_id: "prog1a",
+    last_verified_date: "2026-04-04"
+  },
+  {
+    id: "ev-prog-4",
+    provider: "Skolverket (relationslista Gy11 -> Gy25)",
+    url: "https://www.skolverket.se/download/18.4a4f973719c9357f7ba4a625/1773031732088/Bilaga%2001%20SKOLFS_2024_628-2.pdf",
+    claim:
+      "Kursen Programmering 1 (PRRPRR01) motsvaras av Programmering nivå 1 (PROG1000X), vilket stödjer att äldre kursbeteckning och ny nivå kan användas parallellt under övergångsperioden.",
+    confidence: "Hög",
+    source_tier: "Officiell",
+    track_id: "prog1a",
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-prog-2",
@@ -935,7 +1046,7 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     confidence: "Medel",
     source_tier: "Sekundär",
     track_id: "prog1a",
-    last_verified_date: "2026-04-03"
+    last_verified_date: "2026-04-04"
   },
   {
     id: "ev-community-1",
