@@ -33,6 +33,12 @@ export interface Question {
   options?: QuestionOption[];
   answer_key: string;
   explanation: string;
+  /** Bedömningspunkter – vad ett starkt svar ska innehålla (fritext) */
+  scoring_criteria?: string[];
+  /** Resonemangsexempel – visar hur ett starkt svar kan låta (inte ett facit att memorera) */
+  strong_answer_example?: string;
+  /** Vanliga svagheter – typiska missar och varför de inte räcker */
+  common_mistakes?: string;
 }
 
 export interface StudySession {

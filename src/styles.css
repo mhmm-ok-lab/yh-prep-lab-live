@@ -672,6 +672,47 @@ button.danger {
   border-left: 3px solid #e7a6a6;
 }
 
+.review-item.is-manual {
+  border-left: 3px solid #a8b4f8;
+}
+
+.review-item.is-manual .review-status {
+  background: #eef0fe;
+  border-color: #c7cdfb;
+  color: #3730a3;
+}
+
+.scoring-list {
+  margin: 0.2rem 0 0.4rem 1rem;
+  padding: 0;
+  font-size: 0.83rem;
+}
+
+.scoring-list li {
+  margin-bottom: 0.18rem;
+}
+
+.inner-details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 0.3rem 0.5rem;
+  margin-top: 0.3rem;
+  background: #fafafa;
+  font-size: 0.83rem;
+}
+
+.inner-details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #52525b;
+}
+
+.review-item hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.4rem 0;
+}
+
 .roadmap-step {
   border-left-width: 3px;
 }
