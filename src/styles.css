@@ -637,6 +637,52 @@ button.danger {
   background: #f3fffb;
 }
 
+/* Lär-läget: rätt/fel-markering efter svar */
+.answer-option.is-correct-answer {
+  border-color: #4caf6e;
+  background: #edfaf2;
+}
+
+.answer-option.is-wrong-answer {
+  border-color: #e07070;
+  background: #fff0f0;
+}
+
+.answer-correct-mark {
+  grid-column: 3;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #2d7a4a;
+}
+
+/* Lär-läget: förklaring och hint */
+.learn-hint {
+  color: #6b7280;
+  font-size: 0.88rem;
+  font-style: italic;
+  margin: 0.5rem 0 0;
+}
+
+.learn-explanation {
+  background: #f8fffe;
+  border-left: 3px solid #8bcfc1;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 0;
+}
+
+.learn-result-label {
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+
+.learn-explanation-text {
+  color: #374151;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.55;
+}
+
 .answer-option input[type="radio"] {
   margin: 0.15rem 0 0;
 }

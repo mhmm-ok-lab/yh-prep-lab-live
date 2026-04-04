@@ -2119,6 +2119,224 @@ export const QUESTIONS: Question[] = [
     explanation: "/25 = 128 adresser (0–127). Nätverksadress: .0. Broadcastadress: .127. Högsta värdhosta: .126."
   },
 
+  // ── DEL 1: MATEMATIK – utökad pool (iths-d1-ma5 till iths-d1-ma16) ──
+  {
+    id: "iths-d1-ma5",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är 2⁸ (2 upphöjt till 8)?",
+    options: [
+      { id: "a", text: "64" },
+      { id: "b", text: "128" },
+      { id: "c", text: "256" },
+      { id: "d", text: "512" }
+    ],
+    answer_key: "c",
+    explanation: "2⁸ = 2×2×2×2×2×2×2×2 = 256. Potenser av 2 är grundläggande i IT: 2⁸=256 adresser per oktet i IPv4, 2¹⁰=1024 (ett kibibyte), 2¹⁶=65536 (portnummerspann)."
+  },
+  {
+    id: "iths-d1-ma6",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "En kurs kostar 4 500 kr. Du får 20% rabatt. Vad kostar kursen efter rabatten?",
+    options: [
+      { id: "a", text: "3 500 kr" },
+      { id: "b", text: "3 600 kr" },
+      { id: "c", text: "4 000 kr" },
+      { id: "d", text: "900 kr" }
+    ],
+    answer_key: "b",
+    explanation: "20% av 4 500 = 0,20 × 4 500 = 900 kr i rabatt. 4 500 – 900 = 3 600 kr. Alternativt: 4 500 × 0,80 = 3 600 kr (multiplicera med (1 – rabatt))."
+  },
+  {
+    id: "iths-d1-ma7",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vad är det hexadecimala talet FF i decimal?",
+    options: [
+      { id: "a", text: "128" },
+      { id: "b", text: "240" },
+      { id: "c", text: "255" },
+      { id: "d", text: "256" }
+    ],
+    answer_key: "c",
+    explanation: "Hex FF: F=15 i decimal. FF = 15×16 + 15×1 = 240 + 15 = 255. I hexadecimalt är A=10, B=11, C=12, D=13, E=14, F=15. FF är max för ett byte (8 bitar)."
+  },
+  {
+    id: "iths-d1-ma8",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Omvandla det binära talet 1010 till decimal.",
+    options: [
+      { id: "a", text: "8" },
+      { id: "b", text: "10" },
+      { id: "c", text: "12" },
+      { id: "d", text: "14" }
+    ],
+    answer_key: "b",
+    explanation: "1010 i binärt: 1×8 + 0×4 + 1×2 + 0×1 = 8+0+2+0 = 10. Binärt läser man höger till vänster med potenser av 2: position 0=1, 1=2, 2=4, 3=8 osv."
+  },
+  {
+    id: "iths-d1-ma9",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "En server har 32 GB RAM. Hur många megabyte (MB) är det?\n(1 GB = 1 024 MB)",
+    options: [
+      { id: "a", text: "3 200 MB" },
+      { id: "b", text: "32 000 MB" },
+      { id: "c", text: "32 768 MB" },
+      { id: "d", text: "65 536 MB" }
+    ],
+    answer_key: "c",
+    explanation: "32 GB × 1 024 MB/GB = 32 768 MB. Observera att 1 GiB = 1 024 MiB (binärt), men tillverkare marknadsför ofta 1 GB = 1 000 MB. I IT-sammanhang (OS, nätverk) används nästan alltid binär räkning: 2¹⁰ = 1 024."
+  },
+  {
+    id: "iths-d1-ma10",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Omvandla decimalvärdet 200 till binärt.",
+    options: [
+      { id: "a", text: "11000100" },
+      { id: "b", text: "11001000" },
+      { id: "c", text: "10101010" },
+      { id: "d", text: "11110000" }
+    ],
+    answer_key: "b",
+    explanation: "200 i binärt: 200 = 128+64+8 = 2⁷+2⁶+2³ = 11001000. Steg: 200÷2=100r0, 100÷2=50r0, 50÷2=25r0, 25÷2=12r1, 12÷2=6r0, 6÷2=3r0, 3÷2=1r1, 1÷2=0r1. Läs resterna baklänges: 11001000."
+  },
+  {
+    id: "iths-d1-ma11",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Ett /28-nät har hur många användbara hostar?",
+    options: [
+      { id: "a", text: "14" },
+      { id: "b", text: "16" },
+      { id: "c", text: "28" },
+      { id: "d", text: "30" }
+    ],
+    answer_key: "a",
+    explanation: "/28 innebär 4 bitar för hostar (32-28=4). 2⁴ = 16 adresser totalt. Minus nätverksadress och broadcast = 14 användbara hostar. Formeln: 2ⁿ – 2 där n = antal hostbitar."
+  },
+  {
+    id: "iths-d1-ma12",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Lökklockan visar 14:45. Hur många minuter är det till 16:00?",
+    options: [
+      { id: "a", text: "65 minuter" },
+      { id: "b", text: "75 minuter" },
+      { id: "c", text: "85 minuter" },
+      { id: "d", text: "95 minuter" }
+    ],
+    answer_key: "b",
+    explanation: "Från 14:45 till 15:00 = 15 minuter. Från 15:00 till 16:00 = 60 minuter. Totalt: 15 + 60 = 75 minuter. Tidsräkning ingår i antagningsprovets matematikdel."
+  },
+  {
+    id: "iths-d1-ma13",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket är medelvärdet av talen: 12, 18, 24, 6, 30?",
+    options: [
+      { id: "a", text: "16" },
+      { id: "b", text: "18" },
+      { id: "c", text: "20" },
+      { id: "d", text: "24" }
+    ],
+    answer_key: "b",
+    explanation: "Medelvärde = summan ÷ antal tal. 12+18+24+6+30 = 90. 90 ÷ 5 = 18. Medelvärde (genomsnitt) är en av de vanligaste statistiska beräkningarna."
+  },
+  {
+    id: "iths-d1-ma14",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Priset på en hårddisk höjs med 15% och kostar sedan 575 kr. Vad kostade den före höjningen?",
+    options: [
+      { id: "a", text: "460 kr" },
+      { id: "b", text: "488 kr" },
+      { id: "c", text: "500 kr" },
+      { id: "d", text: "520 kr" }
+    ],
+    answer_key: "c",
+    explanation: "Om priset är 115% av ursprungspriset: ursprungspris = 575 ÷ 1,15 = 500 kr. Vid procent-baklängesberäkning: dela med (1 + höjningsprocenten som decimal)."
+  },
+  {
+    id: "iths-d1-ma15",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "Hur många /30-nät kan man dela upp ett /27-nät i?",
+    options: [
+      { id: "a", text: "4" },
+      { id: "b", text: "6" },
+      { id: "c", text: "8" },
+      { id: "d", text: "16" }
+    ],
+    answer_key: "c",
+    explanation: "/27 = 32 adresser (2⁵). /30 = 4 adresser vardera (2²). 32 ÷ 4 = 8 stycken /30-nät. Subnetting handlar om att dela upp adressutrymmet i jämna block av 2."
+  },
+  {
+    id: "iths-d1-ma16",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Matematik",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 3,
+    prompt: "En switch har 24 portar och är 70% belagd. Hur många portar är lediga?",
+    options: [
+      { id: "a", text: "5" },
+      { id: "b", text: "6" },
+      { id: "c", text: "7" },
+      { id: "d", text: "8" }
+    ],
+    answer_key: "c",
+    explanation: "70% belagd = 0,70 × 24 = 16,8 → avrundat 17 portar används. Lediga: 24 – 17 = 7. (Alternativt: 30% ledigt = 0,30 × 24 = 7,2 → 7 lediga.) Kapacitetsplanering är en vanlig uppgiftstyp i antagningsprov."
+  },
+
   // ── DEL 2: DATOR- OCH NÄTVERKSTEKNIK ────────────────
   {
     id: "iths-d2-1",
@@ -2965,6 +3183,8 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 1: Matematik"],
         question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        question_pool: ["iths-d1-ma1","iths-d1-ma2","iths-d1-ma3","iths-d1-ma4","iths-d1-ma5","iths-d1-ma6","iths-d1-ma7","iths-d1-ma8","iths-d1-ma9","iths-d1-ma10","iths-d1-ma11","iths-d1-ma12","iths-d1-ma13","iths-d1-ma14","iths-d1-ma15","iths-d1-ma16"],
+        questions_count: 4,
         minutes: 15,
         weight: 0.11
       },
@@ -3061,6 +3281,8 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 1: Matematik"],
         question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        question_pool: ["iths-d1-ma1","iths-d1-ma2","iths-d1-ma3","iths-d1-ma4","iths-d1-ma5","iths-d1-ma6","iths-d1-ma7","iths-d1-ma8","iths-d1-ma9","iths-d1-ma10","iths-d1-ma11","iths-d1-ma12","iths-d1-ma13","iths-d1-ma14","iths-d1-ma15","iths-d1-ma16"],
+        questions_count: 4,
         minutes: 15,
         weight: 1.0
       }
@@ -3094,6 +3316,8 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 1: Matematik"],
         question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        question_pool: ["iths-d1-ma1","iths-d1-ma2","iths-d1-ma3","iths-d1-ma4","iths-d1-ma5","iths-d1-ma6","iths-d1-ma7","iths-d1-ma8","iths-d1-ma9","iths-d1-ma10","iths-d1-ma11","iths-d1-ma12","iths-d1-ma13","iths-d1-ma14","iths-d1-ma15","iths-d1-ma16"],
+        questions_count: 4,
         minutes: 15,
         weight: 0.34
       }
