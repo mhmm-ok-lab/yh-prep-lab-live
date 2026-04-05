@@ -177,3 +177,22 @@
 
 *Dokumentet är levande — uppdateras när nya designbeslut fattas.*
 *Nästa port: högskoleprov-spår, Matte 1–4 kurser med förklaringar.*
+
+---
+
+## Session-notering 2026-04-05 (Matrix Lab prototyp)
+
+### Beslut: extern matrix-träning via separat labb före integration
+
+**Problem:** Vi behöver snabbt testa realistiska matrix/mönster-övningar (3x3 med saknad ruta), men externa källor varierar i kvalitet och vissa blockerar inbäddning.
+
+**Beslut:** Skapa en separat testsida (`public/matrix-lab.html`) utanför huvudflödet, med tydlig status per källa:
+- `Embed: Ja` -> visa direkt i inbyggd frame.
+- `Embed: Nej` -> visa tydlig fallback-knapp "Öppna i ny flik".
+
+**UX-motiv:**
+- Minskar risk för att huvudappen blir instabil eller rörig.
+- Ger snabb validering av övningskällor innan vi bygger in dem i ordinarie träningsflöde.
+- Tydlig "blocked by source"-feedback minskar frustration när en sida inte visas i appen.
+
+**Dokumenterat i research:** `docs/matrix-resource-research-2026-04-05.md`
