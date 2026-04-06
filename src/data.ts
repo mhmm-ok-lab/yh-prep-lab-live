@@ -1,4 +1,4 @@
-import type { MockExamTemplate, Question, ResearchEvidence, Track } from "./types";
+import type { GlossaryEntry, MockExamTemplate, Question, ResearchEvidence, Track } from "./types";
 
 export const TRACKS: Track[] = [
   {
@@ -2970,6 +2970,483 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "c",
     explanation: "Symmetrisk kryptering (t.ex. AES) använder samma nyckel för att kryptera och dekryptera. Det är mycket snabbt och lämpat för stora datamängder – men utmaningen är att säkert dela nyckeln. Asymmetrisk kryptering löser nyckeldelningsproblemet men är långsammare, varför TLS kombinerar båda."
+  },
+
+  // ─────────────────────────────────────────────────
+  // ⚡ Python-modul v2: Klasser, Fel, Import & Filer
+  // py-v2-1 → py-v2-24
+  // ─────────────────────────────────────────────────
+
+  // ── Klasser och objekt (py-v2-1 → py-v2-5) ──
+
+  {
+    id: "py-v2-1",
+    track_id: "prog1a",
+    topic: "⚡ Klasser och objekt",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad definierar ett `class`-statement i Python?",
+    options: [
+      { id: "a", text: "En variabel som lagrar ett nummer" },
+      { id: "b", text: "En mall (blueprint) för att skapa objekt" },
+      { id: "c", text: "En funktion som körs automatiskt" },
+      { id: "d", text: "En loop som repeterar kod" }
+    ],
+    answer_key: "b",
+    explanation: "Ett [[class]] definierar en mall – en blueprint – för hur [[object]]s ska se ut och bete sig. Klassen i sig gör ingenting förrän du skapar en [[instance]] av den."
+  },
+  {
+    id: "py-v2-2",
+    track_id: "prog1a",
+    topic: "⚡ Klasser och objekt",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad är syftet med `__init__`-metoden i en Python-klass?",
+    options: [
+      { id: "a", text: "Den skriver ut objektet till konsolen" },
+      { id: "b", text: "Den anropas automatiskt när ett nytt objekt skapas och sätter upp dess attribut" },
+      { id: "c", text: "Den importerar externa bibliotek" },
+      { id: "d", text: "Den avslutar programmet" }
+    ],
+    answer_key: "b",
+    explanation: "[[init]] (konstruktorn) körs automatiskt när du skapar ett nytt [[object]]. Det är här du sätter upp [[attribute]]s med startvärden. Exempel: `user1 = User('Anna')` anropar `__init__` med namnet 'Anna'.",
+    strong_answer_example: "__init__ kallas när objektet skapas och sätter dess starttillstånd via self.attribute = value."
+  },
+  {
+    id: "py-v2-3",
+    track_id: "prog1a",
+    topic: "⚡ Klasser och objekt",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad refererar `self` till i en klassmetod?",
+    options: [
+      { id: "a", text: "Hela programmet" },
+      { id: "b", text: "Det specifika objekt som metoden anropas på" },
+      { id: "c", text: "Klassens namn" },
+      { id: "d", text: "Den senast importerade modulen" }
+    ],
+    answer_key: "b",
+    explanation: "[[self]] är en referens till det specifika [[object]] ([[instance]]) som [[method]]en anropas på. Om du har `user1.greet()` och `user2.greet()` refererar `self` till `user1` respektive `user2` – de delar kod men håller sin egen data via [[attribute]]s.",
+    common_mistakes: "Många tror att self är ett reserverat ord – det är bara en namnkonvention. Du kan kalla det vad du vill, men self är standard."
+  },
+  {
+    id: "py-v2-4",
+    track_id: "prog1a",
+    topic: "⚡ Klasser och objekt",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Hur läser du attributet `name` från ett objekt `user1`?",
+    options: [
+      { id: "a", text: "name(user1)" },
+      { id: "b", text: "user1->name" },
+      { id: "c", text: "user1.name" },
+      { id: "d", text: "get(user1, name)" }
+    ],
+    answer_key: "c",
+    explanation: "Punktnotation (`user1.name`) används för att komma åt [[attribute]]s och anropa [[method]]s på ett [[object]]. Det är syntaxen Python använder för att navigera in i ett objekts data.",
+    common_mistakes: "Pilen -> används i C/C++, inte Python. Parenteser används för funktionsanrop, inte attributläsning."
+  },
+  {
+    id: "py-v2-5",
+    track_id: "prog1a",
+    topic: "⚡ Klasser och objekt",
+    format: "short",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 4,
+    prompt: "Skriv en enkel Python-klass `Dog` med ett [[attribute]] `name` (satt i [[init]]) och en [[method]] `bark()` som returnerar strängen `'Woof!'`. Visa sedan hur du skapar ett [[object]] och anropar metoden.",
+    answer_key: "class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        return 'Woof!'\n\ndog1 = Dog('Rex')\nprint(dog1.bark())",
+    explanation: "En [[class]] samlar [[attribute]]s (data, t.ex. name) och [[method]]s (beteende, t.ex. bark) i ett paket. [[self]] knyter ihop metoden med det specifika [[object]]et. [[init]] sätter startvärden när [[object]]et skapas.",
+    scoring_criteria: [
+      "class med korrekt syntax",
+      "__init__(self, name) med self.name = name",
+      "bark(self) som returnerar 'Woof!'",
+      "Skapar ett objekt med Dog('namn')",
+      "Anropar bark() med punktnotation"
+    ],
+    common_mistakes: "Glömma self som första parameter i metoderna, eller använda return istället för print (båda kan vara rätt beroende på frågan)."
+  },
+
+  // ── try/except och felhantering (py-v2-6 → py-v2-10) ──
+
+  {
+    id: "py-v2-6",
+    track_id: "prog1a",
+    topic: "⚡ Felhantering: try/except",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad händer om ett program kraschar med ett `ValueError` och det INTE finns något try/except?",
+    options: [
+      { id: "a", text: "Python ignorerar felet och fortsätter" },
+      { id: "b", text: "Programmet avslutas och ett felmeddelande visas" },
+      { id: "c", text: "Felet sparas i en variabel automatiskt" },
+      { id: "d", text: "Python frågar användaren om de vill fortsätta" }
+    ],
+    answer_key: "b",
+    explanation: "Utan [[try_except]] propagerar ett undantag (exception) uppåt i anropsstacken. Om ingenting fångar det avslutas programmet med en traceback – ett felmeddelande som visar var det gick fel.",
+    common_mistakes: "Python hanterar INTE fel tyst – om du inte skriver try/except kraschar programmet."
+  },
+  {
+    id: "py-v2-7",
+    track_id: "prog1a",
+    topic: "⚡ Felhantering: try/except",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad gör följande kod?\n```python\ntry:\n    x = int(input('Ange ett tal: '))\nexcept ValueError:\n    print('Det är inte ett tal!')\n```",
+    options: [
+      { id: "a", text: "Kraschar om användaren skriver text" },
+      { id: "b", text: "Fångar felet om input inte kan konverteras till int, och skriver ut ett meddelande" },
+      { id: "c", text: "Kör except-blocket alltid, oavsett input" },
+      { id: "d", text: "Är ogiltig Python-syntax" }
+    ],
+    answer_key: "b",
+    explanation: "[[try_except]] testar koden i `try`-blocket. Om en `ValueError` uppstår (t.ex. om användaren skriver 'hej' istället för en siffra) hoppar Python till `except`-blocket och kör det istället. Programmet kraschar inte.",
+    strong_answer_example: "try kör koden, och om ValueError uppstår (fel typ) fångas det av except som hanterar det snyggt."
+  },
+  {
+    id: "py-v2-8",
+    track_id: "prog1a",
+    topic: "⚡ Felhantering: try/except",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan att fånga `except Exception` vs `except ValueError`?",
+    options: [
+      { id: "a", text: "Det är ingen skillnad" },
+      { id: "b", text: "except Exception fångar alla typer av fel, except ValueError fångar bara typkonverteringsfel" },
+      { id: "c", text: "except ValueError fångar alla fel, except Exception fångar ingenting" },
+      { id: "d", text: "except Exception används bara i klasser" }
+    ],
+    answer_key: "b",
+    explanation: "`ValueError` är en specifik feltyp – uppstår när ett värde har fel typ eller format (t.ex. `int('abc')`). `Exception` är basklassen för de flesta fel i Python. Att fånga specifika fel är bättre praxis – det undviker att dölja oväntade buggar.",
+    common_mistakes: "Att alltid använda 'except Exception' kan dölja buggar du inte visste om. Var specifik när du vet vilken feltyp du förväntar dig."
+  },
+  {
+    id: "py-v2-9",
+    track_id: "prog1a",
+    topic: "⚡ Felhantering: try/except",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad gör `finally`-blocket i en try/except-konstruktion?",
+    options: [
+      { id: "a", text: "Körs bara om ett fel uppstår" },
+      { id: "b", text: "Körs bara om inget fel uppstår" },
+      { id: "c", text: "Körs alltid, oavsett om ett fel uppstod eller inte" },
+      { id: "d", text: "Avslutar programmet" }
+    ],
+    answer_key: "c",
+    explanation: "`finally` körs alltid – oavsett om [[try_except]] fångade ett fel eller inte. Det används för städning: stänga filer, frigöra resurser, logga. Du kan se det som: 'oavsett vad som hände, gör alltid detta till sist.'",
+    strong_answer_example: "finally är garanterad körning – bra för att stänga en fil eller databasanslutning oavsett utfall."
+  },
+  {
+    id: "py-v2-10",
+    track_id: "prog1a",
+    topic: "⚡ Felhantering: try/except",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad gör `raise ValueError('Ogiltigt värde')` i Python?",
+    options: [
+      { id: "a", text: "Skriver ut meddelandet och fortsätter" },
+      { id: "b", text: "Skapar och kastar ett ValueError-undantag med det angivna meddelandet" },
+      { id: "c", text: "Importerar ValueError från ett bibliotek" },
+      { id: "d", text: "Är bara giltig inuti en except-block" }
+    ],
+    answer_key: "b",
+    explanation: "[[raise]] låter dig avsiktligt kasta ett undantag med ett eget meddelande. Det används för att signalera att något gick fel i din kod – t.ex. om en [[function]] får ett orimligt [[parameter]]. Kan användas var som helst, inte bara i except.",
+    common_mistakes: "raise avslutar INTE programmet om det fångas av ett try/except högre upp i anropsstacken."
+  },
+
+  // ── import och bibliotek (py-v2-11 → py-v2-15) ──
+
+  {
+    id: "py-v2-11",
+    track_id: "prog1a",
+    topic: "⚡ import och bibliotek",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad gör `import math` i Python?",
+    options: [
+      { id: "a", text: "Installerar math-paketet från internet" },
+      { id: "b", text: "Laddar in Pythons inbyggda math-modul så du kan använda dess funktioner" },
+      { id: "c", text: "Skapar en ny variabel kallad math" },
+      { id: "d", text: "Kör alla funktioner i math-modulen direkt" }
+    ],
+    answer_key: "b",
+    explanation: "[[import_kw]] laddar in en [[module]] (en samling kod) i ditt program. Pythons standardbibliotek innehåller många moduler som `math`, `random` och `os`. Du behöver inte installera dem – de följer med Python.",
+    common_mistakes: "import installerar INTE paket. För externa paket används pip. import laddar in redan installerade moduler."
+  },
+  {
+    id: "py-v2-12",
+    track_id: "prog1a",
+    topic: "⚡ import och bibliotek",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Du har skrivit `import math`. Hur anropar du kvadratrotsfunktionen för att räkna ut roten ur 16?",
+    options: [
+      { id: "a", text: "sqrt(16)" },
+      { id: "b", text: "math.sqrt(16)" },
+      { id: "c", text: "math->sqrt(16)" },
+      { id: "d", text: "import math.sqrt(16)" }
+    ],
+    answer_key: "b",
+    explanation: "När du importerar en [[module]] med `import math` måste du använda modulnamnet som prefix: `math.sqrt(16)`. Punkten visar att `sqrt` är en [[function]] som tillhör `math`-modulen.",
+    common_mistakes: "Om du bara skriver sqrt(16) utan prefix får du NameError – Python vet inte vad sqrt är utan modulnamnet."
+  },
+  {
+    id: "py-v2-13",
+    track_id: "prog1a",
+    topic: "⚡ import och bibliotek",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan `import math` och `from math import sqrt`?",
+    options: [
+      { id: "a", text: "Ingen skillnad – de fungerar exakt likadant" },
+      { id: "b", text: "Med 'from math import sqrt' kan du skriva sqrt() direkt utan math.-prefix" },
+      { id: "c", text: "'from math import sqrt' installerar math-paketet" },
+      { id: "d", text: "'import math' importerar bara sqrt, inte hela modulen" }
+    ],
+    answer_key: "b",
+    explanation: "`from math import sqrt` importerar en specifik [[function]] direkt till ditt namnutrymme – du kan skriva `sqrt(16)` utan prefix. `import math` importerar hela [[module]]n och kräver prefix. Båda är korrekta; `from ... import` är kortare men kan skapa namnkonflikter om du har egna funktioner med samma namn.",
+    common_mistakes: "from math import * importerar ALLT från math – detta undviks i produktionskod för att det förorenar namnutrymmet."
+  },
+  {
+    id: "py-v2-14",
+    track_id: "prog1a",
+    topic: "⚡ import och bibliotek",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Sekundär",
+    estimated_minutes: 2,
+    prompt: "Vad är `pip` och när används det?",
+    options: [
+      { id: "a", text: "En Python-funktion för att skriva ut data" },
+      { id: "b", text: "Ett verktyg för att installera externa Python-paket från internet" },
+      { id: "c", text: "Ett sätt att importera moduler i Python-kod" },
+      { id: "d", text: "En loop-typ i Python" }
+    ],
+    answer_key: "b",
+    explanation: "[[pip]] är Pythons pakethanterare. Du kör det i terminalen (inte i Python-kod): `pip install pandas` installerar ett externt paket. Standard Pythons inbyggda bibliotek kräver inte pip – det är bara för tredjepartspaket.",
+    common_mistakes: "pip används i terminalen/kommandoraden, INTE inuti Python-kod. I koden använder du import för att ladda in redan installerade paket."
+  },
+  {
+    id: "py-v2-15",
+    track_id: "prog1a",
+    topic: "⚡ import och bibliotek",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad returnerar `random.randint(1, 6)` och vad är det användbart för?",
+    options: [
+      { id: "a", text: "Alltid siffran 1" },
+      { id: "b", text: "Ett slumptal mellan 1 och 6 (inklusive båda gränserna)" },
+      { id: "c", text: "En lista av talen 1 till 6" },
+      { id: "d", text: "Medelvärdet av 1 och 6, dvs 3.5" }
+    ],
+    answer_key: "b",
+    explanation: "`random.randint(a, b)` ger ett slumpmässigt heltal inklusive både `a` och `b`. Perfekt för att simulera tärningskast, spel, slumpurval. Kräver `import random` först.",
+    common_mistakes: "range(1, 6) ger 1-5 (exkluderar 6). random.randint(1, 6) inkluderar 6 – viktigt att hålla isär."
+  },
+
+  // ── Filhantering (py-v2-16 → py-v2-20) ──
+
+  {
+    id: "py-v2-16",
+    track_id: "prog1a",
+    topic: "⚡ Filhantering",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad gör `open('data.txt', 'r')` i Python?",
+    options: [
+      { id: "a", text: "Skapar en ny fil kallad data.txt" },
+      { id: "b", text: "Öppnar filen data.txt för läsning" },
+      { id: "c", text: "Skriver 'r' till filen data.txt" },
+      { id: "d", text: "Raderar filen data.txt" }
+    ],
+    answer_key: "b",
+    explanation: "`open(filnamn, läge)` öppnar en fil. Läge `'r'` = read (läs), `'w'` = write (skriv, skapar/skriver över), `'a'` = append (lägg till). Funktionen returnerar ett filobjekt du sedan kan använda för att läsa eller skriva.",
+    common_mistakes: "Om filen inte finns och du öppnar med 'r' får du FileNotFoundError. Med 'w' skapas filen om den inte finns."
+  },
+  {
+    id: "py-v2-17",
+    track_id: "prog1a",
+    topic: "⚡ Filhantering",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad är skillnaden mellan `.read()` och `.readlines()` när du läser en fil?",
+    options: [
+      { id: "a", text: ".read() läser en rad, .readlines() läser hela filen" },
+      { id: "b", text: ".read() returnerar hela filens innehåll som en sträng, .readlines() returnerar en lista med en sträng per rad" },
+      { id: "c", text: "De är identiska och fungerar på samma sätt" },
+      { id: "d", text: ".readlines() kan bara läsa .csv-filer" }
+    ],
+    answer_key: "b",
+    explanation: "`.read()` ger hela filinnehållet som en lång [[string]]. `.readlines()` ger en [[list]] där varje element är en rad (inklusive radbrytning `\\n`). Välj `.readlines()` när du vill bearbeta fil rad för rad.",
+    common_mistakes: "Raderna från readlines() inkluderar \\n i slutet. Använd strip() för att ta bort det: for line in f.readlines(): line = line.strip()"
+  },
+  {
+    id: "py-v2-18",
+    track_id: "prog1a",
+    topic: "⚡ Filhantering",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Hur skriver du texten 'Hej!' till en fil `output.txt` i Python?",
+    options: [
+      { id: "a", text: "print('Hej!', file='output.txt')" },
+      { id: "b", text: "f = open('output.txt', 'w')\nf.write('Hej!')\nf.close()" },
+      { id: "c", text: "write('output.txt', 'Hej!')" },
+      { id: "d", text: "output.txt.write('Hej!')" }
+    ],
+    answer_key: "b",
+    explanation: "Du öppnar filen med läge `'w'` (write), anropar `.write()` med texten, och stänger sedan filen med `.close()`. Att glömma `.close()` kan leda till att data inte sparas korrekt – därav rekommendationen att använda `with`-blocket istället.",
+    common_mistakes: "Med 'w' raderas allt befintligt innehåll. Om du vill lägga till utan att radera, använd 'a' (append)."
+  },
+  {
+    id: "py-v2-19",
+    track_id: "prog1a",
+    topic: "⚡ Filhantering",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Varför rekommenderas `with open('fil.txt') as f:` framför att manuellt anropa `f.close()`?",
+    options: [
+      { id: "a", text: "with-blocket är snabbare" },
+      { id: "b", text: "with stänger automatiskt filen när blocket är klart, även om ett fel uppstår" },
+      { id: "c", text: "with-blocket är obligatoriskt för att öppna filer" },
+      { id: "d", text: "f.close() fungerar inte i Python 3" }
+    ],
+    answer_key: "b",
+    explanation: "`with open(...) as f:` är ett context manager-mönster. Det garanterar att filen stängs automatiskt när blocket avslutas – oavsett om ett fel uppstår eller inte. Det är renare kod och eliminerar risken att glömma `f.close()`.",
+    strong_answer_example: "with-blocket hanterar stängning automatiskt via __enter__ och __exit__ – säkrare än manuell close()."
+  },
+  {
+    id: "py-v2-20",
+    track_id: "prog1a",
+    topic: "⚡ Filhantering",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Vad händer om du försöker öppna en fil med `open('saknas.txt', 'r')` när filen inte finns?",
+    options: [
+      { id: "a", text: "Python skapar en ny tom fil" },
+      { id: "b", text: "Programmet ger FileNotFoundError och kraschar om det inte hanteras" },
+      { id: "c", text: "open() returnerar None" },
+      { id: "d", text: "Ingenting händer – Python ignorerar det" }
+    ],
+    answer_key: "b",
+    explanation: "`FileNotFoundError` uppstår om filen inte existerar vid läsning. Hantera det med [[try_except]]: `try: f = open(...) except FileNotFoundError: print('Filen saknas')`. Med läge `'w'` eller `'a'` skapas filen om den inte finns – det ger inte felet.",
+    common_mistakes: "Att öppna med 'w' skapar filen – men det raderar ALLT innehåll om filen redan finns. Var försiktig med 'w' på befintliga filer."
+  },
+
+  // ── Integration och praktik (py-v2-21 → py-v2-24) ──
+
+  {
+    id: "py-v2-21",
+    track_id: "prog1a",
+    topic: "⚡ Integration: kod-spårning",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 3,
+    prompt: "Vad skriver följande kod ut?\n```python\nclass Counter:\n    def __init__(self):\n        self.count = 0\n    def increment(self):\n        self.count += 1\n        return self.count\n\nc = Counter()\nprint(c.increment())\nprint(c.increment())\nprint(c.count)\n```",
+    options: [
+      { id: "a", text: "0\n0\n0" },
+      { id: "b", text: "1\n2\n2" },
+      { id: "c", text: "1\n1\n1" },
+      { id: "d", text: "SyntaxError" }
+    ],
+    answer_key: "b",
+    explanation: "[[init]] sätter `count = 0`. Varje anrop till `increment()` ökar [[attribute]]et `self.count` med 1 och returnerar det nya värdet. Första anropet: count = 1, returnerar 1. Andra: count = 2, returnerar 2. `c.count` är då 2. Nyckelinsikten: `self.count` lever kvar mellan anropen eftersom det är ett [[attribute]] på [[object]]et, inte en lokal [[variable]].",
+    common_mistakes: "En lokal variabel inuti metoden hade nollställts vid varje anrop. self.count bevaras eftersom det tillhör objektet."
+  },
+  {
+    id: "py-v2-22",
+    track_id: "prog1a",
+    topic: "⚡ Integration: felsökning",
+    format: "short",
+    difficulty: "Medel",
+    source_tier: "Officiell",
+    estimated_minutes: 4,
+    prompt: "Följande kod är tänkt att be användaren om ett tal och skriva ut det dubblade. Hitta felet och förklara hur du fixar det.\n```python\ndef double_input():\n    try:\n        x = input('Ange ett tal: ')\n        result = x * 2\n        print('Dubbelt:', result)\n    except:\n        print('Fel!')\n\ndouble_input()\n```",
+    answer_key: "Felet är att input() returnerar en sträng. x * 2 dubblar strängen (t.ex. '55'), inte talet. Fix: x = int(input('...'))",
+    explanation: "[[print_fn]] av `input()` ger alltid en [[string]], även om användaren skriver en siffra. `'5' * 2` ger `'55'` (strängrepetering), inte 10. Lösning: konvertera med `int(input(...))` eller `float(input(...))`. Dessutom: tom `except:` är dålig praxis – använd `except ValueError:` för att vara specifik.",
+    scoring_criteria: [
+      "Identifierar att input() returnerar string, inte int",
+      "Förklarar att * 2 på en sträng repeterar den",
+      "Ger korrekt fix: int(input(...))",
+      "Bonus: nämner att except utan typ är för bred"
+    ],
+    common_mistakes: "Många missar att det faktiskt INTE ger ett fel – koden körs utan krasch, men ger fel svar. Det är ett logikfel, inte ett syntaxfel."
+  },
+  {
+    id: "py-v2-23",
+    track_id: "prog1a",
+    topic: "⚡ Integration: fil och klass",
+    format: "short",
+    difficulty: "Svår",
+    source_tier: "Officiell",
+    estimated_minutes: 5,
+    prompt: "Beskriv hur du skulle skriva ett program som:\n1. Läser en textfil `names.txt` (ett namn per rad)\n2. Skapar ett `Person`-objekt för varje namn\n3. Skriver ut varje persons hälsning via en `greet()`-metod\nDu behöver inte skriva fullständig kod – men beskriv strukturen tydligt.",
+    answer_key: "1. Definiera class Person med __init__(self, name) och greet() som returnerar f'Hej, {self.name}!'. 2. Öppna filen med with open('names.txt') as f och läs raderna. 3. Loop: for name in f.readlines(): skapa Person(name.strip()) och anropa .greet().",
+    explanation: "Detta kombinerar [[class]], [[object]], filhantering och [[loop]]. [[f_string]] är praktisk i greet(). `.strip()` tar bort \\n från raderna. `with open()` hanterar filstängning automatiskt.",
+    scoring_criteria: [
+      "class Person med __init__(self, name)",
+      "greet()-metod med f-sträng eller string-concatenation",
+      "with open() as f för filläsning",
+      "loop som skapar Person-objekt per rad",
+      "strip() eller liknande för att rensa radbrytningar"
+    ],
+    strong_answer_example: "class Person:\n    def __init__(self, name): self.name = name\n    def greet(self): return f'Hej, {self.name}!'\n\nwith open('names.txt') as f:\n    for line in f:\n        p = Person(line.strip())\n        print(p.greet())"
+  },
+  {
+    id: "py-v2-24",
+    track_id: "prog1a",
+    topic: "⚡ import och bibliotek",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Officiell",
+    estimated_minutes: 2,
+    prompt: "Du skriver `import random` i toppen av ditt program. Vilka av dessa kan du nu använda?",
+    options: [
+      { id: "a", text: "random.choice(), random.randint(), random.shuffle()" },
+      { id: "b", text: "random.open(), random.read(), random.write()" },
+      { id: "c", text: "random.sort(), random.len(), random.print()" },
+      { id: "d", text: "Ingenting – du måste installera random med pip" }
+    ],
+    answer_key: "a",
+    explanation: "`random`-[[module]]n är inbyggd i Python och ger verktyg för slumptals-generering. `random.choice(lista)` väljer ett slumpmässigt element, `random.randint(a, b)` ger ett slumptal i intervall, `random.shuffle(lista)` blandar en lista. Ingen pip-installation behövs.",
+    common_mistakes: "random är en del av Pythons standardbibliotek – pip behövs bara för externa bibliotek som numpy eller requests."
   }
 ];
 
@@ -3342,6 +3819,47 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
       }
     ],
     scoring_rules: "Fokus på nätverksprotokoll, säkerhet och nätverksarkitektur. 10 frågor slumpas ur en pool på 35 – varje körning ger ny variation."
+  },
+  {
+    id: "mock-prog-python-adv",
+    name: "⚡ Python-modul: Klasser, fel & filer (25 min)",
+    track_id: "prog1a",
+    total_minutes: 25,
+    sections: [
+      {
+        title: "Klasser och objekt",
+        track_id: "prog1a",
+        topics: ["⚡ Klasser och objekt"],
+        question_ids: ["py-v2-1", "py-v2-2", "py-v2-3", "py-v2-4", "py-v2-5"],
+        minutes: 8,
+        weight: 0.25
+      },
+      {
+        title: "Felhantering: try/except",
+        track_id: "prog1a",
+        topics: ["⚡ Felhantering: try/except"],
+        question_ids: ["py-v2-6", "py-v2-7", "py-v2-8", "py-v2-9", "py-v2-10"],
+        minutes: 7,
+        weight: 0.25
+      },
+      {
+        title: "import och bibliotek",
+        track_id: "prog1a",
+        topics: ["⚡ import och bibliotek"],
+        question_ids: ["py-v2-11", "py-v2-12", "py-v2-13", "py-v2-14", "py-v2-15", "py-v2-24"],
+        minutes: 5,
+        weight: 0.25
+      },
+      {
+        title: "Filhantering och integration",
+        track_id: "prog1a",
+        topics: ["⚡ Filhantering", "⚡ Integration: kod-spårning", "⚡ Integration: felsökning", "⚡ Integration: fil och klass"],
+        question_ids: ["py-v2-16", "py-v2-17", "py-v2-18", "py-v2-19", "py-v2-20", "py-v2-21", "py-v2-22", "py-v2-23"],
+        minutes: 5,
+        weight: 0.25
+      }
+    ],
+    scoring_rules: "Lika vikt per sektion. Fritext-svar (py-v2-5, py-v2-22, py-v2-23) bedöms mot scoring_criteria. MCQ-svar rättas automatiskt."
   }
 ];
 
@@ -3533,5 +4051,527 @@ export const RESEARCH_EVIDENCE: ResearchEvidence[] = [
     source_tier: "Officiell",
     track_id: "iths_itsec",
     last_verified_date: "2026-04-04"
+  }
+];
+
+export const GLOSSARY: GlossaryEntry[] = [
+  // ── Allmänt / General ────────────────────────────────────────────
+  {
+    term: "variable",
+    category: "general",
+    sv: "En namngiven behållare som lagrar ett värde – kan ändras under programmets körning.",
+    en: "A named container that stores a value – can be changed while the program runs.",
+    story: "En märkt burk i kylen. 'salt' = 5 gram. Du kan alltid byta innehållet, men etiketten sitter kvar.",
+    related: ["string", "integer", "boolean", "scope"]
+  },
+  {
+    term: "function",
+    category: "general",
+    sv: "Ett namngivet kodblock som utför en uppgift och kan anropas upprepade gånger.",
+    en: "A named block of code that performs a task and can be called repeatedly.",
+    story: "En kokteknik på köket: 'glacera' – du definierar den en gång och anropar den för varje rätt som behöver den.",
+    related: ["parameter", "return", "def", "method"]
+  },
+  {
+    term: "class",
+    category: "general",
+    sv: "En mall (blueprint) som beskriver hur ett objekt ska se ut och bete sig.",
+    en: "A blueprint that describes how an object should look and behave.",
+    story: "Receptkortet på köket. Det beskriver vad rätten innehåller och hur den tillagas – men är inte rätten i sig.",
+    related: ["object", "instance", "method", "attribute", "init"]
+  },
+  {
+    term: "object",
+    category: "general",
+    sv: "En konkret instans av en klass – skapad från mallen och levande i minnet.",
+    en: "A concrete instance of a class – created from the blueprint and alive in memory.",
+    story: "Den färdiga rätten på tallriken. Receptkortet (klassen) är mallen; den faktiska maten framför gästen är objektet.",
+    related: ["class", "instance", "attribute", "method"]
+  },
+  {
+    term: "instance",
+    category: "general",
+    sv: "Ett specifikt objekt skapat från en klass. Varje instans har sina egna attributvärden.",
+    en: "A specific object created from a class. Each instance holds its own attribute values.",
+    story: "Varje tallrik med pasta är en instans av receptet. Tre gäster = tre instanser – samma mall, men var och en är sin.",
+    related: ["class", "object", "self"]
+  },
+  {
+    term: "method",
+    category: "general",
+    sv: "En funktion som tillhör ett objekt eller en klass och kan använda objektets data.",
+    en: "A function that belongs to an object or class and can access the object's data.",
+    story: "En teknik som bara kocken för just den rätten behärskar – 'flambera' hör till dessertavdelningen, inte till soppan.",
+    related: ["function", "class", "self", "attribute"]
+  },
+  {
+    term: "attribute",
+    category: "general",
+    sv: "En variabel som tillhör ett objekt och beskriver dess egenskaper.",
+    en: "A variable that belongs to an object and describes its properties.",
+    story: "Rättens egenskaper: temperatur, portion, allergeninfo. De hör till just den tallriken, inte till hela restaurangen.",
+    related: ["object", "class", "method", "self"]
+  },
+  {
+    term: "parameter",
+    category: "general",
+    sv: "En platsmarkör i en funktionsdefinition som tar emot ett värde vid anrop.",
+    en: "A placeholder in a function definition that receives a value when called.",
+    story: "Vad du lämnar till kocken: 'tillagningsgrad'. Kocken vet vad de ska göra med det – men det är du som bestämmer värdet.",
+    related: ["argument", "function", "return"]
+  },
+  {
+    term: "argument",
+    category: "general",
+    sv: "Det faktiska värdet som skickas in till en funktion när den anropas.",
+    en: "The actual value passed into a function when it is called.",
+    story: "Om parametern är 'tillagningsgrad', är argumentet 'medium rare'. Det konkreta värdet du skickar i stunden.",
+    related: ["parameter", "function"]
+  },
+  {
+    term: "return",
+    category: "general",
+    sv: "Skickar tillbaka ett värde från en funktion till den som anropade den.",
+    en: "Sends a value back from a function to whoever called it.",
+    story: "Rätten skickas ut från köket till gästen. return är servitrisen som bär ut tallriken – utan den stannar maten i köket.",
+    related: ["function", "method"]
+  },
+  {
+    term: "loop",
+    category: "general",
+    sv: "En struktur som upprepar ett kodblock flera gånger tills ett villkor uppfylls.",
+    en: "A structure that repeats a block of code multiple times until a condition is met.",
+    story: "Skala potatis tills hinken är tom. Kocken upprepar samma rörelse om och om igen – det är en loop.",
+    related: ["for_loop", "while_loop", "iteration", "range_fn"]
+  },
+  {
+    term: "for_loop",
+    category: "general",
+    sv: "En loop som itererar över en sekvens (lista, sträng, range) ett känt antal gånger.",
+    en: "A loop that iterates over a sequence (list, string, range) a known number of times.",
+    story: "Kocken går igenom hela beställningslistan uppifrån och ned, en rad i taget. Räknebart och förutsägbart.",
+    related: ["loop", "while_loop", "iteration", "range_fn", "list"]
+  },
+  {
+    term: "while_loop",
+    category: "general",
+    sv: "En loop som körs så länge ett villkor är sant – antalet iterationer är inte känt i förväg.",
+    en: "A loop that runs as long as a condition is true – the number of iterations is not known in advance.",
+    story: "Rör i såsen tills den tjocknar. Kocken vet inte exakt hur länge – de kollar konstant. Fortsätt = villkor sant.",
+    related: ["loop", "for_loop", "conditional", "boolean"]
+  },
+  {
+    term: "conditional",
+    category: "general",
+    sv: "En if/else-sats som kör olika kod beroende på om ett villkor är sant eller falskt.",
+    en: "An if/else statement that runs different code depending on whether a condition is true or false.",
+    story: "Vid genomgångsfönstret: om rätten är rätt temperatur skickas den ut, annars tillbaka till spisen. Beslutsögonblicket.",
+    related: ["boolean", "while_loop"]
+  },
+  {
+    term: "boolean",
+    category: "general",
+    sv: "Ett värde som antingen är True eller False – grunden för all logik i kod.",
+    en: "A value that is either True or False – the foundation of all logic in code.",
+    story: "Är ugnen varm? Ja (True) eller nej (False). Inget mittemellan. Köksbeslut kräver klara svar.",
+    related: ["conditional", "while_loop"]
+  },
+  {
+    term: "integer",
+    category: "general",
+    sv: "Ett heltal utan decimaler – t.ex. 3, -7, 100.",
+    en: "A whole number without decimals – e.g. 3, -7, 100.",
+    story: "Antal portioner på beställningen. Du kan inte beställa 2,5 gäster – det är alltid ett heltal.",
+    related: ["float", "variable", "string"]
+  },
+  {
+    term: "float",
+    category: "general",
+    sv: "Ett decimaltal – t.ex. 3.14, -0.5, 98.6.",
+    en: "A decimal number – e.g. 3.14, -0.5, 98.6.",
+    story: "Temperaturen på en stek: 63.5°C. Inte ett helt nummer – floats hanterar decimalerna i mätningar.",
+    related: ["integer", "variable"]
+  },
+  {
+    term: "string",
+    category: "general",
+    sv: "En sekvens av tecken (text) omsluten av citattecken – t.ex. 'hej' eller \"pasta\".",
+    en: "A sequence of characters (text) wrapped in quotes – e.g. 'hej' or \"pasta\".",
+    story: "Rättens namn på menyn. 'Tagliatelle al ragù' – text, inte ett nummer. Strängar är kökets etiketter.",
+    related: ["variable", "f_string", "integer"]
+  },
+  {
+    term: "list",
+    category: "general",
+    sv: "En ordnad samling av värden. Kan innehålla blandade typer och ändras efteråt.",
+    en: "An ordered collection of values. Can hold mixed types and be modified.",
+    story: "Inköpslistan på kylskåpsdörren: [mjölk, ägg, smör]. Ordnad, ändringsbar, och du kan lägga till mer.",
+    related: ["dictionary", "index", "iteration", "append"]
+  },
+  {
+    term: "dictionary",
+    category: "general",
+    sv: "En samling nyckel-värde-par. Varje värde nås via sin unika nyckel.",
+    en: "A collection of key-value pairs. Each value is accessed via its unique key.",
+    story: "Kryddskåpet: 'salt': hyllplats 3, 'peppar': hyllplats 7. Du slår upp på namn, inte på position.",
+    related: ["list", "string"]
+  },
+  {
+    term: "none",
+    category: "general",
+    sv: "Pythons sätt att representera 'inget värde' – en tom plats i minnet.",
+    en: "Python's way of representing 'no value' – an empty slot in memory.",
+    story: "En tom plats på tallriken. Inte noll portioner, inte tomrum – det är aktivt ingenting. Köket vet att den är ledig.",
+    related: ["variable", "none_py"]
+  },
+  {
+    term: "index",
+    category: "general",
+    sv: "Positionen för ett element i en lista eller sträng – börjar alltid på 0.",
+    en: "The position of an element in a list or string – always starts at 0.",
+    story: "Första rätten på menyn har index 0 – kocken räknar från noll, inte ett. Förvirrande, men konsekvent.",
+    related: ["list", "string", "iteration"]
+  },
+  {
+    term: "iteration",
+    category: "general",
+    sv: "Att gå igenom en samling element ett i taget – vad en loop gör.",
+    en: "Going through a collection of elements one at a time – what a loop does.",
+    story: "Servicepersonalen checkar av varje bord i ordning under kvällen. En runda = en iteration.",
+    related: ["loop", "for_loop", "list", "index"]
+  },
+  {
+    term: "algorithm",
+    category: "general",
+    sv: "En steg-för-steg-instruktion för att lösa ett problem – oberoende av programspråk.",
+    en: "A step-by-step instruction for solving a problem – independent of programming language.",
+    story: "Receptet i sig: hetta upp, lägg i, rör om, smaka av. En algoritm är kockens recept – inte koden, utan logiken.",
+    related: ["function", "loop", "conditional"]
+  },
+  {
+    term: "debugging",
+    category: "general",
+    sv: "Processen att hitta och rätta fel i kod.",
+    en: "The process of finding and fixing errors in code.",
+    story: "Provsmaka, identifiera problemet (för salt), korrigera. Kocken debuggar rätten innan den går ut.",
+    related: ["syntax", "try_except"]
+  },
+  {
+    term: "syntax",
+    category: "general",
+    sv: "Reglerna för hur kod måste skrivas – stavning, indrag, skiljetecken i ett programspråk.",
+    en: "The rules for how code must be written – spelling, indentation, punctuation in a language.",
+    story: "Receptets format. Om du skriver 'värm' utan att ange temperatur förstår inte kocken – syntaxfel.",
+    related: ["debugging", "indent"]
+  },
+  {
+    term: "scope",
+    category: "general",
+    sv: "Det område i koden där en variabel är synlig och tillgänglig.",
+    en: "The area in code where a variable is visible and accessible.",
+    story: "Kryddan som bara finns på kallskänken kan inte varmköket använda. Scope avgör vad som är tillgängligt var.",
+    related: ["variable", "function"]
+  },
+  {
+    term: "library",
+    category: "general",
+    sv: "En samling färdigskriven kod som du kan använda i ditt program.",
+    en: "A collection of pre-written code you can use in your program.",
+    story: "Specialistkockens receptbok, lånad från ett annat kök. Du tar in kunskapen utan att uppfinna hjulet.",
+    related: ["module", "import_kw", "pip"]
+  },
+  {
+    term: "module",
+    category: "general",
+    sv: "En enstaka Python-fil med återanvändbar kod – kan importeras i andra program.",
+    en: "A single Python file with reusable code – can be imported into other programs.",
+    story: "En specialistkock du kallar in från ett annat kök. De tar med sig sina egna verktyg och tekniker.",
+    related: ["library", "import_kw"]
+  },
+  {
+    term: "comment",
+    category: "general",
+    sv: "Text i koden som Python ignorerar – skriven för att förklara koden för människor.",
+    en: "Text in code that Python ignores – written to explain the code to humans.",
+    story: "Gula Post-it-lappar i recept-boken: 'detta är salt, inte socker!'. Kocken ser det, ugnen inte.",
+    related: ["syntax", "debugging"]
+  },
+  {
+    term: "operator",
+    category: "general",
+    sv: "Ett symbol som utför en operation på värden – t.ex. +, -, *, /, ==, >, and, or.",
+    en: "A symbol that performs an operation on values – e.g. +, -, *, /, ==, >, and, or.",
+    story: "Köksutrustning: plusset lägger ihop ingredienser, == kontrollerar om smaken är rätt, > avgör om temperaturen är tillräcklig.",
+    related: ["boolean", "conditional"]
+  },
+
+  // ── Python-specifikt ─────────────────────────────────────────────
+  {
+    term: "def",
+    category: "python",
+    sv: "Nyckelordet som används för att definiera en funktion i Python.",
+    en: "The keyword used to define a function in Python.",
+    story: "def är skylten på köksdörren: 'Här börjar tekniken'. Allt som följer efter kolonet hör till funktionen.",
+    related: ["function", "return", "parameter", "indent"]
+  },
+  {
+    term: "self",
+    category: "python",
+    sv: "En referens till det aktuella objektet inuti en klassmetod – alltid första parametern.",
+    en: "A reference to the current object inside a class method – always the first parameter.",
+    story: "Varje kock bär ett namnmärke. self är det märket – det talar om vems tallrik, vems data, vi pratar om just nu.",
+    related: ["class", "method", "attribute", "instance"]
+  },
+  {
+    term: "init",
+    category: "python",
+    sv: "Konstruktorn: en speciell metod som körs automatiskt när ett nytt objekt skapas.",
+    en: "The constructor: a special method that runs automatically when a new object is created.",
+    story: "Det första kocken gör när en ny tallrik kommer in: lägger grundsåsen. __init__ sätter grundtillståndet.",
+    related: ["class", "object", "self", "attribute"]
+  },
+  {
+    term: "print_fn",
+    category: "python",
+    sv: "Inbyggd funktion som skriver ut ett värde till konsolen.",
+    en: "Built-in function that writes a value to the console.",
+    story: "Serveringsfönstret: print() är luckan genom vilken resultatet passerar ut till världen.",
+    related: ["function", "string", "f_string"]
+  },
+  {
+    term: "len_fn",
+    category: "python",
+    sv: "Inbyggd funktion som returnerar antalet element i en sekvens (lista, sträng, etc.).",
+    en: "Built-in function that returns the number of elements in a sequence (list, string, etc.).",
+    story: "Räkna antalet rätter på brickan. len() är kocken som snabbt bedömer hur stor beställningen är.",
+    related: ["list", "string", "integer"]
+  },
+  {
+    term: "append",
+    category: "python",
+    sv: "Listmetod som lägger till ett element sist i listan.",
+    en: "List method that adds an element to the end of the list.",
+    story: "Lägga till en ny rätt längst ned på beställningslappen. append() skjuter in elementet i kön.",
+    related: ["list", "method"]
+  },
+  {
+    term: "try_except",
+    category: "python",
+    sv: "Felhanteringskonstruktion: try kör koden, except fångar felet om något går fel.",
+    en: "Error handling construct: try runs the code, except catches the error if something goes wrong.",
+    story: "Smaka på rätten. Om smaken är fel (except), rätta till den. Om den är bra, skicka ut den. Ingen krasch.",
+    related: ["raise", "debugging", "none_py"]
+  },
+  {
+    term: "raise",
+    category: "python",
+    sv: "Kastar ett undantag avsiktligt – används för att signalera att något gick fel i logiken.",
+    en: "Throws an exception intentionally – used to signal that something went wrong in the logic.",
+    story: "Kocken skickar tillbaka beställningen med en lapp: 'Ogiltigt val – vi serverar inte det'. raise är den lappen.",
+    related: ["try_except", "debugging"]
+  },
+  {
+    term: "indent",
+    category: "python",
+    sv: "Indraget (4 mellanslag) som Python använder för att markera kodblock – inte valfritt.",
+    en: "The indentation (4 spaces) Python uses to mark code blocks – not optional.",
+    story: "Kökets hierarki på pappret: sous chef-instruktioner är indragna under chefskockens. Indragningen definierar vem som lyder vem.",
+    related: ["syntax", "def", "conditional", "loop"]
+  },
+  {
+    term: "f_string",
+    category: "python",
+    sv: "En formateringssträng (f'...{variabel}...') som bäddar in variabelvärden direkt i text.",
+    en: "A formatting string (f'...{variable}...') that embeds variable values directly in text.",
+    story: "Menytexten med gästens namn inbakat: f'Välkommen {name}!' – kökset personaliserar tallriken i farten.",
+    related: ["string", "variable", "print_fn"]
+  },
+  {
+    term: "range_fn",
+    category: "python",
+    sv: "Inbyggd funktion som skapar en sekvens av heltal – vanlig i for-loopar.",
+    en: "Built-in function that creates a sequence of integers – common in for loops.",
+    story: "Numrera borden 1–10. range(1, 11) ger en räknare som kocken loopar igenom – effektivt och precist.",
+    related: ["for_loop", "integer", "iteration"]
+  },
+  {
+    term: "import_kw",
+    category: "python",
+    sv: "Nyckelordet som laddar in en modul eller bibliotek i ditt Python-program.",
+    en: "The keyword that loads a module or library into your Python program.",
+    story: "Ringa in en specialistkock. import math är telefonsamtalet: 'kom hit, vi behöver dig nu'.",
+    related: ["module", "library", "pip"]
+  },
+  {
+    term: "pip",
+    category: "python",
+    sv: "Pythons pakethanterare – används i terminalen för att installera externa bibliotek.",
+    en: "Python's package manager – used in the terminal to install external libraries.",
+    story: "Beställa in ingredienser från grossisten. pip install pandas är lastbilen som kör upp paketet till köket.",
+    related: ["import_kw", "library", "module"]
+  },
+  {
+    term: "none_py",
+    category: "python",
+    sv: "Pythons tomvärde – None (med stort N) representerar frånvaron av ett värde.",
+    en: "Python's empty value – None (capital N) represents the absence of a value.",
+    story: "En tallrik utan mat. Inte 0 portioner – utan aktivt ingenting. Köket noterar platsen som ledig.",
+    related: ["none", "variable", "boolean"]
+  },
+  {
+    term: "pass_kw",
+    category: "python",
+    sv: "Ett nyckelord som gör ingenting – en platshållare för kod som ska skrivas senare.",
+    en: "A keyword that does nothing – a placeholder for code to be written later.",
+    story: "En tom lucka i receptet med en Post-it: 'att göra'. pass säger: koden är inte klar men syntaxen håller.",
+    related: ["syntax", "def", "class"]
+  },
+
+  // ── Nätverk / Network ────────────────────────────────────────────
+  {
+    term: "ip_address",
+    category: "network",
+    sv: "En unik numerisk adress som identifierar en enhet på ett nätverk.",
+    en: "A unique numeric address that identifies a device on a network.",
+    story: "Restaurangens gatuadress. Utan den vet leveransen inte vart paketet ska. IP är nätverkets adresslapp.",
+    related: ["dns", "protocol", "server"]
+  },
+  {
+    term: "dns",
+    category: "network",
+    sv: "Domain Name System – översätter domännamn (t.ex. google.com) till IP-adresser.",
+    en: "Domain Name System – translates domain names (e.g. google.com) to IP addresses.",
+    story: "Telefonkatalogen för internet. Du slår upp 'restaurangen' och får adressen. DNS är uppslaget.",
+    related: ["ip_address", "protocol"]
+  },
+  {
+    term: "tcp",
+    category: "network",
+    sv: "Transmission Control Protocol – tillförlitligt protokoll som garanterar leveransordning.",
+    en: "Transmission Control Protocol – reliable protocol that guarantees delivery order.",
+    story: "Beställningar med kvittens. Varje rätt bekräftas som levererad. Inget försvinner – men det tar lite längre tid.",
+    related: ["udp", "protocol", "packet"]
+  },
+  {
+    term: "udp",
+    category: "network",
+    sv: "User Datagram Protocol – snabbt men otillförlitligt – ingen garanti för leverans.",
+    en: "User Datagram Protocol – fast but unreliable – no delivery guarantee.",
+    story: "Kocken skriker rätterna ut i salen och hoppas att servitrisen hör. Snabbt, men vissa rätter kan missas.",
+    related: ["tcp", "protocol", "packet"]
+  },
+  {
+    term: "port",
+    category: "network",
+    sv: "Ett nummer (0-65535) som identifierar vilken tjänst eller applikation data är avsedd för.",
+    en: "A number (0-65535) that identifies which service or application data is intended for.",
+    story: "Restaurangens bakdörr för leveranser. Port 80 = hovrätten, Port 443 = säkra leveranser. Varje dörr har ett syfte.",
+    related: ["protocol", "server", "tcp"]
+  },
+  {
+    term: "protocol",
+    category: "network",
+    sv: "En uppsättning regler som styr hur datorer kommunicerar med varandra.",
+    en: "A set of rules that governs how computers communicate with each other.",
+    story: "Kökets kommunikationsregler: kocken säger 'service!' och servitrisen svarar 'oui chef!'. Alla förstår systemet.",
+    related: ["tcp", "udp", "dns"]
+  },
+  {
+    term: "packet",
+    category: "network",
+    sv: "En liten dataenhet som skickas över nätverket – stora meddelanden delas upp i paket.",
+    en: "A small unit of data sent over a network – large messages are split into packets.",
+    story: "Varje maträtt är ett paket. En stor order delas upp: förrätt, varmrätt, dessert – tre paket, samma slutmål.",
+    related: ["tcp", "udp", "protocol"]
+  },
+  {
+    term: "firewall",
+    category: "network",
+    sv: "En säkerhetsbarriär som filtrerar nätverkstrafik baserat på regler.",
+    en: "A security barrier that filters network traffic based on rules.",
+    story: "Dörrvakten vid restaurangens ingång. Kontrollerar varje gäst mot gästlistan – otillåten trafik nekas.",
+    related: ["protocol", "port", "server"]
+  },
+  {
+    term: "server",
+    category: "network",
+    sv: "En dator som tillhandahåller tjänster eller resurser till andra datorer (klienter).",
+    en: "A computer that provides services or resources to other computers (clients).",
+    story: "Köket i restaurangen. Det arbetar i bakgrunden, tar emot beställningar från salen och levererar resultat.",
+    related: ["client", "ip_address", "port"]
+  },
+  {
+    term: "client",
+    category: "network",
+    sv: "En dator eller program som begär tjänster från en server.",
+    en: "A computer or program that requests services from a server.",
+    story: "Gästen vid bordet. De beställer (skickar en request) och väntar på att köket (servern) levererar.",
+    related: ["server", "protocol", "ip_address"]
+  },
+
+  // ── UX ───────────────────────────────────────────────────────────
+  {
+    term: "user_story",
+    category: "ux",
+    sv: "En kort beskrivning av ett behov ur användarens perspektiv: 'Som X vill jag Y för att Z.'",
+    en: "A short description of a need from the user's perspective: 'As X I want Y so that Z.'",
+    story: "Gästens önskemål på beställningslappen. Inte tekniska detaljer – bara: vem vill ha vad och varför.",
+    related: ["persona", "wireframe", "usability"]
+  },
+  {
+    term: "wireframe",
+    category: "ux",
+    sv: "En grov skiss av ett gränssnitts layout – utan färg eller slutlig design.",
+    en: "A rough sketch of an interface's layout – without color or final design.",
+    story: "Köksstaffliets grundritning. Tomma rutor och linjer som visar var ugnar, bänkar och hyllor ska sitta – ingen finish.",
+    related: ["prototype", "user_story", "affordance"]
+  },
+  {
+    term: "prototype",
+    category: "ux",
+    sv: "En testbar version av en design – kan vara enkel (papper) eller interaktiv (digital).",
+    en: "A testable version of a design – can be simple (paper) or interactive (digital).",
+    story: "Testköket: en labb-version av restaurangen byggd för att prova idéer innan den riktiga köket byggs.",
+    related: ["wireframe", "usability", "user_story"]
+  },
+  {
+    term: "usability",
+    category: "ux",
+    sv: "Hur lätt och effektivt ett system kan användas av sin målgrupp för att nå ett mål.",
+    en: "How easily and efficiently a system can be used by its intended users to achieve a goal.",
+    story: "Hur intuitivt kökets layout är för en ny kock. Hittar de allt snabbt? Gör de färre misstag? Det är usability.",
+    related: ["heuristic", "accessibility", "persona", "affordance"]
+  },
+  {
+    term: "heuristic",
+    category: "ux",
+    sv: "En tumregel för god UX – t.ex. Nielsens 10 heuristiker som synlighet, återhämtning, konsistens.",
+    en: "A rule of thumb for good UX – e.g. Nielsen's 10 heuristics like visibility, recovery, consistency.",
+    story: "Kökets gyllene regler på anslagstavlan. Inte lagar – men om du bryter dem märker gästerna alltid av det.",
+    related: ["usability", "affordance", "user_story"]
+  },
+  {
+    term: "persona",
+    category: "ux",
+    sv: "En fiktiv men databaserad representation av en typisk användare i målgruppen.",
+    en: "A fictional but data-based representation of a typical user in the target group.",
+    story: "Stamgästen du designar menyn för. Inte en verklig person – men byggd på riktiga beteendemönster.",
+    related: ["user_story", "usability"]
+  },
+  {
+    term: "affordance",
+    category: "ux",
+    sv: "Hur ett objekt signalerar sin funktion – en knapp ser ut att tryckas på, ett handtag att dras.",
+    en: "How an object signals its function – a button looks like it should be pressed, a handle like it should be pulled.",
+    story: "Dörrhandtaget på köket. Om det är runt signalerar det 'vrid', om det är platt signalerar det 'tryck'. Affordance = det uppenbart rätta sättet.",
+    related: ["heuristic", "usability", "wireframe"]
+  },
+  {
+    term: "accessibility",
+    category: "ux",
+    sv: "Hur tillgänglig en tjänst är för alla – inklusive personer med funktionsvariationer.",
+    en: "How accessible a service is for everyone – including people with disabilities.",
+    story: "Rampen vid köksbacken, punktskrift på menyn, tydliga kontraster. Tillgänglighet är design för alla, inte bara de typiska.",
+    related: ["usability", "heuristic", "persona"]
   }
 ];

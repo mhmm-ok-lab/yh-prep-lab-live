@@ -164,6 +164,36 @@
 
 ---
 
+## Framtida idéer (ej byggda än)
+
+### Bilingval glossary med story-mnemonics
+**Idé:** En interaktiv ordlista där varje programmeringsterm förklaras på *både svenska och engelska* simultant — så att användaren bygger kopplingen mellan modersmålet och det engelska fackspråket parallellt. Viktigt för prov som ges på engelska.
+
+**Interaktion:** Termer i förklaringstexter är klickbara (tap på mobil → overlay-kort). Hover-states undvikna medvetet — mobile-first, alla interaktioner ska fungera med tummen.
+
+**Story-mnemonics:** Alla termer förklaras genom *ett och samma berättelseunivers* (ett restaurangkök) för att skapa associativa minneskedjor. Exempel:
+- `class` = receptet (mallen för hur rätten ska se ut)
+- `object` = den faktiska rätten på tallriken (skapad från receptet)
+- `variable` = en märkt ingrediensburk i kylen
+- `function` = en kökteknik (tar något in, ger något tillbaka)
+- `loop` = rör om tills pastan är klar
+- `try/except` = smaka — om det är salt, rädda rätten
+- `return` = skicka ut rätten till gästen
+- `import` = kalla in en specialistkock från ett annat kök
+
+**Argument (Dual Coding Theory — Paivio, 1971):** Information som kodas i *två* format (verbal + narrativ/visuell) lagras mer robust i långtidsminnet. En historia ger ett andra kodningsspår utöver den rena definitionen.
+
+**Argument (Elaborative Interrogation):** Att koppla ett begrepp till ett konkret scenario ("varför är `class` ett recept?") tvingar aktiv bearbetning, vilket ger djupare inlärning än passiv läsning.
+
+**Kategorier planerade:** Allmänt (universella programmeringskoncept), Python-specifikt, Nätverk/IT, UX.
+
+---
+
+### UX-metodkurs som eget portföljprojekt
+Bygg ett eget projekt där varje designbeslut dokumenteras och motiveras med teori (Hick's Law, Fitts, Retrieval Practice, SDT osv). Undervisning + tillämpning i samma projekt = portföljcase som visar att du förstår *varför*, inte bara *hur*. Se befintliga designbeslut i detta dokument som startmaterial.
+
+---
+
 ## Källor och forskning som stöd
 
 - **Roediger & Karpicke (2006)** — The Power of Testing Memory: Basic Research and Implications for Educational Practice. *Perspectives on Psychological Science.*
