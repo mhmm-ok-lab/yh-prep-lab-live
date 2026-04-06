@@ -4061,7 +4061,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En namngiven behållare som lagrar ett värde – kan ändras under programmets körning.",
     en: "A named container that stores a value – can be changed while the program runs.",
-    story: "En märkt burk i kylen. 'salt' = 5 gram. Du kan alltid byta innehållet, men etiketten sitter kvar.",
+    story: "Kira hämtade maskeringtejpen kl 00:02. Varje burk, bricka och behållare fick en etikett. 'Salt. 200g.' Hon kunde byta etiketten; burken stannade kvar. Marco stod och stirrade, baffled. Han hade hållit allting i huvudet. Han kom inte ihåg sitt huvud.",
     related: ["string", "integer", "boolean", "scope"]
   },
   {
@@ -4069,7 +4069,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Ett namngivet kodblock som utför en uppgift och kan anropas upprepade gånger.",
     en: "A named block of code that performs a task and can be called repeatedly.",
-    story: "En kokteknik på köket: 'glacera' – du definierar den en gång och anropar den för varje rätt som behöver den.",
+    story: "Kl 01:30 skrev Kira teknik-kort. Inte bara vad man gör — utan hur, som ett upprepningsbart förfarande. 'def glacera: ta ankan, gör så här, returnera resultat.' Marco läste kortet. 'Det där är bara... mitt drag.' 'Ja,' sa Kira. 'Nu existerar det när du glömmer.'",
     related: ["parameter", "return", "def", "method"]
   },
   {
@@ -4077,7 +4077,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En mall (blueprint) som beskriver hur ett objekt ska se ut och bete sig.",
     en: "A blueprint that describes how an object should look and behave.",
-    story: "Receptkortet på köket. Det beskriver vad rätten innehåller och hur den tillagas – men är inte rätten i sig.",
+    story: "Vid midnatt stirrade Marco på det tomma indexkortet Kira räckte honom. 'Här skriver du vad pasta ÄR,' sa hon. 'Inte en specifik skål. Reglerna.' Marco skrev: ingredienser, metod, timing. Inte mat. Inte ännu. Bara reglerna. Hon kallade det en klass. Han kallade det 'ett kort med känslor'.",
     related: ["object", "instance", "method", "attribute", "init"]
   },
   {
@@ -4085,7 +4085,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En konkret instans av en klass – skapad från mallen och levande i minnet.",
     en: "A concrete instance of a class – created from the blueprint and alive in memory.",
-    story: "Den färdiga rätten på tallriken. Receptkortet (klassen) är mallen; den faktiska maten framför gästen är objektet.",
+    story: "Kl 01:10 lagade Kira den första riktiga pastan med Marcos kort. Hon ställde skålen framför honom. 'Det är ett objekt,' sa hon. 'Kortet är papper. Det här är saken.' Marco stirrade på sitt eget recept, tillagat från sina egna regler, med exakt rätt smak. Han grät lite. Bara lite.",
     related: ["class", "instance", "attribute", "method"]
   },
   {
@@ -4093,7 +4093,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Ett specifikt objekt skapat från en klass. Varje instans har sina egna attributvärden.",
     en: "A specific object created from a class. Each instance holds its own attribute values.",
-    story: "Varje tallrik med pasta är en instans av receptet. Tre gäster = tre instanser – samma mall, men var och en är sin.",
+    story: "Kl 01:20 stod tre pastaskålar på disken. Samma kort. Tre olika skålar. 'Varje skål är en instans,' sa Kira. 'Samma ritning, eget liv.' Marco tittade på dem. 'De är lika bra allihop.' 'Det är för att de kom från samma klass.' Han gillade inte hur mycket sense det gav.",
     related: ["class", "object", "self"]
   },
   {
@@ -4101,7 +4101,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En funktion som tillhör ett objekt eller en klass och kan använda objektets data.",
     en: "A function that belongs to an object or class and can access the object's data.",
-    story: "En teknik som bara kocken för just den rätten behärskar – 'flambera' hör till dessertavdelningen, inte till soppan.",
+    story: "Marcos flamberingsdrag. Kira försökte skriva det som en funktion men det hörde ihop med dessertklassen — det använde dessertens eget socker, egen konjak. 'Metoder tillhör det de jobbar med,' förklarade hon. Marco nickade långsamt. 'Som hur jag bara gör dramatiken på speciella tillfällen.'",
     related: ["function", "class", "self", "attribute"]
   },
   {
@@ -4109,7 +4109,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En variabel som tillhör ett objekt och beskriver dess egenskaper.",
     en: "A variable that belongs to an object and describes its properties.",
-    story: "Rättens egenskaper: temperatur, portion, allergeninfo. De hör till just den tallriken, inte till hela restaurangen.",
+    story: "'Temperatur. Allergener. Portionsstorlek.' Kira listade pastaskålens egenskaper i sin anteckningsbok. Inte fakta om pasta generellt — de tillhörde den specifika skålen. Attribut. Marco sa: 'Så skålen har... känslor?' 'Egenskaper.' 'Samma sak.'",
     related: ["object", "class", "method", "self"]
   },
   {
@@ -4117,7 +4117,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En platsmarkör i en funktionsdefinition som tar emot ett värde vid anrop.",
     en: "A placeholder in a function definition that receives a value when called.",
-    story: "Vad du lämnar till kocken: 'tillagningsgrad'. Kocken vet vad de ska göra med det – men det är du som bestämmer värdet.",
+    story: "Kl 01:40 visade Kira Marco hennes glacera-kort. 'Den här platsen? Tillagningsgrad. Det är en parameter. En blank ruta. Funktionen vet inte vilket värde den får förrän du anropar den.' Marco fyllde i 'medium rare'. 'DET,' sa Kira, 'är ett argument.'",
     related: ["argument", "function", "return"]
   },
   {
@@ -4125,7 +4125,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Det faktiska värdet som skickas in till en funktion när den anropas.",
     en: "The actual value passed into a function when it is called.",
-    story: "Om parametern är 'tillagningsgrad', är argumentet 'medium rare'. Det konkreta värdet du skickar i stunden.",
+    story: "Marco försökte argumentera för att välstekt var ett kulinariskt brott. 'Det är inte vad argument betyder i programmering,' sa Kira. 'Ett argument är det faktiska värdet du skickar in.' Hon tänkte en sekund. 'Men du har rätt om välstekt.'",
     related: ["parameter", "function"]
   },
   {
@@ -4133,7 +4133,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Skickar tillbaka ett värde från en funktion till den som anropade den.",
     en: "Sends a value back from a function to whoever called it.",
-    story: "Rätten skickas ut från köket till gästen. return är servitrisen som bär ut tallriken – utan den stannar maten i köket.",
+    story: "Kl 01:50 var första rätten klar. Kira bar den till disken. 'Funktionen är klar. Den returnerar.' 'Returnerar till vem?' 'Till den som anropade den.' 'Gästen?' 'I det här fallet, ja. Gästen anropade funktionen.' Marco tittade på Kira. 'Pratar vi fortfarande om matlagning?'",
     related: ["function", "method"]
   },
   {
@@ -4141,7 +4141,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En struktur som upprepar ett kodblock flera gånger tills ett villkor uppfylls.",
     en: "A structure that repeats a block of code multiple times until a condition is met.",
-    story: "Skala potatis tills hinken är tom. Kocken upprepar samma rörelse om och om igen – det är en loop.",
+    story: "'Hur skalar vi alla potatisar?' frågade Marco. Kira tog upp en potatis. Skalade den. La ner den. Tog upp nästa. 'Samma rörelse, upprepas tills påsen är tom.' Marco: 'Så varje gång jag någonsin skalt potatisar—' 'Loop,' sa Kira. Marco satte sig ner ett ögonblick med tyngden av det.",
     related: ["for_loop", "while_loop", "iteration", "range_fn"]
   },
   {
@@ -4149,7 +4149,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En loop som itererar över en sekvens (lista, sträng, range) ett känt antal gånger.",
     en: "A loop that iterates over a sequence (list, string, range) a known number of times.",
-    story: "Kocken går igenom hela beställningslistan uppifrån och ned, en rad i taget. Räknebart och förutsägbart.",
+    story: "Cateringlistan: 50 bord, 8 gäster per bord. Kira ritade en for-loop i luften: för varje bord i listan, förbered 8 kuvert. 'Du går igenom hela listan,' sa hon, 'varje post, uppifrån och ned.' Marco: 'Jag har varit en for-loop i 20 år.'",
     related: ["loop", "while_loop", "iteration", "range_fn", "list"]
   },
   {
@@ -4157,7 +4157,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En loop som körs så länge ett villkor är sant – antalet iterationer är inte känt i förväg.",
     en: "A loop that runs as long as a condition is true – the number of iterations is not known in advance.",
-    story: "Rör i såsen tills den tjocknar. Kocken vet inte exakt hur länge – de kollar konstant. Fortsätt = villkor sant.",
+    story: "Béarnaisesåsen. Man rör tills den tjocknar. Man vet inte exakt hur länge — man kollar konstant. 'Det är en while-loop,' sa Kira. 'Du fortsätter medan villkoret är sant.' 'Villkoret är: inte tjockt nog?' 'Ja.' Marco rörde. Och rörde. Och rörde.",
     related: ["loop", "for_loop", "conditional", "boolean"]
   },
   {
@@ -4165,7 +4165,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En if/else-sats som kör olika kod beroende på om ett villkor är sant eller falskt.",
     en: "An if/else statement that runs different code depending on whether a condition is true or false.",
-    story: "Vid genomgångsfönstret: om rätten är rätt temperatur skickas den ut, annars tillbaka till spisen. Beslutsögonblicket.",
+    story: "'Om den har rätt temperatur går den ut. Om inte, tillbaka till spisen.' Marco sa det utan att tänka och frös direkt. 'Åh nej,' sa han. 'Jag sa just ett if/else.' Kira tittade upp långsamt. 'Välkommen till gemenskapen, Marco.'",
     related: ["boolean", "while_loop"]
   },
   {
@@ -4173,7 +4173,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Ett värde som antingen är True eller False – grunden för all logik i kod.",
     en: "A value that is either True or False – the foundation of all logic in code.",
-    story: "Är ugnen varm? Ja (True) eller nej (False). Inget mittemellan. Köksbeslut kräver klara svar.",
+    story: "Kl 02:30 pekade Kira på ugnslamtan. 'Är den på?' 'Ja.' 'Är den på eller av?' 'På. Uppenbarligen på.' 'Då är booleanen True.' 'Jag känner mig nedlåten.' 'Lite,' sa hon. 'Men det ÄR vad en boolean är.'",
     related: ["conditional", "while_loop"]
   },
   {
@@ -4181,7 +4181,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Ett heltal utan decimaler – t.ex. 3, -7, 100.",
     en: "A whole number without decimals – e.g. 3, -7, 100.",
-    story: "Antal portioner på beställningen. Du kan inte beställa 2,5 gäster – det är alltid ett heltal.",
+    story: "50 bord. 400 gäster. 3 rätter. Inga decimaler. 'Tack gud,' sa Marco. 'Jag klarar inte 2,5 bord.' 'Det är integers,' sa Kira. 'Heltal. Inga bråk.' Han skrev upp dem på whiteboardet. 'Heltal: enda siffrorna som inte ljuger för dig.'",
     related: ["float", "variable", "string"]
   },
   {
@@ -4189,7 +4189,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Ett decimaltal – t.ex. 3.14, -0.5, 98.6.",
     en: "A decimal number – e.g. 3.14, -0.5, 98.6.",
-    story: "Temperaturen på en stek: 63.5°C. Inte ett helt nummer – floats hanterar decimalerna i mätningar.",
+    story: "63,5°C. Innertemperaturen på ett perfekt kycklingbröst. Inte 63. Inte 64. 63,5. 'Floats,' sa Kira och tittade på termometern. 'Decimaltal. Verkligheten är alltid en float.' Marco nickade. 'Matlagning är en float. Administration är ett heltal. Ingen människa är ett halvt.'",
     related: ["integer", "variable"]
   },
   {
@@ -4197,7 +4197,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En sekvens av tecken (text) omsluten av citattecken – t.ex. 'hej' eller \"pasta\".",
     en: "A sequence of characters (text) wrapped in quotes – e.g. 'hej' or \"pasta\".",
-    story: "Rättens namn på menyn. 'Tagliatelle al ragù' – text, inte ett nummer. Strängar är kökets etiketter.",
+    story: "Menyn. 'Tagliatelle al ragù.' 'Tournedos Rossini.' 'Tarte Tatin.' Allt text. Etiketter. Namn. 'Det här är strängar,' sa Kira och fäste dem på tavlan. Marco: 'Hela menyn är en sträng?' 'Nej, varje post är en sträng. Menyn är en lista.'",
     related: ["variable", "f_string", "integer"]
   },
   {
@@ -4205,7 +4205,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En ordnad samling av värden. Kan innehålla blandade typer och ändras efteråt.",
     en: "An ordered collection of values. Can hold mixed types and be modified.",
-    story: "Inköpslistan på kylskåpsdörren: [mjölk, ägg, smör]. Ordnad, ändringsbar, och du kan lägga till mer.",
+    story: "Kl 02:00 fäste Kira hela ordern på tavlan: [förrätt, varmrätt, dessert, amuse-bouche, bröd]. 'En lista. Ordnad. Ändringsbar.' 'Kan man ta bort saker?' 'Ja.' 'Kan man skicka den till den som lade beställningen?' 'Det är return.' Marco pekade på listan. 'Den där. Jag vill ha den.'",
     related: ["dictionary", "index", "iteration", "append"]
   },
   {
@@ -4213,7 +4213,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En samling nyckel-värde-par. Varje värde nås via sin unika nyckel.",
     en: "A collection of key-value pairs. Each value is accessed via its unique key.",
-    story: "Kryddskåpet: 'salt': hyllplats 3, 'peppar': hyllplats 7. Du slår upp på namn, inte på position.",
+    story: "Kryddskåpet. Inte organiserat efter hyllplats — organiserat efter namn. 'Salt: position 3.' 'Peppar: position 7.' Kira tittade upp: 'Det här är en dictionary.' Marco: 'Jag trodde det var ett kryddskåp.' 'Det ÄR ett kryddskåp. Det ÄR OCKSÅ en dictionary. Datastrukturer är överallt när man väl ser dem.'",
     related: ["list", "string"]
   },
   {
@@ -4221,7 +4221,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Pythons sätt att representera 'inget värde' – en tom plats i minnet.",
     en: "Python's way of representing 'no value' – an empty slot in memory.",
-    story: "En tom plats på tallriken. Inte noll portioner, inte tomrum – det är aktivt ingenting. Köket vet att den är ledig.",
+    story: "Kl 02:15 öppnade Marco en behållare. Tom. Inte noll portioner. Inte tomrum. Bara... ingenting. Aktivt ingenting. 'None,' sa Kira tyst. 'Stort N.' 'Är det ett programmeringsterm?' 'Ja. Python har ett speciellt ord för när något finns men innehåller ingenting.' Marco stängde behållaren. 'Jag har en kollega som är sådär.'",
     related: ["variable", "none_py"]
   },
   {
@@ -4229,7 +4229,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Positionen för ett element i en lista eller sträng – börjar alltid på 0.",
     en: "The position of an element in a list or string – always starts at 0.",
-    story: "Första rätten på menyn har index 0 – kocken räknar från noll, inte ett. Förvirrande, men konsekvent.",
+    story: "Kira numrerade rätterna från 0. Marco squintade: 'Varför har den första rätten nummer noll?' 'Så fungerar programmering.' 'Det är fel.' 'Det är konsekvent.' 'FEL.' 'Alla språk är överens.' 'FEL.' De argumenterade om det i fyra minuter medan pastan överkokades.",
     related: ["list", "string", "iteration"]
   },
   {
@@ -4237,7 +4237,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Att gå igenom en samling element ett i taget – vad en loop gör.",
     en: "Going through a collection of elements one at a time – what a loop does.",
-    story: "Servicepersonalen checkar av varje bord i ordning under kvällen. En runda = en iteration.",
+    story: "Kl 02:20 gick Kira igenom hela bordsplaneringslistan, en rad i taget. Samma rörelse. Varje post. 'Det är iteration,' sa hon. Marco tittade på. 'Du gör mänskliga motsvarigheten till en for-loop.' 'Jag vet,' sa han. 'Det har jag gjort i 20 år. Jag hade bara inte ett ord för det.'",
     related: ["loop", "for_loop", "list", "index"]
   },
   {
@@ -4245,7 +4245,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En steg-för-steg-instruktion för att lösa ett problem – oberoende av programspråk.",
     en: "A step-by-step instruction for solving a problem – independent of programming language.",
-    story: "Receptet i sig: hetta upp, lägg i, rör om, smaka av. En algoritm är kockens recept – inte koden, utan logiken.",
+    story: "'Min souffléeteknik är en algoritm,' sa Marco kl 04:00. Han frågade inte. 'Värm pannan, smör, vänta, vik i ägg, kolla temperatur, ta ut exakt här.' Han tappade pappret. 'En exakt, upprepningsbar, steg-för-steg-lösning.' 'Ja,' sa Kira. 'Det är vad en algoritm är.' Lång paus. 'Hela min karriär är algoritmer.' 'Jag vet,' sa hon.",
     related: ["function", "loop", "conditional"]
   },
   {
@@ -4253,7 +4253,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Processen att hitta och rätta fel i kod.",
     en: "The process of finding and fixing errors in code.",
-    story: "Provsmaka, identifiera problemet (för salt), korrigera. Kocken debuggar rätten innan den går ut.",
+    story: "Kl 03:30 var såsen fel. Inte dramatiskt fel — subtilt, specifikt fel. Marco smakade tre gånger. Identifierade problemet. Justerade. Smakade igen. 'Du debuggar,' sa Kira. 'Jag LAGAR MAT,' sa Marco. 'Samma process,' sa hon. Han svarade inte. Hon hade rätt.",
     related: ["syntax", "try_except"]
   },
   {
@@ -4261,7 +4261,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Reglerna för hur kod måste skrivas – stavning, indrag, skiljetecken i ett programspråk.",
     en: "The rules for how code must be written – spelling, indentation, punctuation in a language.",
-    story: "Receptets format. Om du skriver 'värm' utan att ange temperatur förstår inte kocken – syntaxfel.",
+    story: "Kiras anteckningar var precisa och indragna. Marco tog upp en: 'Om jag skriver det här utan kolonet, kraschar Python?' 'Ja. Direkt. Kolonet är syntax.' 'Men det är ju bara ett skiljetecken.' 'Det är varje regel i fransk matlagning också. Fel steg och hela rätten är inkohärent.'",
     related: ["debugging", "indent"]
   },
   {
@@ -4269,7 +4269,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Det område i koden där en variabel är synlig och tillgänglig.",
     en: "The area in code where a variable is visible and accessible.",
-    story: "Kryddan som bara finns på kallskänken kan inte varmköket använda. Scope avgör vad som är tillgängligt var.",
+    story: "Kallköket hade sin egen paprika. Varmköket kunde inte använda den. Inte för att det fanns regler — utan för var den stod. 'Scope,' sa Kira. 'En variabel existerar bara där den skapades. Utanför det blocket är den borta.' 'Så paprikan har scope?' 'Paprikan har scope.'",
     related: ["variable", "function"]
   },
   {
@@ -4277,7 +4277,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En samling färdigskriven kod som du kan använda i ditt program.",
     en: "A collection of pre-written code you can use in your program.",
-    story: "Specialistkockens receptbok, lånad från ett annat kök. Du tar in kunskapen utan att uppfinna hjulet.",
+    story: "'Tänk om någon redan löst patisserimatematiken?' sa Marco. Kiras ögon tändes. 'Det har de. Det finns i ett bibliotek.' 'Ett bibliotek med... matlagningsmatematik?' 'Kod. Men i princip ja, färdigskrivna lösningar på problem du inte behöver lösa om.' Marco tänkte efter. 'Det är vad kockskolan är.' 'Ja. Fast du kan pip installera det.'",
     related: ["module", "import_kw", "pip"]
   },
   {
@@ -4285,7 +4285,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "En enstaka Python-fil med återanvändbar kod – kan importeras i andra program.",
     en: "A single Python file with reusable code – can be imported into other programs.",
-    story: "En specialistkock du kallar in från ett annat kök. De tar med sig sina egna verktyg och tekniker.",
+    story: "Kira öppnade terminalen och importerade pastry-beräkningsmodulen. Den dök upp direkt — egna variabler, egna funktioner, eget tillstånd — som om en liten konditorispecialist precis kommit in i bärbara datorn. 'Varje modul är självständig,' sa hon. Marco tittade på skärmen. 'Den är väldigt liten.'",
     related: ["library", "import_kw"]
   },
   {
@@ -4293,7 +4293,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Text i koden som Python ignorerar – skriven för att förklara koden för människor.",
     en: "Text in code that Python ignores – written to explain the code to humans.",
-    story: "Gula Post-it-lappar i recept-boken: 'detta är salt, inte socker!'. Kocken ser det, ugnen inte.",
+    story: "Kl 04:15 lade Kira till en anteckning i sin kod: `# Marco skapade den här tekniken, kan inte förklara den, jag översatte så gott jag kunde`. Python ignorerade anteckningen. Kira gjorde inte det. Hon lade till en till: `# om det går sönder är det smöret. Det är alltid smöret.`",
     related: ["syntax", "debugging"]
   },
   {
@@ -4301,7 +4301,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "general",
     sv: "Ett symbol som utför en operation på värden – t.ex. +, -, *, /, ==, >, and, or.",
     en: "A symbol that performs an operation on values – e.g. +, -, *, /, ==, >, and, or.",
-    story: "Köksutrustning: plusset lägger ihop ingredienser, == kontrollerar om smaken är rätt, > avgör om temperaturen är tillräcklig.",
+    story: "Kl 02:40 kontrollerade Marco temperaturer. Är den över 63? Är den lika med det vi behöver? Under farozonen? 'Operatorer,' sa Kira. 'Större-än, lika-med, mindre-än. Alla lilla symbolerna som omvandlar data till beslut.' Marco riktade termometern mot henne. 'Du tänker göra det här hela natten, eller hur?' '==True,' sa hon.",
     related: ["boolean", "conditional"]
   },
 
@@ -4311,7 +4311,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Nyckelordet som används för att definiera en funktion i Python.",
     en: "The keyword used to define a function in Python.",
-    story: "def är skylten på köksdörren: 'Här börjar tekniken'. Allt som följer efter kolonet hör till funktionen.",
+    story: "Kira skrev `def glacera:` överst på kortet, sedan fyra mellanslag av indrag, sedan stegen. Marco: 'Varför börjar det med def?' 'Det berättar för Python att det som följer är en funktion. def är tillkännagivandet.' 'Som en ouvertyr?' 'Exakt som en ouvertyr.' Marco gillade faktiskt det.",
     related: ["function", "return", "parameter", "indent"]
   },
   {
@@ -4319,7 +4319,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "En referens till det aktuella objektet inuti en klassmetod – alltid första parametern.",
     en: "A reference to the current object inside a class method – always the first parameter.",
-    story: "Varje kock bär ett namnmärke. self är det märket – det talar om vems tallrik, vems data, vi pratar om just nu.",
+    story: "Kl 01:15 förklarade Kira self för Marco med hans eget namnskylt. 'När pasta-klassen kör sin metod behöver den veta att den pratar om DEN HÄR pastan — inte pasta i allmänhet. Self är namnskyltet.' Marco tittade på sitt märke. 'STRÖMBERG, MARCO.' 'Det är self.'",
     related: ["class", "method", "attribute", "instance"]
   },
   {
@@ -4327,7 +4327,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Konstruktorn: en speciell metod som körs automatiskt när ett nytt objekt skapas.",
     en: "The constructor: a special method that runs automatically when a new object is created.",
-    story: "Det första kocken gör när en ny tallrik kommer in: lägger grundsåsen. __init__ sätter grundtillståndet.",
+    story: "'Vad är det första du gör när en ny rätt lämnar ritningen?' frågade Kira. Marco tvekade inte: 'Mise en place. Temperatur, tallrik, grundsås.' 'Det är __init__. Körs automatiskt. Innan allt annat. Sätter starttillståndet för varje nytt objekt.' Han stirrade på henne. 'Jag uppfann __init__.'",
     related: ["class", "object", "self", "attribute"]
   },
   {
@@ -4335,7 +4335,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Inbyggd funktion som skriver ut ett värde till konsolen.",
     en: "Built-in function that writes a value to the console.",
-    story: "Serveringsfönstret: print() är luckan genom vilken resultatet passerar ut till världen.",
+    story: "Kl 05:00 körde Kira ett skript för att bekräfta menyordern. Terminalen skrev ut: 'Förrätter: 50. Varmrätter: 50. Desserter: 50.' Marco lutade sig över hennes axel. 'Varifrån sa den det?' 'Print-funktionen. Det är hur kod pratar med omvärlden.' 'Så print() är serveringsluckan.' 'Exakt serveringsluckan.'",
     related: ["function", "string", "f_string"]
   },
   {
@@ -4343,7 +4343,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Inbyggd funktion som returnerar antalet element i en sekvens (lista, sträng, etc.).",
     en: "Built-in function that returns the number of elements in a sequence (list, string, etc.).",
-    story: "Räkna antalet rätter på brickan. len() är kocken som snabbt bedömer hur stor beställningen är.",
+    story: "Hur många rätter på listan? 'len(orders),' sa Kira och tryckte. Siffran dök upp. Marco: 'Den... räknade dem?' 'Direkt.' Han stirrade på skärmen. 'Jag har räknat för hand i tjugo år.' 'len() är snabbare.' 'Jag vet,' sa han tyst. 'Jag vet.'",
     related: ["list", "string", "integer"]
   },
   {
@@ -4351,7 +4351,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Listmetod som lägger till ett element sist i listan.",
     en: "List method that adds an element to the end of the list.",
-    story: "Lägga till en ny rätt längst ned på beställningslappen. append() skjuter in elementet i kön.",
+    story: "Kl 02:05 kom ett sent tillägg: ett veganalternativ. 'Lägg till det på orderlistan,' sa Marco. Kira tryckte: `orders.append('vegan_risotto')`. Listan växte med ett. 'append lägger till sist,' förklarade hon. Marco: 'Och om jag vill ha det i mitten?' 'Det är insert. Men var inte den personen.'",
     related: ["list", "method"]
   },
   {
@@ -4359,7 +4359,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Felhanteringskonstruktion: try kör koden, except fångar felet om något går fel.",
     en: "Error handling construct: try runs the code, except catches the error if something goes wrong.",
-    story: "Smaka på rätten. Om smaken är fel (except), rätta till den. Om den är bra, skicka ut den. Ingen krasch.",
+    story: "Kl 03:00. Souffléerna. Kira satte in den första och skrev direkt: `try: bake(soufflé)` — och under: `except: serve_chocolate_mousse()`. 'Jag skrev reservplanen innan jag ens börjat,' sa hon. 'För att testa något riskabelt utan fallback är att hoppas.' Souffléen kollapsade. Moussen var perfekt. Ingen visste.",
     related: ["raise", "debugging", "none_py"]
   },
   {
@@ -4367,7 +4367,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Kastar ett undantag avsiktligt – används för att signalera att något gick fel i logiken.",
     en: "Throws an exception intentionally – used to signal that something went wrong in the logic.",
-    story: "Kocken skickar tillbaka beställningen med en lapp: 'Ogiltigt val – vi serverar inte det'. raise är den lappen.",
+    story: "Kl 03:15 smakade Marco på något från kylen och spottade ut det direkt. 'NEJ. Stopp. Det här är fel. Inte fel-nog-att-fixa — utan fel-nog-att-stoppa-allt.' 'Det är raise,' sa Kira. 'Kasta ett undantag avsiktligt. Inte hantera det tyst — skrika att det inte kan fortsätta.' 'Jag har kastat undantag hela karriären,' sa Marco. 'Men aldrig hanterat dem elegant.'",
     related: ["try_except", "debugging"]
   },
   {
@@ -4375,7 +4375,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Indraget (4 mellanslag) som Python använder för att markera kodblock – inte valfritt.",
     en: "The indentation (4 spaces) Python uses to mark code blocks – not optional.",
-    story: "Kökets hierarki på pappret: sous chef-instruktioner är indragna under chefskockens. Indragningen definierar vem som lyder vem.",
+    story: "Kiras kod såg ut som en trappa. Marco: 'Varför är allt skjutet åt höger?' 'Det är hur Python vet vad som hör inuti vad. Fyra mellanslag per nivå. Inte valfritt.' Han tittade på hennes receptkort — organiserade med exakt samma indragningsmönster. 'Du,' sa han långsamt, 'är väldigt konsekvent.'",
     related: ["syntax", "def", "conditional", "loop"]
   },
   {
@@ -4383,7 +4383,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "En formateringssträng (f'...{variabel}...') som bäddar in variabelvärden direkt i text.",
     en: "A formatting string (f'...{variable}...') that embeds variable values directly in text.",
-    story: "Menytexten med gästens namn inbakat: f'Välkommen {name}!' – kökset personaliserar tallriken i farten.",
+    story: "Kl 06:00 genererade Kira bordskorten: `f'Bord {n}: {course}'`. Varje kort kom ut personaliserat. 'Klamrarna är där variabler bäddas in i texten,' sa hon. Marco tittade på 50 identiska-men-unika kort. 'Det här hade tagit mig en timme.' 'Det tog 0,003 sekunder.' En lång tystnad.",
     related: ["string", "variable", "print_fn"]
   },
   {
@@ -4391,7 +4391,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Inbyggd funktion som skapar en sekvens av heltal – vanlig i for-loopar.",
     en: "Built-in function that creates a sequence of integers – common in for loops.",
-    story: "Numrera borden 1–10. range(1, 11) ger en räknare som kocken loopar igenom – effektivt och precist.",
+    story: "Kl 02:25: 50 bord att förbereda. Kira insisterade på att börja från noll. Marco vägrade. De kompromissade med ett för 'gästerna vet inte vad noll är'. `range(1, 51)`. Femtio siffror, direkt, inget papper. Marco muttrade: 'Vi hade kunnat använda det här varje kväll i femton år.'",
     related: ["for_loop", "integer", "iteration"]
   },
   {
@@ -4399,7 +4399,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Nyckelordet som laddar in en modul eller bibliotek i ditt Python-program.",
     en: "The keyword that loads a module or library into your Python program.",
-    story: "Ringa in en specialistkock. import math är telefonsamtalet: 'kom hit, vi behöver dig nu'.",
+    story: "Kl 04:00 öppnade Kira terminalen och skrev `import math`. Ett bibliotek av matematikfunktioner dök upp direkt. 'Det är bara... där? Jag behöver inte bygga det?' 'Någon annan byggde det.' Hon tvekade. 'Ärligt talat är mycket av programmering import-satser och tro på andras kod.'",
     related: ["module", "library", "pip"]
   },
   {
@@ -4407,7 +4407,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Pythons pakethanterare – används i terminalen för att installera externa bibliotek.",
     en: "Python's package manager – used in the terminal to install external libraries.",
-    story: "Beställa in ingredienser från grossisten. pip install pandas är lastbilen som kör upp paketet till köket.",
+    story: "Kira behövde ett bibliotek för mat-och-vin-kombinationer. Hon tryckte `pip install sommelier-py` i terminalen. 30 sekunder senare var det installerat. Marco tittade. 'Det... laddade ner en sommelier?' 'En sommeliers kunskap. Kodad.' Han var tyst ett ögonblick. 'Jag känner mig både lättad och hotad.'",
     related: ["import_kw", "library", "module"]
   },
   {
@@ -4415,7 +4415,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Pythons tomvärde – None (med stort N) representerar frånvaron av ett värde.",
     en: "Python's empty value – None (capital N) represents the absence of a value.",
-    story: "En tallrik utan mat. Inte 0 portioner – utan aktivt ingenting. Köket noterar platsen som ledig.",
+    story: "Kl 05:30 visade en kurspost None — datan fanns men värdet var tomt. 'Inte noll,' sa Kira. 'Noll skulle betyda inga portioner. None betyder att fältet aldrig sattes.' Marco squintade. 'Skillnaden mellan en tom tallrik och en tallrik som aldrig dukades.' 'Exakt.' Han nickade. 'Jag har serverat båda. De känns olika.'",
     related: ["none", "variable", "boolean"]
   },
   {
@@ -4423,7 +4423,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "python",
     sv: "Ett nyckelord som gör ingenting – en platshållare för kod som ska skrivas senare.",
     en: "A keyword that does nothing – a placeholder for code to be written later.",
-    story: "En tom lucka i receptet med en Post-it: 'att göra'. pass säger: koden är inte klar men syntaxen håller.",
+    story: "Kl 05:00 skrev Kira en klass för dessertsektionen men lämnade huvudmetoden tom, la bara in `pass` som platshållare. 'Fungerar det?' frågade Marco. 'Det kompilerar. Gör ingenting. Men strukturen är där tills vi fyller i den.' Han tittade på funktionsskelettet. 'Det är mise en place för kod.' 'Ja. Exakt det.'",
     related: ["syntax", "def", "class"]
   },
 
@@ -4433,7 +4433,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "En unik numerisk adress som identifierar en enhet på ett nätverk.",
     en: "A unique numeric address that identifies a device on a network.",
-    story: "Restaurangens gatuadress. Utan den vet leveransen inte vart paketet ska. IP är nätverkets adresslapp.",
+    story: "Kl 05:03 slocknade kassasystemets skärm. 'Surfplattan hittar inte servern,' sa Kira. 'Vad är serverns IP?' Marco: 'Vad är ett IP?' 'Det är adressen. Varje enhet på nätverket har en. Som en gatuadress, fast för datorer.' Han gav henne en tom blick. 'Skärmen slocknade och nu pratar du om adresser.' 'Ja. Välkommen till nätverk.'",
     related: ["dns", "protocol", "server"]
   },
   {
@@ -4441,7 +4441,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "Domain Name System – översätter domännamn (t.ex. google.com) till IP-adresser.",
     en: "Domain Name System – translates domain names (e.g. google.com) to IP addresses.",
-    story: "Telefonkatalogen för internet. Du slår upp 'restaurangen' och får adressen. DNS är uppslaget.",
+    story: "Kl 05:05 tryckte Kira in serverns namn i konfigurationen. Det löste inte upp. 'DNS är nere,' sa hon. Marco: 'Vad är DNS?' 'Det översätter namn till adresser. Som en telefonkatalog.' 'Vi har sådana.' 'Inte digitala tydligen.' Hon tryckte in rå IP-siffran istället. Det fungerade. 'DNS,' sa hon, 'är det man bara märker när det slutar fungera.'",
     related: ["ip_address", "protocol"]
   },
   {
@@ -4449,7 +4449,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "Transmission Control Protocol – tillförlitligt protokoll som garanterar leveransordning.",
     en: "Transmission Control Protocol – reliable protocol that guarantees delivery order.",
-    story: "Beställningar med kvittens. Varje rätt bekräftas som levererad. Inget försvinner – men det tar lite längre tid.",
+    story: "Kl 05:10 satte hon om kassasystemet till TCP. 'Varje order bekräftas som mottagen. Långsammare, men inget tappas.' Marco: 'Som en servitör som upprepar varje beställning för bekräftelse.' 'Exakt.' 'Vi borde göra det ändå.' 'Ja,' sa Kira. 'Det borde ni.'",
     related: ["udp", "protocol", "packet"]
   },
   {
@@ -4457,7 +4457,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "User Datagram Protocol – snabbt men otillförlitligt – ingen garanti för leverans.",
     en: "User Datagram Protocol – fast but unreliable – no delivery guarantee.",
-    story: "Kocken skriker rätterna ut i salen och hoppas att servitrisen hör. Snabbt, men vissa rätter kan missas.",
+    story: "Marco ville veta vad UDP var. 'UDP är som att skrika orders rakt ut i matsalen,' sa Kira. 'Snabbt. Ingen bekräftelse. Vissa missas.' 'När vill man det?' 'Streaming. Live-video. När hastighet är viktigare än precision.' 'För kassaorders?' 'Absolut TCP.' 'Bra. Jag behöver alla bekräftelser jag kan få i natt.'",
     related: ["tcp", "protocol", "packet"]
   },
   {
@@ -4465,7 +4465,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "Ett nummer (0-65535) som identifierar vilken tjänst eller applikation data är avsedd för.",
     en: "A number (0-65535) that identifies which service or application data is intended for.",
-    story: "Restaurangens bakdörr för leveranser. Port 80 = hovrätten, Port 443 = säkra leveranser. Varje dörr har ett syfte.",
+    story: "Kl 05:15 kunde surfplattan nå servern men inte orderappen. 'Fel port,' muttrade Kira. 'Olika appar lyssnar på olika dörrar. Kassasystemet knackar på port 80 men appen är på 8080.' 'Två dörrar på samma byggnad,' sa Marco. 'Ja. Och båda låsta tills jag fixar det.' Hon fixade det.",
     related: ["protocol", "server", "tcp"]
   },
   {
@@ -4473,7 +4473,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "En uppsättning regler som styr hur datorer kommunicerar med varandra.",
     en: "A set of rules that governs how computers communicate with each other.",
-    story: "Kökets kommunikationsregler: kocken säger 'service!' och servitrisen svarar 'oui chef!'. Alla förstår systemet.",
+    story: "'Hur vet surfplattan hur man pratar med servern?' frågade Marco. 'Protokoll. Regler de båda kommit överens om. Samma språk, samma ordning.' Marco tittade på sitt kök. 'Vi har protokoll. Service! betyder en rätt är klar. Oui, chef! betyder bekräftat.' Kira tittade upp. 'Marco. Du har implementerat protokoll sedan dag ett.'",
     related: ["tcp", "udp", "dns"]
   },
   {
@@ -4481,7 +4481,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "En liten dataenhet som skickas över nätverket – stora meddelanden delas upp i paket.",
     en: "A small unit of data sent over a network – large messages are split into packets.",
-    story: "Varje maträtt är ett paket. En stor order delas upp: förrätt, varmrätt, dessert – tre paket, samma slutmål.",
+    story: "Ordern kom igenom i bitar. Varje bit anlände separat och sattes ihop vid andra änden. 'Paket,' sa Kira. 'Stora meddelanden delas upp, skickas och byggs ihop igen.' Marco tänkte på de trerätters han lagat den natten. Förrätt, varmrätt, dessert. Varje ett paket. Gästen byggde ihop meningen vid bordet.",
     related: ["tcp", "udp", "protocol"]
   },
   {
@@ -4489,7 +4489,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "En säkerhetsbarriär som filtrerar nätverkstrafik baserat på regler.",
     en: "A security barrier that filters network traffic based on rules.",
-    story: "Dörrvakten vid restaurangens ingång. Kontrollerar varje gäst mot gästlistan – otillåten trafik nekas.",
+    story: "Kl 05:20 hittade Kira problemet: någon hade uppdaterat brandväggsreglerna och blockerat kassaappen. 'Brandväggen är en checkpoint. Trafik som inte matchar reglerna stoppas.' 'Vem satte reglerna?' 'Din IT-person. Från 2019. Som inte jobbar här längre.' Lång paus. Marco: 'Jag bör anställa Kiras motsvarighet för nätverket.' 'Du har precis gjort det,' sa Kira.",
     related: ["protocol", "port", "server"]
   },
   {
@@ -4497,7 +4497,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "En dator som tillhandahåller tjänster eller resurser till andra datorer (klienter).",
     en: "A computer that provides services or resources to other computers (clients).",
-    story: "Köket i restaurangen. Det arbetar i bakgrunden, tar emot beställningar från salen och levererar resultat.",
+    story: "Kl 05:25 kopplade kassaterminalen upp igen. I backoffice surrade servern tyst och hanterade varje order, sparade varje kvitto. 'Den jobbar i bakgrunden,' sa Kira. 'Tar emot förfrågningar. Levererar.' Marco tittade på den stängda dörren. 'Som en förberedelseassistent som ingen ser men alla är beroende av.' 'Exakt som det.'",
     related: ["client", "ip_address", "port"]
   },
   {
@@ -4505,7 +4505,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "network",
     sv: "En dator eller program som begär tjänster från en server.",
     en: "A computer or program that requests services from a server.",
-    story: "Gästen vid bordet. De beställer (skickar en request) och väntar på att köket (servern) levererar.",
+    story: "Varje surfplatta i matsalen. Varje telefon servitrisen använde. Varje kassaterminal. Alla klienter — skickade förfrågningar till servern och väntade på svar. 'Servern springer inte runt,' sa Kira. 'Klienter kommer till den.' Marco tänkte på gästerna vid borden. 'Alltså är gästerna också klienter.' 'I ordets alla bemärkelser,' sa hon.",
     related: ["server", "protocol", "ip_address"]
   },
 
@@ -4515,7 +4515,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "En kort beskrivning av ett behov ur användarens perspektiv: 'Som X vill jag Y för att Z.'",
     en: "A short description of a need from the user's perspective: 'As X I want Y so that Z.'",
-    story: "Gästens önskemål på beställningslappen. Inte tekniska detaljer – bara: vem vill ha vad och varför.",
+    story: "Kl 07:30 satt Marco och Kira och åt rester av tarte tatin. Kira öppnade sin anteckningsbok. 'Som gäst med nötallergi vill jag se allergeninformation på menyn för att kunna beställa utan ångest.' Marco läste det. 'Det är inte en teknisk spec.' 'Nej. Det är en user story. Behovet, målet, anledningen — ur användarens perspektiv.' Han tänkte på bordet som skickat tillbaka amuse-bouchen kl 02:00.",
     related: ["persona", "wireframe", "usability"]
   },
   {
@@ -4523,7 +4523,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "En grov skiss av ett gränssnitts layout – utan färg eller slutlig design.",
     en: "A rough sketch of an interface's layout – without color or final design.",
-    story: "Köksstaffliets grundritning. Tomma rutor och linjer som visar var ugnar, bänkar och hyllor ska sitta – ingen finish.",
+    story: "Kira drog upp en anteckningssida täckt av grova rutor och linjer. 'Så här skulle bordslayouten se ut om jag designade den som en app.' Ingen detalj. Inga etiketter. Bara struktur. 'Som ett grovt receptkort utan mängder,' sa Marco. 'Exakt. Formen på saken innan saken.' Han tittade på sina egna skisser från när han ritade köket. 'Jag har gjort UX. Utan att veta om det.'",
     related: ["prototype", "user_story", "affordance"]
   },
   {
@@ -4531,7 +4531,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "En testbar version av en design – kan vara enkel (papper) eller interaktiv (digital).",
     en: "A testable version of a design – can be simple (paper) or interactive (digital).",
-    story: "Testköket: en labb-version av restaurangen byggd för att prova idéer innan den riktiga köket byggs.",
+    story: "'Innan det stora cateringkontraktet körde du en testservice för 20 personer,' sa Kira. 'Du ville hitta problemen innan de dök upp inför 400 gäster.' Marco nickade långsamt. 'Det var en prototyp.' 'Du har varit UX-designer hela tiden, Marco.' Han pekade på tarte tatinen. 'Överskrid inte.'",
     related: ["wireframe", "usability", "user_story"]
   },
   {
@@ -4539,7 +4539,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "Hur lätt och effektivt ett system kan användas av sin målgrupp för att nå ett mål.",
     en: "How easily and efficiently a system can be used by its intended users to achieve a goal.",
-    story: "Hur intuitivt kökets layout är för en ny kock. Hittar de allt snabbt? Gör de färre misstag? Det är usability.",
+    story: "'Kan en ny kock navigera ditt kök på sin första kväll utan att fråga?' frågade Kira. 'Är allt märkt? Nåbart? Logiskt?' Marco tittade runt. Märkta behållare. Organiserade stationer. Tydligt flöde från förberedelse till lucka. 'Det är usability,' sa hon. 'Hur enkelt någon kan använda ett system för att nå sitt mål.' Han sa ingenting men tog anteckningar.",
     related: ["heuristic", "accessibility", "persona", "affordance"]
   },
   {
@@ -4547,7 +4547,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "En tumregel för god UX – t.ex. Nielsens 10 heuristiker som synlighet, återhämtning, konsistens.",
     en: "A rule of thumb for good UX – e.g. Nielsen's 10 heuristics like visibility, recovery, consistency.",
-    story: "Kökets gyllene regler på anslagstavlan. Inte lagar – men om du bryter dem märker gästerna alltid av det.",
+    story: "'Nielsens regler för gränssnitt,' sa Kira. 'Synlighet, felåterhämtning, konsekvens.' Marco läste listan. 'Synlighet: gästerna ska alltid veta vilken fas i måltiden de är i. Felåterhämtning: om vi tar en order fel finns det en väg tillbaka. Konsekvens: varje bord får samma standard.' 'Du applicerade precis tre heuristiker på restaurangservice.' 'Naturligtvis,' sa han. 'Regler är bra.'",
     related: ["usability", "affordance", "user_story"]
   },
   {
@@ -4555,7 +4555,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "En fiktiv men databaserad representation av en typisk användare i målgruppen.",
     en: "A fictional but data-based representation of a typical user in the target group.",
-    story: "Stamgästen du designar menyn för. Inte en verklig person – men byggd på riktiga beteendemönster.",
+    story: "'Innan du designade menyn, vem designade du den för?' frågade Kira. Marco beskrev stamgästen: sent 40-tal, jobbar nära, representationskonto, bryr sig om ursprung, hatar gimmicks. 'Det är en persona,' sa Kira. 'En fiktiv men datadrivet typisk användare.' Marco: 'Han är inte fiktiv. Han heter Bertil.' 'Bertil är personan gjord kött. Vilket är ovanligt men effektivt.'",
     related: ["user_story", "usability"]
   },
   {
@@ -4563,7 +4563,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "Hur ett objekt signalerar sin funktion – en knapp ser ut att tryckas på, ett handtag att dras.",
     en: "How an object signals its function – a button looks like it should be pressed, a handle like it should be pulled.",
-    story: "Dörrhandtaget på köket. Om det är runt signalerar det 'vrid', om det är platt signalerar det 'tryck'. Affordance = det uppenbart rätta sättet.",
+    story: "Kökets svängdörr hade ett handtag på varje sida, formade olika: en platt tryckskylt på ena sidan, ett draghandtag på andra. Man förväxlade dem aldrig. 'Det är affordance,' sa Kira. 'Designen talar om vad man ska göra utan ord.' Marco: 'Jag installerade de dörrarna för åtta år sedan.' 'Och ingen har kolliderat med någon som kommer åt andra hållet?' Han tänkte. 'Nej.' 'Det är bra UX.' Han åt upp tarte tatinen i tystnad.",
     related: ["heuristic", "usability", "wireframe"]
   },
   {
@@ -4571,7 +4571,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     category: "ux",
     sv: "Hur tillgänglig en tjänst är för alla – inklusive personer med funktionsvariationer.",
     en: "How accessible a service is for everyone – including people with disabilities.",
-    story: "Rampen vid köksbacken, punktskrift på menyn, tydliga kontraster. Tillgänglighet är design för alla, inte bara de typiska.",
+    story: "'Menyn hade en teckenstorlek,' sa Kira. 'Och bara utskriven — ingen stor-teckens version.' Marco grimacerade. 'Bertils fru har makuladegeneration.' 'Exakt. Tillgänglighet är inte speciallösning. Det är design för alla. Om det fungerar för den som behöver det mest, fungerar det bättre för alla.' Han började skriva. 'Jag har saker att fixa,' sa han. 'Ja,' sa Kira. 'Men inte i natt.'",
     related: ["usability", "heuristic", "persona"]
   }
 ];
