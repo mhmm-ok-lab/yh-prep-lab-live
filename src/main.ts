@@ -1,5 +1,5 @@
 import "./styles.css";
-import { MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS } from "./data";
+import { GLOSSARY, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS } from "./data";
 import { createDailyPlan, formatFirstExamDate, getFirstExamCountdown, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
@@ -12,9 +12,9 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import type { Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId } from "./types";
+import type { GlossaryEntry, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId } from "./types";
 
-type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design" | "roadmap";
+type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design" | "roadmap" | "glossary";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
 interface ProfileOption {
@@ -129,7 +129,8 @@ const pageLabels: Record<Page, string> = {
   logic: "Logik",
   walkthrough: "Genomgång",
   design: "Design",
-  roadmap: "Roadmap"
+  roadmap: "Roadmap",
+  glossary: "Ordlista"
 };
 
 // Sidor som syns i navigationsmenyn. Resten nås via "Mer"-sektionen.
@@ -363,6 +364,9 @@ let filters: QuestionFilters = {
   difficulty: "all",
   sourceTier: "all"
 };
+let activeGlossaryTerm: GlossaryEntry | null = null;
+let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
+let glossarySearch = "";
 let knownUserIds = loadKnownUsers();
 let currentUserId = loadCurrentUserId();
 setStorageNamespace(currentUserId);
@@ -1872,6 +1876,107 @@ function renderRoadmap(): string {
   `;
 }
 
+// ── Glossary helpers ────────────────────────────────────────────────
+
+function renderGlossaryTerms(text: string): string {
+  return text.replace(/\[\[([^\]]+)\]\]/g, (_match, key: string) => {
+    const entry = GLOSSARY.find((g) => g.term === key);
+    const display = entry ? entry.term : key;
+    return `<span class="g-term" data-term="${key}" tabindex="0">${display}</span>`;
+  });
+}
+
+function renderGlossaryOverlay(entry: GlossaryEntry): string {
+  return `
+    <div class="glossary-overlay" data-action="close-glossary">
+      <div class="glossary-card" role="dialog" aria-modal="true" aria-label="Ordlista: ${entry.term}">
+        <button class="glossary-close" data-action="close-glossary" aria-label="Stäng">×</button>
+        <p class="glossary-term-title">${entry.term}</p>
+        <div class="glossary-langs">
+          <div class="glossary-lang">
+            <span class="glossary-lang-label">SV</span>
+            <p>${entry.sv}</p>
+          </div>
+          <div class="glossary-lang">
+            <span class="glossary-lang-label">EN</span>
+            <p>${entry.en}</p>
+          </div>
+        </div>
+        <div class="glossary-story">
+          <span class="glossary-story-label">🍳 I köket:</span>
+          <p>${entry.story}</p>
+        </div>
+        ${entry.related
+          ? `<p class="glossary-related">Se även: ${entry.related
+              .map((r) => `<span class="g-term" data-term="${r}" tabindex="0">${r}</span>`)
+              .join(", ")}</p>`
+          : ""}
+      </div>
+    </div>
+  `;
+}
+
+function renderGlossary(): string {
+  const categoryLabels: Record<string, string> = {
+    all: "Alla",
+    general: "Allmänt",
+    python: "Python",
+    network: "Nätverk",
+    ux: "UX"
+  };
+
+  const filtered = GLOSSARY.filter((entry) => {
+    const matchesCategory = glossaryFilter === "all" || entry.category === glossaryFilter;
+    const searchLower = glossarySearch.toLowerCase();
+    const matchesSearch =
+      searchLower === "" ||
+      entry.term.toLowerCase().includes(searchLower) ||
+      entry.sv.toLowerCase().includes(searchLower) ||
+      entry.en.toLowerCase().includes(searchLower);
+    return matchesCategory && matchesSearch;
+  });
+
+  return `
+    <section class="card">
+      <h2>Ordlista</h2>
+      <p class="muted">Klicka på ett kort för att se förklaring och köksexempel.</p>
+      <div class="glossary-filter-bar">
+        ${(["all", "general", "python", "network", "ux"] as const)
+          .map(
+            (cat) =>
+              `<button class="secondary ${glossaryFilter === cat ? "active" : ""}" data-action="glossary-filter" data-category="${cat}">${categoryLabels[cat]}</button>`
+          )
+          .join("")}
+      </div>
+      <input
+        class="glossary-search"
+        type="search"
+        placeholder="Sök term..."
+        value="${glossarySearch}"
+        data-action="glossary-search"
+        aria-label="Sök i ordlistan"
+      />
+      ${
+        filtered.length === 0
+          ? `<p class="muted">Inga termer matchar sökningen.</p>`
+          : `<div class="glossary-page-grid">
+              ${filtered
+                .map(
+                  (entry) => `
+                    <div class="glossary-entry-card" data-action="open-glossary-term" data-term="${entry.term}" tabindex="0" role="button" aria-label="Öppna ${entry.term}">
+                      <p class="glossary-entry-term">${entry.term}</p>
+                      <span class="glossary-entry-cat">${categoryLabels[entry.category]}</span>
+                      <p class="glossary-entry-sv">${entry.sv}</p>
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>`
+      }
+    </section>
+  `;
+}
+
 function renderActiveSession(): string {
   if (!activeSession) {
     return "";
@@ -1941,7 +2046,7 @@ function renderActiveSession(): string {
                     ? `❌ Fel — rätt svar var <strong>${currentQuestion.answer_key.toUpperCase()}</strong>`
                     : "📝 Ditt svar noterat"
                 }</p>
-                <p class="learn-explanation-text">${currentQuestion.explanation}</p>
+                <p class="learn-explanation-text">${renderGlossaryTerms(currentQuestion.explanation)}</p>
               </div>`
             : `<p class="learn-hint">💡 Välj ett svar ovan — förklaring visas efteråt.</p>`
           : ""
@@ -2094,6 +2199,8 @@ function renderPage(): string {
       return renderDesign();
     case "roadmap":
       return renderRoadmap();
+    case "glossary":
+      return renderGlossary();
     default:
       return renderOverview();
   }
@@ -2125,6 +2232,7 @@ function render(): void {
                   <p class="muted mini-menu-section-label">Verktyg</p>
                   <button class="secondary ${page === "logic" ? "active" : ""}" data-view="logic">Logik-drill</button>
                   <button class="secondary ${page === "walkthrough" ? "active" : ""}" data-view="walkthrough">Genomgång</button>
+                  <button class="secondary ${page === "glossary" ? "active" : ""}" data-view="glossary">Ordlista</button>
                   <button class="secondary" data-action="open-python-course">Python-minikurs</button>
                   <p class="muted mini-menu-section-label">Övrigt</p>
                   <button class="secondary ${page === "research" ? "active" : ""}" data-view="research">Research</button>
@@ -2177,6 +2285,7 @@ function render(): void {
         ${renderPage()}
       </main>
     </div>
+    ${activeGlossaryTerm ? renderGlossaryOverlay(activeGlossaryTerm) : ""}
   `;
 }
 
@@ -2186,6 +2295,17 @@ app.addEventListener("click", (event) => {
   if (viewBtn) {
     page = viewBtn.dataset.view as Page;
     render();
+    return;
+  }
+
+  // Handle g-term glossary clicks (not action-based)
+  const gTerm = target.closest<HTMLElement>(".g-term");
+  if (gTerm && gTerm.dataset.term) {
+    const found = GLOSSARY.find((g) => g.term === gTerm.dataset.term);
+    if (found) {
+      activeGlossaryTerm = found;
+      render();
+    }
     return;
   }
 
@@ -2308,6 +2428,34 @@ app.addEventListener("click", (event) => {
 
   if (action === "open-python-course") {
     window.location.href = "python-minikurs.html";
+    return;
+  }
+
+  if (action === "close-glossary") {
+    // Don't close if click was inside the card itself (only backdrop or close button)
+    if (actionEl.classList.contains("glossary-overlay") && target.closest(".glossary-card")) {
+      return;
+    }
+    activeGlossaryTerm = null;
+    render();
+    return;
+  }
+
+  if (action === "open-glossary-term") {
+    const termKey = actionEl.dataset.term;
+    if (termKey) {
+      const found = GLOSSARY.find((g) => g.term === termKey);
+      if (found) {
+        activeGlossaryTerm = found;
+        render();
+      }
+    }
+    return;
+  }
+
+  if (action === "glossary-filter") {
+    glossaryFilter = (actionEl.dataset.category as typeof glossaryFilter) || "all";
+    render();
     return;
   }
 
@@ -2476,6 +2624,12 @@ app.addEventListener("input", (event) => {
   const mockSelect = target.closest<HTMLSelectElement>("select[data-mock-select='true']");
   if (mockSelect) {
     chosenMockId = mockSelect.value;
+    render();
+  }
+
+  const glossarySearchInput = target.closest<HTMLInputElement>("input[data-action='glossary-search']");
+  if (glossarySearchInput) {
+    glossarySearch = glossarySearchInput.value;
     render();
   }
 });

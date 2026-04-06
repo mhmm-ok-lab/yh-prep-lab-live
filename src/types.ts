@@ -105,6 +105,15 @@ export interface DailyPlan {
   blocks: DailyPlanBlock[];
 }
 
+export interface GlossaryEntry {
+  term: string;
+  category: "general" | "python" | "network" | "ux";
+  sv: string;
+  en: string;
+  story: string;
+  related?: string[];
+}
+
 export interface SessionDraft {
   id: string;
   mode: Mode;
