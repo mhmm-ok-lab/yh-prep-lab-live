@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GapChallenge — AON Practice</title>
+  <title>Symbol Sudoku — AON Practice</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,87 +14,61 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 0.75rem;
     }
 
     .card {
       background: #fff;
       border-radius: 16px;
       border: 1px solid #e0e0dc;
-      padding: 2rem;
+      padding: 1.25rem;
       width: 100%;
-      max-width: 520px;
+      max-width: 480px;
     }
 
     h1 {
-      font-size: 22px;
-      font-weight: 500;
+      font-size: 20px;
+      font-weight: 600;
       color: #111;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      line-height: 1.2;
+    }
+
+    .subtitle-tag {
+      font-size: 12px;
+      font-weight: 400;
+      color: #999;
+      margin-left: 6px;
     }
 
     .subtitle {
-      font-size: 14px;
-      color: #666;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-
-    .controls-group {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
-    }
-
-    .ctrl-btn {
-      padding: 5px 14px;
-      border-radius: 6px;
-      border: 1px solid #d0d0cc;
-      background: #fff;
       font-size: 13px;
-      cursor: pointer;
-      color: #555;
-      transition: background 0.1s, border-color 0.1s;
-    }
-
-    .ctrl-btn:hover { background: #f0f0ee; }
-
-    .ctrl-btn.active {
-      background: #EEEDFE;
-      border-color: #7F77DD;
-      color: #534AB7;
-      font-weight: 500;
-    }
-
-    .ctrl-btn.color-active {
-      background: #fff8e1;
-      border-color: #f0b429;
-      color: #7a5a00;
-      font-weight: 500;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 8px;
     }
 
     .timer-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin: 16px 0;
+      gap: 10px;
+      margin: 8px 0 6px;
     }
 
     .tnum {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 500;
       color: #111;
-      min-width: 48px;
+      min-width: 38px;
       text-align: center;
     }
 
-    .tnum.warn { color: #996600; }
+    .tnum.warn   { color: #996600; }
     .tnum.danger { color: #aa0000; }
 
     .tbar-wrap {
       flex: 1;
-      height: 7px;
+      height: 6px;
       background: #eee;
       border-radius: 4px;
       overflow: hidden;
@@ -125,33 +99,34 @@
       align-items: center;
       justify-content: center;
       background: #fff;
-      width: 64px;
-      height: 64px;
+      width: 56px;
+      height: 56px;
     }
 
-    .cell.empty { background: #f0f0f0; }
-    .cell.qmark { background: #eae6fa; }
+    .cell.empty   { background: #f0f0f0; }
+    .cell.qmark   { background: #eae6fa; }
     .cell.correct { background: #e6f4e6; }
     .cell.wrong   { background: #fce8e8; }
     .cell.timeout { background: #fdf6e3; }
 
     .qmark-label {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
       color: #534AB7;
     }
 
     .options {
       display: flex;
-      gap: 10px;
+      gap: 6px;
       justify-content: center;
-      flex-wrap: wrap;
-      margin: 18px 0 10px;
+      flex-wrap: nowrap;
+      margin: 10px 0 6px;
     }
 
     .opt {
-      width: 62px;
-      height: 62px;
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
       border: 2px solid #ccc;
       background: #fff;
       cursor: pointer;
@@ -162,20 +137,16 @@
       transition: border-color 0.1s, background 0.1s;
     }
 
-    .opt:hover {
-      border-color: #7F77DD;
-      background: #f0eeff;
-    }
-
-    .opt.locked   { opacity: 0.35; pointer-events: none; }
-    .opt.inactive { opacity: 0.28; pointer-events: none; }
+    .opt:hover        { border-color: #7F77DD; background: #f0eeff; }
+    .opt.locked       { opacity: 0.35; pointer-events: none; }
+    .opt.inactive     { opacity: 0.28; pointer-events: none; }
 
     .feedback {
       font-size: 14px;
       font-weight: 500;
       text-align: center;
-      min-height: 22px;
-      margin: 6px 0;
+      min-height: 20px;
+      margin: 4px 0;
     }
 
     .feedback.ok   { color: #2a7a2a; }
@@ -187,7 +158,7 @@
       display: flex;
       gap: 10px;
       justify-content: center;
-      margin-top: 16px;
+      margin: 8px 0;
     }
 
     .btn-main {
@@ -217,13 +188,80 @@
 
     .btn-sec:hover { background: #f5f5f3; }
 
+    /* ── Below-game settings ─────────────────────────────────── */
+    .below-game {
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ctrl-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #d0d0cc;
+      background: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      color: #555;
+      white-space: nowrap;
+      transition: background 0.1s, border-color 0.1s;
+    }
+
+    .ctrl-btn:hover { background: #f0f0ee; }
+
+    .ctrl-btn.active {
+      background: #EEEDFE;
+      border-color: #7F77DD;
+      color: #534AB7;
+      font-weight: 500;
+    }
+
+    .ctrl-btn.color-active {
+      background: #fff8e1;
+      border-color: #f0b429;
+      color: #7a5a00;
+      font-weight: 500;
+    }
+
+    .diff-row .ctrl-btn {
+      flex: 1;
+      text-align: center;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    .ctrl-label {
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .ctrl-input {
+      width: 58px;
+      padding: 3px 6px;
+      border: 1px solid #d0d0cc;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #111;
+      text-align: center;
+    }
+
+    /* ── Stats ───────────────────────────────────────────────── */
     .stats {
       display: flex;
-      gap: 0;
       justify-content: center;
-      margin-top: 20px;
+      margin-top: 10px;
       border-top: 1px solid #eee;
-      padding-top: 16px;
+      padding-top: 10px;
     }
 
     .stat {
@@ -235,7 +273,7 @@
 
     .stat span {
       display: block;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 500;
       color: #111;
       margin-bottom: 2px;
@@ -244,26 +282,8 @@
 </head>
 <body>
 <div class="card">
-  <h1>GapChallenge <span style="font-size:14px;font-weight:400;color:#888;margin-left:6px;">Symbol Sudoku · Latin Square</span></h1>
-  <p class="subtitle">Tränar <strong>Deductive-logical Thinking</strong> — samma format som Aon MapTQ (lst). Ingen form upprepas i samma rad eller kolumn. Hitta formen som hör hemma i <strong>?</strong>-rutan. Tryck <strong>Start / Nästa</strong> för att starta timern.</p>
-
-  <div class="controls-group">
-    <button class="ctrl-btn active" id="n4" onclick="setSize(4)">4×4</button>
-    <button class="ctrl-btn" id="n5" onclick="setSize(5)">5×5</button>
-  </div>
-
-  <div class="controls-group">
-    <button class="ctrl-btn active" id="deasy"     onclick="setDiff('easy')">Easy</button>
-    <button class="ctrl-btn"        id="dmedium"   onclick="setDiff('medium')">Medium</button>
-    <button class="ctrl-btn"        id="dhard"     onclick="setDiff('hard')">Hard</button>
-    <button class="ctrl-btn"        id="dforgetit" onclick="setDiff('forgetit')">Forget it 💀</button>
-  </div>
-
-  <div class="controls-group">
-    <button class="ctrl-btn active" id="t36" onclick="setTime(36)">36 sek</button>
-    <button class="ctrl-btn" id="t24" onclick="setTime(24)">24 sek (snabbt)</button>
-    <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">B&amp;W</button>
-  </div>
+  <h1>Symbol Sudoku <span class="subtitle-tag">GapChallenge · Latin Square</span></h1>
+  <p class="subtitle">Hitta formen som saknas i <strong>?</strong>-rutan — ingen form upprepas i rad eller kolumn.</p>
 
   <div class="timer-row">
     <div class="tnum" id="tnum">—</div>
@@ -281,6 +301,25 @@
     <button class="btn-sec" onclick="hint()">Ledtråd</button>
   </div>
 
+  <div class="below-game">
+    <div class="ctrl-row">
+      <button class="ctrl-btn active" id="n4" onclick="setSize(4)">4×4</button>
+      <button class="ctrl-btn"        id="n5" onclick="setSize(5)">5×5</button>
+      <div style="flex:1"></div>
+      <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">Färg</button>
+    </div>
+    <div class="ctrl-row diff-row">
+      <button class="ctrl-btn active" id="deasy"     onclick="setDiff('easy')">Easy</button>
+      <button class="ctrl-btn"        id="dmedium"   onclick="setDiff('medium')">Medium</button>
+      <button class="ctrl-btn"        id="dhard"     onclick="setDiff('hard')">Hard</button>
+      <button class="ctrl-btn"        id="dforgetit" onclick="setDiff('forgetit')">Forget it 💀</button>
+    </div>
+    <div class="ctrl-row">
+      <label class="ctrl-label" for="timeinput">Tid&nbsp;(sek)</label>
+      <input type="number" id="timeinput" value="36" min="5" max="300" class="ctrl-input">
+    </div>
+  </div>
+
   <div class="stats">
     <div class="stat"><span id="sc">0</span>rätt</div>
     <div class="stat"><span id="sw">0</span>fel</div>
@@ -291,17 +330,17 @@
 
 <script>
   const SHAPES4 = ['circle','square','triangle','cross'];
-  const SHAPES5 = ['circle','square','triangle','cross','diamond'];
+  const SHAPES5 = ['circle','square','triangle','cross','star'];
 
   const SHAPE_COLORS = {
     circle:   '#2e9e5b',
     square:   '#cc3322',
     triangle: '#2255cc',
     cross:    '#00aacc',
-    diamond:  '#7744cc'
+    star:     '#7744cc'
   };
 
-  // ── Color mode ──────────────────────────────────────────────────
+  // ── Color mode ───────────────────────────────────────────────────
   let colorMode = localStorage.getItem('gc-color') === '1';
 
   function shapeColor(shape) {
@@ -313,11 +352,11 @@
     localStorage.setItem('gc-color', colorMode ? '1' : '0');
     const btn = document.getElementById('coltoggle');
     if (colorMode) {
-      btn.textContent = '🎨 Färg';
+      btn.textContent = 'B&W';
       btn.classList.remove('active');
       btn.classList.add('color-active');
     } else {
-      btn.textContent = 'B&W';
+      btn.textContent = 'Färg';
       btn.classList.remove('color-active');
       btn.classList.remove('active');
     }
@@ -326,34 +365,35 @@
   }
 
   function makeSVG(shape, size) {
-    const s = size || 36;
-    const h = s / 2;
+    const s = size || 32;
     const f = shapeColor(shape);
+    const h = s / 2;
     const d = {
       circle:   `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><circle cx="${h}" cy="${h}" r="${h*0.72}" fill="${f}"/></svg>`,
       square:   `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><rect x="${s*0.14}" y="${s*0.14}" width="${s*0.72}" height="${s*0.72}" fill="${f}"/></svg>`,
       triangle: `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><polygon points="${h},${s*0.1} ${s*0.92},${s*0.9} ${s*0.08},${s*0.9}" fill="${f}"/></svg>`,
       cross:    `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><rect x="${s*0.38}" y="${s*0.1}" width="${s*0.24}" height="${s*0.8}" fill="${f}"/><rect x="${s*0.1}" y="${s*0.38}" width="${s*0.8}" height="${s*0.24}" fill="${f}"/></svg>`,
-      diamond:  `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><polygon points="${h},${s*0.07} ${s*0.93},${h} ${h},${s*0.93} ${s*0.07},${h}" fill="${f}"/></svg>`
+      star:     `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><polygon points="50,5 60.6,35.4 92.8,36.1 67.1,55.6 76.4,86.4 50,68 23.6,86.4 32.9,55.6 7.2,36.1 39.4,35.4" fill="${f}"/></svg>`
     };
     return d[shape] || '';
   }
 
   // ── State ────────────────────────────────────────────────────────
-  let N = 4, diff = 'easy', timeLimit = 36;
+  let N = 4, diff = 'easy';
   let puzzle = [], sol = null, qr = 0, qc = 0;
   let active = false, done = false;
   let correctC = 0, wrongC = 0, timeoutC = 0, times = [];
   let timerInterval = null, startTime = 0, remaining = 0;
+  let currentTimeLimit = 36;
 
   function shapes() { return N === 4 ? SHAPES4 : SHAPES5; }
 
+  function getTimeLimit() {
+    return Math.max(5, parseInt(document.getElementById('timeinput').value) || 36);
+  }
+
   // ── Solver: classify deduction depth for ? cell ──────────────────
-  // Returns the number of OTHER cells that must be resolved via
-  // naked/hidden singles before the ? cell becomes determinable.
-  // Returns Infinity if the puzzle can't be solved logically.
   function classifyDepth(grid, tqr, tqc, n, sh) {
-    // Work on a mutable copy; '?' stays as marker; null = hidden
     const state = grid.map(row => [...row]);
 
     function candidates(r, c) {
@@ -363,9 +403,7 @@
     }
 
     function isQSolvable() {
-      // Naked single check for ?
       if (candidates(tqr, tqc).length === 1) return true;
-      // Hidden single in ? row: only one null/? cell in row can hold some shape s, and it's ?
       for (const s of sh) {
         let count = 0, foundC = -1;
         for (let c = 0; c < n; c++) {
@@ -375,7 +413,6 @@
         }
         if (count === 1 && foundC === tqc) return true;
       }
-      // Hidden single in ? col
       for (const s of sh) {
         let count = 0, foundR = -1;
         for (let r = 0; r < n; r++) {
@@ -390,12 +427,10 @@
 
     if (isQSolvable()) return 0;
 
-    // Iteratively apply deductions to non-? cells, counting steps
     let steps = 0;
     for (let iter = 0; iter < n * n; iter++) {
       let progressed = false;
 
-      // Naked singles on null cells (not ?)
       for (let r = 0; r < n && !progressed; r++) {
         for (let c = 0; c < n && !progressed; c++) {
           if (state[r][c] !== null) continue;
@@ -409,7 +444,6 @@
         }
       }
 
-      // Hidden singles in rows (null cells only, not ?)
       for (let r = 0; r < n && !progressed; r++) {
         for (const s of sh) {
           let count = 0, foundC = -1;
@@ -428,7 +462,6 @@
         }
       }
 
-      // Hidden singles in cols (null cells only, not ?)
       for (let c = 0; c < n && !progressed; c++) {
         for (const s of sh) {
           let count = 0, foundR = -1;
@@ -463,7 +496,7 @@
     }
   }
 
-  // ── Puzzle generation with difficulty targeting ──────────────────
+  // ── Puzzle generation ────────────────────────────────────────────
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -476,28 +509,22 @@
     const sh = shapes();
     const hideRatio = diff === 'forgetit' ? 0.65 : 0.50;
     const MAX_ATTEMPTS = 300;
-    // Fallback diff for timeout: use medium-range depth (1-2)
-    const fallbackMin = 1, fallbackMax = 2;
 
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-      // Generate a random valid Latin square
       const s = [...sh]; shuffle(s);
       const off = Array.from({length: N}, (_, i) => i); shuffle(off);
       const full = off.map(o => Array.from({length: N}, (_, c) => s[(o + c) % N]));
 
-      // Choose ? position
       const tqr = Math.floor(Math.random() * N);
       const tqc = Math.floor(Math.random() * N);
       const tsol = full[tqr][tqc];
 
-      // Build candidate hide positions (all cells except ?)
       const pos = [];
       for (let r = 0; r < N; r++)
         for (let c = 0; c < N; c++)
           if (!(r === tqr && c === tqc)) pos.push([r, c]);
       shuffle(pos);
 
-      // Hide cells
       const hideCount = Math.max(1, Math.floor(N * N * hideRatio));
       const p = full.map(r => [...r]);
       pos.slice(0, hideCount - 1).forEach(([r, c]) => { p[r][c] = null; });
@@ -511,7 +538,7 @@
       }
     }
 
-    // Fallback: generate a Medium puzzle (no retry limit, simpler target)
+    // Fallback: Medium
     for (;;) {
       const s = [...sh]; shuffle(s);
       const off = Array.from({length: N}, (_, i) => i); shuffle(off);
@@ -528,7 +555,7 @@
       pos.slice(0, Math.floor(N * N * 0.5) - 1).forEach(([r, c]) => { p[r][c] = null; });
       p[tqr][tqc] = '?';
       const depth = classifyDepth(p, tqr, tqc, N, sh);
-      if (depth >= fallbackMin && depth <= fallbackMax) {
+      if (depth >= 1 && depth <= 2) {
         puzzle = p; qr = tqr; qc = tqc; sol = tsol;
         return;
       }
@@ -550,24 +577,18 @@
     document.getElementById('d' + d).classList.add('active');
   }
 
-  function setTime(t) {
-    timeLimit = t;
-    ['t36','t24'].forEach(id => document.getElementById(id).classList.remove('active'));
-    document.getElementById('t' + t).classList.add('active');
-  }
-
   // ── Rendering ────────────────────────────────────────────────────
   function renderGrid() {
     const wrap = document.getElementById('grid-wrap');
     const g = document.createElement('div');
     g.className = 'grid';
-    g.style.gridTemplateColumns = `repeat(${N}, 64px)`;
+    g.style.gridTemplateColumns = `repeat(${N}, 56px)`;
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
       const cell = document.createElement('div');
       const v = puzzle[r][c];
       if (v === '?')       { cell.className = 'cell qmark'; cell.id = 'qcell'; cell.innerHTML = '<span class="qmark-label">?</span>'; }
       else if (v === null) { cell.className = 'cell empty'; }
-      else                 { cell.className = 'cell'; cell.innerHTML = makeSVG(v, 36); }
+      else                 { cell.className = 'cell'; cell.innerHTML = makeSVG(v, 32); }
       g.appendChild(cell);
     }
     wrap.innerHTML = ''; wrap.appendChild(g);
@@ -579,7 +600,7 @@
     shuffled.forEach(s => {
       const b = document.createElement('div');
       b.className = 'opt' + (enabled ? '' : ' inactive');
-      b.innerHTML = makeSVG(s, 36);
+      b.innerHTML = makeSVG(s, 32);
       b.onclick = () => pick(s);
       el.appendChild(b);
     });
@@ -594,9 +615,10 @@
   }
 
   function beginTimer() {
-    remaining = timeLimit; startTime = Date.now(); updateTimerUI();
+    currentTimeLimit = getTimeLimit();
+    remaining = currentTimeLimit; startTime = Date.now(); updateTimerUI();
     timerInterval = setInterval(() => {
-      remaining = timeLimit - Math.floor((Date.now() - startTime) / 1000);
+      remaining = currentTimeLimit - Math.floor((Date.now() - startTime) / 1000);
       if (remaining <= 0) { clearInterval(timerInterval); onTimeout(); }
       else updateTimerUI();
     }, 500);
@@ -607,7 +629,7 @@
     const el = document.getElementById('tnum');
     el.textContent = r;
     el.className = 'tnum' + (r <= 8 ? ' danger' : r <= 15 ? ' warn' : '');
-    document.getElementById('tbar').style.width = (r / timeLimit * 100) + '%';
+    document.getElementById('tbar').style.width = (r / currentTimeLimit * 100) + '%';
     document.getElementById('tbar').style.background = r <= 8 ? '#cc2222' : r <= 15 ? '#cc8800' : '#7F77DD';
   }
 
@@ -624,7 +646,7 @@
     if (done) return; done = true; active = false; timeoutC++;
     lockOptions();
     const qcell = document.getElementById('qcell');
-    qcell.innerHTML = makeSVG(sol, 36); qcell.className = 'cell timeout';
+    qcell.innerHTML = makeSVG(sol, 32); qcell.className = 'cell timeout';
     document.getElementById('feedback').textContent = 'Timeout! Svaret var ' + sol;
     document.getElementById('feedback').className = 'feedback out';
     updateStats();
@@ -636,7 +658,7 @@
     const elapsed = Math.round((Date.now() - startTime) / 1000);
     times.push(elapsed); lockOptions();
     const qcell = document.getElementById('qcell');
-    qcell.innerHTML = makeSVG(sol, 36);
+    qcell.innerHTML = makeSVG(sol, 32);
     const fb = document.getElementById('feedback');
     if (s === sol) {
       correctC++; fb.textContent = 'Rätt! ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback ok'; qcell.className = 'cell correct';
@@ -670,10 +692,9 @@
   }
 
   // ── Init ─────────────────────────────────────────────────────────
-  // Apply persisted color preference
   if (colorMode) {
     const btn = document.getElementById('coltoggle');
-    btn.textContent = '🎨 Färg';
+    btn.textContent = 'B&W';
     btn.classList.add('color-active');
   }
 
