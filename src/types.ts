@@ -124,3 +124,16 @@ export interface SessionDraft {
   answers: Record<string, string>;
   templateId?: string;
 }
+
+export type VRAnswer = "Sant" | "Falskt" | "Kan ej avgöras";
+export type VRTrap = "Verklighetsknappen" | "Kvantifikatorfällan" | "Implikationsfällan" | "Negationsfällan";
+
+export interface VRItem {
+  id: string;
+  passage: string;
+  statement: string;
+  answer: VRAnswer;
+  trap?: VRTrap;
+  explanation: string;
+  relevant_sentence: string;
+}

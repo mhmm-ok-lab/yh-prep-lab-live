@@ -1,5 +1,5 @@
 import "./styles.css";
-import { GLOSSARY, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS } from "./data";
+import { GLOSSARY, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
 import { createDailyPlan, formatFirstExamDate, getFirstExamCountdown, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
@@ -12,7 +12,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import type { GlossaryEntry, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId } from "./types";
+import type { GlossaryEntry, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design" | "roadmap" | "glossary";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
@@ -70,6 +70,16 @@ interface QuestionReview {
   scoringCriteria?: string[];
   strongAnswerExample?: string;
   commonMistakes?: string;
+}
+
+interface VRSession {
+  items: VRItem[];
+  currentIndex: number;
+  userAnswer: VRAnswer | null;
+  showFeedback: boolean;
+  correct: number;
+  wrong: number;
+  trapCounts: Partial<Record<string, number>>;
 }
 
 interface AdaptiveSuggestion {
@@ -365,6 +375,7 @@ let filters: QuestionFilters = {
   sourceTier: "all"
 };
 let activeGlossaryTerm: GlossaryEntry | null = null;
+let vrSession: VRSession | null = null;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
 let knownUserIds = loadKnownUsers();
@@ -1455,7 +1466,111 @@ function renderOverview(): string {
   `;
 }
 
+function renderVRSession(): string {
+  if (!vrSession) return "";
+  const { items, currentIndex, userAnswer, showFeedback, correct, wrong, trapCounts } = vrSession;
+  const total = items.length;
+  const isDone = currentIndex >= total;
+
+  if (isDone) {
+    const scorePercent = Math.round((correct / total) * 100);
+    const trapEntries = Object.entries(trapCounts).filter(([, v]) => (v ?? 0) > 0);
+    return `
+      <div class="vr-session">
+        <div class="vr-results-header">
+          <h2>Verbal Reasoning — klart</h2>
+          <div class="vr-score-big">${correct}/${total} <span>rätt (${scorePercent}%)</span></div>
+          <div class="vr-results-bar"><div class="vr-results-bar-fill" style="width:${scorePercent}%"></div></div>
+        </div>
+        ${trapEntries.length > 0 ? `
+          <div class="vr-trap-summary">
+            <h3>Fällor du landade i</h3>
+            <ul>
+              ${trapEntries.map(([trap, count]) => `<li><strong>${trap}</strong> ×${count}</li>`).join("")}
+            </ul>
+          </div>
+        ` : `<p class="vr-clean">Inga fällor! Du läste texten exakt som den var skriven.</p>`}
+        <div class="vr-result-actions">
+          <button class="primary" data-action="vr-restart">Kör igen</button>
+          <button class="secondary" data-action="vr-close">Tillbaka till Träna</button>
+        </div>
+      </div>
+    `;
+  }
+
+  const item = items[currentIndex];
+  const progressPct = Math.round((currentIndex / total) * 100);
+  const isCorrect = userAnswer === item.answer;
+
+  const answerLabels: VRAnswer[] = ["Sant", "Falskt", "Kan ej avgöras"];
+  const answerIcons: Record<VRAnswer, string> = {
+    "Sant": "✓",
+    "Falskt": "✗",
+    "Kan ej avgöras": "?"
+  };
+
+  return `
+    <div class="vr-session">
+      <div class="vr-header">
+        <span class="vr-title">Verbal Reasoning</span>
+        <span class="vr-progress-label">${currentIndex + 1} / ${total}</span>
+      </div>
+      <div class="vr-progressbar"><div class="vr-progressbar-fill" style="width:${progressPct}%"></div></div>
+
+      <div class="vr-passage ${showFeedback ? "vr-passage-answered" : ""}">
+        <div class="vr-passage-label">TEXT</div>
+        <p class="vr-passage-text">${item.passage}</p>
+        ${showFeedback && item.relevant_sentence && !item.relevant_sentence.startsWith("—") ? `
+          <div class="vr-relevant-wrap">
+            <span class="vr-relevant-label">📌 Avgörande mening</span>
+            <blockquote class="vr-relevant">${item.relevant_sentence}</blockquote>
+          </div>
+        ` : ""}
+      </div>
+
+      <div class="vr-statement-wrap">
+        <div class="vr-statement-label">PÅSTÅENDE</div>
+        <p class="vr-statement">${item.statement}</p>
+      </div>
+
+      ${!showFeedback ? `
+        <div class="vr-answer-btns">
+          ${answerLabels.map(a => `
+            <button class="vr-answer-btn" data-action="vr-answer" data-answer="${a}">
+              <span class="vr-answer-icon">${answerIcons[a]}</span>
+              ${a}
+            </button>
+          `).join("")}
+        </div>
+      ` : `
+        <div class="vr-feedback ${isCorrect ? "vr-feedback-correct" : "vr-feedback-wrong"}">
+          <div class="vr-feedback-verdict">
+            ${isCorrect
+              ? `<span class="vr-verdict-icon">✅</span> Rätt! Svaret är <strong>${item.answer}</strong>.`
+              : `<span class="vr-verdict-icon">❌</span> Du valde <strong>${userAnswer}</strong> — rätt svar är <strong>${item.answer}</strong>.`
+            }
+          </div>
+          ${!isCorrect && item.trap ? `
+            <div class="vr-trap-badge">🎯 Fällan: ${item.trap}</div>
+          ` : ""}
+          <p class="vr-explanation">${item.explanation}</p>
+          ${item.relevant_sentence.startsWith("—") ? `<p class="vr-no-sentence">Texten innehåller ingen mening som bekräftar påståendet — det är precis poängen.</p>` : ""}
+        </div>
+        <div class="vr-next-row">
+          <span class="vr-running-score">✓ ${correct}  ✗ ${wrong}</span>
+          <button class="primary" data-action="vr-next">
+            ${currentIndex + 1 < total ? "Nästa →" : "Visa resultat →"}
+          </button>
+        </div>
+      `}
+
+      <button class="vr-quit-btn secondary" data-action="vr-close">Avsluta</button>
+    </div>
+  `;
+}
+
 function renderTracks(): string {
+  if (vrSession) return renderVRSession();
   const logicQuestions = getLogicQuestions();
   return `
     <div class="grid">
@@ -1492,6 +1607,14 @@ function renderTracks(): string {
         <p class="muted">Latin Square-format: ingen form upprepas i samma rad eller kolumn. Hitta formen som saknas. Samma upplägg som Aon MapTQ (lst)-delprovet.</p>
         <div class="inline-controls">
           <a class="primary" href="/gap-challenge.html" target="_blank">🔷 Öppna Symbol Sudoku</a>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <h3>Verbal Reasoning <span class="badge">Aon: Verbal Reasoning (admin)</span></h3>
+        <p class="muted">Läs ett textstycke. Bedöm om påståendet är <strong>Sant</strong>, <strong>Falskt</strong> eller <strong>Kan ej avgöras</strong> — enbart utifrån texten. Tränar de tre vanligaste fällorna: Verklighetsknappen, Kvantifikatorfällan och Implikationsfällan.</p>
+        <div class="inline-controls">
+          <button class="primary" data-action="start-vr-trainer">📄 Starta Verbal Reasoning (${VR_ITEMS.length} frågor)</button>
         </div>
       </section>
 
@@ -2490,6 +2613,72 @@ app.addEventListener("click", (event) => {
       return section.question_ids;
     });
     startSession("Tidsprov", ids, template.total_minutes, template.id);
+    return;
+  }
+
+  if (action === "start-vr-trainer") {
+    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5);
+    vrSession = {
+      items: shuffled,
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      trapCounts: {}
+    };
+    page = "tracks";
+    render();
+    return;
+  }
+
+  if (action === "vr-answer") {
+    if (!vrSession || vrSession.showFeedback) return;
+    const answer = actionEl.dataset.answer as VRAnswer;
+    const item = vrSession.items[vrSession.currentIndex];
+    const isCorrect = answer === item.answer;
+    if (isCorrect) {
+      vrSession.correct++;
+    } else {
+      vrSession.wrong++;
+      if (item.trap) {
+        vrSession.trapCounts[item.trap] = (vrSession.trapCounts[item.trap] ?? 0) + 1;
+      }
+    }
+    vrSession.userAnswer = answer;
+    vrSession.showFeedback = true;
+    render();
+    return;
+  }
+
+  if (action === "vr-next") {
+    if (!vrSession) return;
+    vrSession.currentIndex++;
+    vrSession.userAnswer = null;
+    vrSession.showFeedback = false;
+    render();
+    return;
+  }
+
+  if (action === "vr-restart") {
+    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5);
+    vrSession = {
+      items: shuffled,
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      trapCounts: {}
+    };
+    render();
+    return;
+  }
+
+  if (action === "vr-close") {
+    vrSession = null;
+    page = "tracks";
+    render();
     return;
   }
 

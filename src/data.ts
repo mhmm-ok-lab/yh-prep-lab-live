@@ -1,4 +1,4 @@
-import type { GlossaryEntry, MockExamTemplate, Question, ResearchEvidence, Track } from "./types";
+import type { GlossaryEntry, MockExamTemplate, Question, ResearchEvidence, Track, VRItem } from "./types";
 
 export const TRACKS: Track[] = [
   {
@@ -4574,4 +4574,171 @@ export const GLOSSARY: GlossaryEntry[] = [
     story: "'Menyn hade en teckenstorlek,' sa Kira. 'Och bara utskriven — ingen stor-teckens version.' Marco grimacerade. 'Bertils fru har makuladegeneration.' 'Exakt. Tillgänglighet är inte speciallösning. Det är design för alla. Om det fungerar för den som behöver det mest, fungerar det bättre för alla.' Han började skriva. 'Jag har saker att fixa,' sa han. 'Ja,' sa Kira. 'Men inte i natt.'",
     related: ["usability", "heuristic", "persona"]
   }
+];
+
+export const VR_ITEMS: VRItem[] = [
+  // Passage A: Distansarbete
+  {
+    id: "vr-a1",
+    passage: "En undersökning från 2023 visar att 42 procent av svenska kontorsarbetare arbetar på distans minst en dag i veckan. Arbetsgivare inom IT-sektorn erbjuder distansarbete i störst utsträckning, följt av finansbranschen. Studien omfattade drygt 4 000 respondenter och genomfördes av ett oberoende forskningsinstitut. Bland de tillfrågade uppgav 67 procent att möjligheten till distansarbete är viktig när de väljer arbetsgivare. Undersökningen visade inte på några signifikanta skillnader mellan män och kvinnor i frågan om preferenser för distansarbete.",
+    statement: "Majoriteten av svenska kontorsarbetare arbetar på distans minst en dag i veckan.",
+    answer: "Falskt",
+    trap: "Kvantifikatorfällan",
+    explanation: "Texten säger att 42 procent arbetar på distans minst en dag i veckan. 42 procent är inte en majoritet (>50 %). Det är en vanlig fälla att läsa 'stor andel' som 'majoritet'.",
+    relevant_sentence: "42 procent av svenska kontorsarbetare arbetar på distans minst en dag i veckan."
+  },
+  {
+    id: "vr-a2",
+    passage: "En undersökning från 2023 visar att 42 procent av svenska kontorsarbetare arbetar på distans minst en dag i veckan. Arbetsgivare inom IT-sektorn erbjuder distansarbete i störst utsträckning, följt av finansbranschen. Studien omfattade drygt 4 000 respondenter och genomfördes av ett oberoende forskningsinstitut. Bland de tillfrågade uppgav 67 procent att möjligheten till distansarbete är viktig när de väljer arbetsgivare. Undersökningen visade inte på några signifikanta skillnader mellan män och kvinnor i frågan om preferenser för distansarbete.",
+    statement: "Möjligheten till distansarbete är en faktor som påverkar hur många väljer arbetsgivare.",
+    answer: "Sant",
+    explanation: "Texten uppger explicit att 67 procent av de tillfrågade anser möjligheten till distansarbete vara viktig vid val av arbetsgivare. Påståendet stämmer direkt med denna uppgift.",
+    relevant_sentence: "Bland de tillfrågade uppgav 67 procent att möjligheten till distansarbete är viktig när de väljer arbetsgivare."
+  },
+  {
+    id: "vr-a3",
+    passage: "En undersökning från 2023 visar att 42 procent av svenska kontorsarbetare arbetar på distans minst en dag i veckan. Arbetsgivare inom IT-sektorn erbjuder distansarbete i störst utsträckning, följt av finansbranschen. Studien omfattade drygt 4 000 respondenter och genomfördes av ett oberoende forskningsinstitut. Bland de tillfrågade uppgav 67 procent att möjligheten till distansarbete är viktig när de väljer arbetsgivare. Undersökningen visade inte på några signifikanta skillnader mellan män och kvinnor i frågan om preferenser för distansarbete.",
+    statement: "Distansarbete leder till ökad produktivitet.",
+    answer: "Kan ej avgöras",
+    trap: "Verklighetsknappen",
+    explanation: "Texten nämner ingenting om produktivitet. Påståendet kan vara sant i verkligheten, men texten ger inga belägg åt något håll. Svaret måste baseras enbart på vad texten faktiskt säger.",
+    relevant_sentence: "— (ingen relevant mening — texten tar inte upp produktivitet)"
+  },
+
+  // Passage B: Havsförsurning
+  {
+    id: "vr-b1",
+    passage: "Havets pH-värde har sjunkit med 0,1 enheter sedan den industriella revolutionen, vilket motsvarar en 26-procentig ökning av surhetsgraden. Försurningen beror på att havet absorberar koldioxid från atmosfären. Effekterna drabbar framför allt organismer med kalkskal, som koraller, musslor och vissa planktonarter. Forskning visar att korallrev riskerar att lösas upp om pH-värdet sjunker ytterligare. Havet absorberar i dag ungefär en tredjedel av de koldioxidutsläpp som människor orsakar.",
+    statement: "Havet absorberar mer koldioxid än det avger.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten säger att havet absorberar koldioxid och en tredjedel av mänskliga utsläpp. Men huruvida det absorberar mer än det avger framgår inte. Det känns som om det borde stämma — men det är en implikation, inte ett uttryckligt påstående i texten.",
+    relevant_sentence: "Havet absorberar i dag ungefär en tredjedel av de koldioxidutsläpp som människor orsakar."
+  },
+  {
+    id: "vr-b2",
+    passage: "Havets pH-värde har sjunkit med 0,1 enheter sedan den industriella revolutionen, vilket motsvarar en 26-procentig ökning av surhetsgraden. Försurningen beror på att havet absorberar koldioxid från atmosfären. Effekterna drabbar framför allt organismer med kalkskal, som koraller, musslor och vissa planktonarter. Forskning visar att korallrev riskerar att lösas upp om pH-värdet sjunker ytterligare. Havet absorberar i dag ungefär en tredjedel av de koldioxidutsläpp som människor orsakar.",
+    statement: "Koraller påverkas inte av havsförsurning.",
+    answer: "Falskt",
+    explanation: "Texten anger att effekterna 'drabbar framför allt organismer med kalkskal, som koraller'. Påståendet att koraller inte påverkas är direkt motsagt av texten.",
+    relevant_sentence: "Effekterna drabbar framför allt organismer med kalkskal, som koraller, musslor och vissa planktonarter."
+  },
+  {
+    id: "vr-b3",
+    passage: "Havets pH-värde har sjunkit med 0,1 enheter sedan den industriella revolutionen, vilket motsvarar en 26-procentig ökning av surhetsgraden. Försurningen beror på att havet absorberar koldioxid från atmosfären. Effekterna drabbar framför allt organismer med kalkskal, som koraller, musslor och vissa planktonarter. Forskning visar att korallrev riskerar att lösas upp om pH-värdet sjunker ytterligare. Havet absorberar i dag ungefär en tredjedel av de koldioxidutsläpp som människor orsakar.",
+    statement: "Havsförsurningen har pågått sedan den industriella revolutionen.",
+    answer: "Sant",
+    explanation: "Texten anger direkt att pH-värdet 'har sjunkit med 0,1 enheter sedan den industriella revolutionen'. Påståendet stämmer exakt med textens uppgift.",
+    relevant_sentence: "Havets pH-värde har sjunkit med 0,1 enheter sedan den industriella revolutionen."
+  },
+
+  // Passage C: Läsvanor
+  {
+    id: "vr-c1",
+    passage: "Enligt Nordicom-Sveriges mediebarometer 2023 läste 51 procent av Sveriges befolkning en tryckt bok under den senaste veckan, en minskning från 58 procent år 2018. Ljudbokslyssnandet har däremot ökat kraftigt och nådde 29 procent samma år. Ungdomar mellan 15 och 24 år lyssnar på ljudböcker i störst utsträckning av alla åldersgrupper. Biblioteksbesöken har minskat generellt, men digitala lån via Libby och liknande tjänster har ökat med 45 procent sedan 2020.",
+    statement: "Fler svenskar läste tryckta böcker 2023 än 2018.",
+    answer: "Falskt",
+    explanation: "Texten anger att andelen som läste tryckt bok var 51 procent 2023, ned från 58 procent 2018. Det är en minskning. Påståendet är direkt motsagt av siffrorna.",
+    relevant_sentence: "51 procent av Sveriges befolkning läste en tryckt bok under den senaste veckan, en minskning från 58 procent år 2018."
+  },
+  {
+    id: "vr-c2",
+    passage: "Enligt Nordicom-Sveriges mediebarometer 2023 läste 51 procent av Sveriges befolkning en tryckt bok under den senaste veckan, en minskning från 58 procent år 2018. Ljudbokslyssnandet har däremot ökat kraftigt och nådde 29 procent samma år. Ungdomar mellan 15 och 24 år lyssnar på ljudböcker i störst utsträckning av alla åldersgrupper. Biblioteksbesöken har minskat generellt, men digitala lån via Libby och liknande tjänster har ökat med 45 procent sedan 2020.",
+    statement: "Minskningen av biblioteksbesök beror på att digitala lån blivit populärare.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten nämner att biblioteksbesöken minskat och att digitala lån ökat. Det är frestande att koppla ihop dem som orsak och verkan — men texten drar inte den slutsatsen explicit. Det kan finnas andra orsaker till minskningen.",
+    relevant_sentence: "Biblioteksbesöken har minskat generellt, men digitala lån via Libby och liknande tjänster har ökat med 45 procent sedan 2020."
+  },
+  {
+    id: "vr-c3",
+    passage: "Enligt Nordicom-Sveriges mediebarometer 2023 läste 51 procent av Sveriges befolkning en tryckt bok under den senaste veckan, en minskning från 58 procent år 2018. Ljudbokslyssnandet har däremot ökat kraftigt och nådde 29 procent samma år. Ungdomar mellan 15 och 24 år lyssnar på ljudböcker i störst utsträckning av alla åldersgrupper. Biblioteksbesöken har minskat generellt, men digitala lån via Libby och liknande tjänster har ökat med 45 procent sedan 2020.",
+    statement: "Yngre vuxna lyssnar på ljudböcker oftare än äldre åldersgrupper.",
+    answer: "Sant",
+    explanation: "Texten anger att ungdomar 15–24 år lyssnar på ljudböcker 'i störst utsträckning av alla åldersgrupper'. Det innebär att de lyssnar mer än äldre grupper.",
+    relevant_sentence: "Ungdomar mellan 15 och 24 år lyssnar på ljudböcker i störst utsträckning av alla åldersgrupper."
+  },
+
+  // Passage D: Solenergi
+  {
+    id: "vr-d1",
+    passage: "Installationen av solpaneler i Sverige ökade med 78 procent under 2022 jämfört med föregående år. Den snabba tillväxten drivs av sjunkande priser på solpaneler och ökade statliga bidrag. Svenska hushåll som installerar solpaneler kan sälja överskottsel till elnätet och erhålla skattereduktion. Solenergi stod 2022 för 1,3 procent av Sveriges totala elproduktion. Branschorganisationen Solar Sweden spår att andelen kan nå 10 procent år 2030 om den nuvarande tillväxttakten håller i sig.",
+    statement: "Solenergi är i dag den dominerande energikällan i Sverige.",
+    answer: "Falskt",
+    explanation: "Texten uppger att solenergi stod för 1,3 procent av elproduktionen 2022. Det är långt ifrån dominerande. Påståendet är direkt motsagt av siffran.",
+    relevant_sentence: "Solenergi stod 2022 för 1,3 procent av Sveriges totala elproduktion."
+  },
+  {
+    id: "vr-d2",
+    passage: "Installationen av solpaneler i Sverige ökade med 78 procent under 2022 jämfört med föregående år. Den snabba tillväxten drivs av sjunkande priser på solpaneler och ökade statliga bidrag. Svenska hushåll som installerar solpaneler kan sälja överskottsel till elnätet och erhålla skattereduktion. Solenergi stod 2022 för 1,3 procent av Sveriges totala elproduktion. Branschorganisationen Solar Sweden spår att andelen kan nå 10 procent år 2030 om den nuvarande tillväxttakten håller i sig.",
+    statement: "Svenska hushåll kan få ekonomisk ersättning för el de producerar men inte använder själva.",
+    answer: "Sant",
+    explanation: "Texten anger att hushåll 'kan sälja överskottsel till elnätet' och 'erhålla skattereduktion'. Båda innebär ekonomisk ersättning för överskottet.",
+    relevant_sentence: "Svenska hushåll som installerar solpaneler kan sälja överskottsel till elnätet och erhålla skattereduktion."
+  },
+  {
+    id: "vr-d3",
+    passage: "Installationen av solpaneler i Sverige ökade med 78 procent under 2022 jämfört med föregående år. Den snabba tillväxten drivs av sjunkande priser på solpaneler och ökade statliga bidrag. Svenska hushåll som installerar solpaneler kan sälja överskottsel till elnätet och erhålla skattereduktion. Solenergi stod 2022 för 1,3 procent av Sveriges totala elproduktion. Branschorganisationen Solar Sweden spår att andelen kan nå 10 procent år 2030 om den nuvarande tillväxttakten håller i sig.",
+    statement: "Solenergi kommer att utgöra 10 procent av Sveriges elproduktion år 2030.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten återger Solar Swedens spådom att det 'kan nå 10 procent år 2030 om den nuvarande tillväxttakten håller i sig'. Det är en prognos med ett villkor — inte ett konstaterat faktum. Texten slår inte fast att det kommer att hända.",
+    relevant_sentence: "Branschorganisationen Solar Sweden spår att andelen kan nå 10 procent år 2030 om den nuvarande tillväxttakten håller i sig."
+  },
+
+  // Passage E: Sömn
+  {
+    id: "vr-e1",
+    passage: "En metaanalys av 72 sömnstudier publicerad i Sleep Medicine Reviews 2022 fann att vuxna som regelbundet sover färre än sex timmar per natt löper 27 procent högre risk att drabbas av hjärt-kärlsjukdomar. Rekommenderad sömntid för vuxna är sju till nio timmar per natt enligt Världshälsoorganisationen. I Sverige rapporterar 18 procent av befolkningen att de lider av sömnstörningar. Studien konstaterade också att effekterna av för lite sömn förstärks av stress och oregelbundna arbetstider.",
+    statement: "Alla som sover under sex timmar per natt kommer att drabbas av hjärt-kärlsjukdomar.",
+    answer: "Falskt",
+    trap: "Kvantifikatorfällan",
+    explanation: "Texten anger en ökad risk — 27 procent högre — inte att det är ett säkert utfall. 'Löper högre risk' är inte detsamma som 'kommer att drabbas'. Påståendets absoluta formulering ('alla ... kommer att') är direkt felaktig enligt texten.",
+    relevant_sentence: "Vuxna som regelbundet sover färre än sex timmar per natt löper 27 procent högre risk att drabbas av hjärt-kärlsjukdomar."
+  },
+  {
+    id: "vr-e2",
+    passage: "En metaanalys av 72 sömnstudier publicerad i Sleep Medicine Reviews 2022 fann att vuxna som regelbundet sover färre än sex timmar per natt löper 27 procent högre risk att drabbas av hjärt-kärlsjukdomar. Rekommenderad sömntid för vuxna är sju till nio timmar per natt enligt Världshälsoorganisationen. I Sverige rapporterar 18 procent av befolkningen att de lider av sömnstörningar. Studien konstaterade också att effekterna av för lite sömn förstärks av stress och oregelbundna arbetstider.",
+    statement: "WHO rekommenderar att vuxna sover minst sju timmar per natt.",
+    answer: "Sant",
+    explanation: "Texten anger att 'rekommenderad sömntid för vuxna är sju till nio timmar per natt enligt Världshälsoorganisationen'. Sju timmar är den nedre gränsen — 'minst sju timmar' stämmer.",
+    relevant_sentence: "Rekommenderad sömntid för vuxna är sju till nio timmar per natt enligt Världshälsoorganisationen."
+  },
+  {
+    id: "vr-e3",
+    passage: "En metaanalys av 72 sömnstudier publicerad i Sleep Medicine Reviews 2022 fann att vuxna som regelbundet sover färre än sex timmar per natt löper 27 procent högre risk att drabbas av hjärt-kärlsjukdomar. Rekommenderad sömntid för vuxna är sju till nio timmar per natt enligt Världshälsoorganisationen. I Sverige rapporterar 18 procent av befolkningen att de lider av sömnstörningar. Studien konstaterade också att effekterna av för lite sömn förstärks av stress och oregelbundna arbetstider.",
+    statement: "Stress är den vanligaste orsaken till sömnstörningar i Sverige.",
+    answer: "Kan ej avgöras",
+    trap: "Verklighetsknappen",
+    explanation: "Texten nämner att stress förstärker effekterna av sömnbrist — men säger ingenting om vad som orsakar sömnstörningarna. Att stress förstärker problem är inte samma sak som att stress är den vanligaste orsaken.",
+    relevant_sentence: "Studien konstaterade också att effekterna av för lite sömn förstärks av stress och oregelbundna arbetstider."
+  },
+
+  // Passage F: Urbanisering
+  {
+    id: "vr-f1",
+    passage: "I Sverige bor i dag drygt 87 procent av befolkningen i tätorter, enligt Statistiska centralbyrån. Urbaniseringstakten har ökat sedan 1960-talet, men den snabbaste tillväxten sker i de tre storstadsregionerna Stockholm, Göteborg och Malmö. Mindre kommuner upplever befolkningsminskning i allt fler fall — 2022 minskade befolkningen i 128 av Sveriges 290 kommuner. Infrastrukturinvesteringar koncentreras i allt högre grad till växande regioner, vilket skapar utmaningar för glesbygdskommuner att upprätthålla servicenivån.",
+    statement: "De flesta som lämnar landsbygden väljer att bosätta sig i Stockholm.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten anger att den snabbaste tillväxten sker i storstadsregionerna, men säger ingenting om vart de som lämnar landsbygden specifikt tar vägen. Det går inte att avgöra om Stockholm är vanligare än Göteborg eller Malmö.",
+    relevant_sentence: "Den snabbaste tillväxten sker i de tre storstadsregionerna Stockholm, Göteborg och Malmö."
+  },
+  {
+    id: "vr-f2",
+    passage: "I Sverige bor i dag drygt 87 procent av befolkningen i tätorter, enligt Statistiska centralbyrån. Urbaniseringstakten har ökat sedan 1960-talet, men den snabbaste tillväxten sker i de tre storstadsregionerna Stockholm, Göteborg och Malmö. Mindre kommuner upplever befolkningsminskning i allt fler fall — 2022 minskade befolkningen i 128 av Sveriges 290 kommuner. Infrastrukturinvesteringar koncentreras i allt högre grad till växande regioner, vilket skapar utmaningar för glesbygdskommuner att upprätthålla servicenivån.",
+    statement: "Mer än hälften av Sveriges kommuner minskade i befolkning under 2022.",
+    answer: "Falskt",
+    trap: "Kvantifikatorfällan",
+    explanation: "128 av 290 kommuner minskade i befolkning. Det är 44 procent — inte mer än hälften. Enkelt att räkna: 128/290 ≈ 0,44.",
+    relevant_sentence: "2022 minskade befolkningen i 128 av Sveriges 290 kommuner."
+  },
+  {
+    id: "vr-f3",
+    passage: "I Sverige bor i dag drygt 87 procent av befolkningen i tätorter, enligt Statistiska centralbyrån. Urbaniseringstakten har ökat sedan 1960-talet, men den snabbaste tillväxten sker i de tre storstadsregionerna Stockholm, Göteborg och Malmö. Mindre kommuner upplever befolkningsminskning i allt fler fall — 2022 minskade befolkningen i 128 av Sveriges 290 kommuner. Infrastrukturinvesteringar koncentreras i allt högre grad till växande regioner, vilket skapar utmaningar för glesbygdskommuner att upprätthålla servicenivån.",
+    statement: "Urbaniseringen i Sverige började öka på 1960-talet.",
+    answer: "Sant",
+    explanation: "Texten anger att 'urbaniseringstakten har ökat sedan 1960-talet'. Det stämmer direkt med påståendet.",
+    relevant_sentence: "Urbaniseringstakten har ökat sedan 1960-talet."
+  },
 ];
