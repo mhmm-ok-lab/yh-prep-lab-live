@@ -1488,6 +1488,14 @@ function renderTracks(): string {
       </section>
 
       <section class="card span-12">
+        <h3>Symbol Sudoku <span class="badge">Aon: Deductive-logical Thinking</span></h3>
+        <p class="muted">Latin Square-format: ingen form upprepas i samma rad eller kolumn. Hitta formen som saknas. Samma upplägg som Aon MapTQ (lst)-delprovet.</p>
+        <div class="inline-controls">
+          <a class="primary" href="/gap-challenge.html" target="_blank">🔷 Öppna Symbol Sudoku</a>
+        </div>
+      </section>
+
+      <section class="card span-12">
         <details>
           <summary>UX scenario-generator (för Nackademin-träning)</summary>
           <p style="margin-top:0.5rem">${generatedUxScenario}</p>
