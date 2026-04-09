@@ -1614,7 +1614,7 @@ function renderTracks(): string {
         <h3>Verbal Reasoning <span class="badge">Aon: Verbal Reasoning (admin)</span></h3>
         <p class="muted">Läs ett textstycke. Bedöm om påståendet är <strong>Sant</strong>, <strong>Falskt</strong> eller <strong>Kan ej avgöras</strong> — enbart utifrån texten. Tränar de tre vanligaste fällorna: Verklighetsknappen, Kvantifikatorfällan och Implikationsfällan.</p>
         <div class="inline-controls">
-          <button class="primary" data-action="start-vr-trainer">📄 Starta Verbal Reasoning (${VR_ITEMS.length} frågor)</button>
+          <button class="primary" data-action="start-vr-trainer">📄 Starta Verbal Reasoning (12 slumpade av ${VR_ITEMS.length})</button>
         </div>
       </section>
 
@@ -2617,7 +2617,7 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "start-vr-trainer") {
-    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5);
+    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5).slice(0, 12);
     vrSession = {
       items: shuffled,
       currentIndex: 0,
@@ -2661,7 +2661,7 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "vr-restart") {
-    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5);
+    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5).slice(0, 12);
     vrSession = {
       items: shuffled,
       currentIndex: 0,

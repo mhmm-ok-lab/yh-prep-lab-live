@@ -4741,4 +4741,168 @@ export const VR_ITEMS: VRItem[] = [
     explanation: "Texten anger att 'urbaniseringstakten har ökat sedan 1960-talet'. Det stämmer direkt med påståendet.",
     relevant_sentence: "Urbaniseringstakten har ökat sedan 1960-talet."
   },
+
+  // Passage G: Plastförpackningar
+  {
+    id: "vr-g1",
+    passage: "Sverige återvinner i dag 86 procent av alla plastflaskor och burkar som säljs via pantsystemet, en av de högsta siffrorna i Europa. Däremot återvinns endast 34 procent av övrig plastförpackning, såsom matkasseplast och plastfilm. EU:s förpackningsdirektiv kräver att medlemsländerna återvinner minst 50 procent av all plastförpackning till 2025. Naturvårdsverket har identifierat konsumenternas källsorteringsvanor som den avgörande faktorn för om Sverige ska nå målet. Insamlingen av matförpackningar i plast har ökat med 12 procent sedan nya sorteringsinstruktioner infördes 2022.",
+    statement: "Sverige återvinner mer än hälften av all plastförpackning.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten anger 86 % för pantförpackningar men bara 34 % för övrig plast. Det framgår inte vilket totalt genomsnitt det ger — texten redovisar inte en samlad siffra. Du kan inte räkna fram svaret utan att veta hur stor andel varje kategori utgör av totalen.",
+    relevant_sentence: "86 procent av alla plastflaskor och burkar [...] Däremot återvinns endast 34 procent av övrig plastförpackning."
+  },
+  {
+    id: "vr-g2",
+    passage: "Sverige återvinner i dag 86 procent av alla plastflaskor och burkar som säljs via pantystemet, en av de högsta siffrorna i Europa. Däremot återvinns endast 34 procent av övrig plastförpackning, såsom matkasseplast och plastfilm. EU:s förpackningsdirektiv kräver att medlemsländerna återvinner minst 50 procent av all plastförpackning till 2025. Naturvårdsverket har identifierat konsumenternas källsorteringsvanor som den avgörande faktorn för om Sverige ska nå målet. Insamlingen av matförpackningar i plast har ökat med 12 procent sedan nya sorteringsinstruktioner infördes 2022.",
+    statement: "EU kräver att minst hälften av all plastförpackning ska återvinnas till 2025.",
+    answer: "Sant",
+    explanation: "Texten anger direkt att EU:s förpackningsdirektiv kräver att 'minst 50 procent av all plastförpackning' återvinns till 2025. 50 procent är detsamma som hälften.",
+    relevant_sentence: "EU:s förpackningsdirektiv kräver att medlemsländerna återvinner minst 50 procent av all plastförpackning till 2025."
+  },
+  {
+    id: "vr-g3",
+    passage: "Sverige återvinner i dag 86 procent av alla plastflaskor och burkar som säljs via pantystemet, en av de högsta siffrorna i Europa. Däremot återvinns endast 34 procent av övrig plastförpackning, såsom matkasseplast och plastfilm. EU:s förpackningsdirektiv kräver att medlemsländerna återvinner minst 50 procent av all plastförpackning till 2025. Naturvårdsverket har identifierat konsumenternas källsorteringsvanor som den avgörande faktorn för om Sverige ska nå målet. Insamlingen av matförpackningar i plast har ökat med 12 procent sedan nya sorteringsinstruktioner infördes 2022.",
+    statement: "Sverige kommer att klara EU:s återvinningsmål för plast till 2025.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten beskriver utmaningar och en viss förbättring men drar ingen slutsats om huruvida Sverige faktiskt når målet. Att insamlingen ökat med 12 % innebär inte att målet uppnås — det är en trend, inte ett garanterat utfall.",
+    relevant_sentence: "Naturvårdsverket har identifierat konsumenternas källsorteringsvanor som den avgörande faktorn för om Sverige ska nå målet."
+  },
+
+  // Passage H: AI och arbetsmarknaden
+  {
+    id: "vr-h1",
+    passage: "En rapport från McKinsey Global Institute från 2023 uppskattade att mellan 400 och 800 miljoner jobb globalt kan automatiseras till 2030. Rapporten betonar dock att automatisering i de flesta fall förändrar arbetsuppgifter snarare än eliminerar hela yrkesroller. I Sverige visade en studie från IFAU att yrken med hög grad av rutinuppgifter är mest utsatta, medan yrken som kräver social kompetens och kreativitet påverkas i liten utsträckning. Historiskt sett har teknologisk förändring skapat fler jobb än den förstört, men övergångsperioderna har inneburit svårigheter för vissa grupper.",
+    statement: "Automatisering leder alltid till att hela yrkesroller försvinner.",
+    answer: "Falskt",
+    trap: "Kvantifikatorfällan",
+    explanation: "Texten anger explicit att automatisering 'i de flesta fall förändrar arbetsuppgifter snarare än eliminerar hela yrkesroller'. Påståendets absoluta 'alltid' är direkt motsagt av formuleringen 'i de flesta fall'.",
+    relevant_sentence: "Automatisering i de flesta fall förändrar arbetsuppgifter snarare än eliminerar hela yrkesroller."
+  },
+  {
+    id: "vr-h2",
+    passage: "En rapport från McKinsey Global Institute från 2023 uppskattade att mellan 400 och 800 miljoner jobb globalt kan automatiseras till 2030. Rapporten betonar dock att automatisering i de flesta fall förändrar arbetsuppgifter snarare än eliminerar hela yrkesroller. I Sverige visade en studie från IFAU att yrken med hög grad av rutinuppgifter är mest utsatta, medan yrken som kräver social kompetens och kreativitet påverkas i liten utsträckning. Historiskt sett har teknologisk förändring skapat fler jobb än den förstört, men övergångsperioderna har inneburit svårigheter för vissa grupper.",
+    statement: "Enligt texten är kreativa yrken mer skyddade från automatisering än yrken med rutinuppgifter.",
+    answer: "Sant",
+    explanation: "Texten anger att 'yrken med hög grad av rutinuppgifter är mest utsatta, medan yrken som kräver social kompetens och kreativitet påverkas i liten utsträckning'. Det stämmer med påståendet.",
+    relevant_sentence: "Yrken med hög grad av rutinuppgifter är mest utsatta, medan yrken som kräver social kompetens och kreativitet påverkas i liten utsträckning."
+  },
+  {
+    id: "vr-h3",
+    passage: "En rapport från McKinsey Global Institute från 2023 uppskattade att mellan 400 och 800 miljoner jobb globalt kan automatiseras till 2030. Rapporten betonar dock att automatisering i de flesta fall förändrar arbetsuppgifter snarare än eliminerar hela yrkesroller. I Sverige visade en studie från IFAU att yrken med hög grad av rutinuppgifter är mest utsatta, medan yrken som kräver social kompetens och kreativitet påverkas i liten utsträckning. Historiskt sett har teknologisk förändring skapat fler jobb än den förstört, men övergångsperioderna har inneburit svårigheter för vissa grupper.",
+    statement: "Den pågående automatiseringen kommer att resultera i nettominskning av antalet jobb globalt.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten nämner historiska mönster där teknologi skapat fler jobb än den förstört — men det är ett historiskt mönster, inte en prognos för den pågående vågen. Rapporten ger ett spann på 400–800 miljoner potentiellt automatiserbara jobb men drar inga slutsatser om nettoutvecklingen.",
+    relevant_sentence: "Historiskt sett har teknologisk förändring skapat fler jobb än den förstört, men övergångsperioderna har inneburit svårigheter för vissa grupper."
+  },
+
+  // Passage I: Antibiotikaresistens
+  {
+    id: "vr-i1",
+    passage: "Antibiotikaresistens beskrivs av Världshälsoorganisationen som ett av de allvarligaste hoten mot global hälsa. År 2019 orsakade antibiotikaresistenta bakterier direkt 1,27 miljoner dödsfall globalt, enligt en studie publicerad i The Lancet. Sverige har en av Europas lägsta antibiotikaförskrivningar per capita och har sedan 2000 minskat förskrivningen med 43 procent. Resistenta bakterier sprids framför allt via sjukvårdsmiljöer, men även via livsmedel och utlandsresor. Forskning pågår för att ta fram nya antibiotika, men inga nya klasser av antibiotika har godkänts sedan 1980-talet.",
+    statement: "Sverige förskriver mer antibiotika per capita än genomsnittet i Europa.",
+    answer: "Falskt",
+    explanation: "Texten anger explicit att Sverige har 'en av Europas lägsta antibiotikaförskrivningar per capita'. Påståendet om att Sverige förskriver mer än genomsnittet är direkt motsagt.",
+    relevant_sentence: "Sverige har en av Europas lägsta antibiotikaförskrivningar per capita."
+  },
+  {
+    id: "vr-i2",
+    passage: "Antibiotikaresistens beskrivs av Världshälsoorganisationen som ett av de allvarligaste hoten mot global hälsa. År 2019 orsakade antibiotikaresistenta bakterier direkt 1,27 miljoner dödsfall globalt, enligt en studie publicerad i The Lancet. Sverige har en av Europas lägsta antibiotikaförskrivningar per capita och har sedan 2000 minskat förskrivningen med 43 procent. Resistenta bakterier sprids framför allt via sjukvårdsmiljöer, men även via livsmedel och utlandsresor. Forskning pågår för att ta fram nya antibiotika, men inga nya klasser av antibiotika har godkänts sedan 1980-talet.",
+    statement: "Antibiotikaresistenta bakterier kan spridas via mat.",
+    answer: "Sant",
+    explanation: "Texten anger att resistenta bakterier sprids 'via sjukvårdsmiljöer, men även via livsmedel'. Livsmedel är samma sak som mat — påståendet stämmer.",
+    relevant_sentence: "Resistenta bakterier sprids framför allt via sjukvårdsmiljöer, men även via livsmedel och utlandsresor."
+  },
+  {
+    id: "vr-i3",
+    passage: "Antibiotikaresistens beskrivs av Världshälsoorganisationen som ett av de allvarligaste hoten mot global hälsa. År 2019 orsakade antibiotikaresistenta bakterier direkt 1,27 miljoner dödsfall globalt, enligt en studie publicerad i The Lancet. Sverige har en av Europas lägsta antibiotikaförskrivningar per capita och har sedan 2000 minskat förskrivningen med 43 procent. Resistenta bakterier sprids framför allt via sjukvårdsmiljöer, men även via livsmedel och utlandsresor. Forskning pågår för att ta fram nya antibiotika, men inga nya klasser av antibiotika har godkänts sedan 1980-talet.",
+    statement: "Bristen på ny antibiotika beror på att läkemedelsföretagen inte prioriterar forskning inom området.",
+    answer: "Kan ej avgöras",
+    trap: "Verklighetsknappen",
+    explanation: "Texten konstaterar att forskning pågår och att inga nya klasser godkänts sedan 1980-talet — men nämner ingenting om orsakerna till det. Påståendet om läkemedelsföretagens prioriteringar är en möjlig förklaring, men texten ger inget stöd åt den.",
+    relevant_sentence: "Forskning pågår för att ta fram nya antibiotika, men inga nya klasser av antibiotika har godkänts sedan 1980-talet."
+  },
+
+  // Passage J: Sociala medier och ungdomar
+  {
+    id: "vr-j1",
+    passage: "En rapport från Folkhälsomyndigheten 2023 visar att 38 procent av svenska tjejer i åldern 13–15 år uppger att de mår psykiskt dåligt, jämfört med 18 procent av killarna i samma åldersgrupp. Användningen av sociala medier har ökat markant i båda grupperna sedan 2015. Forskningen om orsakssambandet mellan sociala medier och psykisk ohälsa är ännu inte entydig — vissa studier pekar på ett samband, andra finner inga effekter. Bland de tillfrågade ungdomarna uppgav 61 procent att de kontrollerar sina sociala medier direkt när de vaknar på morgonen.",
+    statement: "Sociala medier orsakar psykisk ohälsa hos svenska ungdomar.",
+    answer: "Kan ej avgöras",
+    trap: "Implikationsfällan",
+    explanation: "Texten beskriver att psykisk ohälsa och användning av sociala medier båda ökat, men anger explicit att forskningen om orsakssambandet 'ännu inte är entydig'. Texten slår alltså aktivt fast att man inte kan dra slutsatsen om orsakssamband.",
+    relevant_sentence: "Forskningen om orsakssambandet mellan sociala medier och psykisk ohälsa är ännu inte entydig — vissa studier pekar på ett samband, andra finner inga effekter."
+  },
+  {
+    id: "vr-j2",
+    passage: "En rapport från Folkhälsomyndigheten 2023 visar att 38 procent av svenska tjejer i åldern 13–15 år uppger att de mår psykiskt dåligt, jämfört med 18 procent av killarna i samma åldersgrupp. Användningen av sociala medier har ökat markant i båda grupperna sedan 2015. Forskningen om orsakssambandet mellan sociala medier och psykisk ohälsa är ännu inte entydig — vissa studier pekar på ett samband, andra finner inga effekter. Bland de tillfrågade ungdomarna uppgav 61 procent att de kontrollerar sina sociala medier direkt när de vaknar på morgonen.",
+    statement: "Dubbelt så stor andel tjejer som killar i åldern 13–15 år uppger psykisk ohälsa.",
+    answer: "Sant",
+    explanation: "38 procent av tjejerna jämfört med 18 procent av killarna. 38 är mer än dubbelt så stort som 18 (18 × 2 = 36 < 38). Påståendet stämmer.",
+    relevant_sentence: "38 procent av svenska tjejer i åldern 13–15 år uppger att de mår psykiskt dåligt, jämfört med 18 procent av killarna i samma åldersgrupp."
+  },
+  {
+    id: "vr-j3",
+    passage: "En rapport från Folkhälsomyndigheten 2023 visar att 38 procent av svenska tjejer i åldern 13–15 år uppger att de mår psykiskt dåligt, jämfört med 18 procent av killarna i samma åldersgrupp. Användningen av sociala medier har ökat markant i båda grupperna sedan 2015. Forskningen om orsakssambandet mellan sociala medier och psykisk ohälsa är ännu inte entydig — vissa studier pekar på ett samband, andra finner inga effekter. Bland de tillfrågade ungdomarna uppgav 61 procent att de kontrollerar sina sociala medier direkt när de vaknar på morgonen.",
+    statement: "Majoriteten av de tillfrågade ungdomarna börjar morgonen med att kolla sociala medier.",
+    answer: "Sant",
+    explanation: "61 procent uppgav att de kontrollerar sociala medier direkt när de vaknar. 61 procent är en majoritet (>50 %). Påståendet stämmer.",
+    relevant_sentence: "Bland de tillfrågade ungdomarna uppgav 61 procent att de kontrollerar sina sociala medier direkt när de vaknar på morgonen."
+  },
+
+  // Passage K: Elbilar
+  {
+    id: "vr-k1",
+    passage: "Under 2023 utgjorde elbilar 39 procent av alla nyregistrerade personbilar i Sverige, en ökning från 32 procent året innan. Den genomsnittliga räckvidden för nya elbilar på den svenska marknaden uppgick till 412 kilometer per laddning. Laddinfrastrukturen har byggts ut med 22 procent under samma period, men Trafikverket bedömer att takten måste öka ytterligare för att möta den förväntade efterfrågan. Elbilsägare i storstadsregionerna rapporterar i genomsnitt kortare laddningstider än elbilsägare på landsbygden, vilket delvis förklaras av tillgången till snabbladdare.",
+    statement: "Mer än hälften av nyregistrerade bilar i Sverige var elbilar under 2023.",
+    answer: "Falskt",
+    trap: "Kvantifikatorfällan",
+    explanation: "Texten anger att elbilar utgjorde 39 procent av nyregistrerade bilar — inte mer än hälften. 39 procent är under 50 procent.",
+    relevant_sentence: "Under 2023 utgjorde elbilar 39 procent av alla nyregistrerade personbilar i Sverige."
+  },
+  {
+    id: "vr-k2",
+    passage: "Under 2023 utgjorde elbilar 39 procent av alla nyregistrerade personbilar i Sverige, en ökning från 32 procent året innan. Den genomsnittliga räckvidden för nya elbilar på den svenska marknaden uppgick till 412 kilometer per laddning. Laddinfrastrukturen har byggts ut med 22 procent under samma period, men Trafikverket bedömer att takten måste öka ytterligare för att möta den förväntade efterfrågan. Elbilsägare i storstadsregionerna rapporterar i genomsnitt kortare laddningstider än elbilsägare på landsbygden, vilket delvis förklaras av tillgången till snabbladdare.",
+    statement: "Elbilsandelen av nyregistrerade bilar ökade mellan 2022 och 2023.",
+    answer: "Sant",
+    explanation: "Texten anger 32 procent år 2022 och 39 procent år 2023 — en ökning med 7 procentenheter. Påståendet stämmer direkt.",
+    relevant_sentence: "Under 2023 utgjorde elbilar 39 procent av alla nyregistrerade personbilar i Sverige, en ökning från 32 procent året innan."
+  },
+  {
+    id: "vr-k3",
+    passage: "Under 2023 utgjorde elbilar 39 procent av alla nyregistrerade personbilar i Sverige, en ökning från 32 procent året innan. Den genomsnittliga räckvidden för nya elbilar på den svenska marknaden uppgick till 412 kilometer per laddning. Laddinfrastrukturen har byggts ut med 22 procent under samma period, men Trafikverket bedömer att takten måste öka ytterligare för att möta den förväntade efterfrågan. Elbilsägare i storstadsregionerna rapporterar i genomsnitt kortare laddningstider än elbilsägare på landsbygden, vilket delvis förklaras av tillgången till snabbladdare.",
+    statement: "Bristen på laddinfrastruktur är det främsta hindret för elbilsköpare i Sverige.",
+    answer: "Kan ej avgöras",
+    trap: "Verklighetsknappen",
+    explanation: "Texten nämner att Trafikverket bedömer att utbyggnadstakten måste öka, men säger ingenting om vad som är det 'främsta hindret' för elbilsköpare. Det är en möjlig slutsats man kan dra, men texten stödjer den inte.",
+    relevant_sentence: "Trafikverket bedömer att takten måste öka ytterligare för att möta den förväntade efterfrågan."
+  },
+
+  // Passage L: Skogens roll i klimatet
+  {
+    id: "vr-l1",
+    passage: "Sveriges skogar binder i dag netto ungefär 40 miljoner ton koldioxidekvivalenter per år, vilket motsvarar omkring 60 procent av landets totala växthusgasutsläpp. Avverkningsvolymen har ökat med 18 procent sedan 2000, vilket lett till att nettoupptaget minskat. Skogsstyrelsen rapporterar att andelen gammal skog — definierad som skog över 120 år — har minskat med 30 procent sedan 1990. Naturvårdsorganisationer argumenterar för utökade skyddsområden, medan skogsindustrin menar att ett aktivt skogsbruk är nödvändigt för att upprätthålla kolupptaget på lång sikt.",
+    statement: "Svenska skogar tar upp mer koldioxid än Sverige totalt släpper ut.",
+    answer: "Falskt",
+    explanation: "Texten anger att skogarna binder 40 miljoner ton, vilket motsvarar 60 procent av utsläppen — alltså inte mer än 100 procent. Skogarna binder en stor del men inte mer än det totala utsläppet.",
+    relevant_sentence: "Sveriges skogar binder i dag netto ungefär 40 miljoner ton koldioxidekvivalenter per år, vilket motsvarar omkring 60 procent av landets totala växthusgasutsläpp."
+  },
+  {
+    id: "vr-l2",
+    passage: "Sveriges skogar binder i dag netto ungefär 40 miljoner ton koldioxidekvivalenter per år, vilket motsvarar omkring 60 procent av landets totala växthusgasutsläpp. Avverkningsvolymen har ökat med 18 procent sedan 2000, vilket lett till att nettoupptaget minskat. Skogsstyrelsen rapporterar att andelen gammal skog — definierad som skog över 120 år — har minskat med 30 procent sedan 1990. Naturvårdsorganisationer argumenterar för utökade skyddsområden, medan skogsindustrin menar att ett aktivt skogsbruk är nödvändigt för att upprätthålla kolupptaget på lång sikt.",
+    statement: "Det finns en oenighet om hur skogen bäst förvaltas för att gynna klimatet.",
+    answer: "Sant",
+    explanation: "Texten beskriver direkt att naturvårdsorganisationer och skogsindustrin har olika ståndpunkter — utökade skyddsområden kontra aktivt skogsbruk. Det är en tydlig oenighet.",
+    relevant_sentence: "Naturvårdsorganisationer argumenterar för utökade skyddsområden, medan skogsindustrin menar att ett aktivt skogsbruk är nödvändigt."
+  },
+  {
+    id: "vr-l3",
+    passage: "Sveriges skogar binder i dag netto ungefär 40 miljoner ton koldioxidekvivalenter per år, vilket motsvarar omkring 60 procent av landets totala växthusgasutsläpp. Avverkningsvolymen har ökat med 18 procent sedan 2000, vilket lett till att nettoupptaget minskat. Skogsstyrelsen rapporterar att andelen gammal skog — definierad som skog över 120 år — har minskat med 30 procent sedan 1990. Naturvårdsorganisationer argumenterar för utökade skyddsområden, medan skogsindustrin menar att ett aktivt skogsbruk är nödvändigt för att upprätthålla kolupptaget på lång sikt.",
+    statement: "Ökad avverkning har bidragit till att skogarna binder mindre koldioxid än tidigare.",
+    answer: "Sant",
+    explanation: "Texten anger att 'avverkningsvolymen har ökat med 18 procent sedan 2000, vilket lett till att nettoupptaget minskat'. Orsakssamband är explicit: ökad avverkning → minskat nettoupptag.",
+    relevant_sentence: "Avverkningsvolymen har ökat med 18 procent sedan 2000, vilket lett till att nettoupptaget minskat."
+  },
 ];
