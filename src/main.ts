@@ -1,5 +1,5 @@
 import "./styles.css";
-import { GLOSSARY, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
+import { GLOSSARY, LS_ITEMS, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
 import { createDailyPlan, formatFirstExamDate, getFirstExamCountdown, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
@@ -12,7 +12,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import type { GlossaryEntry, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
+import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design" | "roadmap" | "glossary";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
@@ -80,6 +80,16 @@ interface VRSession {
   correct: number;
   wrong: number;
   trapCounts: Partial<Record<string, number>>;
+}
+
+interface LSSession {
+  items: LSItem[];
+  currentIndex: number;
+  userAnswer: string | null;
+  showFeedback: boolean;
+  correct: number;
+  wrong: number;
+  trapCounts: Partial<Record<LSTrap, number>>;
 }
 
 interface AdaptiveSuggestion {
@@ -376,6 +386,7 @@ let filters: QuestionFilters = {
 };
 let activeGlossaryTerm: GlossaryEntry | null = null;
 let vrSession: VRSession | null = null;
+let lsSession: LSSession | null = null;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
 let knownUserIds = loadKnownUsers();
@@ -1569,7 +1580,109 @@ function renderVRSession(): string {
   `;
 }
 
+function renderLSSession(): string {
+  if (!lsSession) return "";
+  const { items, currentIndex, userAnswer, showFeedback, correct, wrong, trapCounts } = lsSession;
+  const total = items.length;
+  const isDone = currentIndex >= total;
+
+  if (isDone) {
+    const scorePercent = Math.round((correct / total) * 100);
+    const trapEntries = Object.entries(trapCounts).filter(([, v]) => (v ?? 0) > 0);
+    return `
+      <div class="ls-session">
+        <div class="ls-results-header">
+          <h2>Språkliga färdigheter — klart</h2>
+          <div class="ls-score-big">${correct}/${total} <span>rätt (${scorePercent}%)</span></div>
+          <div class="ls-results-bar"><div class="ls-results-bar-fill" style="width:${scorePercent}%"></div></div>
+        </div>
+        ${trapEntries.length > 0 ? `
+          <div class="ls-trap-summary">
+            <h3>Fällor du landade i</h3>
+            <ul>
+              ${trapEntries.map(([trap, count]) => `<li><strong>${trap}</strong> ×${count}</li>`).join("")}
+            </ul>
+          </div>
+        ` : `<p class="ls-clean">Inga fällor! Rent genomfört.</p>`}
+        <div class="ls-result-actions">
+          <button class="primary" data-action="ls-restart">Kör igen</button>
+          <button class="secondary" data-action="ls-close">Tillbaka till Träna</button>
+        </div>
+      </div>
+    `;
+  }
+
+  const item = items[currentIndex];
+  const progressPct = Math.round((currentIndex / total) * 100);
+  const isCorrect = userAnswer === item.answer;
+
+  const typeLabels: Record<string, string> = {
+    komplettering: "Meningskomplettering",
+    ordforrad: "Ordförråd",
+    stavning: "Stavning"
+  };
+
+  return `
+    <div class="ls-session">
+      <div class="ls-header">
+        <span class="ls-title">Språkliga färdigheter</span>
+        <span class="ls-progress-label">${currentIndex + 1} / ${total}</span>
+      </div>
+      <div class="ls-progressbar"><div class="ls-progressbar-fill" style="width:${progressPct}%"></div></div>
+
+      <div class="ls-type-badge">${typeLabels[item.type] ?? item.type}</div>
+
+      <div class="ls-prompt-wrap">
+        <p class="ls-prompt">${item.prompt.replace("[___]", '<span class="ls-gap">___</span>')}</p>
+      </div>
+
+      ${!showFeedback ? `
+        <div class="ls-answer-btns">
+          ${item.options.map((opt, i) => `
+            <button class="ls-answer-btn" data-action="ls-answer" data-answer="${opt}">
+              <span class="ls-answer-letter">${String.fromCharCode(65 + i)}</span>
+              ${opt}
+            </button>
+          `).join("")}
+        </div>
+      ` : `
+        <div class="ls-answer-display">
+          ${item.options.map((opt, i) => `
+            <div class="ls-answer-result ${opt === item.answer ? "ls-answer-correct" : opt === userAnswer ? "ls-answer-wrong" : "ls-answer-neutral"}">
+              <span class="ls-answer-letter">${String.fromCharCode(65 + i)}</span>
+              ${opt}
+              ${opt === item.answer ? ' <span class="ls-check">✓</span>' : ""}
+              ${opt === userAnswer && opt !== item.answer ? ' <span class="ls-cross">✗</span>' : ""}
+            </div>
+          `).join("")}
+        </div>
+        <div class="ls-feedback ${isCorrect ? "ls-feedback-correct" : "ls-feedback-wrong"}">
+          <div class="ls-feedback-verdict">
+            ${isCorrect
+              ? `<span class="ls-verdict-icon">✅</span> Rätt! Svaret är <strong>${item.answer}</strong>.`
+              : `<span class="ls-verdict-icon">❌</span> Du valde <strong>${userAnswer}</strong> — rätt svar är <strong>${item.answer}</strong>.`
+            }
+          </div>
+          ${!isCorrect && item.trap ? `
+            <div class="ls-trap-badge">🎯 Fällan: ${item.trap}</div>
+          ` : ""}
+          <p class="ls-explanation">${item.explanation}</p>
+        </div>
+        <div class="ls-next-row">
+          <span class="ls-running-score">✓ ${correct}  ✗ ${wrong}</span>
+          <button class="primary" data-action="ls-next">
+            ${currentIndex + 1 < total ? "Nästa →" : "Visa resultat →"}
+          </button>
+        </div>
+      `}
+
+      <button class="ls-quit-btn secondary" data-action="ls-close">Avsluta</button>
+    </div>
+  `;
+}
+
 function renderTracks(): string {
+  if (lsSession) return renderLSSession();
   if (vrSession) return renderVRSession();
   const logicQuestions = getLogicQuestions();
   return `
@@ -1615,6 +1728,14 @@ function renderTracks(): string {
         <p class="muted">Läs ett textstycke. Bedöm om påståendet är <strong>Sant</strong>, <strong>Falskt</strong> eller <strong>Kan ej avgöras</strong> — enbart utifrån texten. Tränar de tre vanligaste fällorna: Verklighetsknappen, Kvantifikatorfällan och Implikationsfällan.</p>
         <div class="inline-controls">
           <button class="primary" data-action="start-vr-trainer">📄 Starta Verbal Reasoning (12 slumpade av ${VR_ITEMS.length})</button>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <h3>Språkliga färdigheter <span class="badge">Aon: Scales LT-SE</span></h3>
+        <p class="muted">Tre sektioner: meningskomplettering, ordförråd och stavning. Välj rätt alternativ (A/B/C). Tränar Kontextknappen, Definitionsfällan, Dubblingsfällan och Särkrivningsfällan.</p>
+        <div class="inline-controls">
+          <button class="primary" data-action="start-ls-trainer">🇸🇪 Starta Språkliga färdigheter (12 slumpade av ${LS_ITEMS.length})</button>
         </div>
       </section>
 
@@ -2677,6 +2798,72 @@ app.addEventListener("click", (event) => {
 
   if (action === "vr-close") {
     vrSession = null;
+    page = "tracks";
+    render();
+    return;
+  }
+
+  if (action === "start-ls-trainer") {
+    const shuffled = [...LS_ITEMS].sort(() => Math.random() - 0.5).slice(0, 12);
+    lsSession = {
+      items: shuffled,
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      trapCounts: {}
+    };
+    page = "tracks";
+    render();
+    return;
+  }
+
+  if (action === "ls-answer") {
+    if (!lsSession || lsSession.showFeedback) return;
+    const answer = actionEl.dataset.answer as string;
+    const item = lsSession.items[lsSession.currentIndex];
+    const isCorrect = answer === item.answer;
+    if (isCorrect) {
+      lsSession.correct++;
+    } else {
+      lsSession.wrong++;
+      if (item.trap) {
+        lsSession.trapCounts[item.trap] = (lsSession.trapCounts[item.trap] ?? 0) + 1;
+      }
+    }
+    lsSession.userAnswer = answer;
+    lsSession.showFeedback = true;
+    render();
+    return;
+  }
+
+  if (action === "ls-next") {
+    if (!lsSession) return;
+    lsSession.currentIndex++;
+    lsSession.userAnswer = null;
+    lsSession.showFeedback = false;
+    render();
+    return;
+  }
+
+  if (action === "ls-restart") {
+    const shuffled = [...LS_ITEMS].sort(() => Math.random() - 0.5).slice(0, 12);
+    lsSession = {
+      items: shuffled,
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      trapCounts: {}
+    };
+    render();
+    return;
+  }
+
+  if (action === "ls-close") {
+    lsSession = null;
     page = "tracks";
     render();
     return;

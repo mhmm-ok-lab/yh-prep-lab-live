@@ -1978,3 +1978,311 @@ details:not(.mini-menu)[open] {
   flex-wrap: wrap;
   padding-top: 0.5rem;
 }
+
+/* =========================================
+   LANGUAGE SKILLS SWEDISH TRAINER (.ls-*)
+   ========================================= */
+
+.ls-session {
+  max-width: 660px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.ls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.ls-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary, #111);
+}
+
+.ls-progress-label {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+}
+
+.ls-progressbar {
+  height: 6px;
+  background: var(--border, #e0e0dc);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.ls-progressbar-fill {
+  height: 100%;
+  background: var(--accent, #2563eb);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.ls-type-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent, #2563eb);
+  background: color-mix(in srgb, var(--accent, #2563eb) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #2563eb) 25%, transparent);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  align-self: flex-start;
+}
+
+.ls-prompt-wrap {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e0e0dc);
+  border-radius: 8px;
+  padding: 1.25rem 1.25rem;
+}
+
+.ls-prompt {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--text-primary, #111);
+}
+
+.ls-gap {
+  display: inline-block;
+  border-bottom: 2px solid var(--accent, #2563eb);
+  min-width: 80px;
+  color: var(--accent, #2563eb);
+  font-weight: 600;
+  padding: 0 0.2rem;
+}
+
+.ls-answer-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ls-answer-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e0e0dc);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ls-answer-btn:hover {
+  border-color: var(--accent, #2563eb);
+  background: color-mix(in srgb, var(--accent, #2563eb) 5%, var(--card-bg, #fff));
+}
+
+.ls-answer-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--border, #e0e0dc);
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ls-answer-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ls-answer-result {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border, #e0e0dc);
+  font-size: 0.95rem;
+}
+
+.ls-answer-correct {
+  background: color-mix(in srgb, #16a34a 10%, transparent);
+  border-color: #16a34a;
+  color: var(--text-primary, #111);
+}
+
+.ls-answer-correct .ls-answer-letter {
+  background: #16a34a;
+  color: #fff;
+}
+
+.ls-answer-wrong {
+  background: color-mix(in srgb, #dc2626 8%, transparent);
+  border-color: #dc2626;
+  color: var(--text-primary, #111);
+}
+
+.ls-answer-wrong .ls-answer-letter {
+  background: #dc2626;
+  color: #fff;
+}
+
+.ls-answer-neutral {
+  opacity: 0.5;
+}
+
+.ls-check {
+  margin-left: auto;
+  font-size: 1rem;
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.ls-cross {
+  margin-left: auto;
+  font-size: 1rem;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.ls-feedback {
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  border-left: 4px solid transparent;
+}
+
+.ls-feedback-correct {
+  background: color-mix(in srgb, #16a34a 8%, transparent);
+  border-color: #16a34a;
+}
+
+.ls-feedback-wrong {
+  background: color-mix(in srgb, #dc2626 6%, transparent);
+  border-color: #dc2626;
+}
+
+.ls-feedback-verdict {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.ls-verdict-icon {
+  font-size: 1.1rem;
+}
+
+.ls-trap-badge {
+  display: inline-block;
+  background: #fef3c7;
+  border: 1px solid #d97706;
+  color: #92400e;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.5rem;
+}
+
+.ls-explanation {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-primary, #111);
+  margin: 0;
+}
+
+.ls-next-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ls-running-score {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted, #888);
+  letter-spacing: 0.03em;
+}
+
+.ls-quit-btn {
+  align-self: flex-start;
+  font-size: 0.82rem;
+}
+
+.ls-results-header {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+}
+
+.ls-score-big {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #111);
+  margin: 0.5rem 0;
+}
+
+.ls-score-big span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted, #888);
+}
+
+.ls-results-bar {
+  height: 8px;
+  background: var(--border, #e0e0dc);
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 320px;
+  margin: 0.5rem auto;
+}
+
+.ls-results-bar-fill {
+  height: 100%;
+  background: var(--accent, #2563eb);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.ls-trap-summary {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e0e0dc);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.ls-trap-summary h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.ls-trap-summary ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.ls-clean {
+  text-align: center;
+  color: #16a34a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+}
+
+.ls-result-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+}

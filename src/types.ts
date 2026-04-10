@@ -128,6 +128,19 @@ export interface SessionDraft {
 export type VRAnswer = "Sant" | "Falskt" | "Kan ej avgöras";
 export type VRTrap = "Verklighetsknappen" | "Kvantifikatorfällan" | "Implikationsfällan" | "Negationsfällan";
 
+export type LSQuestionType = "komplettering" | "ordforrad" | "stavning";
+export type LSTrap = "Kontextknappen" | "Definitionsfällan" | "Dubblingsfällan" | "Särkrivningsfällan";
+
+export interface LSItem {
+  id: string;
+  type: LSQuestionType;
+  prompt: string;
+  options: string[];
+  answer: string;
+  explanation: string;
+  trap?: LSTrap;
+}
+
 export interface VRItem {
   id: string;
   passage: string;

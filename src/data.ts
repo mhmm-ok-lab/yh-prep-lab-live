@@ -4906,3 +4906,341 @@ export const VR_ITEMS: VRItem[] = [
     relevant_sentence: "Avverkningsvolymen har ökat med 18 procent sedan 2000, vilket lett till att nettoupptaget minskat."
   },
 ];
+
+import type { LSItem } from "./types";
+
+export const LS_ITEMS: LSItem[] = [
+
+  // --- MENINGSKOMPLETTERING (14 st) ---
+
+  {
+    id: "ls-k01",
+    type: "komplettering",
+    prompt: "Bolaget har beslutat att [___] sin verksamhet till den asiatiska marknaden.",
+    options: ["expandera", "exploatera", "exportera"],
+    answer: "expandera",
+    explanation: '"Expandera" = växa/utvidga sin närvaro. "Exploatera" har negativ klang (utnyttja). "Exportera" = skicka varor utomlands — inte samma sak som att etablera sig på en marknad.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k02",
+    type: "komplettering",
+    prompt: "Utredningen visade att det förelåg en [___] intressekonflikt.",
+    options: ["uppenbar", "uppriktig", "upplevd"],
+    answer: "uppenbar",
+    explanation: '"Uppenbar" = tydlig/evident, passar intressekonflikt. "Uppriktig" = ärlig — används om personer, inte konflikter. "Upplevd" förändrar betydelsen helt (subjektiv tolkning vs. faktum).',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k03",
+    type: "komplettering",
+    prompt: "Förslaget möttes av [___] kritik från oppositionen.",
+    options: ["skarp", "vass", "spetsig"],
+    answer: "skarp",
+    explanation: '"Skarp kritik" är den etablerade kollokationen i formell svenska. "Vass" och "spetsig" betyder skarp i fysisk bemärkelse men kollokerarinte med "kritik" i standardsvenska.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k04",
+    type: "komplettering",
+    prompt: "Kommunen har inte [___] att genomföra projektet inom utsatt tid.",
+    options: ["lyckats", "förmåga", "kapacitet"],
+    answer: "lyckats",
+    explanation: '"Har inte lyckats" = perfekt form av ett verb — grammatiskt korrekt efter "har inte". "Förmåga" och "kapacitet" är substantiv och kan inte stå ensamma i denna verbposition.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k05",
+    type: "komplettering",
+    prompt: "Det är viktigt att alla parter [___] överens om villkoren.",
+    options: ["kommer", "är", "blir"],
+    answer: "kommer",
+    explanation: '"Kommer överens" = nå en överenskommelse (process mot ett mål). "Är överens" = befinner sig i ett tillstånd av enighet. Kontexten beskriver ett mål att uppnå, inte ett nuläge.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k06",
+    type: "komplettering",
+    prompt: "Hon [___] ansökan i god tid innan deadline.",
+    options: ["lämnade in", "lämnade ifrån sig", "lämnade ut"],
+    answer: "lämnade in",
+    explanation: '"Lämna in" = skicka in/inlämna (t.ex. till en myndighet). "Lämna ifrån sig" = ge bort något man haft hand om. "Lämna ut" = dela ut eller röja information.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k07",
+    type: "komplettering",
+    prompt: "Rapporten [___] ett antal allvarliga brister i systemet.",
+    options: ["påvisade", "bevisade", "demonstrerade"],
+    answer: "påvisade",
+    explanation: '"Påvisa" = identifiera och visa på (analytiskt, formellt). "Bevisa" kräver juridisk eller matematisk säkerhet. "Demonstrerade" passar bättre när man visar upp något konkret, inte abstrakta brister.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k08",
+    type: "komplettering",
+    prompt: "Styrelsen fattade ett [___] beslut om att skjuta upp investeringen.",
+    options: ["enhälligt", "enstämmigt", "enigt"],
+    answer: "enhälligt",
+    explanation: '"Enhälligt beslut" = enhälligt voterat, alla röstade lika — den etablerade juridisk-formella termen. "Enstämmigt" används om musik/kör. "Enigt" = enat, mer informellt och inte fackterm för beslut.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k09",
+    type: "komplettering",
+    prompt: "Projektet finansierades [___] av externa bidrag.",
+    options: ["uteslutande", "uttömmande", "undantagslöst"],
+    answer: "uteslutande",
+    explanation: '"Uteslutande" = enbart/solely. "Uttömmande" = heltäckande (t.ex. en uttömmande lista). "Undantagslöst" = utan undantag — används om regler, inte om finansieringskällor.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k10",
+    type: "komplettering",
+    prompt: "Chefen bad teamet att [___] sina arbetsrutiner.",
+    options: ["se över", "se om", "se till"],
+    answer: "se över",
+    explanation: '"Se över" = granska/utvärdera. "Se om" = ta hand om någon (informellt/dialektalt). "Se till" = säkerställa att något sker — ett helt annat uppdrag.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k11",
+    type: "komplettering",
+    prompt: "Beslutet fattades utan att [___] med berörda parter.",
+    options: ["samråda", "rådfråga", "konsultera"],
+    answer: "samråda",
+    explanation: '"Samråda med" = formellt samarbete/dialog inför beslut. "Rådfråga" kräver direkt objekt utan "med" (man rådfrågar någon, inte rådfrågar med). "Konsultera" är korrekt men mer engelskinspirerat och ovanligt i denna myndighetskontext.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k12",
+    type: "komplettering",
+    prompt: "Avtalets [___] sträcker sig över fem år.",
+    options: ["löptid", "giltighetstid", "varaktighet"],
+    answer: "löptid",
+    explanation: '"Löptid" är etablerad affärsterm för ett avtals tidsram. "Giltighetstid" används för pass och licenser (giltighet, inte duration). "Varaktighet" är korrekt men generellt — "löptid" är precis rätt i avtalskontext.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k13",
+    type: "komplettering",
+    prompt: "Han [___] sin kollega för att ha löst det komplicerade problemet.",
+    options: ["berömde", "hyllade", "applåderade"],
+    answer: "berömde",
+    explanation: '"Berömde" = neutral och lämplig i arbetsmiljö. "Hyllade" = hög intensitet, används vid ceremonier/offentliga firanden. "Applåderade" är bokstavligt (händerna) och låter konstigt utan faktiskt applåderande.',
+    trap: "Kontextknappen"
+  },
+  {
+    id: "ls-k14",
+    type: "komplettering",
+    prompt: "Organisationen har [___] ett nytt system för att hantera klagomål.",
+    options: ["infört", "inlett", "initierat"],
+    answer: "infört",
+    explanation: '"Infört" = implementerat, systemet är på plats. "Inlett" = påbörjat en process (t.ex. inlett förhandlingar). "Initierat" = satt igång, men används om processer/samtal, inte om att installera ett system.',
+    trap: "Kontextknappen"
+  },
+
+  // --- ORDFÖRRÅD / DEFINITIONSORDVAL (12 st) ---
+
+  {
+    id: "ls-o01",
+    type: "ordforrad",
+    prompt: "En person som officiellt representerar sitt land vid ett annat lands regering.",
+    options: ["diplomat", "delegat", "attaché"],
+    answer: "diplomat",
+    explanation: '"Diplomat" är samlingstermen för en stats officiella representant hos en annan stat. "Delegat" = representant i en specifik delegation (t.ex. FN-möte). "Attaché" = diplomat med specialuppdrag (militär-, handelsattaché) — en underkategori.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o02",
+    type: "ordforrad",
+    prompt: "Förmågan att förstå och dela en annan persons känslor inifrån.",
+    options: ["empati", "sympati", "antipati"],
+    answer: "empati",
+    explanation: '"Empati" = att träda in i någon annans känsloläge och förstå det inifrån. "Sympati" = att tycka synd om eller stödja — man delar inte känslan, man stödjer utifrån. "Antipati" = motvilja.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o03",
+    type: "ordforrad",
+    prompt: "En slutledningsmetod där man drar en generell regel utifrån flera enskilda iakttagelser.",
+    options: ["induktion", "deduktion", "abduktion"],
+    answer: "induktion",
+    explanation: '"Induktion" = från enskilda fall → generell slutsats. "Deduktion" = från generell regel → specifikt fall. "Abduktion" = bästa möjliga förklaring för ett observerat fenomen (ofta använt i detektivarbete).',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o04",
+    type: "ordforrad",
+    prompt: "En bindande regel som beslutats av regeringen, med lägre rang än lag.",
+    options: ["förordning", "lag", "riktlinje"],
+    answer: "förordning",
+    explanation: '"Förordning" = bindande rättsregel beslutad av regeringen (ej riksdagen). "Lag" beslutas av riksdagen och har högre rang. "Riktlinje" är vägledande men inte juridiskt bindande.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o05",
+    type: "ordforrad",
+    prompt: "Tillståndet att ha tillräckliga eller mer än tillräckliga ekonomiska resurser.",
+    options: ["välstånd", "lyx", "rikedom"],
+    answer: "välstånd",
+    explanation: '"Välstånd" = hög men inte nödvändigtvis extrem materiell levnadsstandard — ett samhälls- eller individtillstånd. "Lyx" = överdådig konsumtion (beteende, inte tillstånd). "Rikedom" stämmer men är mer absolut — välstånd är det precisa ordet för definitionen.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o06",
+    type: "ordforrad",
+    prompt: "En medveten lagöverträdelse av moraliska skäl, där personen accepterar de rättsliga konsekvenserna.",
+    options: ["civil olydnad", "protest", "brott"],
+    answer: "civil olydnad",
+    explanation: '"Civil olydnad" kombinerar två saker: lagbrott + moralisk motivering + accepterande av straff. "Protest" är laglig. "Brott" är lagöverträdelse utan det moraliska ramverket i begreppet.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o07",
+    type: "ordforrad",
+    prompt: "Ett formellt meddelande om ett beslut eller en nyhet, riktat till allmänheten eller berörda parter.",
+    options: ["tillkännagivande", "utlåtande", "redogörelse"],
+    answer: "tillkännagivande",
+    explanation: '"Tillkännagivande" = officiellt, formellt meddelande om ett faktum eller beslut. "Utlåtande" = expertbedömning/omdöme. "Redogörelse" = genomgång av ett händelseförlopp.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o08",
+    type: "ordforrad",
+    prompt: "Minskning av penningars köpkraft över tid, utan att det nominella beloppet ändras.",
+    options: ["inflation", "deflation", "devalvering"],
+    answer: "inflation",
+    explanation: '"Inflation" = priserna stiger, pengars värde minskar. "Deflation" = det omvända — priserna sjunker. "Devalvering" = officiell sänkning av en valutas externa värde (mot andra valutor), inte kopplat till intern köpkraft.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o09",
+    type: "ordforrad",
+    prompt: "En åtgärd som syftar till att hindra ett problem från att uppstå, snarare än att lösa det i efterhand.",
+    options: ["förebyggande", "avhjälpande", "palliativ"],
+    answer: "förebyggande",
+    explanation: '"Förebyggande" = preventiv, stoppar problemet innan det uppstår. "Avhjälpande" = åtgärdar ett problem som redan uppstått. "Palliativ" = lindrande (symptom), inte förebyggande — ofta i medicinsk kontext.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o10",
+    type: "ordforrad",
+    prompt: "Benägenheten att förklara sina egna misslyckanden med yttre omständigheter snarare än egna handlingar.",
+    options: ["externalisering", "projicering", "rationalisering"],
+    answer: "externalisering",
+    explanation: '"Externalisering" = placera orsaker utanför sig själv. "Projicering" = tillskriva egna oacceptabla känslor/egenskaper på en annan person. "Rationalisering" = konstruera efterhandsförklaringar som låter rimliga.',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o11",
+    type: "ordforrad",
+    prompt: "En persons förmåga att styra sina känslor, impulser och beteenden mot ett långsiktigt mål.",
+    options: ["självreglering", "självkännedom", "självförtroende"],
+    answer: "självreglering",
+    explanation: '"Självreglering" = aktiv styrning av det egna beteendet, impulshämning och målstyrning. "Självkännedom" = insikt om sig själv (inte styrning). "Självförtroende" = tro på sin egen förmåga (inte styrning av beteende).',
+    trap: "Definitionsfällan"
+  },
+  {
+    id: "ls-o12",
+    type: "ordforrad",
+    prompt: "En situation där en persons privata intressen kan påverka dennes professionella omdöme eller beslut.",
+    options: ["intressekonflikt", "jäv", "korruption"],
+    answer: "intressekonflikt",
+    explanation: '"Intressekonflikt" = neutralt begrepp för när privata och professionella intressen kolliderar. "Jäv" = juridisk term för specifika situationer där en domare/tjänsteman ska utesluta sig. "Korruption" = olaglig användning av makt för personlig vinning.',
+    trap: "Definitionsfällan"
+  },
+
+  // --- STAVNING (10 st) ---
+
+  {
+    id: "ls-s01",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["särskillt", "särkskilt", "särskilt"],
+    answer: "särskilt",
+    explanation: '"Särskilt" stavas med ett l och ett t. "Särskillt" är Dubblingsfällan — ett extra l har smugit sig in. "Särkskilt" är ett nonsensord.',
+    trap: "Dubblingsfällan"
+  },
+  {
+    id: "ls-s02",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["nödvändigt", "nödvänndigt", "nödvändiqt"],
+    answer: "nödvändigt",
+    explanation: '"Nödvändigt" har enkelt n och d. "Nödvänndigt" är Dubblingsfällan (extra n). "Nödvändiqt" är felaktig bokstav.',
+    trap: "Dubblingsfällan"
+  },
+  {
+    id: "ls-s03",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["fritids aktivitet", "fritidsaktivitet", "fritids-aktivitet"],
+    answer: "fritidsaktivitet",
+    explanation: 'Svenska sammansatta ord skrivs alltid ihop. "Fritids aktivitet" är Särkrivningsfällan — ett mellanslagmisstag som ändrar eller suddar ut ordets innebörd. Bindestreck behövs inte här.',
+    trap: "Särkrivningsfällan"
+  },
+  {
+    id: "ls-s04",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["kompetensutveckling", "kompetens utveckling", "kompetenssutveckling"],
+    answer: "kompetensutveckling",
+    explanation: '"Kompetensutveckling" skrivs ihop med ett s (kompe-tens + ut-veckling). "Kompetens utveckling" = Särkrivningsfällan. "Kompetenssutveckling" har ett s för många.',
+    trap: "Särkrivningsfällan"
+  },
+  {
+    id: "ls-s05",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["tillgängglig", "tilgänglig", "tillgänglig"],
+    answer: "tillgänglig",
+    explanation: '"Tillgänglig" har dubbelt l i "till-" och enkelt g. "Tillgängglig" är Dubblingsfällan (extra g). "Tilgänglig" har ett l för lite i prefixet.',
+    trap: "Dubblingsfällan"
+  },
+  {
+    id: "ls-s06",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["väl mående", "välmående", "välmåendet"],
+    answer: "välmående",
+    explanation: '"Välmående" är ett sammansatt ord och skrivs ihop. "Väl mående" = Särkrivningsfällan. "Välmåendet" är bestämd form — korrekt i rätt kontext, men utan bestämd artikel är "välmående" rätt.',
+    trap: "Särkrivningsfällan"
+  },
+  {
+    id: "ls-s07",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["övertygad", "övertygat", "övertyggad"],
+    answer: "övertygad",
+    explanation: '"Övertygad" (utrum/mask.). "Övertygat" används med neutrum (ett övertygat barn) — inte i sig fel men felstavat om frågan gäller grundformen. "Övertyggad" är Dubblingsfällan (dubbelt g).',
+    trap: "Dubblingsfällan"
+  },
+  {
+    id: "ls-s08",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["inkomst skatt", "inkomstskatt", "inkomstssskatt"],
+    answer: "inkomstskatt",
+    explanation: '"Inkomstskatt" skrivs ihop (inkomst + skatt = ett s i skarven). "Inkomst skatt" = Särkrivningsfällan. "Inkomstssskatt" har tre s — uppenbart fel.',
+    trap: "Särkrivningsfällan"
+  },
+  {
+    id: "ls-s09",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["ansvarsfull", "ansvars full", "ansvarsfult"],
+    answer: "ansvarsfull",
+    explanation: '"Ansvarsfull" är ett sammansatt adjektiv, skrivs ihop och slutar på -full. "Ansvars full" = Särkrivningsfällan. "Ansvarsfult" har ett l för lite.',
+    trap: "Särkrivningsfällan"
+  },
+  {
+    id: "ls-s10",
+    type: "stavning",
+    prompt: "Välj korrekt stavning:",
+    options: ["kommunikattion", "kommunikation", "comunikation"],
+    answer: "kommunikation",
+    explanation: '"Kommunikation" har dubbelt m och dubbelt k, men enkelt t. "Kommunikattion" är Dubblingsfällan (dubbelt t). "Comunikation" har ett m för lite — engelskinspirerad felstavning.',
+    trap: "Dubblingsfällan"
+  }
+];
