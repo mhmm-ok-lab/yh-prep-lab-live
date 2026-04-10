@@ -2674,6 +2674,86 @@ details:not(.mini-menu)[open] {
 }
 
 /* =========================================
+   BOTTOM PILL NAV
+   Floating glassmorphism, 4 tabs
+   ========================================= */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(248, 249, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(63, 73, 71, 0.10);
+  border-radius: 999px;
+  box-shadow: 0 4px 24px rgba(22, 28, 36, 0.12), 0 1px 4px rgba(22, 28, 36, 0.06);
+}
+
+.bottom-nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  min-width: 56px;
+}
+
+.bottom-nav-tab:hover {
+  background: rgba(0, 92, 85, 0.06);
+}
+
+.bottom-nav-tab:active {
+  transform: scale(0.94);
+}
+
+.bottom-nav-tab-active {
+  background: linear-gradient(135deg, var(--accent, #005c55), var(--accent-container, #0f766e));
+}
+
+.bottom-nav-tab-active:hover {
+  background: linear-gradient(135deg, var(--accent, #005c55), var(--accent-container, #0f766e));
+  opacity: 0.92;
+}
+
+.bottom-nav-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.bottom-nav-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-muted, #3e4947);
+  line-height: 1;
+}
+
+.bottom-nav-tab-active .bottom-nav-label {
+  color: #ffffff;
+}
+
+.bottom-nav-tab-active .bottom-nav-icon {
+  filter: brightness(10);
+}
+
+/* Ensure main has enough bottom padding so content isn't hidden behind pill nav */
+.app > main {
+  padding-bottom: 88px;
+}
+
+/* =========================================
    TRACKS / TRÄNA PAGE — Bento layout
    ========================================= */
 

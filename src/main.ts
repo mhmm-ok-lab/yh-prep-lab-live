@@ -2613,6 +2613,31 @@ function renderPage(): string {
   }
 }
 
+function renderBottomNav(): string {
+  const isTraining = Boolean(vrSession || lsSession);
+  const activeTab = isTraining ? "tracks" : page;
+
+  const tab = (icon: string, label: string, target: Page) => {
+    const isActive = activeTab === target;
+    return `
+      <button class="bottom-nav-tab ${isActive ? "bottom-nav-tab-active" : ""}"
+        data-view="${target}" title="${label}">
+        <span class="bottom-nav-icon">${icon}</span>
+        <span class="bottom-nav-label">${label}</span>
+      </button>
+    `;
+  };
+
+  return `
+    <nav class="bottom-nav">
+      ${tab("🏠", "Hem", "overview")}
+      ${tab("🎯", "Träna", "tracks")}
+      ${tab("📋", "Prov", "mock")}
+      ${tab("📚", "Bank", "bank")}
+    </nav>
+  `;
+}
+
 function render(): void {
   const isSessionFocus = Boolean(activeSession);
   const showSessionCard = isSessionFocus;
@@ -2625,6 +2650,8 @@ function render(): void {
         ${!isSessionFocus ? renderLastResult() : ""}
         ${renderPage()}
       </main>
+
+      ${renderBottomNav()}
     </div>
     ${activeGlossaryTerm ? renderGlossaryOverlay(activeGlossaryTerm) : ""}
   `;
