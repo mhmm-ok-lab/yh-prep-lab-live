@@ -1025,8 +1025,8 @@ button.danger {
 .track-priority-btn {
   text-align: left;
   width: 100%;
-  min-height: 52px;
-  padding: 0.46rem 0.62rem;
+  min-height: 40px;
+  padding: 0.4rem 0.75rem;
   border-radius: var(--radius-btn);
   border: 1px solid var(--border);
   background: #fff;
@@ -1035,12 +1035,15 @@ button.danger {
 }
 
 .track-priority-btn strong {
-  font-size: 0.84rem;
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .track-priority-btn span {
-  font-size: 0.75rem;
-  color: #52525b;
+  font-size: 0.68rem;
+  color: var(--text-muted, #3e4947);
+  opacity: 0.7;
+  letter-spacing: 0.01em;
 }
 
 .track-priority-btn.is-recommended {
@@ -1490,13 +1493,28 @@ details:not(.mini-menu)[open] {
 
 .overview-cta-row {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
   align-items: center;
-  flex-wrap: wrap;
+  margin-top: 0.75rem;
 }
 
 .overview-cta-main {
   flex: 1 1 auto;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.55rem 1.25rem;
+  min-height: 40px;
+  text-align: center;
+}
+
+.overview-cta-secondary {
+  flex-shrink: 0;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  padding: 0.55rem 1.1rem;
+  min-height: 40px;
+  white-space: nowrap;
 }
 
 /* ── Legacy hero layout (keep for compat) ── */

@@ -1421,8 +1421,8 @@ function renderOverview(): string {
         <p class="overview-sub">${preferenceMinutes} min · ${firstExamCountdown} till prov</p>
         <p class="muted overview-reason">${suggestion.reason}</p>
         <div class="overview-cta-row">
-          <button class="primary btn-lg overview-cta-main" data-action="start-today-drill">▶ Starta dagens pass</button>
-          <button class="secondary" data-view="mock">Mockprov</button>
+          <button class="primary overview-cta-main" data-action="start-today-drill">▶ Starta</button>
+          <button class="secondary overview-cta-secondary" data-view="mock">Tests</button>
         </div>
       </section>
 
