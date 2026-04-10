@@ -2286,3 +2286,241 @@ details:not(.mini-menu)[open] {
   flex-wrap: wrap;
   padding-top: 0.5rem;
 }
+
+/* =========================================
+   GLOBAL APP NAV (.app-nav)
+   Context-switcher: 🧠 | [Page ▾] | [G]
+   ========================================= */
+
+.app-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: var(--surface, #ffffff);
+  border-bottom: 1px solid var(--border, #e0e0dc);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Push main content below the fixed nav */
+.app > main {
+  padding-top: 60px;
+}
+
+/* Home button — 🧠 icon */
+.app-nav-home {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.app-nav-home:hover {
+  background: var(--hover-bg, #f0f0ec);
+}
+
+/* Context / page pill */
+.app-nav-ctx {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 18px;
+  border: 1px solid var(--border, #e0e0dc);
+  background: var(--card-bg, #f8f8f6);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary, #111);
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 220px;
+}
+
+.app-nav-ctx:hover {
+  background: var(--hover-bg, #efefeb);
+  border-color: var(--text-muted, #888);
+}
+
+.app-nav-ctx-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-nav-ctx-arrow {
+  font-size: 0.7rem;
+  color: var(--text-muted, #888);
+  flex-shrink: 0;
+}
+
+/* User avatar button */
+.app-nav-user {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border, #e0e0dc);
+  background: var(--accent, #2563eb);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  list-style: none; /* <details><summary> reset */
+  transition: border-color 0.15s;
+}
+
+.app-nav-user:hover {
+  border-color: var(--accent, #2563eb);
+}
+
+.app-nav-user-initial {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+/* User dropdown body */
+.app-nav-user-body {
+  right: 8px;
+  left: auto;
+  top: 48px;
+  min-width: 200px;
+}
+
+/* Overlay — closes dropdown when clicking outside */
+.app-nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+  background: transparent;
+  cursor: default;
+}
+
+/* Dropdown menu */
+.app-nav-menu {
+  position: fixed;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 210;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e0e0dc);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 8px 6px;
+  min-width: 240px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Section label */
+.app-nav-section {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted, #888);
+  padding: 6px 10px 2px;
+  margin: 0;
+}
+
+/* Menu item — button */
+.app-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary, #111);
+  text-align: left;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+
+.app-nav-item:hover {
+  background: var(--hover-bg, #f0f0ec);
+}
+
+.app-nav-item-active {
+  background: color-mix(in srgb, var(--accent, #2563eb) 10%, transparent);
+  color: var(--accent, #2563eb);
+  font-weight: 600;
+}
+
+.app-nav-item-active:hover {
+  background: color-mix(in srgb, var(--accent, #2563eb) 16%, transparent);
+}
+
+.app-nav-item-icon {
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* Divider line */
+.app-nav-hr {
+  border: none;
+  border-top: 1px solid var(--border, #e0e0dc);
+  margin: 4px 6px;
+}
+
+/* Link variant (anchor tag) */
+.app-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary, #111);
+  font-size: 0.9rem;
+  transition: background 0.12s;
+}
+
+.app-nav-link:hover {
+  background: var(--hover-bg, #f0f0ec);
+}
+
+/* Mobile — widen pill on small screens */
+@media (max-width: 480px) {
+  .app-nav-ctx {
+    max-width: 160px;
+    font-size: 0.85rem;
+    padding: 0 10px;
+  }
+  .app-nav-menu {
+    left: 8px;
+    right: 8px;
+    transform: none;
+    max-width: none;
+  }
+}

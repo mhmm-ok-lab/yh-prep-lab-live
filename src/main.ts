@@ -153,8 +153,7 @@ const pageLabels: Record<Page, string> = {
   glossary: "Ordlista"
 };
 
-// Sidor som syns i navigationsmenyn. Resten nås via "Mer"-sektionen.
-const PRIMARY_NAV: Page[] = ["overview", "tracks", "mock", "bank"];
+
 const urlParams = new URLSearchParams(window.location.search);
 const THEME_KEY = "yh.ui-theme";
 const UI_BUILD = "2026-04-04-0245";
@@ -387,6 +386,7 @@ let filters: QuestionFilters = {
 let activeGlossaryTerm: GlossaryEntry | null = null;
 let vrSession: VRSession | null = null;
 let lsSession: LSSession | null = null;
+let navOpen = false;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
 let knownUserIds = loadKnownUsers();
@@ -1580,6 +1580,96 @@ function renderVRSession(): string {
   `;
 }
 
+function renderNavDropdown(): string {
+  const activeTrainer = lsSession ? "ls" : vrSession ? "vr" : null;
+  const activePage = page;
+
+  const navItem = (icon: string, label: string, action: string, dataAttr: string, isActive = false) => `
+    <button class="app-nav-item ${isActive ? "app-nav-item-active" : ""}" data-action="${action}" ${dataAttr}>
+      <span class="app-nav-item-icon">${icon}</span>
+      <span>${label}</span>
+    </button>
+  `;
+
+  return `
+    <div class="app-nav-overlay" data-action="toggle-nav"></div>
+    <div class="app-nav-menu">
+      <p class="app-nav-section">Sidor</p>
+      ${navItem("🏠", "Hem", "nav-goto", 'data-view="overview"', activePage === "overview" && !activeTrainer)}
+      ${navItem("🎯", "Träna", "nav-goto", 'data-view="tracks"', activePage === "tracks" && !activeTrainer)}
+      ${navItem("📋", "Mockprov", "nav-goto", 'data-view="mock"', activePage === "mock")}
+      ${navItem("📚", "Frågebank", "nav-goto", 'data-view="bank"', activePage === "bank")}
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Aon-träning</p>
+      <a class="app-nav-item app-nav-link" href="./symbol-sudoku.html" target="_blank">
+        <span class="app-nav-item-icon">△</span>
+        <span>Symbol Sudoku</span>
+      </a>
+      ${navItem("📄", "Verbal Reasoning", "nav-start-vr", "", activeTrainer === "vr")}
+      ${navItem("🇸🇪", "Språkliga färdigheter", "nav-start-ls", "", activeTrainer === "ls")}
+      ${navItem("🧩", "Logik-drill", "nav-goto", 'data-view="logic"', activePage === "logic")}
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Övrigt</p>
+      ${navItem("📖", "Ordlista", "nav-goto", 'data-view="glossary"', activePage === "glossary")}
+      ${navItem("🗺", "Roadmap", "nav-goto", 'data-view="roadmap"', activePage === "roadmap")}
+    </div>
+  `;
+}
+
+function renderAppNav(): string {
+  const contextLabel = lsSession
+    ? "Språkliga färdigheter"
+    : vrSession
+    ? "Verbal Reasoning"
+    : pageLabels[page];
+
+  const userInitial = userBadge(currentUserId);
+
+  return `
+    <nav class="app-nav">
+      <button class="app-nav-home" data-action="nav-home" title="Hem">🧠</button>
+      <button class="app-nav-ctx" data-action="toggle-nav">
+        <span class="app-nav-ctx-label">${contextLabel}</span>
+        <span class="app-nav-ctx-arrow">${navOpen ? "▴" : "▾"}</span>
+      </button>
+      ${navOpen ? renderNavDropdown() : ""}
+      <details class="app-nav-user-menu mini-menu">
+        <summary class="app-nav-user" title="Konto">
+          <span class="app-nav-user-initial">${userInitial}</span>
+        </summary>
+        <div class="mini-menu-body app-nav-user-body">
+          <p class="muted">Aktiv: ${formatUserLabel(currentUserId)}${_isOnline ? "" : " · Offline"}</p>
+          <button class="secondary" data-action="quick-switch-user">Välj användare</button>
+          <button class="secondary" data-action="quick-create-user">Ny användare</button>
+          <button class="secondary" data-action="quick-switch-guest">Byt till gäst</button>
+          <p class="muted">Tidigare</p>
+          <div class="user-switch-grid" id="known-user-list">
+            ${knownUserIds
+              .map(
+                (userId) => `
+                  <button class="secondary ${userId === currentUserId ? "active" : ""}"
+                    data-action="quick-select-user" data-user="${userId}">
+                    ${formatUserLabel(userId)}
+                  </button>`
+              )
+              .join("")}
+          </div>
+          <p class="muted">Stil</p>
+          <div class="user-switch-grid">
+            ${THEME_PRESETS.map(
+              (theme) => `
+                <button class="secondary ${activeTheme === theme.id ? "active" : ""}"
+                  data-action="set-theme" data-theme="${theme.id}">
+                  ${theme.name}
+                </button>`
+            ).join("")}
+          </div>
+        </div>
+      </details>
+    </nav>
+  `;
+}
+
 function renderLSSession(): string {
   if (!lsSession) return "";
   const { items, currentIndex, userAnswer, showFeedback, correct, wrong, trapCounts } = lsSession;
@@ -2459,77 +2549,11 @@ function renderPage(): string {
 }
 
 function render(): void {
-  const plan = createDailyPlan();
   const isSessionFocus = Boolean(activeSession);
   const showSessionCard = isSessionFocus;
   app.innerHTML = `
     <div class="app">
-      <header class="hero">
-        <div class="hero-top">
-          <div>
-            <h1>YH Prep Lab</h1>
-            <p>Träna inför Nackademin UX, IT-H IT-säkerhet och Programmering 1/A.</p>
-            <p class="muted app-build">Build: ${UI_BUILD}</p>
-          </div>
-          <div class="hero-actions">
-            <span class="badge">${plan.sprint === "A" ? "Sprint A: Nackademin först" : "Sprint B: IT-H fokus"}</span>
-            <nav class="primary-nav">
-              ${PRIMARY_NAV.map(
-                (key) =>
-                  `<button class="nav-btn ${page === key ? "active" : ""}" data-view="${key}">${pageLabels[key]}</button>`
-              ).join("")}
-              <details class="mini-menu context-menu">
-                <summary class="nav-btn">Mer</summary>
-                <div class="mini-menu-body">
-                  <p class="muted mini-menu-section-label">Verktyg</p>
-                  <button class="secondary ${page === "logic" ? "active" : ""}" data-view="logic">Logik-drill</button>
-                  <button class="secondary ${page === "walkthrough" ? "active" : ""}" data-view="walkthrough">Genomgång</button>
-                  <button class="secondary ${page === "glossary" ? "active" : ""}" data-view="glossary">Ordlista</button>
-                  <button class="secondary" data-action="open-python-course">Python-minikurs</button>
-                  <p class="muted mini-menu-section-label">Övrigt</p>
-                  <button class="secondary ${page === "research" ? "active" : ""}" data-view="research">Research</button>
-                  <button class="secondary ${page === "design" ? "active" : ""}" data-view="design">Teman</button>
-                  <button class="secondary ${page === "roadmap" ? "active" : ""}" data-view="roadmap">Roadmap</button>
-                </div>
-              </details>
-            </nav>
-            <details class="mini-menu user-menu">
-              <summary class="user-avatar" title="Byt användare">
-                <span class="user-avatar-icon" aria-hidden="true">👤</span>
-                <span class="user-avatar-initial">${userBadge(currentUserId)}</span>
-              </summary>
-              <div class="mini-menu-body">
-                <p class="muted">Aktiv: ${formatUserLabel(currentUserId)}${_isOnline ? "" : " · Offline"}</p>
-                <button class="secondary" data-action="quick-switch-user">Välj användare i lista</button>
-                <button class="secondary" data-action="quick-create-user">Skapa ny användare</button>
-                <button class="secondary" data-action="quick-switch-guest">Byt till gäst</button>
-                <p class="muted">Tidigare användare</p>
-                <div class="user-switch-grid" id="known-user-list">
-                  ${knownUserIds
-                    .map(
-                      (userId) => `
-                        <button class="secondary ${userId === currentUserId ? "active" : ""}" data-action="quick-select-user" data-user="${userId}">
-                          ${formatUserLabel(userId)}
-                        </button>
-                      `
-                    )
-                    .join("")}
-                </div>
-                <p class="muted">Stil</p>
-                <div class="user-switch-grid">
-                  ${THEME_PRESETS.map(
-                    (theme) => `
-                      <button class="secondary ${activeTheme === theme.id ? "active" : ""}" data-action="set-theme" data-theme="${theme.id}">
-                        ${theme.name}
-                      </button>
-                    `
-                  ).join("")}
-                </div>
-              </div>
-            </details>
-          </div>
-        </div>
-      </header>
+      ${renderAppNav()}
 
       <main>
         ${showSessionCard ? renderActiveSession() : ""}
@@ -2864,6 +2888,63 @@ app.addEventListener("click", (event) => {
 
   if (action === "ls-close") {
     lsSession = null;
+    page = "tracks";
+    render();
+    return;
+  }
+
+  if (action === "nav-home") {
+    page = "overview";
+    navOpen = false;
+    render();
+    return;
+  }
+
+  if (action === "toggle-nav") {
+    navOpen = !navOpen;
+    render();
+    return;
+  }
+
+  if (action === "nav-goto") {
+    const targetView = actionEl.dataset.view as Page;
+    if (targetView) {
+      page = targetView;
+      navOpen = false;
+      render();
+    }
+    return;
+  }
+
+  if (action === "nav-start-vr") {
+    const shuffled = [...VR_ITEMS].sort(() => Math.random() - 0.5).slice(0, 12);
+    vrSession = {
+      items: shuffled,
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      trapCounts: {}
+    };
+    navOpen = false;
+    page = "tracks";
+    render();
+    return;
+  }
+
+  if (action === "nav-start-ls") {
+    const shuffled = [...LS_ITEMS].sort(() => Math.random() - 0.5).slice(0, 12);
+    lsSession = {
+      items: shuffled,
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      trapCounts: {}
+    };
+    navOpen = false;
     page = "tracks";
     render();
     return;
