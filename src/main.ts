@@ -1345,6 +1345,31 @@ function cancelSession(): void {
   render();
 }
 
+function calcStreakDays(sessions: StudySession[]): number {
+  if (sessions.length === 0) return 0;
+  const uniqueDates = [...new Set(sessions.map((s) => s.date))].sort().reverse();
+  const today = new Date().toISOString().slice(0, 10);
+  let streak = 0;
+  let cursor = today;
+  for (const d of uniqueDates) {
+    if (d === cursor) {
+      streak++;
+      const prev = new Date(cursor);
+      prev.setDate(prev.getDate() - 1);
+      cursor = prev.toISOString().slice(0, 10);
+    } else if (d < cursor) {
+      break;
+    }
+  }
+  return streak;
+}
+
+function calcAvgScore(sessions: StudySession[]): number {
+  const scored = sessions.filter((s) => typeof s.score === "number" && s.score >= 0);
+  if (scored.length === 0) return 0;
+  return Math.round(scored.reduce((sum, s) => sum + s.score, 0) / scored.length);
+}
+
 function renderOverview(): string {
   const sessions = loadStudySessions();
   const plan = createDailyPlan();
@@ -1360,22 +1385,44 @@ function renderOverview(): string {
   const orderedStatuses = [...statuses].sort(
     (a, b) => (rankPos.get(a.trackId) ?? 99) - (rankPos.get(b.trackId) ?? 99)
   );
+  const streakDays = calcStreakDays(sessions);
+  const avgScore = calcAvgScore(sessions);
+  const totalMin = totalCompletedMinutes(sessions);
 
   return `
     <div class="grid overview-grid">
 
+      <!-- ── STAT WIDGETS ── -->
+      <div class="overview-stats-row">
+        <div class="stat-widget">
+          <div class="stat-widget-top">
+            <span class="stat-widget-label">Streak</span>
+            <span class="stat-widget-icon">🔥</span>
+          </div>
+          <div class="stat-widget-value">${streakDays}<span class="stat-widget-unit">dagar</span></div>
+          <div class="stat-widget-bar">
+            ${[...Array(7)].map((_, i) => `<div class="stat-widget-pip ${i < streakDays ? "stat-widget-pip-on" : ""}"></div>`).join("")}
+          </div>
+        </div>
+        <div class="stat-widget">
+          <div class="stat-widget-top">
+            <span class="stat-widget-label">Snittpoäng</span>
+            <span class="stat-widget-icon">📈</span>
+          </div>
+          <div class="stat-widget-value">${avgScore > 0 ? avgScore : "—"}<span class="stat-widget-unit">${avgScore > 0 ? "%" : ""}</span></div>
+          <div class="stat-widget-sub">${totalMin > 0 ? `${totalMin} min totalt` : "Inga pass ännu"}</div>
+        </div>
+      </div>
+
       <!-- ── HUVUDKORT: nästa steg ── -->
       <section class="card critical-card span-12">
-        <div class="overview-hero">
-          <div class="overview-hero-text">
-            <h2 class="overview-heading">Träna idag</h2>
-            <p class="overview-sub">Fokus: <strong>${priorityTrackName}</strong> · ${preferenceMinutes} min · ${firstExamCountdown} till prov</p>
-            <p class="muted overview-reason">${suggestion.reason}</p>
-          </div>
-          <div class="overview-hero-actions">
-            <button class="primary btn-lg" data-action="start-today-drill">▶ Starta dagens pass</button>
-            <button class="secondary" data-view="mock">Kör mockprov</button>
-          </div>
+        <p class="overview-section-label">Träna idag</p>
+        <h2 class="overview-heading">${priorityTrackName}</h2>
+        <p class="overview-sub">${preferenceMinutes} min · ${firstExamCountdown} till prov</p>
+        <p class="muted overview-reason">${suggestion.reason}</p>
+        <div class="overview-cta-row">
+          <button class="primary btn-lg overview-cta-main" data-action="start-today-drill">▶ Starta dagens pass</button>
+          <button class="secondary" data-view="mock">Mockprov</button>
         </div>
       </section>
 
