@@ -1677,7 +1677,7 @@ function renderAppNav(): string {
       <button class="app-nav-home" data-action="nav-home" title="Hem">🧠</button>
       <button class="app-nav-ctx" data-action="toggle-nav">
         <span class="app-nav-ctx-label">${contextLabel}</span>
-        <span class="app-nav-ctx-arrow">${navOpen ? "▴" : "▾"}</span>
+        ${navOpen ? '<span class="app-nav-ctx-dot">▴</span>' : '<span class="app-nav-ctx-dot">·</span>'}
       </button>
       ${navOpen ? renderNavDropdown() : ""}
       <details class="app-nav-user-menu mini-menu">
@@ -1873,8 +1873,8 @@ function renderTracks(): string {
               <p class="subject-card-exam">${track.goal_exam}</p>
             </div>
             <div class="subject-card-actions">
-              <button class="primary subject-btn" data-action="start-track-learn" data-track="${track.id}">Lär</button>
-              <button class="secondary subject-btn" data-action="start-track-drill" data-track="${track.id}">Drill</button>
+              <button class="primary subject-btn" data-action="start-track-learn" data-track="${track.id}" title="Lär-läge">📖</button>
+              <button class="secondary subject-btn" data-action="start-track-drill" data-track="${track.id}" title="Drill-läge">⚡</button>
             </div>
           </div>
         `).join("")}

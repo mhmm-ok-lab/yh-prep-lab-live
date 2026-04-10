@@ -40,7 +40,7 @@
   --shadow: 0 1px 3px rgba(22, 28, 36, 0.06), 0 4px 16px rgba(22, 28, 36, 0.04);
   --tap-height: 44px;
   --tap-height-compact: 38px;
-  --radius-btn: 12px;
+  --radius-btn: 999px;
   --radius-card: 1rem;
 
   /* Card surface gradients — flat in Stitch */
@@ -94,8 +94,8 @@ body[data-theme="calm-public"] {
   --accent-soft: #e6f4ef;
   --accent-soft-border: #c8e2d9;
   --accent-soft-ink: #20544b;
-  --radius-btn: 10px;
-  --radius-card: 12px;
+  --radius-btn: 999px;
+  --radius-card: 1rem;
   --bg-top: #f5f9f6;
   --bg-bottom: #edf3ef;
   --hero-start: #f3faf7;
@@ -2439,15 +2439,17 @@ details:not(.mini-menu)[open] {
 .app-nav {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 560px;
   z-index: 200;
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background: rgba(248, 249, 255, 0.85);
+  background: rgba(248, 249, 255, 0.88);
   border-bottom: 1px solid rgba(63, 73, 71, 0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -2510,39 +2512,47 @@ details:not(.mini-menu)[open] {
   text-overflow: ellipsis;
 }
 
-.app-nav-ctx-arrow {
-  font-size: 0.7rem;
-  color: var(--text-muted, #888);
+.app-nav-ctx-dot {
+  font-size: 0.6rem;
+  color: var(--text-muted, #3e4947);
+  opacity: 0.5;
   flex-shrink: 0;
+  line-height: 1;
 }
 
-/* User avatar button */
+/* User avatar button — <details><summary> styled as circle */
 .app-nav-user {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 2px solid rgba(0, 92, 85, 0.25);
-  background: linear-gradient(135deg, var(--accent, #005c55), var(--accent-container, #0f766e));
+  border: none;
+  background: var(--surface-container, #e9eef9);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  list-style: none; /* <details><summary> reset */
-  transition: border-color 0.15s, transform 0.15s;
+  /* hide native <summary> disclosure triangle */
+  list-style: none;
+  transition: background 0.15s, transform 0.15s;
 }
 
+.app-nav-user::-webkit-details-marker { display: none; }
+.app-nav-user::marker { display: none; }
+.app-nav-user::after { display: none; } /* override .mini-menu > summary::after ▼ */
+
 .app-nav-user:hover {
-  border-color: var(--accent, #005c55);
-  transform: scale(1.05);
+  background: var(--surface-low, #eff4ff);
+  transform: scale(1.06);
 }
 
 .app-nav-user-initial {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--accent, #005c55);
   pointer-events: none;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* User dropdown body */
@@ -2958,8 +2968,10 @@ a.bento-cta-sm {
 }
 
 .subject-btn {
-  padding: 0.4rem 0.85rem;
-  font-size: 0.82rem;
+  padding: 0.4rem 0.9rem;
+  font-size: 1rem;
   min-height: 36px;
+  min-width: 40px;
   white-space: nowrap;
+  line-height: 1;
 }
