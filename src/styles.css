@@ -14,12 +14,12 @@
   --text-stat: 2rem;    /* big numbers (streak, score)               */
 
   /* Track identity colours — used everywhere a track is shown */
-  --track-ux-bg:   var(--honey, #f7e0b0);
-  --track-ux-ink:  var(--honey-ink, #4c3e1a);
-  --track-it-bg:   var(--secondary-fixed, #93f4e0);
-  --track-it-ink:  var(--secondary, #006b5d);
-  --track-prog-bg: var(--surface-highest, #dee2ee);
-  --track-prog-ink:var(--ink, #161c24);
+  --track-ux-bg:   #f7e0b0;   /* honey — Nackademin UX */
+  --track-ux-ink:  #4c3e1a;
+  --track-it-bg:   #b8ede8;   /* soft mint — IT-Högskolan */
+  --track-it-ink:  #006b5d;
+  --track-prog-bg: #dee2ee;   /* grey — Programmering */
+  --track-prog-ink:#161c24;
 
   /* ── Stitch Academic Atelier palette ── */
   /* Surfaces */
@@ -42,15 +42,15 @@
   /* Accent (teal primary) */
   --accent: #005c55;            /* primary */
   --accent-container: #0f766e;  /* primary-container */
-  --accent-soft: #9cf2e8;       /* primary-fixed */
-  --accent-soft-border: #80d5cb;/* primary-fixed-dim / inverse-primary */
+  --accent-soft: #b8ede8;       /* primary-fixed — soft mint for active/recommended */
+  --accent-soft-border: #96d9d2;/* primary-fixed-dim / inverse-primary */
   --accent-soft-ink: #00504a;   /* on-primary-fixed-variant */
 
   /* Secondary teal (brighter, lighter than primary) */
   --secondary: #006b5d;
-  --secondary-container: #90f1de;
-  --secondary-fixed: #93f4e0;
-  --secondary-fixed-dim: #76d7c5;
+  --secondary-container: #b8ede8;
+  --secondary-fixed: #b8ede8;       /* IT-H track bg — softer mint */
+  --secondary-fixed-dim: #96d9d2;
 
   /* Honey / Tertiary (warm amber) */
   --warm: #6d5d36;              /* tertiary */

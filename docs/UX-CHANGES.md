@@ -41,6 +41,20 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-11 — Mjukare mint + direkta tokenväden
+
+### Fixat: IT-H mint-färg för skarp
+**Vad:** `--secondary-fixed` och `--track-it-bg` ändrades från `#93f4e0` (tropisk, vibrant) till `#b8ede8` (mjuk, akademisk).
+**Varför:** Den tidigare minten "skär sig" mot den lugna akademiska paletten. Stitch Academic Atelier ska kännas som ett bibliotek, inte en tropisk app.
+**Stitch-princip:** Tonal adjacency — ytor ska vara lugna och mjuka, inte vibrerande.
+**Tekniskt:** Track-tokens (`--track-ux/it/prog-bg`) ändrades från `var()`-kedjor till direkta hex-värden för att undvika CSS custom property-upplösningsproblem i Vite-dev-miljön. En central ändring = ändring på alla ställen.
+
+### Lagt till: VERSION-fil och SESSION-START.md
+**Vad:** `VERSION`-fil (semver + datum), `docs/SESSION-START.md` (startprompt för nya sessioner).
+**Varför:** Stöd för multi-agent-arbete — varje agent vet vilket versionsläge och vilka fällgropar som finns. Sessionen kan bytas utan att förlora kontext.
+
+---
+
 ## Designprinciper vi håller (sammanfattning)
 1. **Stitch Academic Atelier** — teal primär, honey tertiary, neutrala ytor
 2. **No-Line rule** — ingen 1px border för sektionering

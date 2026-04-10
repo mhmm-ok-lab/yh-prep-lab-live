@@ -10,8 +10,8 @@ _Based on Stitch Academic Atelier. Last updated: 2026-04-10_
 |---|---|---|
 | `--accent` | `#005c55` | Primary action, filled buttons, text on light |
 | `--accent-container` | `#0f766e` | Gradient end, deeper teal |
-| `--accent-soft` | `#9cf2e8` | Recommended/active state backgrounds |
-| `--accent-soft-border` | `#80d5cb` | Subtle teal borders |
+| `--accent-soft` | `#b8ede8` | Recommended/active state backgrounds — mjuk mint |
+| `--accent-soft-border` | `#96d9d2` | Subtle teal borders |
 | `--accent-soft-ink` | `#00504a` | Text on mint backgrounds |
 
 ### Tertiary / Warm (Honey)
@@ -49,8 +49,8 @@ _Based on Stitch Academic Atelier. Last updated: 2026-04-10_
 |---|---|---|
 | `--secondary` | `#006b5d` | Sekundär teal (klarare än primary) |
 | `--secondary-container` | `#90f1de` | Mjuk mint-bakgrund |
-| `--secondary-fixed` | `#93f4e0` | Progress pips, streak-indikatorer |
-| `--secondary-fixed-dim` | `#76d7c5` | Hover på sekundära mint-element |
+| `--secondary-fixed` | `#b8ede8` | IT-H track bg, progress pips — mjuk mint |
+| `--secondary-fixed-dim` | `#96d9d2` | Hover på sekundära mint-element |
 | `--honey` | `#f7e0b0` | Honey/amber — UX-spår pill, tertiary highlights |
 | `--honey-dim` | `#dac496` | Hover på honey-element |
 | `--honey-ink` | `#4c3e1a` | Mörk text på honey-bakgrund |
