@@ -40,7 +40,7 @@
   --shadow: 0 1px 3px rgba(22, 28, 36, 0.06), 0 4px 16px rgba(22, 28, 36, 0.04);
   --tap-height: 44px;
   --tap-height-compact: 38px;
-  --radius-btn: 999px;
+  --radius-btn: 12px;
   --radius-card: 1rem;
 
   /* Card surface gradients — flat in Stitch */
@@ -94,7 +94,7 @@ body[data-theme="calm-public"] {
   --accent-soft: #e6f4ef;
   --accent-soft-border: #c8e2d9;
   --accent-soft-ink: #20544b;
-  --radius-btn: 999px;
+  --radius-btn: 12px;
   --radius-card: 1rem;
   --bg-top: #f5f9f6;
   --bg-bottom: #edf3ef;
@@ -2974,4 +2974,5 @@ a.bento-cta-sm {
   min-width: 40px;
   white-space: nowrap;
   line-height: 1;
+  border-radius: 999px; /* pill — ikon-knappar */
 }
