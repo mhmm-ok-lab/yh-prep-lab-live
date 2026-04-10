@@ -1028,48 +1028,40 @@ button.danger {
   min-height: 40px;
   padding: 0.4rem 0.75rem;
   border-radius: var(--radius-btn);
-  border: 1px solid var(--border);
-  background: #fff;
+  border: none;
+  background: var(--surface-low, #eff4ff);
   display: grid;
   gap: 0.08rem;
+  box-shadow: none;
 }
 
 .track-priority-btn strong {
   font-size: 0.88rem;
   font-weight: 700;
+  color: var(--ink);
 }
 
 .track-priority-btn span {
   font-size: 0.68rem;
   color: var(--text-muted, #3e4947);
-  opacity: 0.7;
+  opacity: 0.8;
   letter-spacing: 0.01em;
 }
 
 .track-priority-btn.is-recommended {
-  border-width: 2px;
-  box-shadow: 0 0 0 1px rgb(14 116 144 / 0.08);
+  background: var(--accent-soft, #9cf2e8);
+  color: var(--accent-soft-ink, #00504a);
 }
 
-.track-btn-not-started {
-  background: #fff9e8;
-  border-color: #e8ca77;
+.track-priority-btn.is-recommended strong {
+  color: var(--accent-soft-ink, #00504a);
 }
 
-.track-btn-in-progress {
-  background: #fff4e9;
-  border-color: #e8b07a;
-}
-
-.track-btn-needs-help {
-  background: #fdf1f1;
-  border-color: #e7a6a6;
-}
-
-.track-btn-near-ready {
-  background: #eef9f1;
-  border-color: #9ccfa9;
-}
+/* Stage states — tonal only, no borders */
+.track-btn-not-started  { background: var(--surface-low, #eff4ff); }
+.track-btn-in-progress  { background: var(--surface-container, #e9eef9); }
+.track-btn-needs-help   { background: var(--surface-container, #e9eef9); }
+.track-btn-near-ready   { background: var(--accent-soft, #9cf2e8); }
 
 details:not(.mini-menu) > summary {
   cursor: pointer;
@@ -1393,7 +1385,6 @@ details:not(.mini-menu)[open] {
 
 .stat-widget {
   background: var(--card);
-  border: 1px solid var(--border);
   border-radius: var(--radius-card);
   padding: 1rem;
   box-shadow: var(--shadow);
@@ -1519,7 +1510,7 @@ details:not(.mini-menu)[open] {
   text-align: center;
   background: rgba(0, 92, 85, 0.08);
   color: var(--accent);
-  border: 1px solid rgba(0, 92, 85, 0.18);
+  border: none;
 }
 
 /* ── Legacy hero layout (keep for compat) ── */
@@ -2509,27 +2500,38 @@ details:not(.mini-menu)[open] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  height: 34px;
-  padding: 0 14px;
-  border-radius: 17px;
-  border: 1px solid rgba(63, 73, 71, 0.15);
-  background: var(--surface-low, #eff4ff);
+  gap: 6px;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--surface-container, #e9eef9);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   color: var(--text-primary, #161c24);
-  transition: background 0.15s, border-color 0.15s;
+  transition: opacity 0.15s;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 220px;
+  max-width: 240px;
 }
 
-.app-nav-ctx:hover {
-  background: var(--surface-container, #e9eef9);
-  border-color: rgba(63, 73, 71, 0.25);
-}
+.app-nav-ctx:hover { opacity: 0.85; }
+
+/* Per-page pill colours — tonal within Stitch palette */
+.nav-page--overview  { background: var(--accent, #005c55);     color: #ffffff; }
+.nav-page--tracks,
+.nav-page--train     { background: var(--warm, #6d5d36);       color: #ffffff; }
+.nav-page--mock      { background: var(--accent-container, #0f766e); color: #ffffff; }
+.nav-page--bank      { background: var(--accent-soft, #9cf2e8); color: var(--accent-soft-ink, #00504a); }
+/* Fallback for secondary pages */
+.nav-page--research,
+.nav-page--logic,
+.nav-page--walkthrough,
+.nav-page--design,
+.nav-page--roadmap,
+.nav-page--glossary  { background: var(--surface-container, #e9eef9); color: var(--ink, #161c24); }
 
 .app-nav-ctx-label {
   overflow: hidden;
@@ -2784,7 +2786,7 @@ details:not(.mini-menu)[open] {
 
 /* Ensure main has enough bottom padding so content isn't hidden behind pill nav */
 .app > main {
-  padding-bottom: 88px;
+  padding-bottom: 2rem;
 }
 
 /* =========================================

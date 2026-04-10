@@ -144,7 +144,7 @@ const pageLabels: Record<Page, string> = {
   overview: "Hem",
   tracks: "Träna",
   bank: "Frågebank",
-  mock: "Mockprov",
+  mock: "Prov",
   research: "Research",
   logic: "Logik",
   walkthrough: "Genomgång",
@@ -1644,7 +1644,7 @@ function renderNavDropdown(): string {
       <p class="app-nav-section">Sidor</p>
       ${navItem("🏠", "Hem", "nav-goto", 'data-view="overview"', activePage === "overview" && !activeTrainer)}
       ${navItem("🎯", "Träna", "nav-goto", 'data-view="tracks"', activePage === "tracks" && !activeTrainer)}
-      ${navItem("📋", "Mockprov", "nav-goto", 'data-view="mock"', activePage === "mock")}
+      ${navItem("📋", "Prov", "nav-goto", 'data-view="mock"', activePage === "mock")}
       ${navItem("📚", "Frågebank", "nav-goto", 'data-view="bank"', activePage === "bank")}
       <hr class="app-nav-hr">
       <p class="app-nav-section">Aon-träning</p>
@@ -1670,14 +1670,17 @@ function renderAppNav(): string {
     ? "Verbal Reasoning"
     : pageLabels[page];
 
+  const activeTrainer = lsSession ? "ls" : vrSession ? "vr" : null;
+  const navPageClass = activeTrainer ? "nav-page--train" : `nav-page--${page}`;
+
   const userInitial = userBadge(currentUserId);
 
   return `
     <nav class="app-nav">
       <button class="app-nav-home" data-action="nav-home" title="Hem">🧠</button>
-      <button class="app-nav-ctx" data-action="toggle-nav">
+      <button class="app-nav-ctx ${navPageClass}" data-action="toggle-nav">
         <span class="app-nav-ctx-label">${contextLabel}</span>
-        ${navOpen ? '<span class="app-nav-ctx-dot">▴</span>' : '<span class="app-nav-ctx-dot">·</span>'}
+        <span class="app-nav-ctx-dot">${navOpen ? "▴" : "▾"}</span>
       </button>
       ${navOpen ? renderNavDropdown() : ""}
       <details class="app-nav-user-menu mini-menu">
@@ -1997,8 +2000,8 @@ function renderMock(): string {
   return `
     <div class="grid">
       <section class="card span-12">
-        <h3>Kör ett mockprov</h3>
-        <p class="muted">Välj ett prov nedan och tryck Starta. Klockan tickar — precis som på riktigt.</p>
+        <h3>Välj ett prov</h3>
+        <p class="muted">Välj nedan och tryck Starta. Klockan tickar — precis som på riktigt.</p>
         <div class="inline-controls">
           <select data-mock-select="true">
             ${Object.entries(grouped).map(([groupName, exams]) => `
@@ -2155,7 +2158,7 @@ function renderWalkthrough(): string {
         <h3>📋 De andra sidorna</h3>
         <ul class="list-clean">
           <li><strong>Frågebank</strong> — bläddra och filtrera alla frågor. Bra för att se vad som finns.</li>
-          <li><strong>Mockprov</strong> — välj ett av de färdiga proven (5 min till 90 min) och kör.</li>
+          <li><strong>Prov</strong> — välj ett av de färdiga proven (5 min till 90 min) och kör.</li>
           <li><strong>Spår</strong> — snabbstart per ämne, plus daglig studieplan.</li>
           <li><strong>Research</strong> — källmaterial bakom frågorna.</li>
         </ul>
@@ -2249,7 +2252,7 @@ function renderRoadmap(): string {
         <h3>Övergripande läge</h3>
         <p class="muted">Det här är stora steg-planen så du ser var vi ligger utan att behöva gissa.</p>
         <p><strong>Framdrift:</strong> ${doneCount}/${ROADMAP_STEPS.length} steg klara (${progressPercent}%).</p>
-        <p><strong>Innehåll:</strong> ${totalQuestions} frågor • ${totalMocks} mockprov.</p>
+        <p><strong>Innehåll:</strong> ${totalQuestions} frågor • ${totalMocks} prov.</p>
         <p><strong>Täckning:</strong> UX ${countsByTrack.nackademin_ux} • IT ${countsByTrack.iths_itsec} • Prog ${countsByTrack.prog1a} frågor.</p>
       </section>
       <section class="card span-12">
@@ -2257,7 +2260,7 @@ function renderRoadmap(): string {
         <p>${nextAction}</p>
         <div class="inline-controls roadmap-actions">
           <button class="primary" data-action="start-next-pass">Starta nästa rekommenderade pass</button>
-          <button class="primary" data-view="mock">Öppna Mockprov</button>
+          <button class="primary" data-view="mock">Öppna Prov</button>
           <button class="secondary" data-view="bank">Öppna Frågebank</button>
           <button class="secondary" data-view="research">Öppna Research</button>
         </div>
@@ -2613,30 +2616,6 @@ function renderPage(): string {
   }
 }
 
-function renderBottomNav(): string {
-  const isTraining = Boolean(vrSession || lsSession);
-  const activeTab = isTraining ? "tracks" : page;
-
-  const tab = (icon: string, label: string, target: Page) => {
-    const isActive = activeTab === target;
-    return `
-      <button class="bottom-nav-tab ${isActive ? "bottom-nav-tab-active" : ""}"
-        data-view="${target}" title="${label}">
-        <span class="bottom-nav-icon">${icon}</span>
-        <span class="bottom-nav-label">${label}</span>
-      </button>
-    `;
-  };
-
-  return `
-    <nav class="bottom-nav">
-      ${tab("🏠", "Hem", "overview")}
-      ${tab("🎯", "Träna", "tracks")}
-      ${tab("📋", "Prov", "mock")}
-      ${tab("📚", "Bank", "bank")}
-    </nav>
-  `;
-}
 
 function render(): void {
   const isSessionFocus = Boolean(activeSession);
@@ -2651,7 +2630,6 @@ function render(): void {
         ${renderPage()}
       </main>
 
-      ${renderBottomNav()}
     </div>
     ${activeGlossaryTerm ? renderGlossaryOverlay(activeGlossaryTerm) : ""}
   `;
@@ -2662,6 +2640,7 @@ app.addEventListener("click", (event) => {
   const viewBtn = target.closest<HTMLButtonElement>("button[data-view]");
   if (viewBtn) {
     page = viewBtn.dataset.view as Page;
+    navOpen = false;
     render();
     return;
   }
