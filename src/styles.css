@@ -1493,9 +1493,11 @@ details:not(.mini-menu)[open] {
 .overview-cta-main {
   flex: 1 1 0;
   border-radius: 999px;
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0.3rem 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0 1rem;
   height: 36px;
   min-height: 36px;
   text-align: center;
@@ -1504,9 +1506,11 @@ details:not(.mini-menu)[open] {
 .overview-cta-secondary {
   flex: 1 1 0;
   border-radius: 999px;
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0.3rem 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0 1rem;
   height: 36px;
   min-height: 36px;
   white-space: nowrap;
@@ -2498,44 +2502,31 @@ details:not(.mini-menu)[open] {
   background: var(--hover-bg, #f0f0ec);
 }
 
-/* Context / page pill */
+/* Context / page pill — Stitch "superslim" spec */
 .app-nav-ctx {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
-  height: 32px;
-  min-height: 32px;
-  padding: 0 14px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 12px;
   border-radius: 999px;
   border: none;
-  background: var(--surface-container, #e9eef9);
+  background: rgba(0, 92, 85, 0.08);
+  color: var(--accent, #005c55);
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.03em;
-  color: var(--text-primary, #161c24);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   transition: opacity 0.15s;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 240px;
+  max-width: 220px;
 }
 
-.app-nav-ctx:hover { opacity: 0.85; }
-
-/* Per-page pill colours — tonal within Stitch palette */
-.nav-page--overview  { background: var(--accent, #005c55);     color: #ffffff; }
-.nav-page--tracks,
-.nav-page--train     { background: var(--warm, #6d5d36);       color: #ffffff; }
-.nav-page--mock      { background: var(--accent-container, #0f766e); color: #ffffff; }
-.nav-page--bank      { background: var(--accent-soft, #9cf2e8); color: var(--accent-soft-ink, #00504a); }
-/* Fallback for secondary pages */
-.nav-page--research,
-.nav-page--logic,
-.nav-page--walkthrough,
-.nav-page--design,
-.nav-page--roadmap,
-.nav-page--glossary  { background: var(--surface-container, #e9eef9); color: var(--ink, #161c24); }
+.app-nav-ctx:hover { opacity: 0.75; }
 
 .app-nav-ctx-label {
   overflow: hidden;
