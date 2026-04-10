@@ -1719,7 +1719,7 @@ function renderTracks(): string {
         <h3>Symbol Sudoku <span class="badge">Aon: Deductive-logical Thinking</span></h3>
         <p class="muted">Latin Square-format: ingen form upprepas i samma rad eller kolumn. Hitta formen som saknas. Samma upplägg som Aon MapTQ (lst)-delprovet.</p>
         <div class="inline-controls">
-          <a class="primary" href="./gap-challenge.html" target="_blank">🔷 Öppna Symbol Sudoku</a>
+          <a class="primary" href="./symbol-sudoku.html" target="_blank">🔷 Öppna Symbol Sudoku</a>
         </div>
       </section>
 
