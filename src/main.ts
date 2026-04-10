@@ -1422,7 +1422,7 @@ function renderOverview(): string {
         <p class="muted overview-reason">${suggestion.reason}</p>
         <div class="overview-cta-row">
           <button class="primary overview-cta-main" data-action="start-today-drill">▶ Starta</button>
-          <button class="secondary overview-cta-secondary" data-view="mock">Tests</button>
+          <button class="overview-cta-secondary" data-view="mock">📋 Prov</button>
         </div>
       </section>
 
