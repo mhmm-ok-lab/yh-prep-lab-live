@@ -1446,7 +1446,7 @@ function renderOverview(): string {
             <span class="progress-pct">${progress.prog1a}%</span>
           </div>
         </div>
-        <p class="muted" style="margin-top:0.5rem">${sessions.length} pass genomförda · ${totalCompletedMinutes(sessions)} min totalt</p>
+        <p class="muted text-xs" style="margin-top:0.5rem">${sessions.length} pass genomförda · ${totalCompletedMinutes(sessions)} min totalt</p>
       </section>
 
       <!-- ── PRIORITERING ── -->

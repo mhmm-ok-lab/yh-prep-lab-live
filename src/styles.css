@@ -5,6 +5,22 @@
   --font-ui: "Public Sans", "Avenir Next", "Segoe UI", sans-serif;
   --font-code: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
 
+  /* Type scale — 3 text sizes + 3 display sizes. Use ONLY these. */
+  --text-xs: 0.68rem;   /* labels, tags, pill-text, uppercase caps  */
+  --text-sm: 0.78rem;   /* muted body, secondary info, sub-labels   */
+  --text-md: 0.88rem;   /* card body, track names, strong labels     */
+  --text-h3: 1rem;      /* card headings                             */
+  --text-hero: 1.4rem;  /* page hero heading                         */
+  --text-stat: 2rem;    /* big numbers (streak, score)               */
+
+  /* Track identity colours — used everywhere a track is shown */
+  --track-ux-bg:   var(--honey, #f7e0b0);
+  --track-ux-ink:  var(--honey-ink, #4c3e1a);
+  --track-it-bg:   var(--secondary-fixed, #93f4e0);
+  --track-it-ink:  var(--secondary, #006b5d);
+  --track-prog-bg: var(--surface-highest, #dee2ee);
+  --track-prog-ink:var(--ink, #161c24);
+
   /* ── Stitch Academic Atelier palette ── */
   /* Surfaces */
   --bg: #f8f9ff;                /* surface / page base */
@@ -74,6 +90,11 @@
 * {
   box-sizing: border-box;
 }
+
+/* ── Type-scale utility classes ── */
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-md { font-size: var(--text-md); }
 
 .sr-only {
   position: absolute;
@@ -474,7 +495,9 @@ main {
 }
 
 .track-pill {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   padding: 0.1rem 0.42rem;
   font-size: 0.7rem;
@@ -482,20 +505,9 @@ main {
   margin-right: 0.28rem;
 }
 
-.track-nackademin_ux {
-  background: var(--honey, #f7e0b0);
-  color: var(--honey-ink, #4c3e1a);
-}
-
-.track-iths_itsec {
-  background: var(--secondary-fixed, #93f4e0);
-  color: var(--secondary, #006b5d);
-}
-
-.track-prog1a {
-  background: var(--surface-highest, #dee2ee);
-  color: var(--ink, #161c24);
-}
+.track-nackademin_ux { background: var(--track-ux-bg);   color: var(--track-ux-ink); }
+.track-iths_itsec   { background: var(--track-it-bg);   color: var(--track-it-ink); }
+.track-prog1a       { background: var(--track-prog-bg); color: var(--track-prog-ink); }
 
 .kpi {
   font-size: 1.28rem;
@@ -1020,7 +1032,7 @@ button.danger {
 
 .muted {
   color: #57534e;
-  font-size: 0.78rem;
+  font-size: var(--text-sm, 0.78rem);
 }
 
 .research-tag {
@@ -1056,32 +1068,35 @@ button.danger {
 }
 
 .track-priority-btn strong {
-  font-size: 0.88rem;
+  font-size: var(--text-md, 0.88rem);
   font-weight: 700;
-  color: var(--ink);
 }
 
 .track-priority-btn span {
-  font-size: 0.68rem;
-  color: var(--text-muted, #3e4947);
+  font-size: var(--text-xs, 0.68rem);
   opacity: 0.8;
   letter-spacing: 0.01em;
 }
 
+/* Track identity — same colours as track pills, across whole site */
+.track-priority-btn[data-track="nackademin_ux"] {
+  background: var(--track-ux-bg);
+  color: var(--track-ux-ink);
+}
+.track-priority-btn[data-track="iths_itsec"] {
+  background: var(--track-it-bg);
+  color: var(--track-it-ink);
+}
+.track-priority-btn[data-track="prog1a"] {
+  background: var(--track-prog-bg);
+  color: var(--track-prog-ink);
+}
+
+/* Recommended = left accent stripe, keeps track colour */
 .track-priority-btn.is-recommended {
-  background: var(--accent-soft, #9cf2e8);
-  color: var(--accent-soft-ink, #00504a);
+  border-left: 3px solid var(--accent, #005c55);
+  padding-left: calc(0.75rem - 3px);
 }
-
-.track-priority-btn.is-recommended strong {
-  color: var(--accent-soft-ink, #00504a);
-}
-
-/* Stage states — tonal only, no borders */
-.track-btn-not-started  { background: var(--surface-low, #eff4ff); }
-.track-btn-in-progress  { background: var(--surface-container, #e9eef9); }
-.track-btn-needs-help   { background: var(--surface-container, #e9eef9); }
-.track-btn-near-ready   { background: var(--accent-soft, #9cf2e8); }
 
 details:not(.mini-menu) > summary {
   cursor: pointer;
