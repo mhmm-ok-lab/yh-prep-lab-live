@@ -206,7 +206,7 @@ button {
 .app {
   width: min(100%, 560px);
   margin: 0 auto;
-  padding: 0.45rem 0.4rem 1rem;
+  padding: 0.45rem 1rem 2rem;
 }
 
 .hero {
@@ -536,16 +536,35 @@ main {
 }
 
 button.primary {
-  background: #2b8479;
-  border-color: #2b8479;
+  background: linear-gradient(135deg, var(--accent, #005c55), var(--accent-container, #0f766e));
+  border-color: transparent;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px rgba(0, 92, 85, 0.25);
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+button.primary:hover {
+  opacity: 0.92;
+  box-shadow: 0 4px 16px rgba(0, 92, 85, 0.30);
+}
+
+button.primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 92, 85, 0.20);
 }
 
 button.secondary {
-  background: var(--field-bg);
-  border-color: #c9ddd6;
-  font-weight: 500;
+  background: var(--card, #fff);
+  border-color: rgba(63, 73, 71, 0.18);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+button.secondary:hover {
+  background: var(--surface-low, #eff4ff);
+  border-color: rgba(63, 73, 71, 0.28);
 }
 
 button.danger {
@@ -555,15 +574,16 @@ button.danger {
 }
 
 .progress {
-  height: 7px;
+  height: 6px;
   border-radius: 999px;
-  background: #ece7df;
+  background: var(--surface-container, #e9eef9);
   overflow: hidden;
 }
 
 .progress > div {
   height: 100%;
-  background: linear-gradient(90deg, #0f766e, #14b8a6);
+  background: linear-gradient(90deg, var(--accent, #005c55), #0f766e);
+  border-radius: 999px;
 }
 
 .session {
@@ -2437,11 +2457,6 @@ details:not(.mini-menu)[open] {
 /* Push main content below the fixed nav */
 .app > main {
   padding-top: 64px;
-  padding-left: 16px;
-  padding-right: 16px;
-  max-width: 540px;
-  margin: 0 auto;
-  padding-bottom: 2rem;
 }
 
 /* Home button — 🧠 icon */
@@ -2656,4 +2671,215 @@ details:not(.mini-menu)[open] {
     transform: none;
     max-width: none;
   }
+}
+
+/* =========================================
+   TRACKS / TRÄNA PAGE — Bento layout
+   ========================================= */
+
+.tracks-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.tracks-section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted, #3e4947);
+  margin: 0.75rem 0 0.35rem;
+  padding: 0 2px;
+}
+
+/* ── Aon bento grid ── */
+.aon-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.65rem;
+}
+
+/* ── Generic bento card ── */
+.bento-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0; /* prevent grid blowout */
+  overflow: hidden;
+}
+
+/* Feature card spans full width */
+.bento-card-feature {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--surface-critical-start, #e8f5f3), var(--surface-critical-end, #dff2ee));
+  border-color: rgba(0, 92, 85, 0.12);
+}
+
+/* Half-width cards */
+.bento-card-half {
+  /* fills one column cell */
+}
+
+.bento-card-sudoku {
+  background: var(--surface-low, #eff4ff);
+}
+
+/* Flat row card */
+.bento-card-flat {
+  grid-column: 1 / -1;
+  padding: 0.85rem 1rem;
+}
+
+.bento-flat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ── Bento elements ── */
+.bento-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.bento-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(0, 92, 85, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.bento-pool {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.bento-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.bento-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.bento-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.bento-desc-sm {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.bento-cta {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+}
+
+.bento-cta-sm {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+a.bento-cta-sm {
+  /* override anchor default */
+  background: linear-gradient(135deg, var(--accent, #005c55), var(--accent-container, #0f766e));
+  color: #fff;
+  border-radius: var(--radius-btn, 12px);
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 92, 85, 0.25);
+}
+
+/* ── Subject cards (kursträning) ── */
+.tracks-subject-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subject-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.subject-card-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.subject-card-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subject-card-exam {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subject-card-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.subject-btn {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  min-height: 36px;
+  white-space: nowrap;
 }

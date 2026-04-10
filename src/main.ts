@@ -1822,68 +1822,86 @@ function renderTracks(): string {
   if (lsSession) return renderLSSession();
   if (vrSession) return renderVRSession();
   const logicQuestions = getLogicQuestions();
+
   return `
-    <div class="grid">
-      <section class="card span-12">
-        <h3 class="section-label">Välj ett spår att träna</h3>
-        <p class="muted">Lär-läget visar förklaring direkt efter varje svar. Drill är snabbare utan förklaring.</p>
-      </section>
+    <div class="tracks-layout">
 
-      ${TRACKS.map(
-        (track) => `
-          <section class="card span-4">
-            <h3>${track.name}</h3>
-            <p class="muted">${track.goal_exam}</p>
-            <div class="inline-controls">
-              <button class="primary" data-action="start-track-learn" data-track="${track.id}">🧠 Lär</button>
-              <button class="secondary" data-action="start-track-drill" data-track="${track.id}">⚡ Drill</button>
+      <!-- ── AON-TRÄNING ── -->
+      <p class="tracks-section-label">Aon-träning</p>
+
+      <div class="aon-bento">
+
+        <!-- Verbal Reasoning — stor feature card -->
+        <div class="bento-card bento-card-feature">
+          <div class="bento-card-meta">
+            <span class="bento-tag">Verbal Reasoning</span>
+            <span class="bento-pool">${VR_ITEMS.length} frågor</span>
+          </div>
+          <p class="bento-desc">Sant / Falskt / Kan ej avgöras utifrån texten. Tränar Verklighetsknappen, Kvantifikatorfällan och Implikationsfällan.</p>
+          <button class="primary bento-cta" data-action="start-vr-trainer">Starta träning</button>
+        </div>
+
+        <!-- Språkliga + Symbol Sudoku — 2-kol -->
+        <div class="bento-card bento-card-half">
+          <span class="bento-icon">🇸🇪</span>
+          <div class="bento-card-meta">
+            <span class="bento-tag">Scales LT-SE</span>
+          </div>
+          <p class="bento-name">Språkliga färdigheter</p>
+          <button class="primary bento-cta-sm" data-action="start-ls-trainer">Starta</button>
+        </div>
+
+        <div class="bento-card bento-card-half bento-card-sudoku">
+          <span class="bento-icon">△</span>
+          <div class="bento-card-meta">
+            <span class="bento-tag">Deductive Logic</span>
+          </div>
+          <p class="bento-name">Symbol Sudoku</p>
+          <a class="primary bento-cta-sm" href="./symbol-sudoku.html" target="_blank">Öppna</a>
+        </div>
+
+      </div>
+
+      <!-- ── KURSTRÄNING ── -->
+      <p class="tracks-section-label">Kursträning</p>
+
+      <div class="tracks-subject-list">
+        ${TRACKS.map((track) => `
+          <div class="subject-card">
+            <div class="subject-card-info">
+              <p class="subject-card-name">${track.name}</p>
+              <p class="subject-card-exam">${track.goal_exam}</p>
             </div>
-          </section>
-        `
-      ).join("")}
+            <div class="subject-card-actions">
+              <button class="primary subject-btn" data-action="start-track-learn" data-track="${track.id}">Lär</button>
+              <button class="secondary subject-btn" data-action="start-track-drill" data-track="${track.id}">Drill</button>
+            </div>
+          </div>
+        `).join("")}
+      </div>
 
-      <section class="card span-12">
-        <h3>Logik &amp; resonemang</h3>
-        <p class="muted">Extra träning i logiskt tänkande — relevant för både Nackademin och IT-H antagningsprov.</p>
-        <div class="inline-controls">
-          <button class="primary" data-action="start-logic-drill">
-            Starta logik-drill (${estimateDrillMinutes(logicQuestions)} min)
-          </button>
+      <!-- ── ÖVRIGT ── -->
+      <p class="tracks-section-label">Övrigt</p>
+
+      <div class="bento-card bento-card-flat">
+        <div class="bento-flat-row">
+          <div>
+            <p class="bento-name">Logik &amp; resonemang</p>
+            <p class="bento-desc-sm">Logiskt tänkande — relevant för Nackademin och IT-H.</p>
+          </div>
+          <button class="primary bento-cta-sm" data-action="start-logic-drill">${estimateDrillMinutes(logicQuestions)} min</button>
         </div>
-      </section>
+      </div>
 
-      <section class="card span-12">
-        <h3>Symbol Sudoku <span class="badge">Aon: Deductive-logical Thinking</span></h3>
-        <p class="muted">Latin Square-format: ingen form upprepas i samma rad eller kolumn. Hitta formen som saknas. Samma upplägg som Aon MapTQ (lst)-delprovet.</p>
-        <div class="inline-controls">
-          <a class="primary" href="./symbol-sudoku.html" target="_blank">🔷 Öppna Symbol Sudoku</a>
-        </div>
-      </section>
-
-      <section class="card span-12">
-        <h3>Verbal Reasoning <span class="badge">Aon: Verbal Reasoning (admin)</span></h3>
-        <p class="muted">Läs ett textstycke. Bedöm om påståendet är <strong>Sant</strong>, <strong>Falskt</strong> eller <strong>Kan ej avgöras</strong> — enbart utifrån texten. Tränar de tre vanligaste fällorna: Verklighetsknappen, Kvantifikatorfällan och Implikationsfällan.</p>
-        <div class="inline-controls">
-          <button class="primary" data-action="start-vr-trainer">📄 Starta Verbal Reasoning (12 slumpade av ${VR_ITEMS.length})</button>
-        </div>
-      </section>
-
-      <section class="card span-12">
-        <h3>Språkliga färdigheter <span class="badge">Aon: Scales LT-SE</span></h3>
-        <p class="muted">Tre sektioner: meningskomplettering, ordförråd och stavning. Välj rätt alternativ (A/B/C). Tränar Kontextknappen, Definitionsfällan, Dubblingsfällan och Särkrivningsfällan.</p>
-        <div class="inline-controls">
-          <button class="primary" data-action="start-ls-trainer">🇸🇪 Starta Språkliga färdigheter (12 slumpade av ${LS_ITEMS.length})</button>
-        </div>
-      </section>
-
-      <section class="card span-12">
+      <div class="bento-card bento-card-flat">
         <details>
-          <summary>UX scenario-generator (för Nackademin-träning)</summary>
-          <p style="margin-top:0.5rem">${generatedUxScenario}</p>
-          <p class="muted">Workflow: 1) Målgruppsanalys → 2) Enkel wireframe-idé → 3) Motivering.</p>
-          <button class="secondary" data-action="generate-ux-case">Generera nytt case</button>
+          <summary class="bento-name">UX scenario-generator</summary>
+          <p class="bento-desc-sm" style="margin-top:0.5rem">${generatedUxScenario}</p>
+          <p class="bento-desc-sm">Workflow: 1) Målgruppsanalys → 2) Enkel wireframe-idé → 3) Motivering.</p>
+          <button class="secondary" style="margin-top:0.5rem" data-action="generate-ux-case">Generera nytt case</button>
         </details>
-      </section>
+      </div>
+
     </div>
   `;
 }
