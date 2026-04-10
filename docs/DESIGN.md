@@ -44,12 +44,19 @@ _Based on Stitch Academic Atelier. Last updated: 2026-04-10_
 | `--danger` | `#ba1a1a` | Errors |
 | `--ok` | `#166534` | Success |
 
-### Saknade tokens att lägga till (nästa pass)
-- `--honey: #f7e0b0` — honey/tertiary-fixed
-- `--honey-ink: #4c3e1a` — on-tertiary-container
-- `--surface-high: #e3e8f4`
-- `--surface-highest: #dee2ee`
-- `--outline-variant: #bdc9c6`
+### Sekundärfärger (tillagda 2026-04-10)
+| Token | Hex | Användning |
+|---|---|---|
+| `--secondary` | `#006b5d` | Sekundär teal (klarare än primary) |
+| `--secondary-container` | `#90f1de` | Mjuk mint-bakgrund |
+| `--secondary-fixed` | `#93f4e0` | Progress pips, streak-indikatorer |
+| `--secondary-fixed-dim` | `#76d7c5` | Hover på sekundära mint-element |
+| `--honey` | `#f7e0b0` | Honey/amber — UX-spår pill, tertiary highlights |
+| `--honey-dim` | `#dac496` | Hover på honey-element |
+| `--honey-ink` | `#4c3e1a` | Mörk text på honey-bakgrund |
+| `--surface-high` | `#e3e8f4` | surface-container-high |
+| `--surface-highest` | `#dee2ee` | surface-container-highest, Prog-spår pill |
+| `--outline-variant` | `#bdc9c6` | Ghost borders vid a11y-behov |
 
 ---
 

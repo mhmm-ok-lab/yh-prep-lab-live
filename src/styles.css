@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap");
 
 :root {
   /* ── Typography ── */
@@ -27,16 +27,32 @@
   --accent: #005c55;            /* primary */
   --accent-container: #0f766e;  /* primary-container */
   --accent-soft: #9cf2e8;       /* primary-fixed */
-  --accent-soft-border: #80d5cb;
+  --accent-soft-border: #80d5cb;/* primary-fixed-dim / inverse-primary */
   --accent-soft-ink: #00504a;   /* on-primary-fixed-variant */
+
+  /* Secondary teal (brighter, lighter than primary) */
+  --secondary: #006b5d;
+  --secondary-container: #90f1de;
+  --secondary-fixed: #93f4e0;
+  --secondary-fixed-dim: #76d7c5;
+
+  /* Honey / Tertiary (warm amber) */
   --warm: #6d5d36;              /* tertiary */
+  --honey: #f7e0b0;             /* tertiary-fixed */
+  --honey-dim: #dac496;         /* tertiary-fixed-dim */
+  --honey-ink: #4c3e1a;         /* on-tertiary-container (dark text on honey) */
+
+  /* Surface hierarchy (highest → lowest contrast) */
+  --surface-high: #e3e8f4;      /* surface-container-high */
+  --surface-highest: #dee2ee;   /* surface-container-highest */
+  --outline-variant: #bdc9c6;   /* for ghost borders */
 
   /* Semantic */
   --danger: #ba1a1a;
   --ok: #166534;
 
   /* Structure */
-  --border: rgba(63, 73, 71, 0.10); /* ghost border (outline-variant @10%) */
+  --border: rgba(189, 201, 198, 0.30); /* outline-variant @30% */
   --shadow: 0 1px 3px rgba(22, 28, 36, 0.06), 0 4px 16px rgba(22, 28, 36, 0.04);
   --tap-height: 44px;
   --tap-height-compact: 38px;
@@ -467,15 +483,18 @@ main {
 }
 
 .track-nackademin_ux {
-  background: #fef3c7;
+  background: var(--honey, #f7e0b0);
+  color: var(--honey-ink, #4c3e1a);
 }
 
 .track-iths_itsec {
-  background: #dcfce7;
+  background: var(--secondary-fixed, #93f4e0);
+  color: var(--secondary, #006b5d);
 }
 
 .track-prog1a {
-  background: #dbeafe;
+  background: var(--surface-highest, #dee2ee);
+  color: var(--ink, #161c24);
 }
 
 .kpi {
@@ -1443,7 +1462,7 @@ details:not(.mini-menu)[open] {
 }
 
 .stat-widget-pip-on {
-  background: var(--accent-soft, #9cf2e8);
+  background: var(--secondary-fixed, #93f4e0);
 }
 
 .stat-widget-sub {
@@ -1568,7 +1587,7 @@ details:not(.mini-menu)[open] {
 }
 
 .progress-pct {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--accent);
   text-align: right;
