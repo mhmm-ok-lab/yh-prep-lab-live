@@ -323,7 +323,7 @@ button {
 
 .mini-menu-body .muted {
   margin: 0.15rem 0 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
 }
 
 .user-switch-grid {
@@ -1001,6 +1001,7 @@ button.danger {
 
 .muted {
   color: #57534e;
+  font-size: 0.78rem;
 }
 
 .research-tag {
@@ -1413,7 +1414,7 @@ details:not(.mini-menu)[open] {
 }
 
 .stat-widget-value {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
   line-height: 1;
   color: var(--accent);
@@ -1492,9 +1493,10 @@ details:not(.mini-menu)[open] {
 .overview-cta-main {
   flex: 1 1 0;
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.4rem 1rem;
+  padding: 0.3rem 1rem;
+  height: 36px;
   min-height: 36px;
   text-align: center;
 }
@@ -1502,9 +1504,10 @@ details:not(.mini-menu)[open] {
 .overview-cta-secondary {
   flex: 1 1 0;
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.4rem 1rem;
+  padding: 0.3rem 1rem;
+  height: 36px;
   min-height: 36px;
   white-space: nowrap;
   text-align: center;
@@ -2500,14 +2503,15 @@ details:not(.mini-menu)[open] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: 38px;
-  padding: 0 18px;
+  gap: 5px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 14px;
   border-radius: 999px;
   border: none;
   background: var(--surface-container, #e9eef9);
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   color: var(--text-primary, #161c24);
@@ -2883,7 +2887,7 @@ details:not(.mini-menu)[open] {
 }
 
 .bento-pool {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -2894,7 +2898,7 @@ details:not(.mini-menu)[open] {
 }
 
 .bento-name {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--ink);
   margin: 0;
@@ -2918,8 +2922,8 @@ details:not(.mini-menu)[open] {
 .bento-cta {
   margin-top: auto;
   width: 100%;
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
 }
 
 .bento-cta-sm {
