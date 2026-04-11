@@ -40,8 +40,8 @@
   --hover-bg: #e9eef9;
 
   /* Accent (teal primary) */
-  --accent: #005c55;            /* primary */
-  --accent-container: #0f766e;  /* primary-container */
+  --accent: #1a7a70;            /* primary — softer teal, less clinical */
+  --accent-container: #25907f;  /* primary-container */
   --accent-soft: #b8ede8;       /* primary-fixed — soft mint for active/recommended */
   --accent-soft-border: #96d9d2;/* primary-fixed-dim / inverse-primary */
   --accent-soft-ink: #00504a;   /* on-primary-fixed-variant */
