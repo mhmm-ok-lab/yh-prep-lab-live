@@ -1020,6 +1020,12 @@ function registerServiceWorker(): void {
     return;
   }
 
+  // Skip SW in dev — prevents stale CSS cache in Vite dev server
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    navigator.serviceWorker.getRegistrations().then(regs => Promise.all(regs.map(r => r.unregister())));
+    return;
+  }
+
   navigator.serviceWorker.register("sw.js").catch(() => {
     setStorageNotice("Kunde inte aktivera offline-läge.");
   });
@@ -1841,7 +1847,7 @@ function renderTracks(): string {
             <span class="bento-pool">${VR_ITEMS.length} frågor</span>
           </div>
           <p class="bento-desc">Sant / Falskt / Kan ej avgöras utifrån texten. Tränar Verklighetsknappen, Kvantifikatorfällan och Implikationsfällan.</p>
-          <button class="primary bento-cta" data-action="start-vr-trainer">Starta träning</button>
+          <button class="primary bento-cta" data-action="start-vr-trainer">Starta</button>
         </div>
 
         <!-- Språkliga + Symbol Sudoku — 2-kol -->

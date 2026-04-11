@@ -84,14 +84,14 @@ _Based on Stitch Academic Atelier. Last updated: 2026-04-10_
 
 ## 3. Pill-shapes — Höjdsystem
 
-Två definierade pill-höjder. Inga andra är tillåtna.
+**En** definierad pill-höjd. Inga undantag.
 
 | Pill-typ | Höjd | Padding | Font | Exempel |
 |---|---|---|---|---|
-| **Nav** | `28px` | `0 12px` | 0.68rem · uppercase | Center nav-pill, tags |
-| **Action** | `36px` | `0 1rem` | 0.68rem · uppercase | CTA-knappar i kort |
+| **Alla pills** | `28px` | `0 12px` | 0.68rem · uppercase | Nav-pill, CTA, subject-btns, Prov-start |
 
-**Regel:** `border-radius: 999px` only when text is short and centered. Never on multi-word buttons.
+**Regel:** `border-radius: 999px` when text is short and centered. `height: 28px; min-height: 28px` — no exceptions.
+**Obs:** Specificitetsfälla — `.inline-controls button` (0,1,1) slår `.btn-lg` (0,1,0). Använd `.inline-controls .btn-lg` vid behov.
 
 ---
 

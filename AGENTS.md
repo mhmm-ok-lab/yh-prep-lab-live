@@ -54,3 +54,19 @@ When enough information is available, proceed to implementation without extra ba
   - "Options"
   - "Recommended next step"
 - Avoid long theory unless explicitly requested.
+
+## Project Folder Naming Rule
+- Never start or keep a project in a generic folder name such as:
+  - `New project`
+  - `New folder`
+  - `Untitled`
+- If a generic folder name is detected, pause early and do one of these:
+  1. Ask the user for a real project name (recommended).
+  2. Use a temporary codename and immediately propose renaming.
+- Temporary codename style should be memorable and hard to confuse (sound-word style), for example:
+  - `shazz-lab`
+  - `wosh-studio`
+  - `bam-workbench`
+  - `clong-hq`
+  - `zapforge`
+- Within the same session, always follow up with one concise rename question so the project gets a proper final name as soon as possible.

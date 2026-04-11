@@ -531,8 +531,8 @@ main {
 
 .inline-controls label {
   width: 100%;
-  font-size: 0.8rem;
-  color: #3f3a36;
+  font-size: var(--text-sm, 0.78rem);
+  color: var(--text-muted);
   margin: 0.1rem 0 0;
 }
 
@@ -549,7 +549,7 @@ main {
   max-width: 100%;
   min-height: var(--tap-height-compact);
   padding: 0.38rem 0.5rem;
-  font-size: 0.82rem;
+  font-size: var(--text-sm, 0.78rem);
   line-height: 1.1;
   flex: 1 1 9rem;
   text-align: center;
@@ -1051,7 +1051,7 @@ button.danger {
 
 .priority-reason {
   margin-top: 0.38rem;
-  font-size: 0.79rem;
+  font-size: var(--text-sm, 0.78rem);
 }
 
 .track-priority-btn {
@@ -1532,8 +1532,8 @@ details:not(.mini-menu)[open] {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 0 1rem;
-  height: 36px;
-  min-height: 36px;
+  height: 28px;
+  min-height: 28px;
   text-align: center;
 }
 
@@ -1545,8 +1545,8 @@ details:not(.mini-menu)[open] {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 0 1rem;
-  height: 36px;
-  min-height: 36px;
+  height: 28px;
+  min-height: 28px;
   white-space: nowrap;
   text-align: center;
   background: rgba(0, 92, 85, 0.08);
@@ -1571,10 +1571,13 @@ details:not(.mini-menu)[open] {
   flex: 0 0 auto;
 }
 
-.btn-lg {
-  font-size: 1rem;
-  padding: 0.65rem 1.2rem;
-  min-height: 48px;
+.btn-lg,
+.inline-controls .btn-lg {
+  font-size: var(--text-sm, 0.78rem);
+  padding: 0 1.2rem;
+  height: 28px;
+  min-height: 28px;
+  border-radius: 999px;
 }
 
 .section-label {
@@ -1609,7 +1612,7 @@ details:not(.mini-menu)[open] {
 }
 
 /* ═══════════════════════════════════════════════
-   MOCKPROV – sektionsöversikt
+   PROV – sektionsöversikt
 ═══════════════════════════════════════════════ */
 .mock-sections-grid {
   display: grid;
@@ -1623,10 +1626,9 @@ details:not(.mini-menu)[open] {
   gap: 0.5rem 1rem;
   align-items: center;
   padding: 0.45rem 0.6rem;
-  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fafafa;
-  font-size: 0.85rem;
+  background: var(--surface-low);
+  font-size: var(--text-md, 0.88rem);
 }
 
 @media (max-width: 500px) {
@@ -2947,26 +2949,40 @@ details:not(.mini-menu)[open] {
 .bento-cta {
   margin-top: auto;
   width: 100%;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
+  padding: 0 1rem;
+  height: 28px;
+  min-height: 28px;
+  font-size: var(--text-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 999px;
 }
 
 .bento-cta-sm {
   margin-top: auto;
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.82rem;
+  padding: 0 0.75rem;
+  height: 28px;
+  min-height: 28px;
+  font-size: var(--text-xs, 0.68rem);
   font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-align: center;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
 }
 
 a.bento-cta-sm {
   /* override anchor default */
   background: linear-gradient(135deg, var(--accent, #005c55), var(--accent-container, #0f766e));
   color: #fff;
-  border-radius: var(--radius-btn, 12px);
+  border-radius: 999px;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 92, 85, 0.25);
 }
@@ -2980,7 +2996,6 @@ a.bento-cta-sm {
 
 .subject-card {
   background: var(--card);
-  border: 1px solid var(--border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow);
   padding: 0.85rem 1rem;
@@ -2998,7 +3013,7 @@ a.bento-cta-sm {
 }
 
 .subject-card-name {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--ink);
   margin: 0 0 0.1rem;
@@ -3023,11 +3038,35 @@ a.bento-cta-sm {
 }
 
 .subject-btn {
-  padding: 0.4rem 0.9rem;
+  padding: 0 0.9rem;
   font-size: 1rem;
-  min-height: 36px;
+  height: 28px;
+  min-height: 28px;
   min-width: 40px;
   white-space: nowrap;
   line-height: 1;
-  border-radius: 999px; /* pill — ikon-knappar */
+  border-radius: 999px;
+}
+
+/* Track identity on KURSTRÄNING buttons */
+.subject-btn[data-track="nackademin_ux"] {
+  background: var(--track-ux-bg);
+  color: var(--track-ux-ink);
+  border-color: transparent;
+  background-image: none;
+  box-shadow: none;
+}
+.subject-btn[data-track="iths_itsec"] {
+  background: var(--track-it-bg);
+  color: var(--track-it-ink);
+  border-color: transparent;
+  background-image: none;
+  box-shadow: none;
+}
+.subject-btn[data-track="prog1a"] {
+  background: var(--track-prog-bg);
+  color: var(--track-prog-ink);
+  border-color: transparent;
+  background-image: none;
+  box-shadow: none;
 }

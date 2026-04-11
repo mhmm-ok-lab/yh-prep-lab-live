@@ -1,3 +1,12 @@
+// Self-unregister on localhost (dev mode — avoid caching Vite modules)
+if (self.location.hostname === "localhost" || self.location.hostname === "127.0.0.1") {
+  self.addEventListener("install", () => self.skipWaiting());
+  self.addEventListener("activate", () => {
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))));
+    self.registration.unregister();
+  });
+} else {
+
 const CACHE_NAME = "yh-prep-cache-v2";
 const BASE_PATH = new URL(self.registration.scope).pathname;
 const APP_BASE = BASE_PATH.endsWith("/") ? BASE_PATH : `${BASE_PATH}/`;
@@ -71,3 +80,4 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+} // end else (non-localhost)

@@ -18,13 +18,12 @@ src/styles.css       — CSS-tokens och komponentstyles
 - **TS-check:** `node node_modules/.bin/tsc --noEmit --project tsconfig.json`
 
 ## Aktuellt versionsläge (uppdatera vid ny session)
-- **Senaste commit:** `0033ff0` — Design: type-scale tokens, track identity colours, pill consistency
-- **Live/server:** `f414843` — Fix CTA buttons (5 commits bakom lokalt — ej pushat)
+- **Senaste commit:** Se `git log --oneline -1`
+- **Live/server:** `f414843` — Fix CTA buttons (flera commits bakom — ej pushat)
 - **Öppna punkter:** Se nedan
 
 ## Öppna punkter
 - [ ] Push till server när stabil: `git push live HEAD:main`
-- [ ] Prov/Tests-sidan — Stitch-style redesign (ej påbörjad)
 - [ ] Dark mode toggle (lägst prio, uppskjuten av Martin)
 - [ ] App-rename (lägst prio)
 
@@ -39,9 +38,10 @@ src/styles.css       — CSS-tokens och komponentstyles
 ## Designregler att aldrig bryta
 - Inga 1px borders som sektionering (No-Line rule)
 - Max 3 textstorlekar: `--text-xs` (0.68rem), `--text-sm` (0.78rem), `--text-md` (0.88rem)
-- Pill-höjder: **28px** nav, **36px** action — inga andra
+- **Alla pill-knappar: 28px** — nav, action, CTA, subject-btns, allt. Inga undantag.
 - Alla färger via CSS-tokens — inga hårdkodade hex i komponenter
 - Track-färger: UX=honey (`--track-ux-bg`), IT-H=mint (`--track-it-bg`), Prog=grå (`--track-prog-bg`)
+- Specificitetsfälla: `.inline-controls button` (0,1,1) > `.btn-lg` (0,1,0) — använd `.inline-controls .btn-lg` vid konflikt
 
 ## Versionshantering (multi-agent)
 Se `VERSION` i projektroten. Format: `MAJOR.MINOR.PATCH-YYYYMMDD`

@@ -55,10 +55,39 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-11 — Designsystemaudit: pill-konsistens på alla sidor
+
+### Fixat: Alla pill-knappar enhetligt 28px
+**Vad:** Samtliga pill-shaped knappar i appen sätts till `height: 28px; min-height: 28px; border-radius: 999px`. Gäller: nav-pill, STARTA/PROV på hem, Starta X min på Prov-sidan, subject-btns på Träna, bento-cta-varianter.
+**Varför:** Användaren upplevde inkonsistenta höjder (28/34/36/38px) som gav ett oprofessionellt intryck. Hem-pillen (28px) sattes som referens för alla övriga.
+**Stitch-princip:** Enhetlighet — varje komponenttyp ska ha exakt ett storlekarsbeteende.
+**Tekniskt:** Specificitetsproblem löstes via `.inline-controls .btn-lg`-selektor (0,2,0 > 0,1,1 för `.inline-controls button`).
+
+### Fixat: Spår-identitetsfärger på KURSTRÄNING-knappar
+**Vad:** Subject-btns fick track-specifika bakgrundsfärger via `[data-track]`-selektorer: UX=honey (`--track-ux-bg`), IT-H=mint (`--track-it-bg`), Prog=grå (`--track-prog-bg`).
+**Varför:** Tidigare var alla spårknappar identiska gröna. Spårfärgerna är en core design-signal i Stitch Academic Atelier — de ska förstärka spåridentitet konsekvent.
+**Stitch-princip:** Track identity tokens — direkta hex-värden, inga var()-kedjor.
+
+### Fixat: No-Line rule — mock-section-item och subject-card
+**Vad:** Tog bort `border: 1px solid var(--border)` från `.mock-section-item` och `.subject-card`. Lade till `background: var(--surface-low)` på mock-section-item.
+**Varför:** 1px borders för sektionering bryter mot Stitch No-Line rule. Tonal bakgrund skapar hierarki utan linjer.
+**Stitch-princip:** "1px solid borders are strictly prohibited for sectioning."
+
+### Fixat: Service Worker — localhost dev-caching
+**Vad:** SW self-unregistrar och rensar alla caches på localhost. `main.ts` hoppar över SW-registrering på localhost.
+**Varför:** SW:n fångade alla requests med cache-first, inklusive Vite CSS-moduler — förhindrade CSS-uppdateringar i dev-läge.
+**Tekniskt:** `sw.js` fick ett localhost-block i toppen. `registerServiceWorker()` i main.ts fick hostname-check.
+
+### Standardiserat: Knapptext-konsistens
+**Vad:** "Starta träning" → "Starta" på alla bento-kort i Träna-sidan.
+**Varför:** Tre olika texter (Starta, Starta träning, Öppna) för liknande åtgärder bröt mot konsekvens-principen. Kortare text + pill = bättre fit.
+
+---
+
 ## Designprinciper vi håller (sammanfattning)
 1. **Stitch Academic Atelier** — teal primär, honey tertiary, neutrala ytor
 2. **No-Line rule** — ingen 1px border för sektionering
 3. **Superslim nav** — center-pill + dropdown, ingen bottom nav
 4. **3 fontstorlekar** — XS/SM/MD, display enbart för hierarki-toppen
-5. **2 pill-höjder** — 28px nav, 36px action
+5. **Enhetlig pill-höjd** — **28px för alla pill-knappar** (nav och action, inga undantag)
 6. **Tonal djup** — bakgrundsskiften skapar hierarki, inte skuggor
