@@ -441,7 +441,7 @@ const PROFILE_OPTIONS: Record<(typeof PROFILE_QUESTION_ORDER)[number], ProfileOp
     { id: "high", label: "Hög - vill främst ha tidsprov" }
   ],
   targetPriority: [
-    { id: "nack", label: "Nackademin UX (akut)" },
+    { id: "nack", label: "Nackademin UX" },
     { id: "iths", label: "IT-H IT-säkerhet" },
     { id: "prog", label: "Programmering 1/A" }
   ]
