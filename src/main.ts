@@ -1959,7 +1959,7 @@ function renderBank(): string {
               .join("")}
           </select>
 
-          <button class="primary" data-action="start-drill">Starta Drill (${estimateDrillMinutes(filtered)} min)</button>
+          <button class="primary" data-action="start-drill">Starta Drill</button>
         </div>
         <p class="muted">${filtered.length} frågor matchar filter.</p>
       </section>
@@ -2096,9 +2096,7 @@ function renderLogic(): string {
         <h3>Logik-flik</h3>
         <p class="muted">Inspirerad av Gemini-planens dashboard med egen logikmodul.</p>
         <div class="inline-controls">
-          <button class="primary" data-action="start-logic-drill">
-            Starta logik-drill (${estimateDrillMinutes(logicQuestions)} min)
-          </button>
+          <button class="primary" data-action="start-logic-drill">Starta Drill</button>
         </div>
       </section>
       ${logicQuestions
@@ -2232,11 +2230,6 @@ function renderRoadmap(): string {
     ? `Kör 20-30 min Drill i ämnet "${topWeakTopic}" och följ upp med Mini-check 10 min.`
     : "Kör Mini-check 10 min för att få en snabb nulägesbild inför nästa pass.";
 
-  const statusLabel: Record<RoadmapStatus, string> = {
-    done: "Klar",
-    active: "Pågår",
-    next: "Nästa"
-  };
   const activeSessionNotice = activeSession
     ? `
       <section class="card span-12">
@@ -2245,7 +2238,7 @@ function renderRoadmap(): string {
           Ditt ${activeSession.mode}-pass är kvar: ${Object.keys(activeSession.answers).length}/${activeSession.questionIds.length} besvarade.
         </p>
         <div class="inline-controls">
-          <button class="primary" data-action="resume-active-session">Återgå till aktivt pass</button>
+          <button class="primary" data-action="resume-active-session">Återgå</button>
         </div>
       </section>
     `
@@ -2265,27 +2258,10 @@ function renderRoadmap(): string {
         <h3>Nästa stora steg</h3>
         <p>${nextAction}</p>
         <div class="inline-controls roadmap-actions">
-          <button class="primary" data-action="start-next-pass">Starta nästa rekommenderade pass</button>
-          <button class="primary" data-view="mock">Öppna Prov</button>
-          <button class="secondary" data-view="bank">Öppna Frågebank</button>
-          <button class="secondary" data-view="research">Öppna Research</button>
-        </div>
-      </section>
-      <section class="card span-12">
-        <h3>Stegplan</h3>
-        <div class="review-list">
-          ${ROADMAP_STEPS.map(
-            (step) => `
-              <article class="review-item roadmap-step roadmap-${step.status}">
-                <p>
-                  <span class="research-tag">${statusLabel[step.status]}</span>
-                  <strong>${step.title}</strong>
-                </p>
-                <p>${step.scope}</p>
-                <p class="muted">Klart när: ${step.doneWhen}</p>
-              </article>
-            `
-          ).join("")}
+          <button class="primary" data-action="start-next-pass">Starta rek. pass</button>
+          <button class="primary" data-view="mock">Prov</button>
+          <button class="secondary" data-view="bank">Frågebank</button>
+          <button class="secondary" data-view="research">Research</button>
         </div>
       </section>
     </div>
@@ -2588,7 +2564,7 @@ function renderLastResult(): string {
       <p><strong>Nästa pass:</strong> ${getTrackName(suggestion.trackId)} • ${suggestion.mode} • ${suggestion.durationMinutes} min</p>
       <p class="muted">${suggestion.reason}</p>
       <div class="inline-controls">
-        <button class="primary" data-action="start-next-pass">Starta nästa rekommenderade pass</button>
+        <button class="primary" data-action="start-next-pass">Starta rek. pass</button>
       </div>
       ${reviewLines}
     </section>
