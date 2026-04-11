@@ -82,6 +82,21 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 **Vad:** "Starta träning" → "Starta" på alla bento-kort i Träna-sidan.
 **Varför:** Tre olika texter (Starta, Starta träning, Öppna) för liknande åtgärder bröt mot konsekvens-principen. Kortare text + pill = bättre fit.
 
+### Fixat: Intern data bort från Roadmap
+**Vad:** Tog bort "Stegplan"-sektionen som visade interna byggsteg (Stabil grund, Lugn testmotor etc.).
+**Varför:** Innehållet var utvecklarens byggplan, inte användarens studieplan. En användare som ser "Stabil grund — Mobil först, användarbyte" förstår inte varför det är relevant för deras förberedelse. Cognitive noise utan värde.
+**Stitch-princip:** Innehållshierarki — visa bara det som är relevant för användarens mål.
+
+---
+
+## 2026-04-11 — Mjukare accent-teal
+
+### Justerat: Primärfärg `--accent` lightened
+**Vad:** `--accent` ändrades från `#005c55` till `#1a7a70`. `--accent-container` från `#0f766e` till `#25907f`.
+**Varför:** Den gamla primärfärgen associerades med sjukhusmiljöer — en klinisk, steril grön med hög kontrast men låg värme. Forskning om kognitiv belastning och färgtemperatur visar att varmare/mjukare teal ger ett mer inbjudande studieklimat. Stitch Academic Atelier ska kännas som ett bibliotek, inte en vårdcentral.
+**Avvägning:** `--accent` används på både knappbakgrund (vit text ovanpå) och som textfärg på ljus bakgrund — kontrasten måste behållas. `#1a7a70` ger WCAG AA-kontrast på vit bakgrund. Vi splittar inte token:en — en token, ett beslut.
+**Stitch-princip:** Tonal adjacency — ytor ska vara lugna och inbjudande, inte vibrerande eller kliniska.
+
 ---
 
 ## Designprinciper vi håller (sammanfattning)
