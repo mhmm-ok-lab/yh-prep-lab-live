@@ -3,6 +3,38 @@ _Uppdateras löpande. Bocka av när klart. Ny session: läs denna fil först._
 
 ---
 
+## INITIATIV: UX Rework (ej påbörjat — kräver plan först)
+
+**Status:** Planering pågår. Koda ingenting förrän planen är godkänd av Martin.
+
+**Mål:** Ta bort komplexitet, ta bort dubbletter, återfå enkelheten. Appen ska kännas som ett verktyg — inte som ett system.
+
+**Fas 1 — Inventering (research-agent):**
+- Kartlägg alla sidor och funktioner
+- Identifiera dubbletter (t.ex. Logik-drill i Träna + Frågebank + Logik-sida — är de samma?)
+- Identifiera funktioner ingen använder
+- Skapa ett funktionsträd: vad finns, vad gör det, vem behöver det
+
+**Fas 2 — UX-analys (Martin + Claude):**
+- Gå igenom funktionsträdet och avgör: behåll / slå ihop / ta bort
+- UX-metoder att lära ut och ta ställning till: Jobs-to-be-done, Occam's razor för UX, Progressive disclosure
+- Definiera de 3 kärnflödena användaren faktiskt behöver
+- Martin väljer vilka metoder och beslut han håller med om → portfoliomaterial
+
+**Fas 3 — Ny informationsarkitektur:**
+- Ny sidstruktur och navigationshierarki
+- Wireframes (text-baserade) godkänns av Martin
+- Ingenting kodas förrän detta är klart
+
+**Fas 4 — Implementation (kodagenter):**
+- En agent per sida/komponent
+- Utgår från godkänd plan, inte från nuvarande kod
+- Design system (Stitch) gäller fortfarande
+
+**Nästa steg:** Starta med Fas 1 — inventering. Ge agenten i uppdrag att kartlägga alla funktioner och returnera ett funktionsträd.
+
+---
+
 ## Prio 1 — Designsystem
 
 - [x] Alla pill-knappar: 28px, border-radius 999px
