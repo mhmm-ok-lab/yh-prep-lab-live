@@ -1,6 +1,6 @@
 import "./styles.css";
 import { GLOSSARY, LS_ITEMS, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
-import { createDailyPlan, formatFirstExamDate, getFirstExamCountdown, getNextMockExam } from "./planner";
+import { createDailyPlan, formatFirstExamDate, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
   clearActiveSession,
@@ -1352,13 +1352,10 @@ function calcAvgScore(sessions: StudySession[]): number {
 
 function renderOverview(): string {
   const sessions = loadStudySessions();
-  const plan = createDailyPlan();
   const progress = buildTrackProgress(sessions);
-  const firstExamCountdown = getFirstExamCountdown();
   const firstExamDateLabel = formatFirstExamDate();
   const priorityTrack = getPriorityTrackFromProfile(studyProfile.targetPriority);
   const priorityTrackName = getTrackName(priorityTrack);
-  const preferenceMinutes = Number.parseInt(studyProfile.sessionPreference, 10) || plan.totalMinutes;
   const suggestion = createAdaptiveSuggestion(sessions);
   const statuses = getTrackStatuses(sessions, suggestion);
   const rankPos = new Map<TrackId, number>(suggestion.ranking.map((trackId, index) => [trackId, index]));
@@ -1368,6 +1365,13 @@ function renderOverview(): string {
   const streakDays = calcStreakDays(sessions);
   const avgScore = calcAvgScore(sessions);
   const totalMin = totalCompletedMinutes(sessions);
+  const hasHistory = sessions.length > 0;
+  const lastSavedSession = sessions[sessions.length - 1] ?? null;
+  const lastTrackId: TrackId | null = lastSavedSession
+    ? ((Object.entries(lastSavedSession.track_mix).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null) as TrackId | null)
+    : null;
+  const modeLabelMap: Record<string, string> = { "Lär": "Genomgång", "Drill": "Öva", "Tidsprov": "Tidsprov" };
+  const lastModeLabel = lastSavedSession ? (modeLabelMap[lastSavedSession.mode] ?? lastSavedSession.mode) : "";
 
   return `
     <div class="grid overview-grid">
@@ -1394,17 +1398,27 @@ function renderOverview(): string {
         </div>
       </div>
 
-      <!-- ── HUVUDKORT: nästa steg ── -->
+      <!-- ── HUVUDKORT: context-aware CTA ── -->
+      ${hasHistory ? `
       <section class="card critical-card span-12">
-        <p class="overview-section-label">Träna idag</p>
-        <h2 class="overview-heading">${priorityTrackName}</h2>
-        <p class="overview-sub">${preferenceMinutes} min · ${firstExamCountdown} till prov</p>
+        <p class="overview-section-label">Fortsätt där du slutade</p>
+        <h2 class="overview-heading">${lastTrackId ? getTrackName(lastTrackId) : priorityTrackName} · ${lastModeLabel}</h2>
         <p class="muted overview-reason">${suggestion.reason}</p>
         <div class="overview-cta-row">
           <button class="primary overview-cta-main" data-action="start-today-drill">▶ Starta</button>
           <button class="overview-cta-secondary" data-view="mock">📋 Prov</button>
         </div>
       </section>
+      ` : `
+      <section class="card span-12 overview-welcome">
+        <p class="overview-section-label">Välkommen</p>
+        <h2 class="overview-heading">Välj vad du vill börja med</h2>
+        <p class="muted overview-reason">Öppna menyn och välj en kurs eller träning att starta.</p>
+        <div class="overview-cta-row">
+          <button class="primary overview-cta-main" data-action="toggle-nav">Öppna träningsmenyn →</button>
+        </div>
+      </section>
+      `}
 
       <!-- ── PROGRESSION ── -->
       <section class="card span-12">
@@ -2467,17 +2481,17 @@ function renderLastResult(): string {
       `;
 
   return `
-    <section class="card">
-      <h3 class="success">Senaste resultat: ${lastResult.scorePercent}%</h3>
-      <p>${lastResult.mode} • ${lastResult.correct}/${lastResult.total} rätt ${lastResult.autoSubmitted ? "(autosubmit vid timeout)" : ""}</p>
-      ${lastResult.templateName ? `<p class="muted">Mall: ${lastResult.templateName}</p>` : ""}
-      ${sectionLines}
-      <p><strong>Svaga områden:</strong> ${lastResult.weakTopics.length > 0 ? lastResult.weakTopics.join(" • ") : "Inga tydliga svagheter"}</p>
-      <p><strong>Nästa pass:</strong> ${getTrackName(suggestion.trackId)} • ${suggestion.mode} • ${suggestion.durationMinutes} min</p>
-      <p class="muted">${suggestion.reason}</p>
-      <div class="inline-controls">
-        <button class="primary" data-action="start-next-pass">Starta rek. pass</button>
+    <section class="card result-complete-card">
+      <p class="overview-section-label">Session klar! ✓</p>
+      <h3 class="overview-heading">${lastResult.scorePercent}% · ${lastResult.correct}/${lastResult.total} rätt${lastResult.autoSubmitted ? " (autosubmit)" : ""}</h3>
+      ${lastResult.templateName ? `<p class="muted result-meta">Mall: ${lastResult.templateName}</p>` : ""}
+      ${lastResult.weakTopics.length > 0 ? `<p class="muted result-meta">Svagt: ${lastResult.weakTopics.join(" · ")}</p>` : ""}
+      <div class="overview-cta-row result-cta-row">
+        <button class="primary overview-cta-main" data-action="start-next-pass">▶ Kör en till</button>
+        <button class="overview-cta-secondary" data-action="nav-home">🏠 Gå till Hem</button>
       </div>
+      ${sectionLines}
+      <p class="muted result-meta"><strong>Nästa pass:</strong> ${getTrackName(suggestion.trackId)} · ${suggestion.mode} · ${suggestion.durationMinutes} min — ${suggestion.reason}</p>
       ${reviewLines}
     </section>
   `;

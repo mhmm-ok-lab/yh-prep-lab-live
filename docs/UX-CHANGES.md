@@ -3,6 +3,25 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-12 — T05 + T05b + T05c: Hem context-aware CTA + post-session actions
+
+### T05: "Fortsätt där du slutade" CTA
+**Vad:** Hem-sidans huvudkort är nu kontextkänsligt. När studiesessioner finns visas "Fortsätt där du slutade" med senast tränade spår + läge (t.ex. "Programmering 1 · Öva"). Knappen startar ett adaptivt pass via `createAdaptiveSuggestion()` — intelligent val av frågor, rätt spår.
+**Varför:** En återvändande användare vill inte behöva orientera sig — de ska se vad de höll på med och direkt kunna fortsätta. Minskar friktionen från "öppna app" till "tränar". JTBD: "Hjälp mig att inte tappa tråden."
+**Stitch-princip:** Progressive disclosure — visa det relevanta nu, resten på begäran.
+
+### T05b: Empty state — ny användare
+**Vad:** Inga sessioner = annat kort visas: "Välkommen · Välj vad du vill börja med · [Öppna träningsmenyn →]". Knappen öppnar overlay-menyn direkt. Progress-raden visar 0% men är inte dold.
+**Varför:** En ny användare möts annars av noll-data som ser trasigt ut. Empty state-designen ger tydlig väg framåt utan att skrika "du har inte gjort något". Progressraden behålls för att sätta förväntningar om vad appen mäter.
+**Stitch-princip:** "Design for the first-run experience as carefully as for the power user."
+
+### T05c: Post-session — "Kör en till" + "Gå till Hem"
+**Vad:** `renderLastResult()` omstrukturerad med tydlig session-rubrik ("Session klar! ✓"), poäng + svaga ämnen kompakt, sedan två primära CTAs: "▶ Kör en till" (nytt adaptivt pass) och "🏠 Gå till Hem". Detaljerad sektionsrapport + frågegenomgång bevaras under.
+**Varför:** Gamla layouten begravde handlingsalternativen under textblock. De flesta användare vill antingen fortsätta träna eller avsluta — dessa val ska vara omedelbart synliga, inte kräva scroll. Informationshierarkin: handling → svag signal → detaljer.
+**Stitch-princip:** "Primary action must always be visible without scrolling."
+
+---
+
 ## 2026-04-12 — Ordlista: kompakta termkort med inline kategori-badge
 
 ### Ändrat: kategori-badge på samma rad som termen

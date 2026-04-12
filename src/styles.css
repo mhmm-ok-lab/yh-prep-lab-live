@@ -458,6 +458,23 @@ main {
   padding: 0.7rem;
 }
 
+.result-complete-card {
+  border-left: 3px solid var(--accent);
+}
+
+.result-meta {
+  font-size: 0.8rem;
+  margin: 0.15rem 0;
+}
+
+.result-cta-row {
+  margin-bottom: 0.75rem;
+}
+
+.overview-welcome {
+  background: linear-gradient(135deg, var(--surface-card-start), var(--surface-card-end));
+}
+
 .quickstart-subline {
   margin: 0.18rem 0 0.45rem;
   font-size: 0.8rem;
