@@ -1876,25 +1876,52 @@ details:not(.mini-menu)[open] {
   outline: none;
 }
 
+.glossary-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
 .glossary-entry-term {
   font-family: var(--font-code);
   font-weight: 700;
   font-size: 0.95rem;
-  margin: 0 0 0.2rem;
+  margin: 0;
   color: var(--accent);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .glossary-entry-cat {
-  display: inline-block;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
+  background: var(--surface-highest);
+  color: var(--ink);
+  border-radius: 3px;
+  padding: 0.1rem 0.35rem;
+}
+
+.glossary-entry-card[data-cat="python"] .glossary-entry-cat {
   background: var(--accent-soft);
   color: var(--accent-soft-ink);
-  border-radius: 4px;
-  padding: 0.1rem 0.4rem;
-  margin-bottom: 0.4rem;
+}
+
+.glossary-entry-card[data-cat="network"] .glossary-entry-cat {
+  background: var(--surface-high);
+  color: var(--ink);
+  border: 1px solid var(--surface-highest);
+}
+
+.glossary-entry-card[data-cat="ux"] .glossary-entry-cat {
+  background: var(--honey);
+  color: var(--honey-ink);
 }
 
 .glossary-entry-sv {

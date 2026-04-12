@@ -2220,6 +2220,13 @@ function renderGlossary(): string {
     ux: "UX"
   };
 
+  const categoryShort: Record<string, string> = {
+    general: "Alm",
+    python: "Py",
+    network: "Nät",
+    ux: "UX"
+  };
+
   const filtered = GLOSSARY.filter((entry) => {
     const matchesCategory = glossaryFilter === "all" || entry.category === glossaryFilter;
     const searchLower = glossarySearch.toLowerCase();
@@ -2258,9 +2265,11 @@ function renderGlossary(): string {
               ${filtered
                 .map(
                   (entry) => `
-                    <div class="glossary-entry-card" data-action="open-glossary-term" data-term="${entry.term}" tabindex="0" role="button" aria-label="Öppna ${entry.term}">
-                      <p class="glossary-entry-term">${entry.term}</p>
-                      <span class="glossary-entry-cat">${categoryLabels[entry.category]}</span>
+                    <div class="glossary-entry-card" data-action="open-glossary-term" data-term="${entry.term}" data-cat="${entry.category}" tabindex="0" role="button" aria-label="Öppna ${entry.term}">
+                      <div class="glossary-entry-header">
+                        <p class="glossary-entry-term">${entry.term}</p>
+                        <span class="glossary-entry-cat">${categoryShort[entry.category] ?? entry.category}</span>
+                      </div>
                       <p class="glossary-entry-sv">${entry.sv}</p>
                     </div>
                   `
