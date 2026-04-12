@@ -2520,7 +2520,16 @@ app.addEventListener("click", (event) => {
   const target = event.target as HTMLElement;
   const viewBtn = target.closest<HTMLButtonElement>("button[data-view]");
   if (viewBtn) {
-    page = viewBtn.dataset.view as Page;
+    const targetView = viewBtn.dataset.view as Page;
+    if (targetView in pageLabels) {
+      const pageIconMap: Record<Page, string> = {
+        overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
+        research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖"
+      };
+      pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
+      history.replaceState(null, "", `?view=${targetView}`);
+    }
+    page = targetView;
     navOpen = false;
     render();
     return;
