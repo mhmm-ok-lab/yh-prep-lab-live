@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-12 — Ordlista: kompakta termkort med inline kategori-badge
+
+### Ändrat: kategori-badge på samma rad som termen
+**Vad:** `.glossary-entry-cat` lyfts in i en ny `.glossary-entry-header` flex-rad tillsammans med `.glossary-entry-term`. Badge högerställd, förkortade labels (Alm / Py / Nät / UX). Kategorispecifika färger via `data-cat`-attribut: Allmänt=grå (`--surface-highest`), Python=mint (`--accent-soft`), Nätverk=blå-grå (`--surface-high`), UX=honung (`--honey`).
+**Varför:** Kategoribadgen låg på en separat rad och slösade en hel radhöjd per kort — i ett grid med 2 kolumner och 40+ termer är det massiv onödig scrollning. Inline-badge + förkortning sparar ~30–40% vertikal yta per kort utan att tappa scannbarhet. Färgkodningen ger omedelbar kategoriskanning utan att läsa texten.
+**Designbeslut:** Termen truncerar med `text-overflow: ellipsis` så badgen aldrig trängs bort (`flex-shrink: 0`). Alla färger från befintliga tokens — inga nya hexvärden.
+**Stitch-princip:** "Information density should serve the user's scan pattern — not waste vertical rhythm on repeated metadata."
+
+---
+
 ## 2026-04-12 — T03 + T04: Senaste-historik och URL-synk
 
 ### T03: "Senaste" — 3 senast besökta vyer
