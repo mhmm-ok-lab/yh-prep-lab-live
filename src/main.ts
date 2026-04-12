@@ -1,6 +1,6 @@
 import "./styles.css";
 import { GLOSSARY, LS_ITEMS, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
-import { createDailyPlan, formatFirstExamDate, getNextMockExam } from "./planner";
+import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
   clearActiveSession,
@@ -17,11 +17,7 @@ import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, Se
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
-interface ProfileOption {
-  id: string;
-  label: string;
-}
-
+// ProfileOption: återinförs i T07 (profilvy)
 interface StudyProfile {
   sessionPreference: string;
   blocker: string;
@@ -100,15 +96,6 @@ interface AdaptiveSuggestion {
   questionIds: string[];
   reason: string;
   ranking: TrackId[];
-}
-
-interface TrackStatus {
-  trackId: TrackId;
-  minutes: number;
-  avgScore: number;
-  weakHits: number;
-  priority: boolean;
-  stage: "not_started" | "in_progress" | "needs_help" | "near_ready";
 }
 
 interface ThemePreset {
@@ -395,31 +382,7 @@ let pullIndicator: HTMLDivElement | null = null;
 let generatedUxScenario =
   "Designa en digital tjänst för IKEA som löser problemet: kunden vill boka upphämtning av returvaror.";
 
-const PROFILE_QUESTION_ORDER = ["sessionPreference", "blocker", "confidence", "targetPriority"] as const;
-const PROFILE_OPTIONS: Record<(typeof PROFILE_QUESTION_ORDER)[number], ProfileOption[]> = {
-  sessionPreference: [
-    { id: "30", label: "30 min fokuspass (rekommenderat nu)" },
-    { id: "45", label: "45 min standardpass" },
-    { id: "60", label: "60 min när jag har energi" }
-  ],
-  blocker: [
-    { id: "time", label: "Tidsstress i prov" },
-    { id: "logic", label: "Logik och resonemang" },
-    { id: "network", label: "IT/nätverkstermer" },
-    { id: "coding", label: "Kodförståelse/felsökning" },
-    { id: "other", label: "Annat (skriv i fritext)" }
-  ],
-  confidence: [
-    { id: "low", label: "Låg - behöver tydlig guidning" },
-    { id: "mid", label: "Medel - behöver mest träning" },
-    { id: "high", label: "Hög - vill främst ha tidsprov" }
-  ],
-  targetPriority: [
-    { id: "nack", label: "Nackademin UX" },
-    { id: "iths", label: "IT-H IT-säkerhet" },
-    { id: "prog", label: "Programmering 1/A" }
-  ]
-};
+// PROFILE_OPTIONS + PROFILE_QUESTION_ORDER: återinförs i T07 (profilvy bakom avatar)
 let studyProfile: StudyProfile = loadStudyProfile();
 
 function getTrackName(trackId: TrackId): string {
@@ -816,64 +779,6 @@ function createAdaptiveSuggestion(sessions: StudySession[]): AdaptiveSuggestion 
   };
 }
 
-function getTrackStatuses(sessions: StudySession[], suggestion: AdaptiveSuggestion): TrackStatus[] {
-  return TRACKS.map((track) => {
-    const perTrackMinutes = sessions.reduce(
-      (sum, session) => sum + Math.round((session.duration_minutes * (session.track_mix[track.id] || 0)) / 100),
-      0
-    );
-    const weightedScore = sessions.reduce((sum, session) => sum + session.score * ((session.track_mix[track.id] || 0) / 100), 0);
-    const weightedShare = sessions.reduce((sum, session) => sum + (session.track_mix[track.id] || 0) / 100, 0);
-    const avgScore = weightedShare > 0 ? Math.round(weightedScore / weightedShare) : 0;
-    const weakHits = sessions
-      .flatMap((session) => session.weak_topics)
-      .filter((topic) => guessTrackForTopic(topic) === track.id).length;
-
-    let stage: TrackStatus["stage"] = "in_progress";
-    if (perTrackMinutes < 15) {
-      stage = "not_started";
-    } else if (weakHits >= 3 || (weightedShare > 0 && avgScore < 55)) {
-      stage = "needs_help";
-    } else if (avgScore >= 75 && perTrackMinutes >= 80 && weakHits <= 1) {
-      stage = "near_ready";
-    }
-
-    return {
-      trackId: track.id,
-      minutes: perTrackMinutes,
-      avgScore,
-      weakHits,
-      priority: suggestion.trackId === track.id,
-      stage
-    };
-  });
-}
-
-function stageLabel(stage: TrackStatus["stage"]): string {
-  if (stage === "not_started") {
-    return "Ej startad";
-  }
-  if (stage === "needs_help") {
-    return "Mycket fel";
-  }
-  if (stage === "near_ready") {
-    return "Nära klar";
-  }
-  return "Påbörjad";
-}
-
-function stageButtonClass(stage: TrackStatus["stage"]): string {
-  if (stage === "not_started") {
-    return "track-btn-not-started";
-  }
-  if (stage === "needs_help") {
-    return "track-btn-needs-help";
-  }
-  if (stage === "near_ready") {
-    return "track-btn-near-ready";
-  }
-  return "track-btn-in-progress";
-}
 
 function getTodayDrillQuestions(): Question[] {
   const plan = createDailyPlan();
@@ -1353,15 +1258,9 @@ function calcAvgScore(sessions: StudySession[]): number {
 function renderOverview(): string {
   const sessions = loadStudySessions();
   const progress = buildTrackProgress(sessions);
-  const firstExamDateLabel = formatFirstExamDate();
   const priorityTrack = getPriorityTrackFromProfile(studyProfile.targetPriority);
   const priorityTrackName = getTrackName(priorityTrack);
   const suggestion = createAdaptiveSuggestion(sessions);
-  const statuses = getTrackStatuses(sessions, suggestion);
-  const rankPos = new Map<TrackId, number>(suggestion.ranking.map((trackId, index) => [trackId, index]));
-  const orderedStatuses = [...statuses].sort(
-    (a, b) => (rankPos.get(a.trackId) ?? 99) - (rankPos.get(b.trackId) ?? 99)
-  );
   const streakDays = calcStreakDays(sessions);
   const avgScore = calcAvgScore(sessions);
   const totalMin = totalCompletedMinutes(sessions);
@@ -1441,78 +1340,9 @@ function renderOverview(): string {
           </div>
         </div>
         <p class="muted text-xs" style="margin-top:0.5rem">${sessions.length} pass genomförda · ${totalCompletedMinutes(sessions)} min totalt</p>
+        ${storageNotice ? `<p class="success" style="margin-top:0.5rem">${storageNotice}</p>` : ""}
       </section>
 
-      <!-- ── PRIORITERING ── -->
-      <section class="card span-12">
-        <h3 class="section-label">Vilket spår härnäst?</h3>
-        <div class="priority-strip">
-          ${orderedStatuses
-            .map(
-              (status) => `
-                <button class="track-priority-btn ${stageButtonClass(status.stage)} ${status.priority ? "is-recommended" : ""}"
-                  data-action="focus-priority-track" data-track="${status.trackId}">
-                  <strong>${status.priority ? "★ " : ""}${getTrackName(status.trackId)}</strong>
-                  <span>${stageLabel(status.stage)} · ${status.avgScore}% snitt · ${status.minutes} min</span>
-                </button>
-              `
-            )
-            .join("")}
-        </div>
-      </section>
-
-      <!-- ── INSTÄLLNINGAR (kollapsad) ── -->
-      <section class="card span-12">
-        <details>
-          <summary>⚙️ Mina inställningar</summary>
-          <div class="inline-controls" style="margin-top:0.75rem">
-            <label for="profile-sessionPreference">Passlängd</label>
-            <select id="profile-sessionPreference" data-profile="sessionPreference">
-              ${PROFILE_OPTIONS.sessionPreference
-                .map(
-                  (option) =>
-                    `<option value="${option.id}" ${studyProfile.sessionPreference === option.id ? "selected" : ""}>${option.label}</option>`
-                )
-                .join("")}
-            </select>
-            <label for="profile-blocker">Största hinder</label>
-            <select id="profile-blocker" data-profile="blocker">
-              ${PROFILE_OPTIONS.blocker
-                .map(
-                  (option) => `<option value="${option.id}" ${studyProfile.blocker === option.id ? "selected" : ""}>${option.label}</option>`
-                )
-                .join("")}
-            </select>
-            <label for="profile-confidence">Nuvarande nivå</label>
-            <select id="profile-confidence" data-profile="confidence">
-              ${PROFILE_OPTIONS.confidence
-                .map(
-                  (option) =>
-                    `<option value="${option.id}" ${studyProfile.confidence === option.id ? "selected" : ""}>${option.label}</option>`
-                )
-                .join("")}
-            </select>
-            <label for="profile-targetPriority">Primärt mål</label>
-            <select id="profile-targetPriority" data-profile="targetPriority">
-              ${PROFILE_OPTIONS.targetPriority
-                .map(
-                  (option) =>
-                    `<option value="${option.id}" ${studyProfile.targetPriority === option.id ? "selected" : ""}>${option.label}</option>`
-                )
-                .join("")}
-            </select>
-            <label for="profile-notes">Övrigt att ta hänsyn till</label>
-            <textarea id="profile-notes" data-profile="notes" rows="2" placeholder="Valfritt">${studyProfile.notes}</textarea>
-            <button class="primary" data-action="save-profile">Spara</button>
-          </div>
-          <p class="muted" style="margin-top:0.5rem">
-            Provdatum: ${firstExamDateLabel} ·
-            <button class="secondary" data-action="export-progress" style="display:inline;padding:0.2rem 0.5rem;font-size:0.8rem">Exportera backup</button>
-            <input type="file" accept="application/json" data-input="import-progress" />
-          </p>
-          ${storageNotice ? `<p class="success">${storageNotice}</p>` : ""}
-        </details>
-      </section>
 
     </div>
   `;
