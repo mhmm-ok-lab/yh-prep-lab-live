@@ -386,19 +386,7 @@ let pullIndicator: HTMLDivElement | null = null;
 let generatedUxScenario =
   "Designa en digital tjänst för IKEA som löser problemet: kunden vill boka upphämtning av returvaror.";
 
-const PROFILE_OPTIONS: Record<"blocker" | "confidence" | "targetPriority", ProfileOption[]> = {
-  blocker: [
-    { id: "time",    label: "Tid — hinner inte svara" },
-    { id: "logic",   label: "Logik och resonemang" },
-    { id: "network", label: "IT/nätverkstermer" },
-    { id: "coding",  label: "Kodförståelse/felsökning" },
-    { id: "other",   label: "Annat" }
-  ],
-  confidence: [
-    { id: "low",  label: "Låg — behöver tydlig guidning" },
-    { id: "mid",  label: "Medel — behöver mest träning" },
-    { id: "high", label: "Hög — vill mest ha tidsprov" }
-  ],
+const PROFILE_OPTIONS: { targetPriority: ProfileOption[] } = {
   targetPriority: [
     { id: "nack", label: "Nackademin UX" },
     { id: "iths", label: "IT-Högskolan IT-säkerhet" },
@@ -1584,14 +1572,6 @@ function renderAppNav(): string {
                 ${min} min
               </button>`).join("")}
           </div>
-          <p class="profile-q-label">Vad är svårast just nu?</p>
-          <select class="profile-select" data-profile="blocker">
-            ${PROFILE_OPTIONS.blocker.map(o => `<option value="${o.id}" ${studyProfile.blocker === o.id ? "selected" : ""}>${o.label}</option>`).join("")}
-          </select>
-          <p class="profile-q-label">Hur säker känner du dig?</p>
-          <select class="profile-select" data-profile="confidence">
-            ${PROFILE_OPTIONS.confidence.map(o => `<option value="${o.id}" ${studyProfile.confidence === o.id ? "selected" : ""}>${o.label}</option>`).join("")}
-          </select>
           <p class="profile-q-label">Vilken skola siktar du på?</p>
           <select class="profile-select" data-profile="targetPriority">
             ${PROFILE_OPTIONS.targetPriority.map(o => `<option value="${o.id}" ${studyProfile.targetPriority === o.id ? "selected" : ""}>${o.label}</option>`).join("")}
@@ -1603,18 +1583,6 @@ function renderAppNav(): string {
             </label>
           </div>
           ${storageNotice ? `<p class="success profile-notice">${storageNotice}</p>` : ""}
-
-          <hr class="profile-divider">
-          <p class="muted">Stil</p>
-          <div class="user-switch-grid">
-            ${THEME_PRESETS.map(
-              (theme) => `
-                <button class="secondary ${activeTheme === theme.id ? "active" : ""}"
-                  data-action="set-theme" data-theme="${theme.id}">
-                  ${theme.name}
-                </button>`
-            ).join("")}
-          </div>
         </div>
       </details>
     </nav>
