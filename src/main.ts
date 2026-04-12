@@ -1598,23 +1598,43 @@ function renderNavDropdown(): string {
   return `
     <div class="app-nav-overlay" data-action="toggle-nav"></div>
     <div class="app-nav-menu">
-      <p class="app-nav-section">Sidor</p>
-      ${navItem("🏠", "Hem", "nav-goto", 'data-view="overview"', activePage === "overview" && !activeTrainer)}
-      ${navItem("🎯", "Träna", "nav-goto", 'data-view="tracks"', activePage === "tracks" && !activeTrainer)}
-      ${navItem("📋", "Prov", "nav-goto", 'data-view="mock"', activePage === "mock")}
-      ${navItem("📚", "Frågebank", "nav-goto", 'data-view="bank"', activePage === "bank")}
+
+      <p class="app-nav-section">Senaste</p>
+      <p class="app-nav-empty" id="app-nav-recent">Ingen historik ännu</p>
+
       <hr class="app-nav-hr">
-      <p class="app-nav-section">Aon-träning</p>
+      <p class="app-nav-section">Dagligt</p>
+      ${navItem("🏠", "Hem", "nav-goto", 'data-view="overview"', activePage === "overview" && !activeTrainer)}
+
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Kursinnehåll</p>
+      ${navItem("💻", "Programmering 1", "nav-goto", 'data-view="tracks"', activePage === "tracks")}
+      ${navItem("🎨", "UX-design", "nav-goto", 'data-view="tracks"', false)}
+      ${navItem("🔒", "IT-säkerhet", "nav-goto", 'data-view="tracks"', false)}
+
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Antagningsprov</p>
+      ${navItem("📄", "Verbal Reasoning", "nav-start-vr", "", activeTrainer === "vr")}
+      ${navItem("🇸🇪", "Språkliga färdigheter", "nav-start-ls", "", activeTrainer === "ls")}
       <a class="app-nav-item app-nav-link" href="./symbol-sudoku.html" target="_blank">
         <span class="app-nav-item-icon">△</span>
         <span>Symbol Sudoku</span>
       </a>
-      ${navItem("📄", "Verbal Reasoning", "nav-start-vr", "", activeTrainer === "vr")}
-      ${navItem("🇸🇪", "Språkliga färdigheter", "nav-start-ls", "", activeTrainer === "ls")}
-      ${navItem("🧩", "Logik-drill", "nav-goto", 'data-view="logic"', activePage === "logic")}
+      ${navItem("🧩", "Logik", "nav-goto", 'data-view="logic"', activePage === "logic")}
+
       <hr class="app-nav-hr">
-      <p class="app-nav-section">Övrigt</p>
+      <p class="app-nav-section">Prov & Test</p>
+      ${navItem("📋", "Fullständiga prov", "nav-goto", 'data-view="mock"', activePage === "mock")}
+
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Referens</p>
+      ${navItem("📚", "Frågebank", "nav-goto", 'data-view="bank"', activePage === "bank")}
       ${navItem("📖", "Ordlista", "nav-goto", 'data-view="glossary"', activePage === "glossary")}
+
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Konto</p>
+      ${navItem("⚙️", "Profil / Inställningar", "open-profile", "", false)}
+
     </div>
   `;
 }
@@ -2806,6 +2826,14 @@ app.addEventListener("click", (event) => {
   if (action === "toggle-nav") {
     navOpen = !navOpen;
     render();
+    return;
+  }
+
+  if (action === "open-profile") {
+    navOpen = false;
+    render();
+    const userMenu = document.querySelector<HTMLDetailsElement>(".app-nav-user-menu");
+    if (userMenu) userMenu.open = true;
     return;
   }
 

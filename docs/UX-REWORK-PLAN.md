@@ -219,7 +219,7 @@ ID    Status    Beroende    Uppgift
 T00   [DONE]    —           Global CSS: button:active { transform: scale(0.97); opacity: 0.85; transition: 80ms }
 T00b  [DONE]    —           Design system: Pills 28px → 32px. Kontrast-tokens dubbelkollas (inga färgbyten).
 T01   [DONE]    —           Ta bort Design + Roadmap ur routing och nav
-T02   [ ]       T01         Nav: Bygg overlay-meny (Senaste + 6 sektioner, scrollbar)
+T02   [DONE]    T01         Nav: Bygg overlay-meny (Senaste + 6 sektioner, scrollbar)
 T03   [ ]       T02         Nav: "Senaste" — 3 senast besökta vyer (localStorage)
 T04   [ ]       T02         Nav: Center-pill visar aktuell vynamn (routing-driven)
 T05   [ ]       T02         Hem: "Fortsätt där du slutade" CTA (senaste session)

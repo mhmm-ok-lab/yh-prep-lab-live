@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-12 — T02: Ny overlay-navigering
+
+### Ombyggt: Nav-meny med 7 sektioner + scroll
+**Vad:** `renderNavDropdown()` ersatt med ny struktur: SENASTE (placeholder) · DAGLIGT · KURSINNEHÅLL · ANTAGNINGSPROV · PROV & TEST · REFERENS · KONTO. Menyn är scrollbar (`max-height: calc(100dvh - 70px); overflow-y: auto`). KONTO-knappen öppnar user-details-panelen programmatiskt.
+**Varför:** Gamla nav var platt och kategoriserade inte syftet med varje vy. Den nya strukturen speglar mentala modeller: daglig träning, kursinnehåll, prov och referens är distinkt separerade — vilket minskar kognitiv belastning. Scroll istället för trunkering säkerställer att alla sektioner alltid är nåbara.
+**Stitch-princip:** "Navigation should reflect user goals, not app structure."
+**Kursinnehåll-poster** länkar temporärt till "Träna"-vyn tills T08 (kursvy per spår) är klar.
+
+---
+
 ## 2026-04-12 — T00 + T00b: Globala micro-interactions + pill-höjd
 
 ### Lagt till: button:active tap-feedback (T00)
