@@ -17,7 +17,11 @@ import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, Se
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
-// ProfileOption: återinförs i T07 (profilvy)
+interface ProfileOption {
+  id: string;
+  label: string;
+}
+
 interface StudyProfile {
   sessionPreference: string;
   blocker: string;
@@ -382,7 +386,25 @@ let pullIndicator: HTMLDivElement | null = null;
 let generatedUxScenario =
   "Designa en digital tjänst för IKEA som löser problemet: kunden vill boka upphämtning av returvaror.";
 
-// PROFILE_OPTIONS + PROFILE_QUESTION_ORDER: återinförs i T07 (profilvy bakom avatar)
+const PROFILE_OPTIONS: Record<"blocker" | "confidence" | "targetPriority", ProfileOption[]> = {
+  blocker: [
+    { id: "time",    label: "Tid — hinner inte svara" },
+    { id: "logic",   label: "Logik och resonemang" },
+    { id: "network", label: "IT/nätverkstermer" },
+    { id: "coding",  label: "Kodförståelse/felsökning" },
+    { id: "other",   label: "Annat" }
+  ],
+  confidence: [
+    { id: "low",  label: "Låg — behöver tydlig guidning" },
+    { id: "mid",  label: "Medel — behöver mest träning" },
+    { id: "high", label: "Hög — vill mest ha tidsprov" }
+  ],
+  targetPriority: [
+    { id: "nack", label: "Nackademin UX" },
+    { id: "iths", label: "IT-Högskolan IT-säkerhet" },
+    { id: "prog", label: "Programmering 1" }
+  ]
+};
 let studyProfile: StudyProfile = loadStudyProfile();
 
 function getTrackName(trackId: TrackId): string {
@@ -1553,6 +1575,36 @@ function renderAppNav(): string {
               )
               .join("")}
           </div>
+          <hr class="profile-divider">
+          <p class="profile-q-label">Hur länge tränar du?</p>
+          <div class="profile-pill-row">
+            ${["30", "45", "60"].map(min => `
+              <button class="profile-pill-btn ${studyProfile.sessionPreference === min ? "profile-pill-btn--active" : ""}"
+                data-action="profile-pill" data-profile="sessionPreference" data-value="${min}">
+                ${min} min
+              </button>`).join("")}
+          </div>
+          <p class="profile-q-label">Vad är svårast just nu?</p>
+          <select class="profile-select" data-profile="blocker">
+            ${PROFILE_OPTIONS.blocker.map(o => `<option value="${o.id}" ${studyProfile.blocker === o.id ? "selected" : ""}>${o.label}</option>`).join("")}
+          </select>
+          <p class="profile-q-label">Hur säker känner du dig?</p>
+          <select class="profile-select" data-profile="confidence">
+            ${PROFILE_OPTIONS.confidence.map(o => `<option value="${o.id}" ${studyProfile.confidence === o.id ? "selected" : ""}>${o.label}</option>`).join("")}
+          </select>
+          <p class="profile-q-label">Vilken skola siktar du på?</p>
+          <select class="profile-select" data-profile="targetPriority">
+            ${PROFILE_OPTIONS.targetPriority.map(o => `<option value="${o.id}" ${studyProfile.targetPriority === o.id ? "selected" : ""}>${o.label}</option>`).join("")}
+          </select>
+          <div class="profile-data-row">
+            <button class="secondary" data-action="export-progress">Exportera</button>
+            <label class="secondary profile-import-label">Importera
+              <input type="file" accept="application/json" data-input="import-progress" style="display:none">
+            </label>
+          </div>
+          ${storageNotice ? `<p class="success profile-notice">${storageNotice}</p>` : ""}
+
+          <hr class="profile-divider">
           <p class="muted">Stil</p>
           <div class="user-switch-grid">
             ${THEME_PRESETS.map(
@@ -2791,7 +2843,21 @@ app.addEventListener("click", (event) => {
 
   if (action === "save-profile") {
     saveStudyProfile(studyProfile);
-    setStorageNotice("Intervju sparad. Rekommenderad plan uppdaterad.");
+    setStorageNotice("Profil sparad.");
+    return;
+  }
+
+  if (action === "profile-pill") {
+    const key = actionEl.dataset.profile as keyof StudyProfile;
+    const value = actionEl.dataset.value;
+    if (key && value) {
+      studyProfile = { ...studyProfile, [key]: value };
+      saveStudyProfile(studyProfile);
+      render();
+      // Håll avatar-menyn öppen efter re-render
+      const userMenu = document.querySelector<HTMLDetailsElement>(".app-nav-user-menu");
+      if (userMenu) userMenu.open = true;
+    }
     return;
   }
 
@@ -2893,6 +2959,7 @@ app.addEventListener("input", (event) => {
     if (key) {
       if (target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement || target instanceof HTMLInputElement) {
         studyProfile = { ...studyProfile, [key]: target.value };
+        saveStudyProfile(studyProfile);
       }
     }
     return;
