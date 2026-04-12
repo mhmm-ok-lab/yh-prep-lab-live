@@ -220,8 +220,8 @@ T00   [DONE]    —           Global CSS: button:active { transform: scale(0.97)
 T00b  [DONE]    —           Design system: Pills 28px → 32px. Kontrast-tokens dubbelkollas (inga färgbyten).
 T01   [DONE]    —           Ta bort Design + Roadmap ur routing och nav
 T02   [DONE]    T01         Nav: Bygg overlay-meny (Senaste + 6 sektioner, scrollbar)
-T03   [ ]       T02         Nav: "Senaste" — 3 senast besökta vyer (localStorage)
-T04   [ ]       T02         Nav: Center-pill visar aktuell vynamn (routing-driven)
+T03   [DONE]    T02         Nav: "Senaste" — 3 senast besökta vyer (localStorage)
+T04   [DONE]    T02         Nav: Center-pill visar aktuell vynamn (routing-driven)
 T05   [ ]       T02         Hem: "Fortsätt där du slutade" CTA (senaste session)
 T05b  [ ]       T05         Hem: Empty state — "Välkommen, Öppna träningsmenyn →"
 T05c  [ ]       T05         Post-session: "Kör en till" + "Gå till Hem" i renderLastResult()
