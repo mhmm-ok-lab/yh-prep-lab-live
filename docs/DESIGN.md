@@ -88,9 +88,9 @@ _Based on Stitch Academic Atelier. Last updated: 2026-04-10_
 
 | Pill-typ | Höjd | Padding | Font | Exempel |
 |---|---|---|---|---|
-| **Alla pills** | `28px` | `0 12px` | 0.68rem · uppercase | Nav-pill, CTA, subject-btns, Prov-start |
+| **Alla pills** | `32px` | `0 12px` | 0.68rem · uppercase | Nav-pill, CTA, subject-btns, Prov-start |
 
-**Regel:** `border-radius: 999px` when text is short and centered. `height: 28px; min-height: 28px` — no exceptions.
+**Regel:** `border-radius: 999px` when text is short and centered. `height: 32px; min-height: 32px` — no exceptions.
 **Obs:** Specificitetsfälla — `.inline-controls button` (0,1,1) slår `.btn-lg` (0,1,0). Använd `.inline-controls .btn-lg` vid behov.
 
 ---

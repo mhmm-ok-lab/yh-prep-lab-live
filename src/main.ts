@@ -14,7 +14,7 @@ import {
 } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
-type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "design" | "roadmap" | "glossary";
+type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
 interface ProfileOption {
@@ -124,16 +124,6 @@ interface SharedExamTheme {
   drillHint: string;
 }
 
-type RoadmapStatus = "done" | "active" | "next";
-
-interface RoadmapStep {
-  id: string;
-  title: string;
-  scope: string;
-  doneWhen: string;
-  status: RoadmapStatus;
-}
-
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) {
   throw new Error("App container saknas");
@@ -148,8 +138,6 @@ const pageLabels: Record<Page, string> = {
   research: "Research",
   logic: "Logik",
   walkthrough: "Genomgång",
-  design: "Design",
-  roadmap: "Roadmap",
   glossary: "Ordlista"
 };
 
@@ -198,43 +186,6 @@ const SHARED_EXAM_THEMES: SharedExamTheme[] = [
     title: "Felsökning och felanalys",
     whyItMatters: "Förmågan att hitta vad som gick fel återkommer i både IT-säkerhet och programmering.",
     drillHint: "Efter varje pass: skriv en rad om varför varje fel svar blev fel."
-  }
-];
-const ROADMAP_STEPS: RoadmapStep[] = [
-  {
-    id: "step-1",
-    title: "Stabil grund",
-    scope: "Mobil först, användarbyte, sparad progress, fungerande kärnflöde.",
-    doneWhen: "Du kan starta, pausa, byta vy och fortsätta utan att tappa data.",
-    status: "done"
-  },
-  {
-    id: "step-2",
-    title: "Lugn testmotor",
-    scope: "Mini-test med tydlig layout, låg stress och konsekvent navigering.",
-    doneWhen: "Svarsalternativ är stabila och sessionen känns fokuserad.",
-    status: "done"
-  },
-  {
-    id: "step-3",
-    title: "Innehållsbredd",
-    scope: "Fler frågor, fler mockvarianter och bättre täckning mellan spår.",
-    doneWhen: "Alla spår har bred frågebank och minst en snabb plus en längre mock.",
-    status: "done"
-  },
-  {
-    id: "step-4",
-    title: "Adaptiv coachning",
-    scope: "Smartare nästa-pass förslag baserat på felmönster och tidsläge.",
-    doneWhen: "Appen väljer nästa bästa övning automatiskt med tydlig motivering.",
-    status: "done"
-  },
-  {
-    id: "step-5",
-    title: "Publiceringsspår",
-    scope: "Stabil delningslänk, enklare deployrutin och återkommande verifiering.",
-    doneWhen: "Samma länk fungerar för mobiltest utan versionsstrul.",
-    status: "active"
   }
 ];
 
@@ -1664,7 +1615,6 @@ function renderNavDropdown(): string {
       <hr class="app-nav-hr">
       <p class="app-nav-section">Övrigt</p>
       ${navItem("📖", "Ordlista", "nav-goto", 'data-view="glossary"', activePage === "glossary")}
-      ${navItem("🗺", "Roadmap", "nav-goto", 'data-view="roadmap"', activePage === "roadmap")}
     </div>
   `;
 }
@@ -2171,102 +2121,6 @@ function renderWalkthrough(): string {
   `;
 }
 
-function renderDesign(): string {
-  return `
-    <div class="grid">
-      <section class="card span-12">
-        <h3>Designförslag (lugn + tydlig)</h3>
-        <p class="muted">Välj en stil som känns minst spretig. Du kan byta när som helst.</p>
-        <p class="muted">
-          Referens:
-          <a href="https://www.w3.org/WAI/tutorials/forms/grouping/" target="_blank" rel="noreferrer">W3C formgruppering</a>
-          •
-          <a href="https://designsystem.digital.gov/components/radio-buttons/" target="_blank" rel="noreferrer">USWDS radio buttons</a>
-        </p>
-        <div class="theme-grid">
-          ${THEME_PRESETS.map(
-            (theme) => `
-              <article class="theme-card ${activeTheme === theme.id ? "active" : ""}">
-                <p class="muted">${theme.reference}</p>
-                <h3>${theme.name}</h3>
-                <p>${theme.description}</p>
-                <div class="theme-demo-row">
-                  <button class="primary" type="button">Primär</button>
-                  <button class="secondary" type="button">Sekundär</button>
-                </div>
-                <p class="theme-demo-text">Exempeltext för rubrik, brödtext och knappar.</p>
-                <button class="secondary" data-action="set-theme" data-theme="${theme.id}">
-                  ${activeTheme === theme.id ? "Aktiv stil" : "Använd denna stil"}
-                </button>
-              </article>
-            `
-          ).join("")}
-        </div>
-      </section>
-    </div>
-  `;
-}
-
-function renderRoadmap(): string {
-  const sessions = loadStudySessions();
-  const totalQuestions = QUESTIONS.length;
-  const totalMocks = MOCK_EXAMS.length;
-  const countsByTrack = {
-    nackademin_ux: QUESTIONS.filter((question) => question.track_id === "nackademin_ux").length,
-    iths_itsec: QUESTIONS.filter((question) => question.track_id === "iths_itsec").length,
-    prog1a: QUESTIONS.filter((question) => question.track_id === "prog1a").length
-  };
-  const doneCount = ROADMAP_STEPS.filter((step) => step.status === "done").length;
-  const progressPercent = Math.round((doneCount / ROADMAP_STEPS.length) * 100);
-  const weakTopicHits = sessions
-    .slice(0, 8)
-    .flatMap((session) => session.weak_topics)
-    .reduce<Record<string, number>>((acc, topic) => {
-      acc[topic] = (acc[topic] || 0) + 1;
-      return acc;
-    }, {});
-  const topWeakTopic = Object.entries(weakTopicHits).sort((a, b) => b[1] - a[1])[0]?.[0];
-  const nextAction = topWeakTopic
-    ? `Kör 20-30 min Drill i ämnet "${topWeakTopic}" och följ upp med Mini-check 10 min.`
-    : "Kör Mini-check 10 min för att få en snabb nulägesbild inför nästa pass.";
-
-  const activeSessionNotice = activeSession
-    ? `
-      <section class="card span-12">
-        <h3>Aktivt pass pausat i bakgrunden</h3>
-        <p class="muted">
-          Ditt ${activeSession.mode}-pass är kvar: ${Object.keys(activeSession.answers).length}/${activeSession.questionIds.length} besvarade.
-        </p>
-        <div class="inline-controls">
-          <button class="primary" data-action="resume-active-session">Återgå</button>
-        </div>
-      </section>
-    `
-    : "";
-
-  return `
-    <div class="grid">
-      ${activeSessionNotice}
-      <section class="card span-12">
-        <h3>Övergripande läge</h3>
-        <p class="muted">Det här är stora steg-planen så du ser var vi ligger utan att behöva gissa.</p>
-        <p><strong>Framdrift:</strong> ${doneCount}/${ROADMAP_STEPS.length} steg klara (${progressPercent}%).</p>
-        <p><strong>Innehåll:</strong> ${totalQuestions} frågor • ${totalMocks} prov.</p>
-        <p><strong>Täckning:</strong> UX ${countsByTrack.nackademin_ux} • IT ${countsByTrack.iths_itsec} • Prog ${countsByTrack.prog1a} frågor.</p>
-      </section>
-      <section class="card span-12">
-        <h3>Nästa stora steg</h3>
-        <p>${nextAction}</p>
-        <div class="inline-controls roadmap-actions">
-          <button class="primary" data-action="start-next-pass">Starta rek. pass</button>
-          <button class="primary" data-view="mock">Prov</button>
-          <button class="secondary" data-view="bank">Frågebank</button>
-          <button class="secondary" data-view="research">Research</button>
-        </div>
-      </section>
-    </div>
-  `;
-}
 
 // ── Glossary helpers ────────────────────────────────────────────────
 
@@ -2587,10 +2441,6 @@ function renderPage(): string {
       return renderLogic();
     case "walkthrough":
       return renderWalkthrough();
-    case "design":
-      return renderDesign();
-    case "roadmap":
-      return renderRoadmap();
     case "glossary":
       return renderGlossary();
     default:

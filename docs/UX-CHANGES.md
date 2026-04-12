@@ -3,6 +3,21 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-12 — T00 + T00b: Globala micro-interactions + pill-höjd
+
+### Lagt till: button:active tap-feedback (T00)
+**Vad:** Global `button:active` regel: `transform: scale(0.97); opacity: 0.85; transition: 80ms`.
+**Varför:** Varje knapptryckning saknade taktil återkoppling. Utan scale-effekt känns UI:t "dött" — användaren vet inte om trycket registrerades. 80ms är tillräckligt snabbt för att kännas responsivt utan att vara störande. Gäller alla knappar i appen automatiskt via global selektor.
+**Stitch-princip:** Micro-interaction — "tactile feedback on touch/click creates confidence in the system."
+
+### Ändrat: Pill-höjd 28px → 32px (T00b)
+**Vad:** Alla pill-knappar (nav-pill, CTA, filter, subject-btns, quit-knappar) ökade från 28px till 32px. DESIGN.md uppdaterat.
+**Varför:** 28px är svårtryckt på mobil (under rekommenderat 44px tap target, men 32px ger bättre balance). Visuellt sett gav 28px för komprimerade knappar — texten hade för lite andrum. 32px förbättrar läsbarhet och touch-ergonomi utan att bryta Stitch "superslim"-känslan.
+**Påverkade klasser:** `.inline-controls button`, `.roadmap-actions button`, `.overview-cta-main`, `.overview-cta-secondary`, `.glossary-filter-bar button`, `.vr-quit-btn`, `.app-nav-ctx`, `.bento-cta`, `.bento-cta-sm`, `.subject-btn`.
+**Stitch-princip:** "Superslim Navigation — pills must be touchable but not bulky."
+
+---
+
 ## 2026-04-10 — Navigation & Stitch Palette Cleanup
 
 ### Borttaget: Bottom tab navigation
