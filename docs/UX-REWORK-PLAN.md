@@ -222,9 +222,9 @@ T01   [DONE]    —           Ta bort Design + Roadmap ur routing och nav
 T02   [DONE]    T01         Nav: Bygg overlay-meny (Senaste + 6 sektioner, scrollbar)
 T03   [DONE]    T02         Nav: "Senaste" — 3 senast besökta vyer (localStorage)
 T04   [DONE]    T02         Nav: Center-pill visar aktuell vynamn (routing-driven)
-T05   [ ]       T02         Hem: "Fortsätt där du slutade" CTA (senaste session)
-T05b  [ ]       T05         Hem: Empty state — "Välkommen, Öppna träningsmenyn →"
-T05c  [ ]       T05         Post-session: "Kör en till" + "Gå till Hem" i renderLastResult()
+T05   [DONE]    T02         Hem: "Fortsätt där du slutade" CTA (senaste session)
+T05b  [DONE]    T05         Hem: Empty state — "Välkommen, Öppna träningsmenyn →"
+T05c  [DONE]    T05         Post-session: "Kör en till" + "Gå till Hem" i renderLastResult()
 T06   [ ]       T05         Hem: ta bort Spårprioriteringsrankning + Inställningar-sektion
 T07   [ ]       T02         Hem: flytta Inställningar → Profilvy (bakom avatar)
 T08   [ ]       T01         Kursvy per spår: titel + Genomgång + Öva + snabblänk till Frågebank
