@@ -1837,6 +1837,47 @@ details:not(.mini-menu)[open] {
   color: var(--accent);
 }
 
+.glossary-filter-bar button[data-category="general"] {
+  background: var(--surface-highest);
+  color: var(--ink);
+}
+.glossary-filter-bar button[data-category="general"].active {
+  background: var(--surface-high);
+  color: var(--ink);
+  outline: 2px solid var(--surface-highest);
+}
+
+.glossary-filter-bar button[data-category="python"] {
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+}
+.glossary-filter-bar button[data-category="python"].active {
+  background: var(--accent-soft-border);
+  color: var(--accent-soft-ink);
+  outline: 2px solid var(--accent-soft);
+}
+
+.glossary-filter-bar button[data-category="network"] {
+  background: var(--surface-high);
+  color: var(--ink);
+  border: 1px solid var(--surface-highest);
+}
+.glossary-filter-bar button[data-category="network"].active {
+  background: var(--surface-highest);
+  color: var(--ink);
+  outline: 2px solid var(--surface-high);
+}
+
+.glossary-filter-bar button[data-category="ux"] {
+  background: var(--honey);
+  color: var(--honey-ink);
+}
+.glossary-filter-bar button[data-category="ux"].active {
+  background: var(--honey-dim);
+  color: var(--honey-ink);
+  outline: 2px solid var(--honey);
+}
+
 .glossary-search {
   width: 100%;
   padding: 0.55rem 0.85rem;
