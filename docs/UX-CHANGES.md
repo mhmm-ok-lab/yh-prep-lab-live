@@ -3,6 +3,20 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-12 — T03 + T04: Senaste-historik och URL-synk
+
+### T03: "Senaste" — 3 senast besökta vyer
+**Vad:** `renderNavDropdown()` renderar nu de 3 senaste navigeringarna från `localStorage` (`yh.recent-views`). Varje entry har label, ikon, action och eventuell `data-view`. Vid navigering (`nav-goto`, `nav-start-vr`, `nav-start-ls`) anropas `pushRecentView()` som deduplicerar på label och trimmar till max 3. Tom state visar "Ingen historik ännu".
+**Varför:** Återvändande användare navigerar ofta till samma 2–3 vyer. Att visa dem överst i menyn minskar antal klick och stödjer habit-formation. SENASTE-sektionen är alltid synlig överst — den finns redan i T02-strukturen, men var en statisk placeholder.
+**Stitch-princip:** "Navigation should reflect user behavior, not just app structure."
+
+### T04: Center-pill med URL-synk (routing-driven)
+**Vad:** `history.replaceState()` anropas vid `nav-goto` och uppdaterar URL-parametern `?view=X`. Center-pillen visar redan `pageLabels[page]` för sidor och "Verbal Reasoning"/"Språkliga färdigheter" för tränings-sessioner — det är nu routing-kopplat även på URL-nivå.
+**Varför:** Deep linking — användaren kan dela länk till en specifik vy. Webbläsarens bakåt-knapp fungerar bättre. URL som sanningskälla (single source of truth) är grundläggande i webbrouting.
+**Stitch-princip:** "URLs are part of the UX — they should always reflect current state."
+
+---
+
 ## 2026-04-12 — T02: Ny overlay-navigering
 
 ### Ombyggt: Nav-meny med 7 sektioner + scroll

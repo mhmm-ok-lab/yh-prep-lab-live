@@ -124,6 +124,13 @@ interface SharedExamTheme {
   drillHint: string;
 }
 
+interface RecentEntry {
+  label: string;
+  icon: string;
+  action: string;
+  dataView?: string;
+}
+
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) {
   throw new Error("App container saknas");
@@ -141,6 +148,22 @@ const pageLabels: Record<Page, string> = {
   glossary: "Ordlista"
 };
 
+
+const RECENT_VIEWS_KEY = "yh.recent-views";
+
+function loadRecentViews(): RecentEntry[] {
+  try {
+    return JSON.parse(localStorage.getItem(RECENT_VIEWS_KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+function pushRecentView(entry: RecentEntry): void {
+  const views = loadRecentViews().filter(v => v.label !== entry.label);
+  views.unshift(entry);
+  localStorage.setItem(RECENT_VIEWS_KEY, JSON.stringify(views.slice(0, 3)));
+}
 
 const urlParams = new URLSearchParams(window.location.search);
 const THEME_KEY = "yh.ui-theme";
@@ -1600,7 +1623,13 @@ function renderNavDropdown(): string {
     <div class="app-nav-menu">
 
       <p class="app-nav-section">Senaste</p>
-      <p class="app-nav-empty" id="app-nav-recent">Ingen historik ännu</p>
+      ${(() => {
+        const recent = loadRecentViews();
+        if (recent.length === 0) return `<p class="app-nav-empty">Ingen historik ännu</p>`;
+        return recent.map(v =>
+          navItem(v.icon, v.label, v.action, v.dataView ? `data-view="${v.dataView}"` : "")
+        ).join("");
+      })()}
 
       <hr class="app-nav-hr">
       <p class="app-nav-section">Dagligt</p>
@@ -2840,6 +2869,12 @@ app.addEventListener("click", (event) => {
   if (action === "nav-goto") {
     const targetView = actionEl.dataset.view as Page;
     if (targetView) {
+      const pageIconMap: Record<Page, string> = {
+        overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
+        research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖"
+      };
+      pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
+      history.replaceState(null, "", `?view=${targetView}`);
       page = targetView;
       navOpen = false;
       render();
@@ -2858,6 +2893,7 @@ app.addEventListener("click", (event) => {
       wrong: 0,
       trapCounts: {}
     };
+    pushRecentView({ label: "Verbal Reasoning", icon: "📄", action: "nav-start-vr" });
     navOpen = false;
     page = "tracks";
     render();
@@ -2875,6 +2911,7 @@ app.addEventListener("click", (event) => {
       wrong: 0,
       trapCounts: {}
     };
+    pushRecentView({ label: "Språkliga färdigheter", icon: "🇸🇪", action: "nav-start-ls" });
     navOpen = false;
     page = "tracks";
     render();
