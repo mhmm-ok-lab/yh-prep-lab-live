@@ -2268,7 +2268,7 @@ function renderGlossary(): string {
                     <div class="glossary-entry-card" data-action="open-glossary-term" data-term="${entry.term}" data-cat="${entry.category}" tabindex="0" role="button" aria-label="Öppna ${entry.term}">
                       <div class="glossary-entry-header">
                         <p class="glossary-entry-term">${entry.term}</p>
-                        <span class="glossary-entry-cat">${categoryShort[entry.category] ?? entry.category}</span>
+                        ${glossaryFilter === "all" ? `<span class="glossary-entry-cat">${categoryShort[entry.category] ?? entry.category}</span>` : ""}
                       </div>
                       <p class="glossary-entry-sv">${entry.sv}</p>
                     </div>
