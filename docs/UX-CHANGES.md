@@ -3,6 +3,49 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-13 — Symbol Sudoku: Markeringsläge (marking mode)
+
+### Ny funktion: markera tomma rutor som lösningshjälp
+**Vad:** En ny toggle-knapp "Markera" i kontrollfältet aktiverar ett markeringsläge. När det är på kan användaren klicka på tomma rutor i gittret — en popup visas med alla tillgängliga symboler att välja från. Den valda symbolen visas dimmad (38% opacity) i rutan som en visuell notering. Klicka igen på symbolen i popupen för att ta bort markeringen. Markeringar rensas vid nytt pussel.
+
+**Före:** Tomma rutor var passiva — ingen interaktion möjlig. Användaren fick hålla all logik i huvudet.
+**Efter:** Tomma rutor är klickbara i markeringsläge. En flytande popup positioneras under cellen med klickbara symbolknappar. Markerade rutor visar symbolen halvtransparent. Toggle-knapp i verktygsfältet (lila = på, grå = av) sparas i localStorage.
+
+**Varför:** På det riktiga AON-testet kan man markera tomma rutor med symboler som hjälpminne medan man löser pusslet. Den här funktionen efterliknar det beteendet och gör träningen mer autentisk. Det sänker kognitiv belastning — istället för att hålla "cirkel kan inte vara här" i arbetsminnet, kan man synliggöra det direkt i gittret.
+
+**Stitch-princip:** Stitch #2 — *"Reduce working memory load."* Externaliseringsverktyg (att skriva ner sina tankar i gränssnittet) är ett klassiskt kognitivt avlastningsverktyg inom HCI.
+
+---
+
+## 2026-04-13 — T12: Frågebank: spårfilter som synliga pills
+
+### T12: Spårfilter direkt synliga, sekundära filter bakom "Fler filter ▼"
+**Vad:** De fyra spårknapparna `[Alla] [UX] [IT-H] [Prog]` ersätter den gamla spår-`<select>`-dropdownen. Resterande filter (ämne, svårighet, källa) är dolda under `<details>`-elementet "Fler filter ▼". Starta Drill-knappen finns alltid synlig.
+
+**Före:** Fyra `<select>`-dropdowns radades upp och krävde att användaren öppnade varje meny för att se alternativen. Alla filter behandlades som likvärdiga.
+
+**Efter:** Spårfiltret är alltid synligt som färgkodade pill-knappar med `aria-pressed` för aktivt tillstånd. Sekundära filter är progressivt dolda. 65 frågor visas när UX väljs, 72 för IT-H, 180 för Alla.
+
+**Varför:** Progressive disclosure — det vanligaste filtret (spår) ska inte kräva ett extra klick. Färgkodningen knyter ihop pill-knapparna visuellt med spårpillerna på frågekorten. `aria-pressed` ger korrekt semantik för toggle-knappar.
+
+**Stitch-princip:** Stitch #3 — *"Progressive disclosure: visa bara vad användaren behöver just nu."* Spår är primärt val, ämne/svårighet/källa är sekundär fintuning.
+
+---
+
+## 2026-04-13 — T11: Prov-sidan: målspårskola överst
+
+### T11: Provlistan sorteras efter användarens målskola
+**Vad:** `<select>` på Prov-sidan grupperar nu proven med målspårets skola alltid överst, markerad med ★. Sorteringen läser `studyProfile.targetPriority` och mappar det till rätt `optgroup`.
+
+**Före:** Proven visades i kodordning — IT-Högskolan kunde hamna före Nackademin oavsett vad användaren siktar på.
+**Efter:** Den skola användaren valt i Profil visas alltid som första grupp med ★-prefix.
+
+**Varför:** Progressive disclosure-principen — det viktigaste ska vara det som syns först. Att behöva scrolla förbi "fel" skola för att nå sin egna minskar kognitiv belastning. Wireframe explicit specificerade `★ Nackademin 2024` överst.
+
+**Stitch-princip:** Stitch #4 — *"Show the user's context, not yours."* Listordningen ska spegla användarens mål, inte datafilen.
+
+---
+
 ## 2026-04-12 — T08: Kursvy per spår (Programmering 1 / UX-design / IT-säkerhet)
 
 ### T08: Tre dedikerade kursvyer nåbara via overlay-menyn

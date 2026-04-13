@@ -369,7 +369,48 @@
       text-align: center;
     }
 
-    /* ── Stats ───────────────────────────────────────────────── */
+    /* ── Mark mode popup ────────────────────────────────────── */
+  .mark-popup {
+    position: fixed;
+    background: #fff;
+    border: 1px solid #d0d0cc;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    display: flex;
+    gap: 4px;
+    padding: 6px;
+    z-index: 300;
+  }
+
+  .mark-opt {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: background 0.1s, border-color 0.1s;
+  }
+
+  .mark-opt:hover { background: #f0eeff; border-color: #7F77DD; }
+  .mark-opt-selected { background: #EEEDFE; border-color: #7F77DD; }
+
+  .mark-clear {
+    font-size: 18px;
+    font-weight: 700;
+    color: #888;
+  }
+  .mark-clear:hover { background: #fce8e8; color: #cc3322; border-color: #cc3322; }
+
+  .mark-symbol { opacity: 0.72; pointer-events: none; }
+
+  .cell.empty.markable { cursor: pointer; background: #eaeaea; }
+  .cell.empty.markable:hover { background: #e0e0ee; }
+  .cell.empty.marked { background: #ededf8; }
+
+  /* ── Stats ───────────────────────────────────────────────── */
     .stats {
       display: flex;
       justify-content: center;
@@ -448,6 +489,7 @@
       <button class="ctrl-btn active" id="n4" onclick="setSize(4)">4×4</button>
       <button class="ctrl-btn"        id="n5" onclick="setSize(5)">5×5</button>
       <div style="flex:1"></div>
+      <button class="ctrl-btn" id="marktoggle" onclick="toggleMarkMode()">Markera</button>
       <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">Färg</button>
     </div>
     <div class="ctrl-row diff-row">
@@ -518,6 +560,63 @@
       star:     `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><polygon points="50,5 60.6,35.4 92.8,36.1 67.1,55.6 76.4,86.4 50,68 23.6,86.4 32.9,55.6 7.2,36.1 39.4,35.4" fill="${f}"/></svg>`
     };
     return d[shape] || '';
+  }
+
+  // ── Mark mode ────────────────────────────────────────────────────
+  let markMode = localStorage.getItem('gc-marks') === '1';
+  let marks = {};
+
+  function toggleMarkMode() {
+    markMode = !markMode;
+    localStorage.setItem('gc-marks', markMode ? '1' : '0');
+    document.getElementById('marktoggle').classList.toggle('active', markMode);
+    renderGrid();
+  }
+
+  function closeMarkPopup() {
+    const p = document.getElementById('mark-popup');
+    if (p) p.remove();
+  }
+
+  function showMarkPopup(cellEl, r, c) {
+    closeMarkPopup();
+    const key = r + ',' + c;
+    const popup = document.createElement('div');
+    popup.id = 'mark-popup';
+    popup.className = 'mark-popup';
+
+    shapes().forEach(s => {
+      const btn = document.createElement('div');
+      btn.className = 'mark-opt' + (marks[key] === s ? ' mark-opt-selected' : '');
+      btn.innerHTML = makeSVG(s, 24);
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        if (marks[key] === s) { delete marks[key]; } else { marks[key] = s; }
+        closeMarkPopup();
+        renderGrid();
+      };
+      popup.appendChild(btn);
+    });
+
+    if (marks[key]) {
+      const clr = document.createElement('div');
+      clr.className = 'mark-opt mark-clear';
+      clr.textContent = '×';
+      clr.onclick = (e) => { e.stopPropagation(); delete marks[key]; closeMarkPopup(); renderGrid(); };
+      popup.appendChild(clr);
+    }
+
+    const rect = cellEl.getBoundingClientRect();
+    const estW = shapes().length * 44 + 24;
+    let left = rect.left;
+    let top = rect.bottom + 6;
+    if (left + estW > window.innerWidth - 8) left = window.innerWidth - estW - 8;
+    if (top + 54 > window.innerHeight - 8) top = rect.top - 54 - 6;
+    popup.style.left = Math.max(8, left) + 'px';
+    popup.style.top = top + 'px';
+
+    document.body.appendChild(popup);
+    setTimeout(() => document.addEventListener('click', closeMarkPopup, { once: true }), 0);
   }
 
   // ── State ────────────────────────────────────────────────────────
@@ -729,7 +828,22 @@
       const cell = document.createElement('div');
       const v = puzzle[r][c];
       if (v === '?')       { cell.className = 'cell qmark'; cell.id = 'qcell'; cell.innerHTML = '<span class="qmark-label">?</span>'; }
-      else if (v === null) { cell.className = 'cell empty'; }
+      else if (v === null) {
+        const key = r + ',' + c;
+        const mk = marks[key];
+        const canMark = markMode && active && !done;
+        cell.className = 'cell empty' + (canMark ? ' markable' : '');
+        if (mk) {
+          const sym = document.createElement('div');
+          sym.className = 'mark-symbol';
+          sym.innerHTML = makeSVG(mk, 30);
+          cell.appendChild(sym);
+        }
+        if (canMark) {
+          const cr = r, cc = c;
+          cell.onclick = (e) => { e.stopPropagation(); showMarkPopup(cell, cr, cc); };
+        }
+      }
       else                 { cell.className = 'cell'; cell.innerHTML = makeSVG(v, 32); }
       g.appendChild(cell);
     }
@@ -779,6 +893,8 @@
   function onNext() {
     clearInterval(timerInterval);
     done = false; active = true;
+    marks = {};
+    closeMarkPopup();
     document.getElementById('feedback').innerHTML = '&nbsp;';
     document.getElementById('feedback').className = 'feedback';
     buildPuzzle(); renderGrid(); renderOptions(true); beginTimer();
@@ -838,6 +954,10 @@
     const btn = document.getElementById('coltoggle');
     btn.textContent = 'B&W';
     btn.classList.add('color-active');
+  }
+
+  if (markMode) {
+    document.getElementById('marktoggle').classList.add('active');
   }
 
   buildPuzzle(); renderGrid(); renderOptions(false);
