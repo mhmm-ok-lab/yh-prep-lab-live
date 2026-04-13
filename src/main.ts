@@ -14,7 +14,7 @@ import {
 } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
-type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary";
+type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
 interface ProfileOption {
@@ -136,7 +136,10 @@ const pageLabels: Record<Page, string> = {
   research: "Research",
   logic: "Logik",
   walkthrough: "Genomgång",
-  glossary: "Ordlista"
+  glossary: "Ordlista",
+  "course-prog1a": "Programmering 1",
+  "course-nackademin_ux": "UX-design",
+  "course-iths_itsec": "IT-säkerhet"
 };
 
 
@@ -1491,9 +1494,9 @@ function renderNavDropdown(): string {
 
       <hr class="app-nav-hr">
       <p class="app-nav-section">Kursinnehåll</p>
-      ${navItem("💻", "Programmering 1", "nav-goto", 'data-view="tracks"', activePage === "tracks")}
-      ${navItem("🎨", "UX-design", "nav-goto", 'data-view="tracks"', false)}
-      ${navItem("🔒", "IT-säkerhet", "nav-goto", 'data-view="tracks"', false)}
+      ${navItem("💻", "Programmering 1", "nav-goto", 'data-view="course-prog1a"', activePage === "course-prog1a")}
+      ${navItem("🎨", "UX-design", "nav-goto", 'data-view="course-nackademin_ux"', activePage === "course-nackademin_ux")}
+      ${navItem("🔒", "IT-säkerhet", "nav-goto", 'data-view="course-iths_itsec"', activePage === "course-iths_itsec")}
 
       <hr class="app-nav-hr">
       <p class="app-nav-section">Antagningsprov</p>
@@ -1763,15 +1766,6 @@ function renderTracks(): string {
           </div>
           <button class="primary bento-cta-sm" data-action="start-logic-drill">${estimateDrillMinutes(logicQuestions)} min</button>
         </div>
-      </div>
-
-      <div class="bento-card bento-card-flat">
-        <details>
-          <summary class="bento-name">UX scenario-generator</summary>
-          <p class="bento-desc-sm" style="margin-top:0.5rem">${generatedUxScenario}</p>
-          <p class="bento-desc-sm">Workflow: 1) Målgruppsanalys → 2) Enkel wireframe-idé → 3) Motivering.</p>
-          <button class="secondary" style="margin-top:0.5rem" data-action="generate-ux-case">Generera nytt case</button>
-        </details>
       </div>
 
     </div>
@@ -2347,6 +2341,80 @@ function renderLastResult(): string {
   `;
 }
 
+function renderCourseView(trackId: TrackId): string {
+  const sessions = loadStudySessions();
+  const progress = buildTrackProgress(sessions);
+  const pct = progress[trackId];
+
+  const meta: Record<TrackId, { title: string; subtitle: string; allLabel: string }> = {
+    prog1a:        { title: "Programmering 1 (Python)", subtitle: "A-prövning · Python-grunder", allLabel: "Python" },
+    nackademin_ux: { title: "UX-design",               subtitle: "Nackademin · Analys & problemlösning", allLabel: "UX" },
+    iths_itsec:    { title: "IT-säkerhet",              subtitle: "IT-Högskolan · Nätverk & teknik", allLabel: "IT-säkerhet" }
+  };
+  const { title, subtitle, allLabel } = meta[trackId];
+  const drillCount = Math.min(8, QUESTIONS.filter((q) => q.track_id === trackId).length);
+  const evidence = RESEARCH_EVIDENCE.filter((e) => e.track_id === trackId);
+
+  const evidenceHtml = evidence.length === 0
+    ? `<p class="muted course-research-empty">Inga evidenskort för det här spåret ännu.</p>`
+    : evidence.map((e) => `
+        <div class="course-research-card">
+          <p class="course-research-claim">${e.claim}</p>
+          <p class="course-research-meta muted">${e.provider} · ${e.confidence} tillförlitlighet</p>
+        </div>
+      `).join("");
+
+  return `
+    <div class="course-view">
+      <button class="course-back-btn" data-action="course-back">← Tillbaka</button>
+
+      <div class="course-header">
+        <h2 class="course-title">${title}</h2>
+        <p class="course-subtitle muted">${subtitle}</p>
+        <div class="course-progress-row">
+          <div class="progress course-progress-bar">
+            <div style="width:${pct}%"></div>
+          </div>
+          <span class="progress-pct">${pct}%&nbsp;klart</span>
+        </div>
+      </div>
+
+      <div class="course-actions">
+        <button class="primary course-action-btn" data-action="start-track-learn" data-track="${trackId}">
+          Genomgång — Grunderna
+        </button>
+        <button class="secondary course-action-btn" data-action="start-track-drill" data-track="${trackId}">
+          Öva — ${drillCount} anpassade frågor
+        </button>
+      </div>
+
+      <button class="course-bank-link" data-action="goto-track-bank" data-track="${trackId}">
+        Se alla ${allLabel}-frågor →
+      </button>
+
+      <details class="course-research">
+        <summary class="course-research-summary">Varför det fungerar</summary>
+        <div class="course-research-body">
+          ${evidenceHtml}
+        </div>
+      </details>
+
+      ${trackId === "nackademin_ux" ? `
+      <details class="course-research">
+        <summary class="course-research-summary">UX scenario-generator</summary>
+        <div class="course-research-body">
+          <div class="course-research-card">
+            <p class="course-research-claim">${generatedUxScenario}</p>
+            <p class="course-research-meta muted">Workflow: 1) Målgruppsanalys → 2) Enkel wireframe-idé → 3) Motivering</p>
+          </div>
+          <button class="secondary" data-action="generate-ux-case">Generera nytt case</button>
+        </div>
+      </details>
+      ` : ""}
+    </div>
+  `;
+}
+
 function renderPage(): string {
   switch (page) {
     case "overview":
@@ -2365,6 +2433,12 @@ function renderPage(): string {
       return renderWalkthrough();
     case "glossary":
       return renderGlossary();
+    case "course-prog1a":
+      return renderCourseView("prog1a");
+    case "course-nackademin_ux":
+      return renderCourseView("nackademin_ux");
+    case "course-iths_itsec":
+      return renderCourseView("iths_itsec");
     default:
       return renderOverview();
   }
@@ -2397,7 +2471,8 @@ app.addEventListener("click", (event) => {
     if (targetView in pageLabels) {
       const pageIconMap: Record<Page, string> = {
         overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
-        research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖"
+        research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖",
+        "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒"
       };
       pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
       history.replaceState(null, "", `?view=${targetView}`);
@@ -2533,6 +2608,20 @@ app.addEventListener("click", (event) => {
       .slice(0, 6)
       .map((question) => question.id);
     startSession("Lär", qIds, 20);
+    return;
+  }
+
+  if (action === "course-back") {
+    page = "overview";
+    render();
+    return;
+  }
+
+  if (action === "goto-track-bank") {
+    const trackId = actionEl.dataset.track as TrackId;
+    filters = { ...filters, trackId };
+    page = "bank";
+    render();
     return;
   }
 
@@ -2753,7 +2842,8 @@ app.addEventListener("click", (event) => {
     if (targetView) {
       const pageIconMap: Record<Page, string> = {
         overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
-        research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖"
+        research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖",
+        "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒"
       };
       pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
       history.replaceState(null, "", `?view=${targetView}`);

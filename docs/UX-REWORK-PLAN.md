@@ -227,9 +227,9 @@ T05b  [DONE]    T05         Hem: Empty state — "Välkommen, Öppna träningsme
 T05c  [DONE]    T05         Post-session: "Kör en till" + "Gå till Hem" i renderLastResult()
 T06   [DONE]    T05         Hem: ta bort Spårprioriteringsrankning + Inställningar-sektion
 T07   [DONE]    T02         Hem: flytta Inställningar → Profilvy (bakom avatar)
-T08   [ ]       T01         Kursvy per spår: titel + Genomgång + Öva + snabblänk till Frågebank
-T09   [ ]       T08         Kursvy: Research som "Varför det fungerar"-kort (hopvikt)
-T10   [ ]       T08         Kursvy: UX-scenariogenerator gömd under UX-kursvyn
+T08   [DONE]    T01         Kursvy per spår: titel + Genomgång + Öva + snabblänk till Frågebank
+T09   [DONE]    T08         Kursvy: Research som "Varför det fungerar"-kort (hopvikt)
+T10   [DONE]    T08         Kursvy: UX-scenariogenerator gömd under UX-kursvyn
 T11   [ ]       T02         Prov: målspår-skola visas överst
 T12   [ ]       T02         Frågebank: Spårfilter synligt, resten bakom "Fler filter ▼"
 T13   [ ]       T02         Ordlista: visuell fix av termkort (kontrast + läsbarhet)

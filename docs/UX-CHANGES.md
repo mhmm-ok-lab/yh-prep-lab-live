@@ -3,6 +3,29 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-04-12 — T08: Kursvy per spår (Programmering 1 / UX-design / IT-säkerhet)
+
+### T08: Tre dedikerade kursvyer nåbara via overlay-menyn
+**Vad:** Tre nya sidor i routingen (`course-prog1a`, `course-nackademin_ux`, `course-iths_itsec`) ersätter de gamla genvägsknapparna i "Kursträning" som alla pekade på Träna-sidan. Varje kursvy visar:
+- Kursrubrik + subtitle (examen/kursmål)
+- Procentprogressbar (från sessiondata)
+- Knapp **Genomgång — Grunderna** (startar Lär-läge med 6 frågor)
+- Knapp **Öva — N anpassade frågor** (startar Drill med upp till 8 frågor)
+- Länk **Se alla [spår]-frågor →** (navigerar till Frågebank filtrerad på spåret)
+- **← Tillbaka**-knapp till Hem
+
+**Varför:** Tidigare landade alla tre kursknapparna i overlay-menyn på samma sida (Träna) — det saknades ett tydligt "hem" per kurs. En kursvy löser JTBD "Jag vill snabbt starta träning på mitt specifika spår" och "Jag vill se hur långt jag kommit i Python/UX/IT-H" på ett ställe.
+
+**Designbeslut:**
+- `← Tillbaka` navigerar till Hem, inte till en generell "bakåt"-historia, eftersom kursvyer är entry points från overlay — inte steg i ett djupt flöde.
+- `goto-track-bank`-handlern sätter `filters.trackId` direkt innan sidbytet så Frågebanken är förfiltrerad när den öppnas — noll extra klick.
+- Progress-% återanvänder `buildTrackProgress()` som redan är i use på Hem-sidan — ingen ny logik.
+- CSS: `.course-action-btn` är `width: 100%` + `height: 44px` — tap-target >= 44px (a11y-standard) på mobil.
+
+**Stitch-princip:** Progressive disclosure + Jobs-to-be-done. Kursvyn visar exakt vad som behövs för att starta eller djupdyka — inget mer.
+
+---
+
 ## 2026-04-12 — T05 + T05b + T05c: Hem context-aware CTA + post-session actions
 
 ### T05: "Fortsätt där du slutade" CTA

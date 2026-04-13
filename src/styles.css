@@ -3299,3 +3299,115 @@ a.bento-cta-sm {
   background-image: none;
   box-shadow: none;
 }
+
+/* ── COURSE VIEW ── */
+.course-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0.25rem 0 1rem;
+}
+.course-back-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: var(--text-sm);
+  padding: 0;
+  cursor: pointer;
+  width: fit-content;
+  font-weight: 500;
+}
+.course-back-btn:hover { text-decoration: underline; }
+.course-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.course-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+.course-subtitle {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+.course-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.course-progress-bar {
+  flex: 1;
+}
+.course-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.course-action-btn {
+  width: 100%;
+  height: 44px;
+  font-size: var(--text-md);
+}
+.course-bank-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+  width: fit-content;
+  text-decoration: none;
+}
+.course-bank-link:hover { text-decoration: underline; }
+
+.course-research {
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 0.75rem;
+}
+.course-research-summary {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.course-research-summary::-webkit-details-marker { display: none; }
+.course-research-summary::after {
+  content: "▾";
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: transform 120ms;
+}
+details[open] .course-research-summary::after { transform: rotate(-180deg); }
+.course-research-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.course-research-card {
+  background: var(--surface-low);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+.course-research-claim {
+  font-size: var(--text-sm);
+  color: var(--ink);
+  margin: 0 0 0.25rem;
+}
+.course-research-meta {
+  font-size: var(--text-xs, 0.75rem);
+  margin: 0;
+}
+.course-research-empty {
+  font-size: var(--text-sm);
+  margin: 0.5rem 0 0;
+}
