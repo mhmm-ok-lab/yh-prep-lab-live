@@ -489,7 +489,13 @@
       <button class="ctrl-btn active" id="n4" onclick="setSize(4)">4×4</button>
       <button class="ctrl-btn"        id="n5" onclick="setSize(5)">5×5</button>
       <div style="flex:1"></div>
-      <button class="ctrl-btn" id="marktoggle" onclick="toggleMarkMode()">✏️△□+○</button>
+      <button class="ctrl-btn" id="marktoggle" onclick="toggleMarkMode()" style="display:flex;align-items:center;gap:3px;">
+        ✏️
+        <svg width="13" height="13" viewBox="0 0 13 13"><polygon points="6.5,1 12,12 1,12" fill="#2255cc"/></svg>
+        <svg width="13" height="13" viewBox="0 0 13 13"><rect x="1.5" y="1.5" width="10" height="10" fill="#cc3322"/></svg>
+        <svg width="13" height="13" viewBox="0 0 13 13"><rect x="5" y="1" width="3" height="11" fill="#00aacc"/><rect x="1" y="5" width="11" height="3" fill="#00aacc"/></svg>
+        <svg width="13" height="13" viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5" fill="#2e9e5b"/></svg>
+      </button>
       <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">Färg</button>
     </div>
     <div class="ctrl-row diff-row">
