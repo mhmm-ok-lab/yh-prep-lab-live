@@ -466,7 +466,7 @@
 </nav>
 <div class="card">
   <h1>Symbol Sudoku <span class="subtitle-tag">Latin Square</span></h1>
-  <p class="subtitle">Hitta formen som saknas i <strong>?</strong>-rutan — ingen form upprepas i rad eller kolumn.</p>
+  <p class="subtitle">Find the missing shape in the <strong>?</strong> cell — no shape repeats in a row or column.</p>
 
   <div class="timer-row">
     <div class="tnum" id="tnum">—</div>
@@ -480,8 +480,8 @@
   <div class="feedback" id="feedback">&nbsp;</div>
 
   <div class="action-row">
-    <button class="btn-main" onclick="onNext()">Start / Nästa</button>
-    <button class="btn-sec" onclick="hint()">Ledtråd</button>
+    <button class="btn-main" onclick="onNext()">Start / Next</button>
+    <button class="btn-sec" id="hintbtn" onclick="hintPause()">⏸ Clue</button>
   </div>
 
   <div class="below-game">
@@ -496,7 +496,7 @@
         <svg width="13" height="13" viewBox="0 0 13 13"><rect x="5" y="1" width="3" height="11" fill="#00aacc"/><rect x="1" y="5" width="11" height="3" fill="#00aacc"/></svg>
         <svg width="13" height="13" viewBox="0 0 13 13"><circle cx="6.5" cy="6.5" r="5" fill="#2e9e5b"/></svg>
       </button>
-      <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">Färg</button>
+      <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">Color</button>
     </div>
     <div class="ctrl-row diff-row">
       <button class="ctrl-btn active" id="deasy"     onclick="setDiff('easy')">Easy</button>
@@ -505,16 +505,16 @@
       <button class="ctrl-btn"        id="dforgetit" onclick="setDiff('forgetit')">Forget it 💀</button>
     </div>
     <div class="ctrl-row">
-      <label class="ctrl-label" for="timeinput">Tid&nbsp;(sek)</label>
+      <label class="ctrl-label" for="timeinput">Time&nbsp;(sec)</label>
       <input type="number" id="timeinput" value="36" min="5" max="300" class="ctrl-input">
     </div>
   </div>
 
   <div class="stats">
-    <div class="stat"><span id="sc">0</span>rätt</div>
-    <div class="stat"><span id="sw">0</span>fel</div>
+    <div class="stat"><span id="sc">0</span>correct</div>
+    <div class="stat"><span id="sw">0</span>wrong</div>
     <div class="stat"><span id="st">0</span>timeout</div>
-    <div class="stat"><span id="sa">—</span>sek/fråga</div>
+    <div class="stat"><span id="sa">—</span>sec/puzzle</div>
   </div>
 </div>
 
@@ -628,9 +628,9 @@
   // ── State ────────────────────────────────────────────────────────
   let N = 4, diff = 'easy';
   let puzzle = [], sol = null, qr = 0, qc = 0;
-  let active = false, done = false;
+  let active = false, done = false, paused = false;
   let correctC = 0, wrongC = 0, timeoutC = 0, times = [];
-  let timerInterval = null, startTime = 0, remaining = 0;
+  let timerInterval = null, startTime = 0, remaining = 0, pausedRemaining = 0;
   let currentTimeLimit = 36;
 
   function shapes() { return N === 4 ? SHAPES4 : SHAPES5; }
@@ -870,10 +870,12 @@
 
   // ── Timer ────────────────────────────────────────────────────────
   function resetTimer() {
-    clearInterval(timerInterval); active = false;
+    clearInterval(timerInterval); active = false; paused = false;
     document.getElementById('tnum').textContent = '—';
     document.getElementById('tnum').className = 'tnum';
     document.getElementById('tbar').style.width = '0%';
+    const hb = document.getElementById('hintbtn');
+    hb.textContent = '⏸ Clue'; hb.disabled = false;
   }
 
   function beginTimer() {
@@ -898,36 +900,40 @@
   // ── Game logic ───────────────────────────────────────────────────
   function onNext() {
     clearInterval(timerInterval);
-    done = false; active = true;
+    done = false; active = true; paused = false;
     marks = {};
     closeMarkPopup();
     document.getElementById('feedback').innerHTML = '&nbsp;';
     document.getElementById('feedback').className = 'feedback';
+    const hb = document.getElementById('hintbtn');
+    hb.textContent = '⏸ Clue'; hb.disabled = false;
     buildPuzzle(); renderGrid(); renderOptions(true); beginTimer();
   }
 
   function onTimeout() {
-    if (done) return; done = true; active = false; timeoutC++;
+    if (done) return; done = true; active = false; paused = false; timeoutC++;
     lockOptions();
+    document.getElementById('hintbtn').disabled = true;
     const qcell = document.getElementById('qcell');
     qcell.innerHTML = makeSVG(sol, 32); qcell.className = 'cell timeout';
-    document.getElementById('feedback').textContent = 'Timeout! Svaret var ' + sol;
+    document.getElementById('feedback').textContent = "Time's up! Answer: " + sol;
     document.getElementById('feedback').className = 'feedback out';
     updateStats();
   }
 
   function pick(s) {
     if (done || !active) return;
-    clearInterval(timerInterval); done = true; active = false;
+    clearInterval(timerInterval); done = true; active = false; paused = false;
     const elapsed = Math.round((Date.now() - startTime) / 1000);
     times.push(elapsed); lockOptions();
+    document.getElementById('hintbtn').disabled = true;
     const qcell = document.getElementById('qcell');
     qcell.innerHTML = makeSVG(sol, 32);
     const fb = document.getElementById('feedback');
     if (s === sol) {
-      correctC++; fb.textContent = 'Rätt! ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback ok'; qcell.className = 'cell correct';
+      correctC++; fb.textContent = 'Correct! ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback ok'; qcell.className = 'cell correct';
     } else {
-      wrongC++; fb.textContent = 'Fel — svaret var ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback bad'; qcell.className = 'cell wrong';
+      wrongC++; fb.textContent = 'Wrong — answer was ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback bad'; qcell.className = 'cell wrong';
     }
     updateStats();
   }
@@ -936,15 +942,36 @@
     document.querySelectorAll('.opt').forEach(b => b.classList.add('locked'));
   }
 
-  function hint() {
-    if (!active) return;
-    const sh = shapes();
-    const rowHas = puzzle[qr].filter(v => v && v !== '?');
-    const colHas = puzzle.map(r => r[qc]).filter(v => v && v !== '?');
-    const rMiss = sh.filter(s => !rowHas.includes(s)).join(', ');
-    const cMiss = sh.filter(s => !colHas.includes(s)).join(', ');
-    document.getElementById('feedback').textContent = 'Rad saknar: ' + rMiss + ' · Kolumn saknar: ' + cMiss;
-    document.getElementById('feedback').className = 'feedback hint';
+  function hintPause() {
+    if (!active || done) return;
+    const hb = document.getElementById('hintbtn');
+    if (paused) {
+      // Resume
+      paused = false;
+      remaining = pausedRemaining;
+      startTime = Date.now() - (currentTimeLimit - remaining) * 1000;
+      timerInterval = setInterval(() => {
+        remaining = currentTimeLimit - Math.floor((Date.now() - startTime) / 1000);
+        if (remaining <= 0) { clearInterval(timerInterval); onTimeout(); }
+        else updateTimerUI();
+      }, 500);
+      hb.textContent = '⏸ Clue';
+      document.getElementById('feedback').innerHTML = '&nbsp;';
+      document.getElementById('feedback').className = 'feedback';
+    } else {
+      // Pause + show clue
+      paused = true;
+      pausedRemaining = remaining;
+      clearInterval(timerInterval);
+      hb.textContent = '▶ Resume';
+      const sh = shapes();
+      const rowHas = puzzle[qr].filter(v => v && v !== '?');
+      const colHas = puzzle.map(r => r[qc]).filter(v => v && v !== '?');
+      const rMiss = sh.filter(s => !rowHas.includes(s)).join(', ');
+      const cMiss = sh.filter(s => !colHas.includes(s)).join(', ');
+      document.getElementById('feedback').textContent = 'Row missing: ' + rMiss + ' · Col missing: ' + cMiss;
+      document.getElementById('feedback').className = 'feedback hint';
+    }
   }
 
   function updateStats() {
