@@ -15,6 +15,23 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 **Stitch-princip:** Stitch #2 — *"Reduce working memory load."* Externaliseringsverktyg (att skriva ner sina tankar i gränssnittet) är ett klassiskt kognitivt avlastningsverktyg inom HCI.
 
+**Knapp-ikon (iteration):** Toggle-knappen byttes från "Markera" → `✏️△□+○`. Pennan är den universella UX-metaforen för "anteckning/pencil marks" (etablerat sudoku-begrepp). De fyra symbolerna är självbeskrivande — de visar exakt vad spelet handlar om och vad funktionen gör. Kombinationen är unik, omedelbart läsbar, och riskerar inte förväxlas med navigation eller andra kontroller.
+
+---
+
+## 2026-04-13 — T13: Ordlista: termkort visuell fix
+
+### T13: Kontrast och läsbarhet på termkorten
+**Vad:** Tre ändringar på `.glossary-entry-card`:
+1. Bakgrund ändrad från `--surface-low` (blågrå) till `--card` (vit) + explicit `border: 1px solid var(--border)` — korten separeras nu tydligt från sidan
+2. Kategori-badge (ALM/Python/Nätverk/UX): font-size höjd från 0.62rem → 0.68rem, padding ökad från 0.1rem → 0.15rem
+3. Definitionstexten: font-size 0.82rem → 0.85rem, line-height 1.4 → 1.45
+
+**Före:** Korten flöt ihop med bakgrunden (surface-low på surface-low). ALM-badge var 9.92px — under läsbarhetsgränsen. Definitionen satt trångt.
+**Efter:** Korten är tydliga vita kort med border. Badge är läsbar. Definitionen andas mer.
+
+**Stitch-princip:** Stitch #5 — *"Kontrast är inte en estetisk detalj — det är tillgänglighet."* Visuell separation är nödvändig för att hjärnan ska se enheter.
+
 ---
 
 ## 2026-04-13 — T12: Frågebank: spårfilter som synliga pills
