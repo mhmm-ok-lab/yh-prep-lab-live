@@ -1971,6 +1971,79 @@ export const QUESTIONS: Question[] = [
     explanation: "Två huvudsatser kopplade med 'och' behöver inte komma före 'och' om de delar subjekt. Stor bokstav används bara efter punkt. Alternativ B är korrekt."
   },
 
+  {
+    id: "iths-d1-sv5",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Välj meningen med korrekt syftning:\nAdministratören startade om switchen och sedan loggade hon in på den.",
+    options: [
+      { id: "a", text: "Administratören startade om switchen och sedan loggade hon in på den." },
+      { id: "b", text: "Administratören startade om switchen och sedan loggade den in på hon." },
+      { id: "c", text: "Hon startade om och sedan administratören loggade switchen in på." },
+      { id: "d", text: "Switchen startades om och loggade administratören sedan in hon." }
+    ],
+    answer_key: "a",
+    explanation: "'Hon' syftar tydligt på administratören och 'den' på switchen. Alternativ A har korrekt ordföljd och pronomenreferens."
+  },
+  {
+    id: "iths-d1-sv6",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket ord stavas rätt i en IT-kontext?",
+    options: [
+      { id: "a", text: "Autentisering" },
+      { id: "b", text: "Autentesering" },
+      { id: "c", text: "Authentisering" },
+      { id: "d", text: "Autentisiring" }
+    ],
+    answer_key: "a",
+    explanation: "Korrekt stavning: autentisering (av autentisera + -ing). Grundordet skrivs med 'i' efter 'ent', inte 'e'. 'Auth-' är engelskans stavning."
+  },
+  {
+    id: "iths-d1-sv7",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilken mening har korrekt ordföljd i bisatsen?\n(Välj den grammatiskt korrekta meningen.)",
+    options: [
+      { id: "a", text: "Chefen förklarade att systemet aldrig hade kraschat." },
+      { id: "b", text: "Chefen förklarade att aldrig systemet hade kraschat." },
+      { id: "c", text: "Chefen förklarade att systemet hade aldrig kraschat." },
+      { id: "d", text: "Aldrig chefen förklarade att systemet kraschat hade." }
+    ],
+    answer_key: "a",
+    explanation: "I bisatser placeras satsadverbial (som 'aldrig') FÖRE det finita verbet: 'att systemet aldrig hade kraschat'. Alternativ A är korrekt – 'aldrig' kommer direkt före 'hade'."
+  },
+  {
+    id: "iths-d1-sv8",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Svenska",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Vilket alternativ har korrekt användning av kolon och kommatecken?",
+    options: [
+      { id: "a", text: "Rapporten innehöll tre brister: lösenord, brandvägg och loggning." },
+      { id: "b", text: "Rapporten innehöll tre brister, lösenord: brandvägg och loggning." },
+      { id: "c", text: "Rapporten innehöll: tre brister lösenord, brandvägg och loggning." },
+      { id: "d", text: "Rapporten innehöll tre, brister: lösenord brandvägg och loggning." }
+    ],
+    answer_key: "a",
+    explanation: "Kolon används för att introducera en uppräkning. Komman skiljer uppräkningens delar. Kolonet ska komma direkt efter den inledande frasen, inte mitt i den."
+  },
+
   // ── DEL 1: ENGELSKA ─────────────────────────────────
   {
     id: "iths-d1-en1",
@@ -2043,6 +2116,79 @@ export const QUESTIONS: Question[] = [
     ],
     answer_key: "b",
     explanation: "Third conditional (past unreal): 'If + had + past participle, would have + past participle'. Option B is the only grammatically correct form."
+  },
+
+  {
+    id: "iths-d1-en5",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Lätt",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "What does 'throughput' mean in a networking context?",
+    options: [
+      { id: "a", text: "The physical length of a network cable" },
+      { id: "b", text: "The actual amount of data successfully transferred per unit of time" },
+      { id: "c", text: "The number of routers in a network" },
+      { id: "d", text: "The encryption algorithm used in a connection" }
+    ],
+    answer_key: "b",
+    explanation: "Throughput = the actual data transfer rate achieved (contrast with bandwidth, which is the theoretical maximum). Measured in bps, Mbps, etc."
+  },
+  {
+    id: "iths-d1-en6",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Choose the correct sentence for a professional IT security report:",
+    options: [
+      { id: "a", text: "The malware, it was detected by the firewall at 03:12." },
+      { id: "b", text: "The malware was detected by the firewall at 03:12." },
+      { id: "c", text: "At 03:12 the malware it detected the firewall." },
+      { id: "d", text: "Detected was the malware by firewall it the at 03:12." }
+    ],
+    answer_key: "b",
+    explanation: "Passive voice: 'was detected by'. Option A has a redundant pronoun 'it', C inverts subject/object, D is incoherent."
+  },
+  {
+    id: "iths-d1-en7",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Medel",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "What does 'authentication' mean in an IT security context?",
+    options: [
+      { id: "a", text: "The process of encrypting stored data" },
+      { id: "b", text: "The process of verifying that someone is who they claim to be" },
+      { id: "c", text: "The maximum number of login attempts allowed" },
+      { id: "d", text: "The technique of hiding data inside other data" }
+    ],
+    answer_key: "b",
+    explanation: "Authentication = verifying identity (e.g. password, MFA). Not to be confused with authorisation (what you're allowed to do) or encryption (protecting data)."
+  },
+  {
+    id: "iths-d1-en8",
+    track_id: "iths_itsec",
+    topic: "⚡ IT-H Del 1: Engelska",
+    format: "mcq",
+    difficulty: "Svår",
+    source_tier: "Community",
+    estimated_minutes: 2,
+    prompt: "Which sentence correctly uses a conditional structure for an IT scenario?",
+    options: [
+      { id: "a", text: "If the patch would have been applied, the vulnerability was closed." },
+      { id: "b", text: "If the patch has been applied, the vulnerability would close." },
+      { id: "c", text: "If the patch had been applied, the vulnerability would have been closed." },
+      { id: "d", text: "Had the patch would be applied, the vulnerability was closed." }
+    ],
+    answer_key: "c",
+    explanation: "Third conditional (past unreal situation): 'If + had + past participle, would have + past participle'. Option C is the only grammatically correct form."
   },
 
   // ── DEL 1: MATEMATIK ────────────────────────────────
@@ -3715,7 +3861,7 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
   // ── ⚡ IT-H separata delarna ──────────────────────────
   {
     id: "mock-iths-d1-sv",
-    name: "⚡ IT-H Del 1 – Bara Svenska (10 min)",
+    name: "⚡ IT-H Del 1 – Svenska (10 min)",
     track_id: "iths_itsec",
     total_minutes: 10,
     sections: [
@@ -3724,15 +3870,17 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 1: Svenska"],
         question_ids: ["iths-d1-sv1", "iths-d1-sv2", "iths-d1-sv3", "iths-d1-sv4"],
+        question_pool: ["iths-d1-sv1","iths-d1-sv2","iths-d1-sv3","iths-d1-sv4","iths-d1-sv5","iths-d1-sv6","iths-d1-sv7","iths-d1-sv8"],
+        questions_count: 4,
         minutes: 10,
         weight: 1.0
       }
     ],
-    scoring_rules: "Fokus på grammatik, syftning och stavning. Varje rätt svar ger lika vikt."
+    scoring_rules: "4 frågor slumpas ur 8 – kör om för att öva utan exakta upprepningar. Fokus på grammatik, syftning och stavning."
   },
   {
     id: "mock-iths-d1-en",
-    name: "⚡ IT-H Del 1 – Bara Engelska (10 min)",
+    name: "⚡ IT-H Del 1 – Engelska (10 min)",
     track_id: "iths_itsec",
     total_minutes: 10,
     sections: [
@@ -3741,30 +3889,32 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 1: Engelska"],
         question_ids: ["iths-d1-en1", "iths-d1-en2", "iths-d1-en3", "iths-d1-en4"],
+        question_pool: ["iths-d1-en1","iths-d1-en2","iths-d1-en3","iths-d1-en4","iths-d1-en5","iths-d1-en6","iths-d1-en7","iths-d1-en8"],
+        questions_count: 4,
         minutes: 10,
         weight: 1.0
       }
     ],
-    scoring_rules: "Fokus på teknisk engelska och meningsstruktur. Varje rätt svar ger lika vikt."
+    scoring_rules: "4 frågor slumpas ur 8 – kör om för att öva utan exakta upprepningar. Fokus på teknisk engelska och meningsstruktur."
   },
   {
     id: "mock-iths-d1-ma",
-    name: "⚡ IT-H Del 1 – Bara Matematik (15 min)",
+    name: "⚡ IT-H Del 1 – Matematik (10 min)",
     track_id: "iths_itsec",
-    total_minutes: 15,
+    total_minutes: 10,
     sections: [
       {
         title: "Matematik – procent, binärt och nätverksräkning",
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 1: Matematik"],
-        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4"],
+        question_ids: ["iths-d1-ma1", "iths-d1-ma2", "iths-d1-ma3", "iths-d1-ma4", "iths-d1-ma5", "iths-d1-ma6"],
         question_pool: ["iths-d1-ma1","iths-d1-ma2","iths-d1-ma3","iths-d1-ma4","iths-d1-ma5","iths-d1-ma6","iths-d1-ma7","iths-d1-ma8","iths-d1-ma9","iths-d1-ma10","iths-d1-ma11","iths-d1-ma12","iths-d1-ma13","iths-d1-ma14","iths-d1-ma15","iths-d1-ma16"],
-        questions_count: 4,
-        minutes: 15,
+        questions_count: 6,
+        minutes: 10,
         weight: 1.0
       }
     ],
-    scoring_rules: "Fokus på grundläggande matematisk förmåga och nätverksräkning. Varje rätt svar ger lika vikt."
+    scoring_rules: "6 frågor slumpas ur 16 – tre körningar ger nästan alltid ny mix. Fokus på grundläggande matematisk förmåga och nätverksräkning."
   },
   {
     id: "mock-iths-d1-all",
@@ -3803,22 +3953,22 @@ export const MOCK_EXAMS: MockExamTemplate[] = [
   },
   {
     id: "mock-iths-d2",
-    name: "⚡ IT-H Del 2 – Bara Nätverksteknik (45 min)",
+    name: "⚡ IT-H Del 2 – Nätverk & IT-säkerhet (10 min)",
     track_id: "iths_itsec",
-    total_minutes: 45,
+    total_minutes: 10,
     sections: [
       {
         title: "Del 2: Dator- och nätverksteknik",
         track_id: "iths_itsec",
         topics: ["⚡ IT-H Del 2: Nätverksteknik"],
-        question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8", "iths-d2-9", "iths-d2-10"],
+        question_ids: ["iths-d2-1", "iths-d2-2", "iths-d2-3", "iths-d2-4", "iths-d2-5", "iths-d2-6", "iths-d2-7", "iths-d2-8"],
         question_pool: ["iths-d2-1","iths-d2-2","iths-d2-3","iths-d2-4","iths-d2-5","iths-d2-6","iths-d2-7","iths-d2-8","iths-d2-9","iths-d2-10","iths-d2-11","iths-d2-12","iths-d2-13","iths-d2-14","iths-d2-15","iths-d2-16","iths-d2-17","iths-d2-18","iths-d2-19","iths-d2-20","iths-d2-21","iths-d2-22","iths-d2-23","iths-d2-24","iths-d2-25","iths-d2-26","iths-d2-27","iths-d2-28","iths-d2-29","iths-d2-30","iths-d2-31","iths-d2-32","iths-d2-33","iths-d2-34","iths-d2-35"],
-        questions_count: 10,
-        minutes: 45,
+        questions_count: 8,
+        minutes: 10,
         weight: 1.0
       }
     ],
-    scoring_rules: "Fokus på nätverksprotokoll, säkerhet och nätverksarkitektur. 10 frågor slumpas ur en pool på 35 – varje körning ger ny variation."
+    scoring_rules: "8 frågor slumpas ur 35 – varje körning ger i princip unik mix. Fokus på IP, OSI, protokoll, VPN och säkerhetsbegrepp."
   },
   {
     id: "mock-prog-python-adv",

@@ -3,6 +3,28 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-05-04 — Antagningsprov: Dedikerad träningssida för IT-Högskolan
+
+### Ny sida: `iths-antagning` — Träna per ämne inför antagningsprovet
+
+**Vad:** En ny sida "Antagningsprov – välj ämne" tillgänglig från IT-säkerhet kursvyn. Sidan presenterar provet uppdelat i fyra separata 10-minutersquizzer: Svenska, Engelska, Matematik (Del 1) och Nätverk & IT-säkerhet (Del 2). Varje quiz startar i Lär-läge med direkt feedback och förklaring efter varje svar.
+
+**Före:** Träning för antagningsprovet gick via den generiska Prov-sidan med en dropdown. Inga separata ämnesmoduler. Del 1 och Del 2 blandades eller låg inbäddade i listan med alla prov.
+
+**Efter:** Dedikerad sida med tydlig Del 1 / Del 2-struktur. Fyra separata startpunkter — ett ämne åt gången. Poolbaserade frågor slumpas vid varje körning, vilket möjliggör minst 2 rundor utan exakta upprepningar. Direkt feedback och förklaring visas efter varje fel.
+
+**Frågeinnehåll utökat:**
+- Svenska: 4 nya frågor (sv5–sv8) tillagda, pool nu 8 frågor — par med sv1–sv4, testar samma grammatikbegrepp (syftning, stavning, bisatsinversion, skiljetecken) från annan vinkel
+- Engelska: 4 nya frågor (en5–en8) tillagda, pool nu 8 frågor — par med en1–en4 (ordförståelse, meningsstruktur, konditional)
+- Matematik: pool 16 frågor, slumpar 6 per körning (~10 min)
+- Nätverk: pool 35 frågor, slumpar 8 per körning (~10 min)
+
+**Varför:** Martin ville känna sig mer trygg inför provet genom korta, fokuserade övningar i ett ämne i taget — inte ett 90-minutersprov. Kortare sessioner ger mer träning per timme och tydligare signal om var luckorna finns. Lär-lägets direktfeedback är kärnan i självbedömningsloopen.
+
+**Stitch-princip:** Stitch #4 — *"Match the mental model."* Provet har två delar med fyra ämnen. Träningsgränssnittet speglar exakt den strukturen. Varje ämne är ett eget block, precis som de upplevs i det verkliga provet.
+
+---
+
 ## 2026-04-13 — Symbol Sudoku: Markeringsläge (marking mode)
 
 ### Ny funktion: markera tomma rutor som lösningshjälp

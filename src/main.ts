@@ -14,7 +14,7 @@ import {
 } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
-type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec";
+type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
 interface ProfileOption {
@@ -139,7 +139,8 @@ const pageLabels: Record<Page, string> = {
   glossary: "Ordlista",
   "course-prog1a": "Programmering 1",
   "course-nackademin_ux": "UX-design",
-  "course-iths_itsec": "IT-säkerhet"
+  "course-iths_itsec": "IT-säkerhet",
+  "iths-antagning": "Antagningsprov"
 };
 
 
@@ -1775,47 +1776,51 @@ function renderTracks(): string {
 function renderBank(): string {
   const filtered = filterQuestions(QUESTIONS, filters);
   const topics = Array.from(new Set(QUESTIONS.map((question) => question.topic))).sort();
+  const trackFilters: { id: "all" | TrackId; label: string; cls: string }[] = [
+    { id: "all",            label: "Alla",  cls: "" },
+    { id: "nackademin_ux",  label: "UX",    cls: "track-nackademin_ux" },
+    { id: "iths_itsec",     label: "IT-H",  cls: "track-iths_itsec" },
+    { id: "prog1a",         label: "Prog",  cls: "track-prog1a" },
+  ];
 
   return `
     <div class="grid">
       <section class="card span-12">
         <h3>Frågebank med filter</h3>
-        <div class="inline-controls">
-          <select data-filter="trackId">
-            <option value="all" ${filters.trackId === "all" ? "selected" : ""}>Alla spår</option>
-            ${TRACKS.map(
-              (track) =>
-                `<option value="${track.id}" ${filters.trackId === track.id ? "selected" : ""}>${track.name}</option>`
-            ).join("")}
-          </select>
+        <div class="bank-track-filters">
+          ${trackFilters.map((f) => `
+            <button class="track-filter-btn${f.cls ? ` ${f.cls}` : ""}"
+                    data-action="filter-track"
+                    data-track-id="${f.id}"
+                    aria-pressed="${filters.trackId === f.id ? "true" : "false"}">${f.label}</button>
+          `).join("")}
+        </div>
+        <details class="bank-more-filters">
+          <summary>Fler filter ▼</summary>
+          <div class="inline-controls">
+            <select data-filter="topic">
+              <option value="all" ${filters.topic === "all" ? "selected" : ""}>Alla ämnen</option>
+              ${topics
+                .map((topic) => `<option value="${topic}" ${filters.topic === topic ? "selected" : ""}>${topic}</option>`)
+                .join("")}
+            </select>
 
-          <select data-filter="topic">
-            <option value="all" ${filters.topic === "all" ? "selected" : ""}>Alla ämnen</option>
-            ${topics
-              .map((topic) => `<option value="${topic}" ${filters.topic === topic ? "selected" : ""}>${topic}</option>`)
-              .join("")}
-          </select>
+            <select data-filter="difficulty">
+              <option value="all" ${filters.difficulty === "all" ? "selected" : ""}>Alla nivåer</option>
+              ${["Lätt", "Medel", "Svår"]
+                .map((diff) => `<option value="${diff}" ${filters.difficulty === diff ? "selected" : ""}>${diff}</option>`)
+                .join("")}
+            </select>
 
-          <select data-filter="difficulty">
-            <option value="all" ${filters.difficulty === "all" ? "selected" : ""}>Alla nivåer</option>
-            ${["Lätt", "Medel", "Svår"]
-              .map(
-                (diff) =>
-                  `<option value="${diff}" ${filters.difficulty === diff ? "selected" : ""}>${diff}</option>`
-              )
-              .join("")}
-          </select>
-
-          <select data-filter="sourceTier">
-            <option value="all" ${filters.sourceTier === "all" ? "selected" : ""}>Alla källnivåer</option>
-            ${["Officiell", "Sekundär", "Community"]
-              .map(
-                (sourceTier) =>
-                  `<option value="${sourceTier}" ${filters.sourceTier === sourceTier ? "selected" : ""}>${sourceTier}</option>`
-              )
-              .join("")}
-          </select>
-
+            <select data-filter="sourceTier">
+              <option value="all" ${filters.sourceTier === "all" ? "selected" : ""}>Alla källnivåer</option>
+              ${["Officiell", "Sekundär", "Community"]
+                .map((sourceTier) => `<option value="${sourceTier}" ${filters.sourceTier === sourceTier ? "selected" : ""}>${sourceTier}</option>`)
+                .join("")}
+            </select>
+          </div>
+        </details>
+        <div class="inline-controls" style="margin-top:0.5rem">
           <button class="primary" data-action="start-drill">Starta Drill</button>
         </div>
         <p class="muted">${filtered.length} frågor matchar filter.</p>
@@ -1860,6 +1865,15 @@ function renderMock(): string {
     grouped[key].push(exam);
   }
 
+  // Sortera så att målspårets grupp visas överst med ★
+  const priorityTrackId = getPriorityTrackFromProfile(studyProfile.targetPriority);
+  const priorityTrackName = getTrackName(priorityTrackId);
+  const sortedGroups = Object.entries(grouped).sort(([a], [b]) => {
+    if (a === priorityTrackName) return -1;
+    if (b === priorityTrackName) return 1;
+    return 0;
+  });
+
   return `
     <div class="grid">
       <section class="card span-12">
@@ -1867,8 +1881,8 @@ function renderMock(): string {
         <p class="muted">Välj nedan och tryck Starta. Klockan tickar — precis som på riktigt.</p>
         <div class="inline-controls">
           <select data-mock-select="true">
-            ${Object.entries(grouped).map(([groupName, exams]) => `
-              <optgroup label="${groupName}">
+            ${sortedGroups.map(([groupName, exams]) => `
+              <optgroup label="${groupName === priorityTrackName ? `★ ${groupName}` : groupName}">
                 ${exams.map((item) => `<option value="${item.id}" ${item.id === template.id ? "selected" : ""}>${item.name}</option>`).join("")}
               </optgroup>
             `).join("")}
@@ -2386,6 +2400,11 @@ function renderCourseView(trackId: TrackId): string {
         <button class="secondary course-action-btn" data-action="start-track-drill" data-track="${trackId}">
           Öva — ${drillCount} anpassade frågor
         </button>
+        ${trackId === "iths_itsec" ? `
+        <button class="primary course-action-btn" data-view="iths-antagning">
+          Antagningsprov — Träna ämne för ämne
+        </button>
+        ` : ""}
       </div>
 
       <button class="course-bank-link" data-action="goto-track-bank" data-track="${trackId}">
@@ -2415,6 +2434,56 @@ function renderCourseView(trackId: TrackId): string {
   `;
 }
 
+function renderIthsAntagning(): string {
+  return `
+    <div class="grid">
+
+      <section class="card span-12">
+        <span class="track-pill track-iths_itsec">IT-säkerhet</span>
+        <h2 style="font-size: var(--text-hero); margin-top: 0.5rem;">Antagningsprov – välj ämne</h2>
+        <p class="muted">Välj ett ämne. Varje quiz är ≤ 10 min. Kör om för att få andra frågor ur poolen.</p>
+      </section>
+
+      <div class="span-12">
+        <p style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.5rem;">Del 1 – Allmänna ämnen</p>
+      </div>
+
+      <article class="card span-4">
+        <h3>Svenska</h3>
+        <p class="muted" style="font-size: var(--text-sm);">Grammatik, syftning, stavning · 4 av 8 frågor · ~8 min</p>
+        <button class="primary" data-action="start-iths-sv">Starta →</button>
+      </article>
+
+      <article class="card span-4">
+        <h3>Engelska</h3>
+        <p class="muted" style="font-size: var(--text-sm);">Teknisk ordförståelse, meningsstruktur · 4 av 8 frågor · ~8 min</p>
+        <button class="primary" data-action="start-iths-en">Starta →</button>
+      </article>
+
+      <article class="card span-4">
+        <h3>Matematik</h3>
+        <p class="muted" style="font-size: var(--text-sm);">Procent, algebra, ekvationer · 6 av 16 frågor · ~10 min</p>
+        <button class="primary" data-action="start-iths-ma">Starta →</button>
+      </article>
+
+      <div class="span-12" style="margin-top: 0.25rem;">
+        <p style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.5rem;">Del 2 – Dator- och nätverksteknik</p>
+      </div>
+
+      <article class="card span-12">
+        <h3>Nätverk &amp; IT-säkerhet</h3>
+        <p class="muted" style="font-size: var(--text-sm);">IP-adressering, OSI-modellen, protokoll, VPN, brandväggar · 8 av 35 frågor slumpas · ~10 min</p>
+        <button class="primary" data-action="start-iths-d2">Starta →</button>
+      </article>
+
+      <div class="span-12">
+        <button class="ghost" data-action="course-back">← Tillbaka till IT-säkerhet</button>
+      </div>
+
+    </div>
+  `;
+}
+
 function renderPage(): string {
   switch (page) {
     case "overview":
@@ -2439,6 +2508,8 @@ function renderPage(): string {
       return renderCourseView("nackademin_ux");
     case "course-iths_itsec":
       return renderCourseView("iths_itsec");
+    case "iths-antagning":
+      return renderIthsAntagning();
     default:
       return renderOverview();
   }
@@ -2472,7 +2543,8 @@ app.addEventListener("click", (event) => {
       const pageIconMap: Record<Page, string> = {
         overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
         research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖",
-        "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒"
+        "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒",
+        "iths-antagning": "🔒"
       };
       pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
       history.replaceState(null, "", `?view=${targetView}`);
@@ -2658,6 +2730,12 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "filter-track") {
+    filters = { ...filters, trackId: actionEl.dataset.trackId as "all" | TrackId };
+    render();
+    return;
+  }
+
   if (action === "start-drill") {
     const filtered = filterQuestions(QUESTIONS, filters);
     startSession(
@@ -2681,6 +2759,26 @@ app.addEventListener("click", (event) => {
       return section.question_ids;
     });
     startSession("Tidsprov", ids, template.total_minutes, template.id);
+    return;
+  }
+
+  const ithsQuizMap: Record<string, string> = {
+    "start-iths-sv": "mock-iths-d1-sv",
+    "start-iths-en": "mock-iths-d1-en",
+    "start-iths-ma": "mock-iths-d1-ma",
+    "start-iths-d2": "mock-iths-d2"
+  };
+  if (action && action in ithsQuizMap) {
+    const template = MOCK_EXAMS.find((item) => item.id === ithsQuizMap[action]);
+    if (!template) return;
+    const ids = template.sections.flatMap((section) => {
+      if (section.question_pool && section.questions_count) {
+        const shuffled = [...section.question_pool].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, section.questions_count);
+      }
+      return section.question_ids;
+    });
+    startSession("Lär", ids, template.total_minutes, template.id);
     return;
   }
 
@@ -2843,7 +2941,8 @@ app.addEventListener("click", (event) => {
       const pageIconMap: Record<Page, string> = {
         overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
         research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖",
-        "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒"
+        "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒",
+        "iths-antagning": "🔒"
       };
       pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
       history.replaceState(null, "", `?view=${targetView}`);

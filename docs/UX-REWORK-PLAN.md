@@ -230,9 +230,9 @@ T07   [DONE]    T02         Hem: flytta Inställningar → Profilvy (bakom avata
 T08   [DONE]    T01         Kursvy per spår: titel + Genomgång + Öva + snabblänk till Frågebank
 T09   [DONE]    T08         Kursvy: Research som "Varför det fungerar"-kort (hopvikt)
 T10   [DONE]    T08         Kursvy: UX-scenariogenerator gömd under UX-kursvyn
-T11   [ ]       T02         Prov: målspår-skola visas överst
-T12   [ ]       T02         Frågebank: Spårfilter synligt, resten bakom "Fler filter ▼"
-T13   [ ]       T02         Ordlista: visuell fix av termkort (kontrast + läsbarhet)
+T11   [DONE]    T02         Prov: målspår-skola visas överst
+T12   [DONE]    T02         Frågebank: Spårfilter synligt, resten bakom "Fler filter ▼"
+T13   [DONE]    T02         Ordlista: visuell fix av termkort (kontrast + läsbarhet)
 T14   [ ]       T02         UX Writing: applicera alla labels enligt namnstrategin ovan
 T15   [ ]       T07         Genomgång: engångs-onboarding-logik (visas vid första besöket)
 T16   [ ]       T13,T14     UX-CHANGES.md: uppdatera med alla beslut + portfolio-motiveringar
