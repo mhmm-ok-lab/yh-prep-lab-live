@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>♟ Schack-klocka</title>
+  <style>
+    :root {
+      --pink:      #FECDD3;
+      --pink-mid:  #FDA4AF;
+      --pink-dark: #E11D48;
+      --blue:      #BAE6FD;
+      --blue-mid:  #7DD3FC;
+      --blue-dark: #0284C7;
+      --yellow:    #FEF08A;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none; -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      touch-action: manipulation;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .screen { position: fixed; inset: 0; display: none; flex-direction: column; }
+    .screen.active { display: flex; }
+
+    /* ─── Setup ─── */
+    #screen-setup {
+      background: linear-gradient(160deg, #FECDD3 0%, #FEF08A 50%, #BAE6FD 100%);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+
+    .setup-card {
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      border-radius: 1.5rem;
+      padding: 1.75rem;
+      width: 100%; max-width: 340px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+
+    .setup-title { font-size: 1.4rem; font-weight: 800; text-align: center; color: #1a1a1a; }
+
+    .section-label {
+      font-size: 0.65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #777;
+      margin-bottom: 0.4rem;
+    }
+
+    .preset-row { display: flex; gap: 0.5rem; }
+
+    .preset-btn {
+      flex: 1; height: 44px;
+      border: 2px solid transparent; border-radius: 0.75rem;
+      background: #f0f0f0; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; color: #333; transition: all 0.15s;
+    }
+    .preset-btn.sel { background: #1a1a1a; color: #fff; }
+
+    .last-btn {
+      width: 100%; height: 44px;
+      border: 2px solid #ddd; border-radius: 0.75rem;
+      background: transparent; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; color: #555; transition: all 0.15s;
+    }
+    .last-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+
+    .time-picker {
+      display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    }
+    .time-unit { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+
+    .adj-btn {
+      width: 48px; height: 36px; border: none; border-radius: 0.5rem;
+      background: #f0f0f0; font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .adj-btn:active { background: #ddd; }
+
+    .time-digit {
+      font-size: 2.5rem; font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: #1a1a1a; min-width: 2.5ch; text-align: center; line-height: 1.1;
+    }
+    .time-colon { font-size: 2rem; font-weight: 800; color: #bbb; }
+
+    .start-btn {
+      width: 100%; height: 52px;
+      background: linear-gradient(135deg, #1a1a1a, #444);
+      color: #fff; border: none; border-radius: 1rem;
+      font-size: 1.1rem; font-weight: 800; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.1s;
+    }
+    .start-btn:active { transform: scale(0.98); }
+
+    /* ─── Game ─── */
+    #screen-game {
+      height: 100dvh;
+    }
+
+    .player-half {
+      flex: 1;
+      min-height: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .player1 { background: var(--pink); }
+    .player2 { background: var(--blue); }
+    .player1.on-clock { background: var(--pink-mid); }
+    .player2.on-clock { background: var(--blue-mid); }
+
+    @keyframes warn1 {
+      0%,100% { background: var(--pink-mid); }
+      50% { background: #ff6b8a; }
+    }
+    @keyframes warn2 {
+      0%,100% { background: var(--blue-mid); }
+      50% { background: #ff6b8a; }
+    }
+    .player1.warning { animation: warn1 0.5s ease-in-out infinite; }
+    .player2.warning { animation: warn2 0.5s ease-in-out infinite; }
+
+    .player-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+      pointer-events: none;
+    }
+    .rotated { transform: rotate(180deg); }
+
+    .time-disp {
+      font-size: clamp(5rem, 24vw, 9rem);
+      font-weight: 300; font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em; color: rgba(0,0,0,0.8); line-height: 1;
+    }
+    .move-label {
+      font-size: 1rem; font-weight: 600;
+      color: rgba(0,0,0,0.35); letter-spacing: 0.04em;
+    }
+    .tap-hint {
+      font-size: 0.75rem; font-weight: 700;
+      color: rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 0.12em;
+      min-height: 1em;
+    }
+
+    .mid-bar {
+      height: 56px; background: var(--yellow); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.25rem; position: relative; z-index: 5;
+    }
+    .mid-btn {
+      width: 42px; height: 42px; border: none; border-radius: 50%;
+      background: rgba(0,0,0,0.13); font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mid-btn:active { background: rgba(0,0,0,0.24); }
+
+    .turn-label {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(0,0,0,0.45); white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .turn-label.p1 { color: var(--pink-dark); }
+    .turn-label.p2 { color: var(--blue-dark); }
+
+    .game-overlay {
+      position: absolute; inset: 0; z-index: 10;
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .game-overlay.hidden { display: none; }
+
+    .resume-btn {
+      background: #fff; border: none; border-radius: 1.5rem;
+      padding: 1rem 2.5rem; font-size: 1.2rem; font-weight: 800;
+      cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    /* ─── End ─── */
+    #screen-end { align-items: center; justify-content: center; padding: 2rem; }
+    .end-inner { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
+    .end-icon { font-size: 3rem; }
+    .end-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; }
+    .end-winner { font-size: 1.8rem; font-weight: 800; color: #1a1a1a; }
+    .end-meta { font-size: 0.82rem; color: rgba(0,0,0,0.45); line-height: 1.6; }
+    .end-buttons { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 280px; margin-top: 0.5rem; }
+    .end-btn {
+      width: 100%; height: 52px; border: none; border-radius: 1rem;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      background: #1a1a1a; color: #fff; transition: transform 0.1s;
+    }
+    .end-btn.alt { background: transparent; border: 2px solid rgba(0,0,0,0.2); color: #333; }
+    .end-btn:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+
+<!-- ── Setup ── -->
+<div id="screen-setup" class="screen active">
+  <div class="setup-card">
+    <div class="setup-title">♟ Schack-klocka</div>
+
+    <div>
+      <div class="section-label">Välj tid</div>
+      <div class="preset-row">
+        <button class="preset-btn sel" data-ms="300000" onclick="setPreset(this)">5 min</button>
+        <button class="preset-btn" data-ms="600000" onclick="setPreset(this)">10 min</button>
+        <button class="preset-btn" data-ms="900000" onclick="setPreset(this)">15 min</button>
+      </div>
+    </div>
+
+    <button class="last-btn" id="btn-last" disabled onclick="setLast()">
+      Samma som förra (–)
+    </button>
+
+    <div>
+      <div class="section-label">Anpassad tid</div>
+      <div class="time-picker">
+        <div class="time-unit">
+          <button class="adj-btn" onclick="adjTime(60)">▲</button>
+          <div class="time-digit" id="c-min">05</div>
+          <button class="adj-btn" onclick="adjTime(-60)">▼</button>
+        </div>
+        <div class="time-colon">:</div>
+        <div class="time-unit">
+          <button class="adj-btn" onclick="adjTime(30)">▲</button>
+          <div class="time-digit" id="c-sec">00</div>
+          <button class="adj-btn" onclick="adjTime(-30)">▼</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">Starta spelet ♟</button>
+  </div>
+</div>
+
+<!-- ── Game ── -->
+<div id="screen-game" class="screen">
+  <div id="p2" class="player-half player2" onclick="press(1)">
+    <div class="player-inner rotated">
+      <div id="p2-moves" class="move-label">0 drag</div>
+      <div id="p2-time" class="time-disp">05:00</div>
+      <div id="p2-hint" class="tap-hint">TRYCK FÖR ATT BÖRJA</div>
+    </div>
+  </div>
+
+  <div class="mid-bar">
+    <button class="mid-btn" onclick="togglePause()" id="btn-pause">⏸</button>
+    <div class="turn-label" id="dot">VÄNTAR</div>
+    <button class="mid-btn" onclick="goSetup()">⚙</button>
+  </div>
+
+  <div id="p1" class="player-half player1" onclick="press(0)">
+    <div class="player-inner">
+      <div id="p1-hint" class="tap-hint">TRYCK FÖR ATT BÖRJA</div>
+      <div id="p1-time" class="time-disp">05:00</div>
+      <div id="p1-moves" class="move-label">0 drag</div>
+    </div>
+  </div>
+
+  <div id="pause-ov" class="game-overlay hidden">
+    <button class="resume-btn" onclick="togglePause()">▶ Fortsätt</button>
+  </div>
+</div>
+
+<!-- ── End ── -->
+<div id="screen-end" class="screen">
+  <div class="end-inner">
+    <div class="end-icon">⏱</div>
+    <div class="end-label">Tid slut!</div>
+    <div class="end-winner" id="end-winner"></div>
+    <div class="end-meta" id="end-meta"></div>
+    <div class="end-buttons">
+      <button class="end-btn" onclick="playAgain()">⟳ Spela igen</button>
+      <button class="end-btn alt" onclick="goSetup()">⚙ Nytt spel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const WARN_MS = 10000;
+  const KEY = 'chess_last_ms';
+
+  let totalSec = 300;  // current custom time in seconds
+  let startMs  = 300000;
+  let timeMs   = [300000, 300000];
+  let active   = null;  // 0 | 1 | null
+  let moves    = [0, 0];
+  let paused   = false;
+  let ticker   = null;
+  let lastTick = null;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function fmtMs(ms) {
+    const s = Math.ceil(ms / 1000);
+    return pad(Math.floor(s / 60)) + ':' + pad(s % 60);
+  }
+
+  function fmtSec(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
+
+  // ── Setup ──
+
+  function updateSetupDisplay() {
+    document.getElementById('c-min').textContent = pad(Math.floor(totalSec / 60));
+    document.getElementById('c-sec').textContent = pad(totalSec % 60);
+    const selectedMs = totalSec * 1000;
+    document.querySelectorAll('.preset-btn').forEach(b => {
+      b.classList.toggle('sel', Number(b.dataset.ms) === selectedMs);
+    });
+  }
+
+  function setPreset(btn) {
+    totalSec = Number(btn.dataset.ms) / 1000;
+    updateSetupDisplay();
+  }
+
+  function adjTime(delta) {
+    totalSec = Math.max(30, Math.min(99 * 60 + 59, totalSec + delta));
+    updateSetupDisplay();
+  }
+
+  function setLast() {
+    const saved = localStorage.getItem(KEY);
+    if (saved) { totalSec = Number(saved) / 1000; updateSetupDisplay(); }
+  }
+
+  function initSetup() {
+    const saved = localStorage.getItem(KEY);
+    const btn = document.getElementById('btn-last');
+    if (saved) {
+      const s = Number(saved) / 1000;
+      btn.disabled = false;
+      btn.textContent = 'Samma som förra (' + fmtSec(s) + ')';
+    } else {
+      btn.disabled = true;
+      btn.textContent = 'Samma som förra (–)';
+    }
+    updateSetupDisplay();
+  }
+
+  // ── Game ──
+
+  function startGame() {
+    startMs = totalSec * 1000;
+    localStorage.setItem(KEY, startMs);
+    timeMs  = [startMs, startMs];
+    active  = null;
+    moves   = [0, 0];
+    paused  = false;
+    stopTicker();
+    show('game');
+    render();
+  }
+
+  function press(player) {
+    if (paused) return;
+    if (active === null) {
+      moves[player]++;
+      active = 1 - player;
+      startTicker();
+    } else if (active === player) {
+      moves[player]++;
+      active = 1 - player;
+    }
+    render();
+  }
+
+  function startTicker() {
+    if (ticker) return;
+    lastTick = Date.now();
+    ticker = setInterval(tick, 50);
+  }
+
+  function stopTicker() {
+    clearInterval(ticker);
+    ticker = null;
+    lastTick = null;
+  }
+
+  function tick() {
+    if (active === null || paused) return;
+    const now = Date.now();
+    timeMs[active] = Math.max(0, timeMs[active] - (now - lastTick));
+    lastTick = now;
+    if (timeMs[active] === 0) { stopTicker(); endGame(); return; }
+    render();
+  }
+
+  function togglePause() {
+    if (active === null) return;
+    paused = !paused;
+    document.getElementById('pause-ov').classList.toggle('hidden', !paused);
+    if (!paused) { lastTick = Date.now(); startTicker(); }
+    else stopTicker();
+  }
+
+  function endGame() {
+    const winner = 1 - active;
+    const names = ['Spelare 1 (rosa)', 'Spelare 2 (blå)'];
+    const colors = ['#FECDD3', '#BAE6FD'];
+    document.getElementById('end-winner').textContent = names[winner] + ' vann! 🏆';
+    document.getElementById('end-meta').textContent =
+      'Drag: ' + names[0] + ' ' + moves[0] + '  ·  ' + names[1] + ' ' + moves[1];
+    document.getElementById('screen-end').style.background =
+      'linear-gradient(160deg, ' + colors[winner] + ' 0%, #fff 65%)';
+    show('end');
+  }
+
+  function playAgain() {
+    timeMs  = [startMs, startMs];
+    active  = null;
+    moves   = [0, 0];
+    paused  = false;
+    stopTicker();
+    document.getElementById('pause-ov').classList.add('hidden');
+    show('game');
+    render();
+  }
+
+  function goSetup() {
+    stopTicker();
+    paused = false;
+    document.getElementById('pause-ov').classList.add('hidden');
+    show('setup');
+    initSetup();
+  }
+
+  function render() {
+    document.getElementById('p1-time').textContent = fmtMs(timeMs[0]);
+    document.getElementById('p2-time').textContent = fmtMs(timeMs[1]);
+    document.getElementById('p1-moves').textContent = moves[0] + ' drag';
+    document.getElementById('p2-moves').textContent = moves[1] + ' drag';
+
+    const p1 = document.getElementById('p1');
+    const p2 = document.getElementById('p2');
+    p1.classList.toggle('on-clock', active === 0);
+    p2.classList.toggle('on-clock', active === 1);
+    p1.classList.toggle('warning', active === 0 && timeMs[0] <= WARN_MS);
+    p2.classList.toggle('warning', active === 1 && timeMs[1] <= WARN_MS);
+
+    const h1 = document.getElementById('p1-hint');
+    const h2 = document.getElementById('p2-hint');
+    if (active === null) {
+      h1.textContent = h2.textContent = 'TRYCK FÖR ATT BÖRJA';
+    } else {
+      h1.textContent = active === 0 ? 'DIN TUR' : '';
+      h2.textContent = active === 1 ? 'DIN TUR' : '';
+    }
+
+    const dot = document.getElementById('dot');
+    dot.className = 'turn-label' + (active === 0 ? ' p1' : active === 1 ? ' p2' : '');
+    dot.textContent = active === 0 ? '▼ SPELARE 1' : active === 1 ? '▲ SPELARE 2' : 'VÄNTAR';
+  }
+
+  function show(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+  }
+
+  initSetup();
+</script>
+</body>
+</html>
