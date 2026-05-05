@@ -100,6 +100,14 @@
     }
     .start-btn:active { transform: scale(0.98); }
 
+    .home-link {
+      display: block; text-align: center;
+      font-size: 0.8rem; font-weight: 600; color: #888;
+      text-decoration: none;
+      padding: 0.25rem;
+    }
+    .home-link:hover { color: #444; }
+
     /* ─── Game ─── */
     #screen-game {
       height: 100dvh;
@@ -240,6 +248,8 @@
     </div>
 
     <button class="start-btn" onclick="startGame()">Starta spelet ♟</button>
+
+    <a href="/" class="home-link">← Tillbaka till startsidan</a>
   </div>
 </div>
 
