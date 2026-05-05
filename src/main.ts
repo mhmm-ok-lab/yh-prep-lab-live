@@ -2476,6 +2476,26 @@ function renderIthsAntagning(): string {
         <button class="primary" data-action="start-iths-d2">Starta →</button>
       </article>
 
+      <section class="card span-12">
+        <h3>Lär dig Matematik 2b</h3>
+        <p class="muted" style="font-size: var(--text-sm);">Gratis resurser på svenska — öppnas i nytt fönster.</p>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+          <a href="https://www.matteboken.se/lektioner/gymnasiet/matte-niva-2" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--accent);">
+            📖 Matteboken.se — Teori, genomgångar och övningar (gratis)
+          </a>
+          <a href="https://vidma.se/np2b/" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--accent);">
+            📝 Vidma.se — Gamla nationella prov Matematik 2b med lösningar
+          </a>
+          <a href="https://vidma.se/ma2bc/" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--accent);">
+            🎬 Vidma.se — Videogenomgångar per kapitel (2b/2c)
+          </a>
+          <a href="https://eddler.se/kurser/matematik-2b/" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--accent);">
+            ⚡ Eddler.se — Digital kurs med självkorrigerande övningar (gratis provlektion)
+          </a>
+        </div>
+        <p class="muted" style="font-size: var(--text-xs); margin-top: 0.75rem;">Fokusera på: algebra, andragradsekvationer, exponential/logaritmer, Pythagoras, statistik.</p>
+      </section>
+
       <div class="span-12">
         <button class="ghost" data-action="course-back">← Tillbaka till IT-säkerhet</button>
       </div>

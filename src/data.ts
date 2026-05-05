@@ -2191,7 +2191,8 @@ export const QUESTIONS: Question[] = [
     explanation: "Third conditional (past unreal situation): 'If + had + past participle, would have + past participle'. Option C is the only grammatically correct form."
   },
 
-  // ── DEL 1: MATEMATIK ────────────────────────────────
+  // ── DEL 1: MATEMATIK (Matematik 2b-nivå) ─────────────
+  // Algebra
   {
     id: "iths-d1-ma1",
     track_id: "iths_itsec",
@@ -2200,15 +2201,15 @@ export const QUESTIONS: Question[] = [
     difficulty: "Lätt",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "En server har 512 GB lagring. 30 % är använt. Hur många GB är ledigt?",
+    prompt: "Lös ekvationen: 3x + 7 = 22",
     options: [
-      { id: "a", text: "153,6 GB" },
-      { id: "b", text: "358,4 GB" },
-      { id: "c", text: "182 GB" },
-      { id: "d", text: "204,8 GB" }
+      { id: "a", text: "x = 3" },
+      { id: "b", text: "x = 5" },
+      { id: "c", text: "x = 7" },
+      { id: "d", text: "x = 9" }
     ],
     answer_key: "b",
-    explanation: "30 % av 512 = 153,6 GB använt. Ledigt = 512 − 153,6 = 358,4 GB."
+    explanation: "3x + 7 = 22 → 3x = 22 − 7 = 15 → x = 15 ÷ 3 = 5. Flytta konstanten till höger led och dela med koefficienten."
   },
   {
     id: "iths-d1-ma2",
@@ -2218,15 +2219,15 @@ export const QUESTIONS: Question[] = [
     difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Omvandla binärtalet 10110 till decimaltal.",
+    prompt: "Lös andragradsekvationen med PQ-formeln: x² − 5x + 6 = 0\nVilka är lösningarna?",
     options: [
-      { id: "a", text: "20" },
-      { id: "b", text: "22" },
-      { id: "c", text: "24" },
-      { id: "d", text: "26" }
+      { id: "a", text: "x = 1 och x = 6" },
+      { id: "b", text: "x = 2 och x = 3" },
+      { id: "c", text: "x = −2 och x = −3" },
+      { id: "d", text: "x = 5 och x = −6" }
     ],
     answer_key: "b",
-    explanation: "10110 binärt: 1×16 + 0×8 + 1×4 + 1×2 + 0×1 = 16+4+2 = 22."
+    explanation: "PQ-formeln: x² + px + q = 0 → x = −p/2 ± √((p/2)² − q). Här p = −5, q = 6. x = 5/2 ± √(6,25 − 6) = 2,5 ± 0,5. Svar: x = 3 eller x = 2. Kontroll: (x−2)(x−3) = x²−5x+6 ✓"
   },
   {
     id: "iths-d1-ma3",
@@ -2236,36 +2237,36 @@ export const QUESTIONS: Question[] = [
     difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Hur många IP-adresser ryms i ett /26-nät?",
+    prompt: "Förenkla uttrycket: (x + 4)² − x²",
     options: [
-      { id: "a", text: "32" },
-      { id: "b", text: "64" },
-      { id: "c", text: "128" },
-      { id: "d", text: "256" }
+      { id: "a", text: "8x + 16" },
+      { id: "b", text: "16" },
+      { id: "c", text: "2x + 16" },
+      { id: "d", text: "x² + 8x" }
     ],
-    answer_key: "b",
-    explanation: "/26 innebär 32-26=6 hostbitar. 2⁶ = 64 totala adresser (62 användbara värdar + nätverks- och broadcastadress)."
+    answer_key: "a",
+    explanation: "(x+4)² = x² + 8x + 16. Subtrahera x²: x² + 8x + 16 − x² = 8x + 16. Kvadreringsregeln: (a+b)² = a² + 2ab + b²."
   },
   {
     id: "iths-d1-ma4",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Svår",
+    difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 3,
-    prompt: "Ett nätverk har adressen 192.168.10.0/25.\nVilket är det högsta användbara värdadressen i detta nät?",
+    prompt: "Lös ekvationssystemet:\nx + y = 10\n2x − y = 5",
     options: [
-      { id: "a", text: "192.168.10.127" },
-      { id: "b", text: "192.168.10.126" },
-      { id: "c", text: "192.168.10.128" },
-      { id: "d", text: "192.168.10.255" }
+      { id: "a", text: "x = 4, y = 6" },
+      { id: "b", text: "x = 5, y = 5" },
+      { id: "c", text: "x = 6, y = 4" },
+      { id: "d", text: "x = 7, y = 3" }
     ],
     answer_key: "b",
-    explanation: "/25 = 128 adresser (0–127). Nätverksadress: .0. Broadcastadress: .127. Högsta värdhosta: .126."
+    explanation: "Addera ekvationerna: (x+y) + (2x−y) = 10+5 → 3x = 15 → x = 5. Sätt in i första: 5+y = 10 → y = 5. Additionsmetoden eliminerar y direkt."
   },
 
-  // ── DEL 1: MATEMATIK – utökad pool (iths-d1-ma5 till iths-d1-ma16) ──
+  // Funktioner, exponential, logaritmer
   {
     id: "iths-d1-ma5",
     track_id: "iths_itsec",
@@ -2274,105 +2275,107 @@ export const QUESTIONS: Question[] = [
     difficulty: "Lätt",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Vad är 2⁸ (2 upphöjt till 8)?",
+    prompt: "Lös exponentialekvationen: 2ˣ = 32",
     options: [
-      { id: "a", text: "64" },
-      { id: "b", text: "128" },
-      { id: "c", text: "256" },
-      { id: "d", text: "512" }
+      { id: "a", text: "x = 4" },
+      { id: "b", text: "x = 5" },
+      { id: "c", text: "x = 6" },
+      { id: "d", text: "x = 16" }
     ],
-    answer_key: "c",
-    explanation: "2⁸ = 2×2×2×2×2×2×2×2 = 256. Potenser av 2 är grundläggande i IT: 2⁸=256 adresser per oktet i IPv4, 2¹⁰=1024 (ett kibibyte), 2¹⁶=65536 (portnummerspann)."
+    answer_key: "b",
+    explanation: "2⁵ = 32. Skriv om 32 som en potens av 2: 32 = 2⁵, alltså x = 5. Alternativt: ta log₂ på båda sidor: x = log₂(32) = 5."
   },
   {
     id: "iths-d1-ma6",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Lätt",
+    difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "En kurs kostar 4 500 kr. Du får 20% rabatt. Vad kostar kursen efter rabatten?",
+    prompt: "Vilket värde har log₁₀(1000)?",
     options: [
-      { id: "a", text: "3 500 kr" },
-      { id: "b", text: "3 600 kr" },
-      { id: "c", text: "4 000 kr" },
-      { id: "d", text: "900 kr" }
+      { id: "a", text: "2" },
+      { id: "b", text: "3" },
+      { id: "c", text: "10" },
+      { id: "d", text: "100" }
     ],
     answer_key: "b",
-    explanation: "20% av 4 500 = 0,20 × 4 500 = 900 kr i rabatt. 4 500 – 900 = 3 600 kr. Alternativt: 4 500 × 0,80 = 3 600 kr (multiplicera med (1 – rabatt))."
+    explanation: "log₁₀(1000) frågar: 10 upphöjt till vad = 1000? Svar: 10³ = 1000, alltså log₁₀(1000) = 3. Logaritmen är exponentialfunktionens inversa."
   },
   {
     id: "iths-d1-ma7",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Lätt",
+    difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Vad är det hexadecimala talet FF i decimal?",
+    prompt: "Ett företag ökar sin omsättning med 10% per år. Hur stor är omsättningen efter 3 år om den startade på 100 000 kr?\n(Avrunda till hela kronor.)",
     options: [
-      { id: "a", text: "128" },
-      { id: "b", text: "240" },
-      { id: "c", text: "255" },
-      { id: "d", text: "256" }
+      { id: "a", text: "130 000 kr" },
+      { id: "b", text: "131 000 kr" },
+      { id: "c", text: "133 100 kr" },
+      { id: "d", text: "134 000 kr" }
     ],
     answer_key: "c",
-    explanation: "Hex FF: F=15 i decimal. FF = 15×16 + 15×1 = 240 + 15 = 255. I hexadecimalt är A=10, B=11, C=12, D=13, E=14, F=15. FF är max för ett byte (8 bitar)."
+    explanation: "Exponentiell tillväxt: 100 000 × 1,10³ = 100 000 × 1,331 = 133 100 kr. Varje år multipliceras med tillväxtfaktorn 1,10 (= 1 + 0,10)."
   },
   {
     id: "iths-d1-ma8",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Lätt",
+    difficulty: "Svår",
     source_tier: "Community",
-    estimated_minutes: 2,
-    prompt: "Omvandla det binära talet 1010 till decimal.",
+    estimated_minutes: 3,
+    prompt: "Priset på en produkt halveras varje år (minskar med 50%). Vilket uttryck beskriver priset P(t) efter t år om startpriset är 8 000 kr?",
     options: [
-      { id: "a", text: "8" },
-      { id: "b", text: "10" },
-      { id: "c", text: "12" },
-      { id: "d", text: "14" }
+      { id: "a", text: "P(t) = 8 000 − 50t" },
+      { id: "b", text: "P(t) = 8 000 × 0,5t" },
+      { id: "c", text: "P(t) = 8 000 × 0,5ᵗ" },
+      { id: "d", text: "P(t) = 8 000 ÷ (50 × t)" }
     ],
-    answer_key: "b",
-    explanation: "1010 i binärt: 1×8 + 0×4 + 1×2 + 0×1 = 8+0+2+0 = 10. Binärt läser man höger till vänster med potenser av 2: position 0=1, 1=2, 2=4, 3=8 osv."
+    answer_key: "c",
+    explanation: "Exponentiellt avtagande: P(t) = startpris × (1 − minskning)ᵗ = 8 000 × 0,5ᵗ. t är exponenten (inte en faktor). Efter 1 år: 8 000×0,5=4 000 ✓. Alternativ B är fel notation — t måste vara i exponenten."
   },
+
+  // Geometri
   {
     id: "iths-d1-ma9",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Medel",
+    difficulty: "Lätt",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "En server har 32 GB RAM. Hur många megabyte (MB) är det?\n(1 GB = 1 024 MB)",
+    prompt: "En rätvinklig triangel har kateterna 6 cm och 8 cm. Hur lång är hypotenusan?",
     options: [
-      { id: "a", text: "3 200 MB" },
-      { id: "b", text: "32 000 MB" },
-      { id: "c", text: "32 768 MB" },
-      { id: "d", text: "65 536 MB" }
+      { id: "a", text: "10 cm" },
+      { id: "b", text: "12 cm" },
+      { id: "c", text: "14 cm" },
+      { id: "d", text: "√(28) cm" }
     ],
-    answer_key: "c",
-    explanation: "32 GB × 1 024 MB/GB = 32 768 MB. Observera att 1 GiB = 1 024 MiB (binärt), men tillverkare marknadsför ofta 1 GB = 1 000 MB. I IT-sammanhang (OS, nätverk) används nästan alltid binär räkning: 2¹⁰ = 1 024."
+    answer_key: "a",
+    explanation: "Pythagoras sats: c² = a² + b² = 6² + 8² = 36 + 64 = 100. c = √100 = 10 cm. Det här är ett klassiskt pythagorestripel: 6-8-10 (eller 3-4-5 × 2)."
   },
   {
     id: "iths-d1-ma10",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Medel",
+    difficulty: "Lätt",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Omvandla decimalvärdet 200 till binärt.",
+    prompt: "Beräkna arean av en cirkel med radien 5 cm.\n(Lämna svaret i termer av π.)",
     options: [
-      { id: "a", text: "11000100" },
-      { id: "b", text: "11001000" },
-      { id: "c", text: "10101010" },
-      { id: "d", text: "11110000" }
+      { id: "a", text: "10π cm²" },
+      { id: "b", text: "20π cm²" },
+      { id: "c", text: "25π cm²" },
+      { id: "d", text: "50π cm²" }
     ],
-    answer_key: "b",
-    explanation: "200 i binärt: 200 = 128+64+8 = 2⁷+2⁶+2³ = 11001000. Steg: 200÷2=100r0, 100÷2=50r0, 50÷2=25r0, 25÷2=12r1, 12÷2=6r0, 6÷2=3r0, 3÷2=1r1, 1÷2=0r1. Läs resterna baklänges: 11001000."
+    answer_key: "c",
+    explanation: "Cirkelns area: A = π × r² = π × 5² = 25π cm². Radien är halva diametern. Glöm inte att kvadrera radien — inte multiplicera den med 2."
   },
   {
     id: "iths-d1-ma11",
@@ -2382,15 +2385,15 @@ export const QUESTIONS: Question[] = [
     difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Ett /28-nät har hur många användbara hostar?",
+    prompt: "Beräkna avståndet mellan punkterna A(1, 2) och B(4, 6) i ett koordinatsystem.",
     options: [
-      { id: "a", text: "14" },
-      { id: "b", text: "16" },
-      { id: "c", text: "28" },
-      { id: "d", text: "30" }
+      { id: "a", text: "4" },
+      { id: "b", text: "5" },
+      { id: "c", text: "6" },
+      { id: "d", text: "√(30)" }
     ],
-    answer_key: "a",
-    explanation: "/28 innebär 4 bitar för hostar (32-28=4). 2⁴ = 16 adresser totalt. Minus nätverksadress och broadcast = 14 användbara hostar. Formeln: 2ⁿ – 2 där n = antal hostbitar."
+    answer_key: "b",
+    explanation: "Avståndsformeln: d = √((x₂−x₁)² + (y₂−y₁)²) = √((4−1)² + (6−2)²) = √(9+16) = √25 = 5. Formeln är Pythagoras sats tillämpad på koordinatplanet."
   },
   {
     id: "iths-d1-ma12",
@@ -2400,33 +2403,35 @@ export const QUESTIONS: Question[] = [
     difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Lökklockan visar 14:45. Hur många minuter är det till 16:00?",
+    prompt: "Två liknande (likformiga) trianglar har förhållandet 1:3 på motsvarande sidor.\nOm den lilla triangelns area är 4 cm², vad är den stora triangelns area?",
     options: [
-      { id: "a", text: "65 minuter" },
-      { id: "b", text: "75 minuter" },
-      { id: "c", text: "85 minuter" },
-      { id: "d", text: "95 minuter" }
+      { id: "a", text: "12 cm²" },
+      { id: "b", text: "16 cm²" },
+      { id: "c", text: "36 cm²" },
+      { id: "d", text: "64 cm²" }
     ],
-    answer_key: "b",
-    explanation: "Från 14:45 till 15:00 = 15 minuter. Från 15:00 till 16:00 = 60 minuter. Totalt: 15 + 60 = 75 minuter. Tidsräkning ingår i antagningsprovets matematikdel."
+    answer_key: "c",
+    explanation: "Arean skalas med kvadraten på sidförhållandet: (1:3)² = 1:9. Stor area = 4 × 9 = 36 cm². Sidor skalas linjärt, men areor skalas kvadratiskt."
   },
+
+  // Statistik
   {
     id: "iths-d1-ma13",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Medel",
+    difficulty: "Lätt",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Vilket är medelvärdet av talen: 12, 18, 24, 6, 30?",
+    prompt: "Vad är medianen i datamängden: 3, 7, 2, 9, 5, 1, 8?",
     options: [
-      { id: "a", text: "16" },
-      { id: "b", text: "18" },
-      { id: "c", text: "20" },
-      { id: "d", text: "24" }
+      { id: "a", text: "3" },
+      { id: "b", text: "5" },
+      { id: "c", text: "7" },
+      { id: "d", text: "35/7" }
     ],
     answer_key: "b",
-    explanation: "Medelvärde = summan ÷ antal tal. 12+18+24+6+30 = 90. 90 ÷ 5 = 18. Medelvärde (genomsnitt) är en av de vanligaste statistiska beräkningarna."
+    explanation: "Sortera talen: 1, 2, 3, 5, 7, 8, 9. Medianen är mittentaltet vid 7 tal → position 4 → 5. Medianen är inte samma som medelvärdet (5 vs 35/7 ≈ 5)."
   },
   {
     id: "iths-d1-ma14",
@@ -2436,33 +2441,33 @@ export const QUESTIONS: Question[] = [
     difficulty: "Medel",
     source_tier: "Community",
     estimated_minutes: 2,
-    prompt: "Priset på en hårddisk höjs med 15% och kostar sedan 575 kr. Vad kostade den före höjningen?",
+    prompt: "Vilken datamängd har störst spridning (standardavvikelse)?",
     options: [
-      { id: "a", text: "460 kr" },
-      { id: "b", text: "488 kr" },
-      { id: "c", text: "500 kr" },
-      { id: "d", text: "520 kr" }
+      { id: "a", text: "{4, 5, 6, 5, 5}" },
+      { id: "b", text: "{1, 5, 9, 5, 5}" },
+      { id: "c", text: "{5, 5, 5, 5, 5}" },
+      { id: "d", text: "{4, 4, 5, 6, 6}" }
     ],
-    answer_key: "c",
-    explanation: "Om priset är 115% av ursprungspriset: ursprungspris = 575 ÷ 1,15 = 500 kr. Vid procent-baklängesberäkning: dela med (1 + höjningsprocenten som decimal)."
+    answer_key: "b",
+    explanation: "Standardavvikelsen mäter hur långt talen ligger från medelvärdet. Alla datamängder har medelvärde 5, men {1,5,9,5,5} har de extremaste avvikelserna (1 och 9 är längst från 5). Störst spridning = störst standardavvikelse."
   },
   {
     id: "iths-d1-ma15",
     track_id: "iths_itsec",
     topic: "⚡ IT-H Del 1: Matematik",
     format: "mcq",
-    difficulty: "Svår",
+    difficulty: "Medel",
     source_tier: "Community",
-    estimated_minutes: 3,
-    prompt: "Hur många /30-nät kan man dela upp ett /27-nät i?",
+    estimated_minutes: 2,
+    prompt: "I en normalfördelning med medelvärde 70 och standardavvikelse 10:\nUngefär hur stor andel av värdena ligger mellan 60 och 80?",
     options: [
-      { id: "a", text: "4" },
-      { id: "b", text: "6" },
-      { id: "c", text: "8" },
-      { id: "d", text: "16" }
+      { id: "a", text: "34%" },
+      { id: "b", text: "50%" },
+      { id: "c", text: "68%" },
+      { id: "d", text: "95%" }
     ],
     answer_key: "c",
-    explanation: "/27 = 32 adresser (2⁵). /30 = 4 adresser vardera (2²). 32 ÷ 4 = 8 stycken /30-nät. Subnetting handlar om att dela upp adressutrymmet i jämna block av 2."
+    explanation: "68-95-99,7-regeln: ca 68% av värdena ligger inom ±1 standardavvikelse från medelvärdet. Här: 70 ± 10 = [60, 80]. Inom ±2 std.avv. = 95%, inom ±3 = 99,7%."
   },
   {
     id: "iths-d1-ma16",
@@ -2472,15 +2477,15 @@ export const QUESTIONS: Question[] = [
     difficulty: "Svår",
     source_tier: "Community",
     estimated_minutes: 3,
-    prompt: "En switch har 24 portar och är 70% belagd. Hur många portar är lediga?",
+    prompt: "En klass har ett medelbetyg på 72 poäng. Du fick 90 poäng.\nMed hur många procent överstiger ditt resultat klassmedelvärdet?\n(Avrunda till närmaste heltal.)",
     options: [
-      { id: "a", text: "5" },
-      { id: "b", text: "6" },
-      { id: "c", text: "7" },
-      { id: "d", text: "8" }
+      { id: "a", text: "18%" },
+      { id: "b", text: "20%" },
+      { id: "c", text: "25%" },
+      { id: "d", text: "80%" }
     ],
     answer_key: "c",
-    explanation: "70% belagd = 0,70 × 24 = 16,8 → avrundat 17 portar används. Lediga: 24 – 17 = 7. (Alternativt: 30% ledigt = 0,30 × 24 = 7,2 → 7 lediga.) Kapacitetsplanering är en vanlig uppgiftstyp i antagningsprov."
+    explanation: "Procentuell skillnad relativt referensvärdet: (90 − 72) / 72 × 100 = 18/72 × 100 = 25%. Viktigt: man dividerar med referensvärdet (72), inte med ditt eget resultat."
   },
 
   // ── DEL 2: DATOR- OCH NÄTVERKSTEKNIK ────────────────
