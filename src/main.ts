@@ -2476,8 +2476,51 @@ function renderIthsAntagning(): string {
         <button class="primary" data-action="start-iths-d2">Starta →</button>
       </article>
 
+      <details class="card span-12" style="padding: 1rem;">
+        <summary style="cursor: pointer; font-weight: 600; font-size: var(--text-h3); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+          ⚡ Snabbstart – lär dig det viktigaste på 20 min
+          <span class="muted" style="font-size: var(--text-sm); font-weight: 400;">▼</span>
+        </summary>
+        <p class="muted" style="font-size: var(--text-sm); margin: 0.5rem 0 1rem;">Fyra saker som provet troligen testar — och som faktiskt sitter efter en genomläsning.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+
+          <div style="background: var(--surface-container); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+            <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: var(--text-md);">1. Procent</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;"><strong>x% av Y</strong> = (x ÷ 100) × Y</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;"><strong>Baklänges</strong> (priset EFTER höjning är känt): dela med (1 + höjningen). Ex: pris efter 15% höjning = 575 kr → ursprung = 575 ÷ 1,15 = <strong>500 kr</strong></p>
+            <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 0.25rem 0 0;">Minns: multiplicera med (1 − rabatt) eller (1 + höjning). Aldrig dividera med procentsatsen direkt.</p>
+          </div>
+
+          <div style="background: var(--surface-container); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+            <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: var(--text-md);">2. Pythagoras sats</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;"><strong>c² = a² + b²</strong> &nbsp;(c = hypotenusan, den längsta sidan)</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;">Lär dig: <strong>3–4–5</strong> är ett pythagorestripel. Dubbla det: 6–8–<strong>10</strong>.</p>
+            <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 0.25rem 0 0;">Används också för avstånd i koordinatsystem: d = √((x₂−x₁)² + (y₂−y₁)²)</p>
+          </div>
+
+          <div style="background: var(--surface-container); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+            <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: var(--text-md);">3. Median</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;"><strong>Steg 1:</strong> Sortera talen i storleksordning.</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;"><strong>Steg 2:</strong> Ta mittentaltet. Om jämnt antal tal → medelvärdet av de två i mitten.</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;">Ex: 3, 7, 2, 9, 5 → sorterat: 2, 3, <strong>5</strong>, 7, 9 → median = 5</p>
+            <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 0.25rem 0 0;">Medelvärde = summa ÷ antal. Median = mitten. De är INTE samma sak.</p>
+          </div>
+
+          <div style="background: var(--surface-container); border-radius: 0.75rem; padding: 0.85rem 1rem;">
+            <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: var(--text-md);">4. Linjär ekvation</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;"><strong>Flytta tal</strong> till ena sidan, <strong>dela</strong> med koefficienten.</p>
+            <p style="font-size: var(--text-sm); margin: 0 0 0.25rem;">Ex: 3x + 7 = 22 → 3x = 15 → x = <strong>5</strong></p>
+            <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 0.25rem 0 0;">Kolla alltid svaret: 3×5 + 7 = 22 ✓</p>
+          </div>
+
+        </div>
+
+        <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 1rem 0 0;">Klar? Starta Matematik-quizzen ovan och se hur det går.</p>
+      </details>
+
       <section class="card span-12">
-        <h3>Lär dig Matematik 2b</h3>
+        <h3>Djupdyk – Matematik 2b</h3>
         <p class="muted" style="font-size: var(--text-sm);">Gratis resurser på svenska — öppnas i nytt fönster.</p>
         <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
           <a href="https://www.matteboken.se/lektioner/gymnasiet/matte-niva-2" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--accent);">
