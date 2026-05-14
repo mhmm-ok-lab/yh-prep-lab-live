@@ -3,6 +3,18 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-05-14 — Regelverksatlas: Extern referenssida tillgänglig via nav
+
+**Vad:** En fristående HTML-sida ("Regelverksatlas — NIS2 & AI Act") lagts till som `public/regelverksatlas.html` och länkats in under "Referens" i navigationsmenyn. En `← YH Prep Lab`-länk lades till i sidans header så att användaren kan navigera tillbaka till appen.
+
+**Före:** Ingen direkt åtkomst till regelverksreferensen från appen — filen låg enbart lokalt på datorn.
+
+**Efter:** Länk i nav-dropdown under "Referens" → ⚖️ Regelverksatlas. Öppnas i ny flik (samma pattern som övriga standalone-verktyg). Header på sidan har tillbaka-länk till startsidan.
+
+**Stitch-princip:** Additive, no-disruption — befintlig sida rördes inte, ny nav-länk följer exakt samma mönster som Symbol Sudoku.
+
+---
+
 ## 2026-05-04 — Antagningsprov: Dedikerad träningssida för IT-Högskolan
 
 ### Ny sida: `iths-antagning` — Träna per ämne inför antagningsprovet

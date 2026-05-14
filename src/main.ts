@@ -1517,6 +1517,10 @@ function renderNavDropdown(): string {
       <p class="app-nav-section">Referens</p>
       ${navItem("📚", "Frågebank", "nav-goto", 'data-view="bank"', activePage === "bank")}
       ${navItem("📖", "Ordlista", "nav-goto", 'data-view="glossary"', activePage === "glossary")}
+      <a class="app-nav-item app-nav-link" href="./regelverksatlas.html" target="_blank">
+        <span class="app-nav-item-icon">⚖️</span>
+        <span>Regelverksatlas</span>
+      </a>
 
       <hr class="app-nav-hr">
       <p class="app-nav-section">Konto</p>
