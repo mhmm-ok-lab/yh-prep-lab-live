@@ -253,6 +253,44 @@ with open('names.txt') as f:
         ${G?`<p class="success" style="margin-top:0.5rem">${G}</p>`:""}
       </section>
 
+      <!-- ── ALLA SIDOR ── -->
+      <section class="card span-12">
+        <h3 class="section-label">Alla sidor</h3>
+        <div class="site-index-grid">
+
+          <div class="site-index-group">
+            <p class="site-index-group-label">Kursinnehåll</p>
+            <button class="site-index-item" data-action="nav-goto" data-view="course-prog1a">💻 Programmering 1</button>
+            <a class="site-index-item" href="./python-minikurs.html">🐍 Python-minikurs</a>
+            <button class="site-index-item" data-action="nav-goto" data-view="course-nackademin_ux">🎨 UX-design</button>
+            <button class="site-index-item" data-action="nav-goto" data-view="course-iths_itsec">🔒 IT-säkerhet</button>
+          </div>
+
+          <div class="site-index-group">
+            <p class="site-index-group-label">Antagningsprov</p>
+            <button class="site-index-item" data-action="nav-start-vr">📄 Verbal Reasoning</button>
+            <button class="site-index-item" data-action="nav-start-ls">🇸🇪 Språkliga färdigheter</button>
+            <a class="site-index-item" href="./symbol-sudoku.html">△ Symbol Sudoku</a>
+            <a class="site-index-item" href="./gap-challenge.html">◻ Gap Challenge</a>
+            <a class="site-index-item" href="./matrix-lab.html">🔲 Matrix Lab</a>
+            <button class="site-index-item" data-action="nav-goto" data-view="logic">🧩 Logik</button>
+          </div>
+
+          <div class="site-index-group">
+            <p class="site-index-group-label">Prov &amp; Referens</p>
+            <button class="site-index-item" data-action="nav-goto" data-view="mock">📋 Fullständiga prov</button>
+            <button class="site-index-item" data-action="nav-goto" data-view="bank">📚 Frågebank</button>
+            <button class="site-index-item" data-action="nav-goto" data-view="glossary">📖 Ordlista</button>
+            <a class="site-index-item" href="./regelverksatlas.html">📜 Regelverksatlas</a>
+          </div>
+
+          <div class="site-index-group">
+            <p class="site-index-group-label">Verktyg</p>
+            <a class="site-index-item" href="./chess-clock.html">♟ Schack-klocka</a>
+          </div>
+
+        </div>
+      </section>
 
     </div>
   `}function pa(){if(!v)return"";const{items:e,currentIndex:t,userAnswer:r,showFeedback:n,correct:i,wrong:o,trapCounts:s}=v,a=e.length;if(t>=a){const b=Math.round(i/a*100),V=Object.entries(s).filter(([,I])=>(I??0)>0);return`
@@ -359,9 +397,17 @@ with open('names.txt') as f:
       <p class="app-nav-section">Antagningsprov</p>
       ${r("📄","Verbal Reasoning","nav-start-vr","",e==="vr")}
       ${r("🇸🇪","Språkliga färdigheter","nav-start-ls","",e==="ls")}
-      <a class="app-nav-item app-nav-link" href="./symbol-sudoku.html" target="_blank">
+      <a class="app-nav-item app-nav-link" href="./symbol-sudoku.html">
         <span class="app-nav-item-icon">△</span>
         <span>Symbol Sudoku</span>
+      </a>
+      <a class="app-nav-item app-nav-link" href="./gap-challenge.html">
+        <span class="app-nav-item-icon">◻</span>
+        <span>Gap Challenge</span>
+      </a>
+      <a class="app-nav-item app-nav-link" href="./matrix-lab.html">
+        <span class="app-nav-item-icon">🔲</span>
+        <span>Matrix Lab</span>
       </a>
       ${r("🧩","Logik","nav-goto",'data-view="logic"',t==="logic")}
 
@@ -373,9 +419,16 @@ with open('names.txt') as f:
       <p class="app-nav-section">Referens</p>
       ${r("📚","Frågebank","nav-goto",'data-view="bank"',t==="bank")}
       ${r("📖","Ordlista","nav-goto",'data-view="glossary"',t==="glossary")}
-      <a class="app-nav-item app-nav-link" href="./regelverksatlas.html" target="_blank">
-        <span class="app-nav-item-icon">⚖️</span>
+      <a class="app-nav-item app-nav-link" href="./regelverksatlas.html">
+        <span class="app-nav-item-icon">📜</span>
         <span>Regelverksatlas</span>
+      </a>
+
+      <hr class="app-nav-hr">
+      <p class="app-nav-section">Verktyg</p>
+      <a class="app-nav-item app-nav-link" href="./chess-clock.html">
+        <span class="app-nav-item-icon">♟</span>
+        <span>Schack-klocka</span>
       </a>
 
       <hr class="app-nav-hr">
