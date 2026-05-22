@@ -1,0 +1,3827 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regelverksatlas — NIS2 · AI Act · GDPR · DORA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F1E9D8;
+    --cream-soft: #EFE7D2;
+    --paper: #F7F1E1;
+    --ink: #161618;
+    --ink-soft: #2B2B30;
+    --ink-mute: #5C5C66;
+    --rule: #C7BFA8;
+    --rule-soft: #DDD3B9;
+    --accent: #C8482A;
+    --accent-deep: #9E3517;
+    --gold: #B58A3B;
+    --moss: #3E5340;
+    --sky: #4A6B82;
+    --sand: #D9C99A;
+    --ash: #8A867A;
+    --red-warn: #B73A1F;
+    --orange-warn: #D2762E;
+    --yellow-warn: #C9A748;
+    --green-ok: #4C7A4F;
+
+    --display: "Fraunces", serif;
+    --body: "Manrope", system-ui, sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 400;
+    line-height: 1.55;
+    font-size: 16px;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(184,138,59,.06) 0, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(200,72,42,.04) 0, transparent 50%);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: .35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  header.masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 22px 0 18px;
+    position: sticky;
+    top: 0;
+    background: var(--cream);
+    background-image: linear-gradient(180deg, var(--cream) 0%, rgba(241,233,216,.96) 100%);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  .mast-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .mast-title {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -.01em;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+  .mast-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+  }
+  .mast-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .mast-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.7); }
+  }
+
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: .94;
+    font-weight: 350;
+    letter-spacing: -.035em;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    margin-bottom: 32px;
+  }
+  .hero h1 .ital {
+    font-style: italic;
+    font-weight: 320;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+  }
+  .hero h1 .amp {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold);
+    font-variation-settings: "opsz" 144, "WONK" 1;
+    margin: 0 .05em;
+  }
+  .hero-lede {
+    font-family: var(--display);
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.4;
+    font-weight: 350;
+    max-width: 720px;
+    color: var(--ink-soft);
+    font-variation-settings: "opsz" 36;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+    margin-top: 64px;
+    border-top: 1px solid var(--rule);
+  }
+  .hero-stat {
+    padding: 24px 24px 24px 0;
+    border-right: 1px solid var(--rule);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-num {
+    font-family: var(--display);
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: -.02em;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .hero-stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .tabs-wrap {
+    position: sticky;
+    top: 67px;
+    z-index: 90;
+    background: var(--cream);
+    background-image: linear-gradient(180deg, var(--cream) 60%, rgba(241,233,216,.92) 100%);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 1;
+    min-width: 142px;
+    padding: 18px 16px;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink-mute);
+    transition: all .3s cubic-bezier(.2,.7,.3,1);
+    position: relative;
+    font-family: inherit;
+  }
+  .tab:last-child { border-right: none; }
+  .tab::before {
+    content: "";
+    position: absolute;
+    bottom: -1px; left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--accent);
+    transition: width .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .tab.active::before { width: 100%; }
+  .tab.active { color: var(--ink); }
+  .tab:hover:not(.active) { color: var(--ink-soft); background: rgba(184,138,59,.05); }
+  .tab-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .tab-label {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: -.015em;
+    font-variation-settings: "opsz" 60;
+  }
+  .tab-sub {
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-top: 3px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active {
+    display: block;
+    animation: fadeIn .6s cubic-bezier(.2,.7,.3,1);
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  section.chapter {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .chapter-head {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-bottom: 56px;
+  }
+  .chapter-num {
+    font-family: var(--display);
+    font-size: 64px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+    font-style: italic;
+  }
+  .chapter-title {
+    font-family: var(--display);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 380;
+    letter-spacing: -.025em;
+    line-height: 1.02;
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 144;
+  }
+  .chapter-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 320;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+  }
+  .chapter-intro {
+    font-family: var(--display);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 380;
+    max-width: 640px;
+    font-variation-settings: "opsz" 24;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 800px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .chapter-head { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    position: relative;
+    transition: all .3s cubic-bezier(.2,.7,.3,1);
+  }
+  .card:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -16px rgba(22,22,24,.2);
+  }
+  .card-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 420;
+    margin-bottom: 12px;
+    letter-spacing: -.01em;
+    font-variation-settings: "opsz" 36;
+  }
+  .card-body { color: var(--ink-soft); font-size: 14.5px; line-height: 1.6; }
+  .card-body p + p { margin-top: 10px; }
+
+  .subhead {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 80px 0 32px;
+  }
+  .subhead-mark {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .15em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .subhead-title {
+    font-family: var(--display);
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -.02em;
+    font-variation-settings: "opsz" 60;
+  }
+  .subhead-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 60, "WONK" 1;
+  }
+  .subhead-line {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .figure {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 40px;
+    position: relative;
+  }
+  .figure-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .figure-caption strong { color: var(--ink); }
+
+  .timeline { position: relative; padding: 40px 0; }
+  .timeline-track {
+    position: absolute;
+    top: 60px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--rule);
+  }
+  .timeline-track::after {
+    content: "";
+    position: absolute;
+    right: 0; top: -4px;
+    width: 0; height: 0;
+    border-left: 10px solid var(--ink);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+  .timeline-points {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: relative;
+  }
+  .tl-point {
+    text-align: center;
+    position: relative;
+    padding-top: 80px;
+  }
+  .tl-point::before {
+    content: "";
+    position: absolute;
+    top: 53px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .tl-point.active::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 6px rgba(200,72,42,.15);
+  }
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tl-title {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    font-variation-settings: "opsz" 24;
+  }
+  .tl-desc {
+    font-size: 12px;
+    color: var(--ink-mute);
+    line-height: 1.4;
+  }
+  @media (max-width: 800px) {
+    .timeline-track { left: 8px; right: auto; width: 2px; top: 0; bottom: 0; height: auto; }
+    .timeline-track::after { display: none; }
+    .timeline-points { grid-template-columns: 1fr; gap: 32px; }
+    .tl-point { text-align: left; padding: 0 0 0 32px; }
+    .tl-point::before { top: 4px; left: 0; transform: none; }
+  }
+
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar-icon { width: 48px; height: 48px; margin-bottom: 20px; color: var(--accent); }
+  .pillar-title {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 480;
+    margin-bottom: 10px;
+    font-variation-settings: "opsz" 24;
+  }
+  .pillar-body { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+
+  /* Clickable NIS2 pillars */
+  .pillar.clickable {
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.2,.7,.3,1);
+  }
+  .pillar.clickable::after {
+    content: "+";
+    position: absolute;
+    top: 18px; right: 22px;
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--ink-mute);
+    transition: all .3s cubic-bezier(.2,.7,.3,1);
+    line-height: 1;
+  }
+  .pillar.clickable:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -16px rgba(22,22,24,.2);
+  }
+  .pillar.clickable:hover::after { color: var(--accent); transform: rotate(90deg); }
+  .pillar.clickable.selected {
+    border-color: var(--accent);
+    background: var(--cream-soft);
+  }
+  .pillar.clickable.selected::after {
+    content: "–";
+    color: var(--accent);
+    transform: rotate(0deg);
+  }
+
+  .pillar-detail-panel {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    padding: 40px;
+    margin-top: 24px;
+    display: none;
+    animation: panelIn .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .pillar-detail-panel.open { display: block; }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .pillar-detail-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .pillar-detail-title {
+    font-family: var(--display);
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -.02em;
+    margin-bottom: 20px;
+    font-variation-settings: "opsz" 60;
+  }
+  .pillar-detail-lede {
+    font-family: var(--display);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 380;
+    margin-bottom: 28px;
+    font-variation-settings: "opsz" 24;
+    max-width: 720px;
+  }
+  .pillar-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .pillar-detail-item {
+    border-left: 2px solid var(--rule);
+    padding: 4px 0 4px 16px;
+  }
+  .pillar-detail-item h5 {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-variation-settings: "opsz" 24;
+  }
+  .pillar-detail-item p {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-mute);
+  }
+  .pillar-detail-article {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 6px 12px;
+    margin-top: 4px;
+  }
+
+  /* Framework selector for compare */
+  .framework-selector {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 48px;
+    padding: 32px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 700px) {
+    .framework-selector { grid-template-columns: 1fr; }
+    .fw-vs { text-align: center; }
+  }
+  .fw-pick {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .fw-pick-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .fw-pick select {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 420;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-bottom: 2px solid var(--accent);
+    padding: 12px 16px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><polyline points='5 8 10 13 15 8' fill='none' stroke='%23161618' stroke-width='1.5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    padding-right: 36px;
+    font-variation-settings: "opsz" 36;
+    transition: all .25s ease;
+  }
+  .fw-pick select:hover { background-color: var(--cream-soft); }
+  .fw-pick select:focus { outline: none; border-color: var(--accent); }
+  .fw-vs {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--accent);
+    text-align: center;
+    font-variation-settings: "opsz" 60, "WONK" 1;
+  }
+
+  .sectors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .sector {
+    padding: 20px 18px;
+    border-right: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    position: relative;
+    transition: all .25s ease;
+    background: var(--paper);
+  }
+  .sector:hover { background: var(--cream); }
+  .sector-icon { width: 28px; height: 28px; margin-bottom: 12px; color: var(--ink-soft); }
+  .sector.essential { border-left: 3px solid var(--accent); }
+  .sector.important { border-left: 3px solid var(--gold); }
+  .sector-name {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 4px;
+    font-variation-settings: "opsz" 18;
+  }
+  .sector-type {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .sector.essential .sector-type { color: var(--accent); }
+  .sector.important .sector-type { color: var(--gold); }
+
+  .sector-legend {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .legend-dot.essential { background: var(--accent); }
+  .legend-dot.important { background: var(--gold); }
+
+  .callout {
+    margin: 48px 0;
+    padding: 40px;
+    border-left: 4px solid var(--accent);
+    background: var(--paper);
+    position: relative;
+  }
+  .callout-mark {
+    font-family: var(--display);
+    font-size: 80px;
+    color: var(--accent);
+    position: absolute;
+    top: -20px; right: 24px;
+    line-height: 1;
+    opacity: .3;
+    font-style: italic;
+  }
+  .callout-text {
+    font-family: var(--display);
+    font-size: 22px;
+    line-height: 1.45;
+    font-weight: 400;
+    color: var(--ink);
+    font-variation-settings: "opsz" 36;
+    font-style: italic;
+  }
+  .callout-attr {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 16px;
+  }
+
+  .penalty-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 120px;
+    align-items: center;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .penalty-row:last-child { border-bottom: none; }
+  .penalty-label {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 480;
+    font-variation-settings: "opsz" 24;
+  }
+  .penalty-label small {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 4px;
+  }
+  .penalty-bar-track {
+    height: 32px;
+    background: var(--cream-soft);
+    border: 1px solid var(--rule-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .penalty-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width 1.2s cubic-bezier(.2,.7,.3,1);
+  }
+  .penalty-bar.gold { background: var(--gold); }
+  .penalty-bar.muted { background: var(--moss); }
+  .penalty-amount {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: right;
+  }
+  @media (max-width: 700px) {
+    .penalty-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  .pyramid-wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .pyramid-wrap { grid-template-columns: 1fr; } }
+
+  .pyramid-detail {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    min-height: 380px;
+  }
+  .pyramid-detail-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .pyramid-detail-title {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    letter-spacing: -.015em;
+    font-variation-settings: "opsz" 36;
+  }
+  .pyramid-detail-body {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .pyramid-detail-examples {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 10px;
+  }
+  .example-tag {
+    display: inline-block;
+    font-family: var(--body);
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--cream-soft);
+    border: 1px solid var(--rule-soft);
+    margin: 0 6px 6px 0;
+    color: var(--ink-soft);
+  }
+
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .compare th, .compare td {
+    padding: 18px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+  .compare th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    background: var(--cream-soft);
+    border-bottom: 1px solid var(--rule);
+  }
+  .compare td { font-size: 14px; line-height: 1.55; }
+  .compare tr:last-child td { border-bottom: none; }
+  .compare .col-label {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 500;
+    font-variation-settings: "opsz" 24;
+  }
+
+  /* SUPPLY CHAIN */
+  .chain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .chain-grid { grid-template-columns: 1fr; } }
+
+  .article-ref {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 32px;
+    border-left: 4px solid var(--accent);
+  }
+  .article-ref-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 8px;
+  }
+  .article-ref-title {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 36;
+  }
+  .article-ref-title em {
+    font-style: italic;
+    color: var(--sand);
+    font-variation-settings: "opsz" 36, "WONK" 1;
+  }
+  .article-ref-body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: rgba(241,233,216,.85);
+  }
+  .article-ref-body ul {
+    margin-top: 12px;
+    list-style: none;
+    padding: 0;
+  }
+  .article-ref-body li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+  }
+  .article-ref-body li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--display);
+  }
+
+  .pitfall {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 24px;
+    position: relative;
+  }
+  .pitfall::before {
+    content: "!";
+    position: absolute;
+    top: 24px; right: 24px;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 28px;
+    color: var(--accent);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    text-align: center;
+    line-height: 32px;
+  }
+  .pitfall-title {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 480;
+    margin-bottom: 8px;
+    padding-right: 50px;
+    font-variation-settings: "opsz" 24;
+  }
+  .pitfall-body {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  /* QUIZ */
+  .quiz { max-width: 760px; margin: 0 auto; }
+  .quiz-start {
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .quiz-start-num {
+    font-family: var(--display);
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--accent);
+    font-style: italic;
+    line-height: 1;
+    font-variation-settings: "opsz" 144, "WONK" 1;
+    margin-bottom: 12px;
+  }
+  .quiz-start-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+  }
+  .quiz-start-title {
+    font-family: var(--display);
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -.02em;
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 60;
+  }
+  .quiz-start-body {
+    font-family: var(--display);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin: 0 auto 32px;
+    font-variation-settings: "opsz" 24;
+  }
+  .quiz-btn {
+    display: inline-block;
+    padding: 16px 32px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .25s ease;
+  }
+  .quiz-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+  .quiz-btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .quiz-btn.ghost:hover {
+    background: var(--ink);
+    color: var(--cream);
+    transform: translateY(-2px);
+  }
+  .quiz-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .quiz-question {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 40px;
+  }
+  .quiz-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .quiz-progress-bar {
+    height: 2px;
+    background: var(--rule-soft);
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .quiz-category {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .quiz-q-text {
+    font-family: var(--display);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin-bottom: 28px;
+    letter-spacing: -.015em;
+    font-variation-settings: "opsz" 36;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .quiz-option {
+    text-align: left;
+    padding: 16px 20px 16px 56px;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    transition: all .2s ease;
+    position: relative;
+  }
+  .quiz-option::before {
+    content: attr(data-letter);
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+  }
+  .quiz-option:hover:not(:disabled) {
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+  .quiz-option.correct {
+    background: rgba(76,122,79,.12);
+    border-color: var(--green-ok);
+    color: var(--ink);
+  }
+  .quiz-option.correct::before {
+    background: var(--green-ok);
+    color: var(--cream);
+    border-color: var(--green-ok);
+  }
+  .quiz-option.wrong {
+    background: rgba(183,58,31,.1);
+    border-color: var(--red-warn);
+  }
+  .quiz-option.wrong::before {
+    background: var(--red-warn);
+    color: var(--cream);
+    border-color: var(--red-warn);
+  }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-feedback {
+    border-top: 1px solid var(--rule-soft);
+    padding-top: 24px;
+    margin-bottom: 24px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity .3s ease, max-height .3s ease;
+  }
+  .quiz-feedback.show {
+    opacity: 1;
+    max-height: 400px;
+  }
+  .quiz-verdict {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-variation-settings: "opsz" 24;
+  }
+  .quiz-verdict.right { color: var(--green-ok); }
+  .quiz-verdict.wrong { color: var(--red-warn); }
+  .quiz-explanation {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .quiz-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .quiz-result {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 50px 40px;
+    text-align: center;
+  }
+  .quiz-result-score {
+    font-family: var(--display);
+    font-size: 110px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .quiz-result-score .of {
+    font-style: normal;
+    color: var(--ink-mute);
+    font-size: 60px;
+  }
+  .quiz-result-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 32px;
+  }
+  .quiz-result-title {
+    font-family: var(--display);
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -.02em;
+    margin-bottom: 12px;
+    font-variation-settings: "opsz" 60;
+  }
+  .quiz-result-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 60, "WONK" 1;
+  }
+  .quiz-result-body {
+    font-family: var(--display);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin: 0 auto 32px;
+    font-variation-settings: "opsz" 24;
+  }
+  .quiz-result-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+  @media (max-width: 600px) { .quiz-result-breakdown { grid-template-columns: 1fr; } }
+  .quiz-breakdown-item {
+    padding: 16px 20px;
+    background: var(--cream-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .quiz-breakdown-cat {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 4px;
+  }
+  .quiz-breakdown-score {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 500;
+    font-variation-settings: "opsz" 24;
+  }
+
+  /* CHECKLIST */
+  .checklist-overview {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+  .checklist-overview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .checklist-overview-title {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -.015em;
+    font-variation-settings: "opsz" 36;
+  }
+  .checklist-overview-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 36, "WONK" 1;
+  }
+  .checklist-overall {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .checklist-overall strong {
+    font-family: var(--display);
+    font-size: 32px;
+    font-style: italic;
+    color: var(--accent);
+    margin-right: 8px;
+    font-variation-settings: "opsz" 60, "WONK" 1;
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--cream-soft);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width .5s cubic-bezier(.2,.7,.3,1);
+  }
+  .checklist-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .checklist-section {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    margin-bottom: 16px;
+  }
+  .checklist-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    cursor: pointer;
+    user-select: none;
+    transition: background .2s ease;
+    border-bottom: 1px solid transparent;
+    gap: 16px;
+  }
+  .checklist-section.open .checklist-section-head {
+    border-bottom-color: var(--rule-soft);
+  }
+  .checklist-section-head:hover { background: rgba(184,138,59,.04); }
+  .checklist-section-title {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 480;
+    letter-spacing: -.01em;
+    font-variation-settings: "opsz" 36;
+  }
+  .checklist-section-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .checklist-section-progress {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .1em;
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+  .checklist-section-progress strong { color: var(--accent); }
+  .checklist-section-chevron {
+    width: 20px;
+    height: 20px;
+    transition: transform .3s ease;
+    flex-shrink: 0;
+  }
+  .checklist-section.open .checklist-section-chevron { transform: rotate(180deg); }
+
+  .checklist-items {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .checklist-section.open .checklist-items {
+    max-height: 4000px;
+  }
+
+  .checklist-item {
+    display: flex;
+    gap: 16px;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--rule-soft);
+    cursor: pointer;
+    transition: background .2s ease;
+    user-select: none;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item:hover { background: var(--cream-soft); }
+  .checklist-item.checked { opacity: .6; }
+  .checklist-item.checked .checklist-item-title {
+    text-decoration: line-through;
+    text-decoration-color: var(--ink-mute);
+  }
+  .checklist-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--ink);
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all .2s ease;
+  }
+  .checklist-item.checked .checklist-checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .checklist-item.checked .checklist-checkbox::after {
+    content: "";
+    position: absolute;
+    left: 6px; top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid var(--cream);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .checklist-item-body { flex: 1; }
+  .checklist-item-title {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 480;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    font-variation-settings: "opsz" 24;
+  }
+  .checklist-item-desc {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.5;
+  }
+  .checklist-item-ref {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 6px;
+    padding: 2px 8px;
+    background: rgba(200,72,42,.08);
+    border-radius: 2px;
+  }
+
+  footer.foot {
+    padding: 60px 0 40px;
+    text-align: center;
+    background: var(--ink);
+    color: var(--cream);
+    margin-top: 60px;
+  }
+  .foot-title {
+    font-family: var(--display);
+    font-size: 32px;
+    font-weight: 350;
+    letter-spacing: -.02em;
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 60;
+  }
+  .foot-title em {
+    font-style: italic;
+    color: var(--sand);
+    font-variation-settings: "opsz" 60, "WONK" 1;
+  }
+  .foot-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+  .foot-line {
+    width: 60px;
+    height: 1px;
+    background: var(--sand);
+    margin: 28px auto;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s cubic-bezier(.2,.7,.3,1), transform .8s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <div class="mast-row">
+      <div class="mast-title">Regelverks<em>atlas</em></div>
+      <div class="mast-meta">
+        <a href="./index.html" style="color: var(--ink-mute); text-decoration: none; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">← YH Prep Lab</a>
+        <span><span class="dot"></span> Uppdaterad maj 2026</span>
+        <span>EU · SE</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <div class="hero-eyebrow">En visuell guide till EU:s digitala regelverk</div>
+    <h1>
+      Det digitala<br>
+      <span class="ital">regellandskapet</span>
+    </h1>
+    <p class="hero-lede">
+      Fyra EU-regelverk — NIS2, AI Act, GDPR och DORA — ritar tillsammans om hur Europa hanterar cybersäkerhet, artificiell intelligens, personuppgifter och digital motståndskraft. Här lär du dig vad de innebär, jämför dem mot varandra, testar dina kunskaper och bockar av vad du behöver göra.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">18</div>
+        <div class="hero-stat-label">sektorer i NIS2</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">risknivåer i AI Act</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">72<span style="font-size:24px">h</span></div>
+        <div class="hero-stat-label">incidentanmälan (GDPR)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">22k</div>
+        <div class="hero-stat-label">finansenheter (DORA)</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="tabs-wrap">
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" data-tab="nis2">
+        <span class="tab-num">Del 01 — Cyber</span>
+        <span class="tab-label">NIS2</span>
+        <div class="tab-sub">Cybersäkerhet</div>
+      </button>
+      <button class="tab" data-tab="aiact">
+        <span class="tab-num">Del 02 — AI</span>
+        <span class="tab-label">AI Act</span>
+        <div class="tab-sub">Riskbaserad AI</div>
+      </button>
+      <button class="tab" data-tab="gdpr">
+        <span class="tab-num">Del 03 — Data</span>
+        <span class="tab-label">GDPR</span>
+        <div class="tab-sub">Personuppgifter</div>
+      </button>
+      <button class="tab" data-tab="dora">
+        <span class="tab-num">Del 04 — Finans</span>
+        <span class="tab-label">DORA</span>
+        <div class="tab-sub">Operationell motståndskraft</div>
+      </button>
+      <button class="tab" data-tab="compare">
+        <span class="tab-num">Del 05 — Översikt</span>
+        <span class="tab-label">Jämförelse</span>
+        <div class="tab-sub">Välj två ramverk</div>
+      </button>
+      <button class="tab" data-tab="quiz">
+        <span class="tab-num">Del 06 — Test</span>
+        <span class="tab-label">Självtest</span>
+        <div class="tab-sub">12 frågor</div>
+      </button>
+      <button class="tab" data-tab="check">
+        <span class="tab-num">Del 07 — Praktik</span>
+        <span class="tab-label">Checklista</span>
+        <div class="tab-sub">Att göra-listan</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- NIS2 -->
+<div class="tab-content active" id="tab-nis2">
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Vad är <em>NIS2</em>?</h2>
+          <p class="chapter-intro">
+            NIS2 är EU:s reviderade direktiv om nät- och informationssäkerhet. Det ersätter NIS1 från 2016 och kräver att hela samhällsviktig och digital sektor inom EU ska klara en gemensam, hög nivå av cybersäkerhet.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="card">
+          <div class="card-num">01 — Bakgrund</div>
+          <h3 class="card-title">Varför ett nytt direktiv?</h3>
+          <div class="card-body">
+            <p>Hotbilden har förändrats dramatiskt sedan NIS1. Ransomware, attacker mot leveranskedjor och statsstödda intrång har gått från undantag till vardag. NIS1 visade sig vara för fragmenterat — medlemsländerna tolkade det olika och för få verksamheter omfattades.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">02 — Räckvidd</div>
+          <h3 class="card-title">Mycket bredare täckning</h3>
+          <div class="card-body">
+            <p>NIS2 omfattar betydligt fler sektorer än sin föregångare och inför en storleksregel: medelstora och stora företag i utpekade sektorer omfattas automatiskt. Cirka 160 000 verksamheter i EU förväntas beröras.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">03 — Sverige</div>
+          <h3 class="card-title">Cybersäkerhetslagen</h3>
+          <div class="card-body">
+            <p>I Sverige genomförs NIS2 genom den nya cybersäkerhetslagen. MSB blir tillsynsmyndighet för flera sektorer, medan Finansinspektionen, Energimyndigheten och andra ansvarar för sina respektive områden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">ii.</div>
+        <div>
+          <h2 class="chapter-title">Vem <em>omfattas</em>?</h2>
+          <p class="chapter-intro">
+            NIS2 delar in verksamheter i två kategorier: väsentliga och viktiga. Båda måste uppfylla samma säkerhetskrav — skillnaden ligger i hur tillsynen sker och hur höga sanktionsavgifterna kan bli.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <div class="sector-legend">
+          <span><span class="legend-dot essential"></span>Väsentliga entiteter</span>
+          <span><span class="legend-dot important"></span>Viktiga entiteter</span>
+        </div>
+
+        <div class="sectors">
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+            <div class="sector-name">Energi</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M8 8V5a4 4 0 0 1 8 0v3M3 15h18"/></svg>
+            <div class="sector-name">Transport</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 10h18M7 15h2M11 15h2"/></svg>
+            <div class="sector-name">Bank &amp; finans</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z"/><circle cx="12" cy="11" r="3"/></svg>
+            <div class="sector-name">Finansiell infrastruktur</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16M4 12h16"/><circle cx="12" cy="12" r="9"/></svg>
+            <div class="sector-name">Hälso- och sjukvård</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2c-3 4-6 7-6 11a6 6 0 0 0 12 0c0-4-3-7-6-11z"/></svg>
+            <div class="sector-name">Dricksvatten</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0M3 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>
+            <div class="sector-name">Avloppsvatten</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="8" rx="1"/><rect x="2" y="14" width="20" height="6" rx="1"/><circle cx="6" cy="8" r="1" fill="currentColor"/><circle cx="6" cy="17" r="1" fill="currentColor"/></svg>
+            <div class="sector-name">Digital infrastruktur</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>
+            <div class="sector-name">ICT-tjänsteleverans</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9h16M9 4v16"/></svg>
+            <div class="sector-name">Offentlig förvaltning</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector essential">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 2c3 3 4.5 7 4.5 10s-1.5 7-4.5 10c-3-3-4.5-7-4.5-10s1.5-7 4.5-10z"/></svg>
+            <div class="sector-name">Rymden</div>
+            <div class="sector-type">Väsentlig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7l9 6 9-6M3 7v10h18V7"/></svg>
+            <div class="sector-name">Post och bud</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18l-2 14H5L3 6zM8 6V4a4 4 0 0 1 8 0v2"/></svg>
+            <div class="sector-name">Avfallshantering</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v6l-4 8a3 3 0 0 0 3 4h8a3 3 0 0 0 3-4l-4-8V3M9 3h6"/></svg>
+            <div class="sector-name">Kemikalier</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4v16h14V4M5 8h14M9 4v4M15 4v4"/></svg>
+            <div class="sector-name">Livsmedel</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            <div class="sector-name">Tillverkning</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5h6l3 5v9H6v-9l3-5z"/><circle cx="12" cy="14" r="2"/></svg>
+            <div class="sector-name">Digitala leverantörer</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+          <div class="sector important">
+            <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2zM8 7h8M8 11h8M8 15h5"/></svg>
+            <div class="sector-name">Forskning</div>
+            <div class="sector-type">Viktig</div>
+          </div>
+        </div>
+
+        <div class="figure-caption">
+          <strong>Figur 1.</strong> Sektorer som omfattas av NIS2 — uppdelade i väsentliga och viktiga. Som tumregel: mellanstora företag (50+ anställda eller €10M+ omsättning) och uppåt omfattas i utpekade sektorer.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iii.</div>
+        <div>
+          <h2 class="chapter-title">Fyra pelare av <em>krav</em></h2>
+          <p class="chapter-intro">
+            NIS2 organiserar kraven kring fyra huvudsakliga områden. Alla berörda verksamheter måste hantera samtliga — det räcker inte att "ha en brandvägg".
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-4 reveal">
+        <div class="pillar clickable" data-nis2-pillar="riskhantering">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 4L8 10v12c0 10 7 18 16 22 9-4 16-12 16-22V10L24 4z"/><path d="M18 24l4 4 8-8"/></svg>
+          <div class="pillar-title">Riskhantering</div>
+          <div class="pillar-body">Policy, sårbarhetshantering, kryptering, åtkomstkontroll, HR-säkerhet och leveranskedja.</div>
+        </div>
+        <div class="pillar clickable" data-nis2-pillar="incidentrapportering">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="20"/><path d="M24 12v12l8 4"/></svg>
+          <div class="pillar-title">Incidentrapportering</div>
+          <div class="pillar-body">Tidig varning inom 24 h, full incidentrapport inom 72 h och slutrapport inom 1 månad.</div>
+        </div>
+        <div class="pillar clickable" data-nis2-pillar="styrelseansvar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h32v24H8z"/><path d="M16 20h16M16 28h10"/><circle cx="38" cy="14" r="4" fill="currentColor"/></svg>
+          <div class="pillar-title">Styrelseansvar</div>
+          <div class="pillar-body">Ledning ska godkänna säkerhetsåtgärder, övervaka efterlevnad och själva utbildas i cyberrisk.</div>
+        </div>
+        <div class="pillar clickable" data-nis2-pillar="leveranskedja">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="14" cy="14" r="6"/><circle cx="34" cy="14" r="6"/><circle cx="24" cy="34" r="6"/><path d="M18 18l4 11M30 18l-4 11M20 14h8"/></svg>
+          <div class="pillar-title">Leveranskedja</div>
+          <div class="pillar-body">Säkerhet i avtal, leverantörsbedömning och risker hos tredjepartsleverantörer.</div>
+        </div>
+      </div>
+
+      <div class="pillar-detail-panel reveal" id="nis2-pillar-detail">
+        <!-- Filled by JS when a pillar is clicked -->
+      </div>
+
+      <p style="font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute); margin-top: 16px; text-align: center;">
+        ↑ Klicka på en pelare för fördjupning
+      </p>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— Process</span>
+        <h3 class="subhead-title">Incidentrapporteringens <em>tre steg</em></h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="figure reveal">
+        <svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <line x1="80" y1="160" x2="920" y2="160" stroke="#C7BFA8" stroke-width="2"/>
+          <g>
+            <circle cx="80" cy="160" r="14" fill="#161618"/>
+            <text x="80" y="120" text-anchor="middle" font-family="JetBrains Mono" font-size="11" letter-spacing="2" fill="#C8482A">INCIDENT</text>
+            <text x="80" y="200" text-anchor="middle" font-family="Fraunces" font-size="14" fill="#161618">Upptäcks</text>
+            <text x="80" y="218" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">t = 0</text>
+          </g>
+          <g>
+            <circle cx="360" cy="160" r="14" fill="#C8482A"/>
+            <circle cx="360" cy="160" r="22" fill="none" stroke="#C8482A" stroke-width="1" opacity="0.4"/>
+            <text x="360" y="90" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="32" fill="#C8482A">24 h</text>
+            <text x="360" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5C5C66">STEG 01</text>
+            <text x="360" y="200" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#161618">Tidig varning</text>
+            <text x="360" y="220" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">Misstanke om incident</text>
+            <text x="360" y="236" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">— minimal info till CSIRT</text>
+          </g>
+          <g>
+            <circle cx="620" cy="160" r="14" fill="#B58A3B"/>
+            <circle cx="620" cy="160" r="22" fill="none" stroke="#B58A3B" stroke-width="1" opacity="0.4"/>
+            <text x="620" y="90" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="32" fill="#B58A3B">72 h</text>
+            <text x="620" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5C5C66">STEG 02</text>
+            <text x="620" y="200" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#161618">Incidentrapport</text>
+            <text x="620" y="220" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">Bedömning, allvarlighet,</text>
+            <text x="620" y="236" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">indikatorer på intrång</text>
+          </g>
+          <g>
+            <circle cx="880" cy="160" r="14" fill="#3E5340"/>
+            <circle cx="880" cy="160" r="22" fill="none" stroke="#3E5340" stroke-width="1" opacity="0.4"/>
+            <text x="880" y="90" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="32" fill="#3E5340">1 mån</text>
+            <text x="880" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5C5C66">STEG 03</text>
+            <text x="880" y="200" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#161618">Slutrapport</text>
+            <text x="880" y="220" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">Grundorsak, åtgärder,</text>
+            <text x="880" y="236" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">vidtagna säkerhetssteg</text>
+          </g>
+        </svg>
+        <div class="figure-caption">
+          <strong>Figur 2.</strong> Incidentrapporteringens tidskedja enligt artikel 23. Klockan börjar ticka vid <em>kännedom om</em> incidenten, inte vid intrångets början.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPLY CHAIN DEEP DIVE -->
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iv.</div>
+        <div>
+          <h2 class="chapter-title">Fördjupning: <em>leveranskedjan</em></h2>
+          <p class="chapter-intro">
+            Det är här NIS2 verkligen bryter ny mark. Du ansvarar inte längre bara för din egen säkerhet — du ansvarar för säkerheten i hela kedjan av leverantörer som ditt företag är beroende av. En sårbarhet hos en underleverantörs underleverantör kan plötsligt bli ditt problem.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout reveal" style="margin-top: 0;">
+        <div class="callout-mark">"</div>
+        <div class="callout-text">
+          NIS1 frågade om din brandvägg. NIS2 frågar om brandväggen hos din städfirmas IT-leverantör.
+        </div>
+        <div class="callout-attr">— Pedagogisk paradigm</div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— Den cascadande risken</span>
+        <h3 class="subhead-title">Hur risk <em>vandrar</em> uppåt</h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="figure reveal">
+        <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <g stroke="#C7BFA8" stroke-width="1.5" fill="none" stroke-dasharray="4,4">
+            <path d="M 80 380 L 200 280"/>
+            <path d="M 80 380 L 200 380"/>
+            <path d="M 240 420 L 200 380"/>
+            <path d="M 400 420 L 320 380"/>
+            <path d="M 560 420 L 480 380"/>
+            <path d="M 720 420 L 600 380"/>
+            <path d="M 880 380 L 720 380"/>
+            <path d="M 200 280 L 320 180"/>
+            <path d="M 200 380 L 320 180"/>
+            <path d="M 320 380 L 460 180"/>
+            <path d="M 480 380 L 460 180"/>
+            <path d="M 480 380 L 600 180"/>
+            <path d="M 600 380 L 600 180"/>
+            <path d="M 720 380 L 740 180"/>
+            <path d="M 320 180 L 500 80"/>
+            <path d="M 460 180 L 500 80"/>
+            <path d="M 600 180 L 500 80"/>
+            <path d="M 740 180 L 500 80"/>
+          </g>
+
+          <g stroke="#C8482A" stroke-width="2" fill="none">
+            <path d="M 80 380 L 200 280" stroke-dasharray="6,3"/>
+            <path d="M 200 280 L 320 180" stroke-dasharray="6,3"/>
+            <path d="M 320 180 L 500 80" stroke-dasharray="6,3"/>
+          </g>
+
+          <g>
+            <circle cx="500" cy="80" r="36" fill="#161618"/>
+            <circle cx="500" cy="80" r="46" fill="none" stroke="#C8482A" stroke-width="1.5" opacity="0.5"/>
+            <text x="500" y="86" text-anchor="middle" font-family="Fraunces" font-size="14" font-weight="600" fill="#F1E9D8">DU</text>
+            <text x="500" y="35" text-anchor="middle" font-family="JetBrains Mono" font-size="11" letter-spacing="2" fill="#161618">NIVÅ 0</text>
+            <text x="500" y="135" text-anchor="middle" font-family="Fraunces" font-size="13" font-style="italic" fill="#5C5C66">Din organisation</text>
+          </g>
+
+          <g>
+            <circle cx="320" cy="180" r="22" fill="#C8482A" stroke="#C8482A" stroke-width="2"/>
+            <text x="320" y="185" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="#F1E9D8">T1</text>
+            <circle cx="460" cy="180" r="22" fill="#F7F1E1" stroke="#161618" stroke-width="1.5"/>
+            <text x="460" y="185" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="#161618">T1</text>
+            <circle cx="600" cy="180" r="22" fill="#F7F1E1" stroke="#161618" stroke-width="1.5"/>
+            <text x="600" y="185" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="#161618">T1</text>
+            <circle cx="740" cy="180" r="22" fill="#F7F1E1" stroke="#161618" stroke-width="1.5"/>
+            <text x="740" y="185" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="#161618">T1</text>
+          </g>
+          <text x="40" y="186" font-family="JetBrains Mono" font-size="11" letter-spacing="2" fill="#161618">NIVÅ 1</text>
+          <text x="40" y="202" font-family="Manrope" font-size="11" fill="#5C5C66">Direkta</text>
+          <text x="40" y="216" font-family="Manrope" font-size="11" fill="#5C5C66">leverantörer</text>
+
+          <g>
+            <circle cx="200" cy="280" r="18" fill="#C8482A" stroke="#C8482A" stroke-width="1.5"/>
+            <text x="200" y="284" text-anchor="middle" font-family="Manrope" font-size="10" font-weight="600" fill="#F1E9D8">T2</text>
+            <circle cx="200" cy="380" r="18" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="200" y="384" text-anchor="middle" font-family="Manrope" font-size="10" font-weight="600" fill="#161618">T2</text>
+            <circle cx="320" cy="380" r="18" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="320" y="384" text-anchor="middle" font-family="Manrope" font-size="10" font-weight="600" fill="#161618">T2</text>
+            <circle cx="480" cy="380" r="18" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="480" y="384" text-anchor="middle" font-family="Manrope" font-size="10" font-weight="600" fill="#161618">T2</text>
+            <circle cx="600" cy="380" r="18" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="600" y="384" text-anchor="middle" font-family="Manrope" font-size="10" font-weight="600" fill="#161618">T2</text>
+            <circle cx="720" cy="380" r="18" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="720" y="384" text-anchor="middle" font-family="Manrope" font-size="10" font-weight="600" fill="#161618">T2</text>
+          </g>
+          <text x="40" y="286" font-family="JetBrains Mono" font-size="11" letter-spacing="2" fill="#161618">NIVÅ 2</text>
+          <text x="40" y="302" font-family="Manrope" font-size="11" fill="#5C5C66">Underleverantörer</text>
+
+          <g>
+            <circle cx="80" cy="380" r="14" fill="#B73A1F" stroke="#B73A1F" stroke-width="1.5"/>
+            <circle cx="80" cy="380" r="22" fill="none" stroke="#B73A1F" stroke-width="1" opacity="0.6">
+              <animate attributeName="r" values="14;28;14" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <text x="80" y="384" text-anchor="middle" font-family="Manrope" font-size="9" font-weight="600" fill="#F1E9D8">T3</text>
+            <circle cx="240" cy="420" r="14" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="240" y="424" text-anchor="middle" font-family="Manrope" font-size="9" font-weight="600" fill="#161618">T3</text>
+            <circle cx="400" cy="420" r="14" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="400" y="424" text-anchor="middle" font-family="Manrope" font-size="9" font-weight="600" fill="#161618">T3</text>
+            <circle cx="560" cy="420" r="14" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="560" y="424" text-anchor="middle" font-family="Manrope" font-size="9" font-weight="600" fill="#161618">T3</text>
+            <circle cx="720" cy="420" r="14" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="720" y="424" text-anchor="middle" font-family="Manrope" font-size="9" font-weight="600" fill="#161618">T3</text>
+            <circle cx="880" cy="380" r="14" fill="#F7F1E1" stroke="#161618" stroke-width="1"/>
+            <text x="880" y="384" text-anchor="middle" font-family="Manrope" font-size="9" font-weight="600" fill="#161618">T3</text>
+          </g>
+          <text x="40" y="426" font-family="JetBrains Mono" font-size="11" letter-spacing="2" fill="#161618">NIVÅ 3+</text>
+          <text x="40" y="442" font-family="Manrope" font-size="11" fill="#5C5C66">Sub-sub...</text>
+
+          <g>
+            <text x="80" y="455" font-family="Fraunces" font-size="12" font-style="italic" fill="#B73A1F">Sårbarhet börjar här...</text>
+            <text x="540" y="55" font-family="Fraunces" font-size="12" font-style="italic" fill="#C8482A">...landar här.</text>
+          </g>
+        </svg>
+        <div class="figure-caption">
+          <strong>Figur 3.</strong> En sårbarhet i en obetydlig underleverantör på nivå 3 kan vandra uppåt via nivå 2 och nivå 1 ända till din organisation. NIS2 kräver att du proaktivt hanterar den här risken — inte bara hos dina direkta leverantörer, utan i den utsträckning det är rimligt även djupare.
+        </div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— Lagtexten</span>
+        <h3 class="subhead-title">Vad <em>säger</em> NIS2 egentligen?</h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="chain-grid reveal">
+        <div class="article-ref">
+          <div class="article-ref-num">Artikel 21.2(d)</div>
+          <div class="article-ref-title">Säkerhet i <em>leveranskedjan</em></div>
+          <div class="article-ref-body">
+            <p>"Lämpliga och proportionerliga tekniska, operativa och organisatoriska åtgärder för att hantera risker som hotar säkerheten i nät- och informationssystem... ska inbegripa:"</p>
+            <ul>
+              <li>Säkerhet i leveranskedjan</li>
+              <li>Säkerhetsaspekter i relationen mellan varje entitet och dess direkta leverantörer</li>
+              <li>Säkerhetsaspekter i relationen mellan varje entitet och dess tjänsteleverantörer</li>
+            </ul>
+          </div>
+        </div>
+        <div class="article-ref">
+          <div class="article-ref-num">Artikel 22</div>
+          <div class="article-ref-title">EU-gemensam <em>riskbedömning</em></div>
+          <div class="article-ref-body">
+            <p>"Samarbetsgruppen kan, i samarbete med kommissionen och ENISA, genomföra koordinerade säkerhetsriskbedömningar av specifika kritiska leveranskedjor av IKT-tjänster, IKT-system och IKT-produkter."</p>
+            <ul>
+              <li>EU kan peka ut särskilt riskfyllda leverantörer</li>
+              <li>Du måste ta hänsyn till resultaten</li>
+              <li>Påminner om hur Huawei-bedömningen genomförts på telekomområdet</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— I praktiken</span>
+        <h3 class="subhead-title">Vad du <em>måste</em> bedöma</h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="grid-2 reveal">
+        <div class="card">
+          <div class="card-num">Bedömningskriterium 01</div>
+          <h3 class="card-title">Leverantörens egen säkerhet</h3>
+          <div class="card-body">
+            <p>Hur ser leverantörens cybersäkerhetsarbete ut? Har de policy, certifieringar (t.ex. ISO 27001), egen riskhantering? Vid större och kritiskare leverantörer ska du kunna styrka detta — inte bara förlita dig på marknadsföringsmaterial.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">Bedömningskriterium 02</div>
+          <h3 class="card-title">Produktens/tjänstens kvalitet</h3>
+          <div class="card-body">
+            <p>Hur byggs och underhålls produkten? Görs säker utveckling? Patchas sårbarheter snabbt? Finns transparenta rapporter över CVE-hantering? Detta är särskilt centralt för programvara och digitala tjänster.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">Bedömningskriterium 03</div>
+          <h3 class="card-title">Säker utvecklingsprocess</h3>
+          <div class="card-body">
+            <p>Använder leverantören secure-by-design? Görs hot­modellering? Granskas koden? Hur hanteras leverantörens egen leveranskedja — alltså <em>deras</em> underleverantörer? Frågorna kan rada upp sig i oändlighet, men de viktigaste måste ställas.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">Bedömningskriterium 04</div>
+          <h3 class="card-title">Geopolitik &amp; jurisdiktion</h3>
+          <div class="card-body">
+            <p>Var har leverantören sin verksamhet? Vilka regelverk gäller? Finns det rimliga skäl att tro att en främmande makt kan utöva påtryckning? Det här blir snabbt politiskt känsligt — men EU:s riskbedömningar enligt artikel 22 ger en grund att stå på.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— Avtal &amp; löpande arbete</span>
+        <h3 class="subhead-title">Det praktiska <em>arbetet</em></h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 6h20l4 4v32H10V10z"/><path d="M18 18h12M18 24h12M18 30h8"/></svg>
+          <div class="pillar-title">Avtalskrav</div>
+          <div class="pillar-body">Bygg in säkerhetskrav i alla nya avtal: rätt att granska, krav på incidentrapportering till dig, krav på underleverantörers säkerhet, hävningsrätt vid allvarliga brister.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="18"/><path d="M16 24l6 6 12-12"/></svg>
+          <div class="pillar-title">Leverantörsbedömning</div>
+          <div class="pillar-body">Genomför säkerhetsbedömning innan nya avtal tecknas. Skala upp djupet baserat på kritikalitet — en grafisk designer behöver inte samma scrutiny som en molnplattform.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 24h32M14 14l-6 10 6 10M34 14l6 10-6 10"/></svg>
+          <div class="pillar-title">Löpande tillsyn</div>
+          <div class="pillar-body">En bedömning vid avtalstecknande räcker inte. Genomför återkommande granskningar, framför allt av kritiska leverantörer. Bevaka säkerhetsincidenter i deras produkter.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M11 37l4-4M33 15l4-4"/><circle cx="24" cy="24" r="6"/></svg>
+          <div class="pillar-title">Incidentpipeline</div>
+          <div class="pillar-body">Hur får du veta när en leverantör drabbas? Bygg ut din interna pipeline så att incidenter hos leverantörer fångas in och bedöms — och vid behov rapporteras vidare till MSB.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="12" width="32" height="24" rx="2"/><path d="M14 22h20M14 28h12"/></svg>
+          <div class="pillar-title">Inventarie &amp; klassning</div>
+          <div class="pillar-body">Du måste först veta vilka leverantörer du har. Klassa dem efter kritikalitet (vilka skulle stoppa verksamheten om de gick ner?). Den listan är fundamentet.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 38l8-8 8 4 16-16"/><circle cx="40" cy="18" r="3"/></svg>
+          <div class="pillar-title">Exitplan</div>
+          <div class="pillar-body">Hur byter du leverantör om det krävs? Tekniskt, juridiskt, datamässigt. Inlåsning är en risk i sig — och har börjat uppmärksammas i EU:s riktlinjer som en del av leverantörssäkerhet.</div>
+        </div>
+      </div>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— Vanliga misstag</span>
+        <h3 class="subhead-title">Fyra <em>fallgropar</em></h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="grid-2 reveal">
+        <div class="pitfall">
+          <div class="pitfall-title">"Vi har ju ISO 27001"</div>
+          <div class="pitfall-body">Att leverantören är certifierad är en bra start, men inte en sluten dörr. NIS2 kräver att <em>du</em> har bedömt risken — du kan inte outsourca det ansvaret till en revisor. Certifiering är ett bevis, inte ett alibi.</div>
+        </div>
+        <div class="pitfall">
+          <div class="pitfall-title">"Vi har inga leverantörer"</div>
+          <div class="pitfall-body">Jo, det har du. Mejlsystem, lönesystem, molnlagring, kommunikationsplattformar, ekonomisystem — alla är leverantörer. Den första överraskningen i de flesta inventeringar är hur lång listan blev.</div>
+        </div>
+        <div class="pitfall">
+          <div class="pitfall-title">"Allt är lika viktigt"</div>
+          <div class="pitfall-body">Nej. Klassa leverantörer efter kritikalitet. Annars drunknar du i bedömningar för städfirmans skull och missar molnleverantören som hostar din kärnverksamhet. Proportionalitet är ett grundbegrepp i NIS2.</div>
+        </div>
+        <div class="pitfall">
+          <div class="pitfall-title">"Inköp fixar det"</div>
+          <div class="pitfall-body">Säkerhet i leveranskedjan kan inte vara bara en upphandlingsfråga. Det måste vara ett partnerskap mellan inköp, IT-säkerhet och verksamhet — annars hamnar säkerhetsklausulerna i avtal som ingen sen följer upp.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">v.</div>
+        <div>
+          <h2 class="chapter-title">När det blir <em>fel</em></h2>
+          <p class="chapter-intro">
+            NIS2 har vassare tänder än NIS1. Tillsynsmyndigheterna kan inte bara utfärda böter — de kan ålägga åtgärder, tillfälligt avstänga ledning och i värsta fall dra in certifieringar.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <div class="penalty-row">
+          <div class="penalty-label">
+            Väsentliga entiteter
+            <small>Max sanktion</small>
+          </div>
+          <div class="penalty-bar-track">
+            <div class="penalty-bar" data-width="100%"></div>
+          </div>
+          <div class="penalty-amount">€10M / 2 %</div>
+        </div>
+        <div class="penalty-row">
+          <div class="penalty-label">
+            Viktiga entiteter
+            <small>Max sanktion</small>
+          </div>
+          <div class="penalty-bar-track">
+            <div class="penalty-bar gold" data-width="70%"></div>
+          </div>
+          <div class="penalty-amount">€7M / 1,4 %</div>
+        </div>
+        <div class="penalty-row">
+          <div class="penalty-label">
+            Personligt ansvar för ledning
+            <small>Kan ådra ansvar och avstängning</small>
+          </div>
+          <div class="penalty-bar-track">
+            <div class="penalty-bar muted" data-width="40%"></div>
+          </div>
+          <div class="penalty-amount">Tillfällig</div>
+        </div>
+        <div class="figure-caption">
+          <strong>Figur 4.</strong> Sanktioner uttrycks som det högre av ett fast belopp eller en procentsats av global årsomsättning.
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div class="callout-mark">"</div>
+        <div class="callout-text">
+          Skillnaden från NIS1 är inte gradskillnad — det är ett paradigmskifte. Cybersäkerhet är inte längre IT-avdelningens uppgift. Det är styrelsens.
+        </div>
+        <div class="callout-attr">— Pedagogisk sammanfattning</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- AI ACT -->
+<div class="tab-content" id="tab-aiact">
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Vad är <em>AI Act</em>?</h2>
+          <p class="chapter-intro">
+            AI Act är världens första breda lagstiftning om artificiell intelligens. Den klassificerar AI-system efter risk — ju högre risk för människors hälsa, säkerhet eller rättigheter, desto strängare krav. Förordningen trädde i kraft 1 augusti 2024 och börjar gälla stegvis fram till 2027.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="card">
+          <div class="card-num">01 — Logik</div>
+          <h3 class="card-title">Riskbaserat angreppssätt</h3>
+          <div class="card-body">
+            <p>I stället för att reglera tekniken som sådan tittar AI Act på <em>användningsområdet</em>. Samma teknik kan vara fritt fram i ett sammanhang och förbjuden i ett annat. Det är därför AI Act fungerar som en pyramid med fyra nivåer.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">02 — Vem berörs</div>
+          <h3 class="card-title">Leverantörer &amp; användare</h3>
+          <div class="card-body">
+            <p>Kraven träffar både den som <em>utvecklar</em> AI-systemet (provider) och den som <em>använder</em> det i sin verksamhet (deployer). Importörer och distributörer har också ansvar. Geografiskt: gäller alla som riktar sig till EU-marknaden.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">03 — Förordning</div>
+          <h3 class="card-title">Direkt tillämplig</h3>
+          <div class="card-body">
+            <p>Till skillnad från NIS2, som är ett direktiv, är AI Act en förordning. Det innebär att den gäller likadant i alla EU-länder utan att översättas till nationell lag. Ingen "svensk variant" — samma regler från Stockholm till Sevilla.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">ii.</div>
+        <div>
+          <h2 class="chapter-title">Risk<em>pyramiden</em></h2>
+          <p class="chapter-intro">
+            Hjärtat i AI Act. Klicka på en nivå i pyramiden för att se vad som gäller, exempel på system, och vilka krav som ställs.
+          </p>
+        </div>
+      </div>
+
+      <div class="pyramid-wrap reveal">
+        <div class="figure" style="padding:32px;">
+          <svg viewBox="0 0 500 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" id="pyramid-svg">
+            <g class="pyr-level" data-level="minimal" style="cursor:pointer;">
+              <polygon points="50,420 450,420 410,340 90,340" fill="#4C7A4F" stroke="#161618" stroke-width="1.5"/>
+              <text x="250" y="385" text-anchor="middle" font-family="Fraunces" font-size="22" font-weight="500" fill="#F1E9D8">Minimal risk</text>
+              <text x="250" y="408" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#F1E9D8">FRI ANVÄNDNING</text>
+            </g>
+            <g class="pyr-level" data-level="limited" style="cursor:pointer;">
+              <polygon points="90,340 410,340 370,260 130,260" fill="#C9A748" stroke="#161618" stroke-width="1.5"/>
+              <text x="250" y="305" text-anchor="middle" font-family="Fraunces" font-size="20" font-weight="500" fill="#161618">Begränsad risk</text>
+              <text x="250" y="326" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#161618">TRANSPARENS</text>
+            </g>
+            <g class="pyr-level" data-level="high" style="cursor:pointer;">
+              <polygon points="130,260 370,260 330,180 170,180" fill="#D2762E" stroke="#161618" stroke-width="1.5"/>
+              <text x="250" y="225" text-anchor="middle" font-family="Fraunces" font-size="20" font-weight="500" fill="#F1E9D8">Hög risk</text>
+              <text x="250" y="246" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#F1E9D8">STRÄNGA KRAV</text>
+            </g>
+            <g class="pyr-level" data-level="unacceptable" style="cursor:pointer;">
+              <polygon points="170,180 330,180 250,40 250,40" fill="#B73A1F" stroke="#161618" stroke-width="1.5"/>
+              <text x="250" y="135" text-anchor="middle" font-family="Fraunces" font-size="16" font-weight="500" fill="#F1E9D8">Oacceptabel</text>
+              <text x="250" y="155" text-anchor="middle" font-family="Fraunces" font-size="16" font-weight="500" fill="#F1E9D8">risk</text>
+              <text x="250" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="9" letter-spacing="2" fill="#F1E9D8">FÖRBJUDET</text>
+            </g>
+          </svg>
+          <div class="figure-caption">
+            <strong>Figur 5.</strong> AI Act:s fyrnivåers riskpyramid. Pyramidens form är symbolisk: ju högre risk, desto mer reglering — men också desto färre system som faktiskt träffas.
+          </div>
+        </div>
+
+        <div class="pyramid-detail" id="pyramid-detail"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iii.</div>
+        <div>
+          <h2 class="chapter-title">Krav på system med <em>hög risk</em></h2>
+          <p class="chapter-intro">
+            Det är här reglerna har sin verkliga tyngd. Ett högrisksystem måste klara en lång rad krav innan det får släppas på marknaden — och leverantören måste kunna bevisa att det gör det.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="8" width="32" height="32" rx="2"/><path d="M14 18h20M14 24h20M14 30h14"/></svg>
+          <div class="pillar-title">Riskhanteringssystem</div>
+          <div class="pillar-body">Kontinuerlig process för att identifiera, bedöma och hantera risker genom hela livscykeln.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="18"/><path d="M24 14v10l6 6"/></svg>
+          <div class="pillar-title">Datakvalitet</div>
+          <div class="pillar-body">Tränings-, validerings- och testdata ska vara relevant, representativt, fritt från fel och bias-prövat.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 6h20l4 4v32H10V10z"/><path d="M18 18h12M18 24h12M18 30h8"/></svg>
+          <div class="pillar-title">Teknisk dokumentation</div>
+          <div class="pillar-body">Detaljerad beskrivning av systemet, syfte, design, data, prestanda — måste finnas innan marknadsföring.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 38l8-8 8 4 16-16"/><circle cx="40" cy="18" r="3"/></svg>
+          <div class="pillar-title">Loggning &amp; spårbarhet</div>
+          <div class="pillar-body">Automatisk loggning under användning för att möjliggöra utredning av incidenter och beslut.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="20" r="8"/><path d="M10 42c0-7 6-12 14-12s14 5 14 12"/></svg>
+          <div class="pillar-title">Mänsklig tillsyn</div>
+          <div class="pillar-body">Människa ska kunna förstå, ingripa och stoppa systemet. Inga "black box-beslut" om människor.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 6L6 14v12c0 10 8 18 18 22 10-4 18-12 18-22V14L24 6z"/></svg>
+          <div class="pillar-title">Robusthet &amp; säkerhet</div>
+          <div class="pillar-body">Motståndskraft mot fel, manipulation och cyberattacker. Noggrannhet ska kunna mätas och deklareras.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iv.</div>
+        <div>
+          <h2 class="chapter-title">Tids<em>linjen</em></h2>
+          <p class="chapter-intro">
+            AI Act trädde i kraft i augusti 2024 men aktiveras gradvis. Den här fasningen ger verksamheter tid att förbereda sig, men deadlines närmar sig snabbt.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <div class="timeline">
+          <div class="timeline-track"></div>
+          <div class="timeline-points">
+            <div class="tl-point active">
+              <div class="tl-date">Aug 2024</div>
+              <div class="tl-title">Förordningen träder i kraft</div>
+              <div class="tl-desc">Officiellt publicerad i EUT</div>
+            </div>
+            <div class="tl-point active">
+              <div class="tl-date">Feb 2025</div>
+              <div class="tl-title">Förbuden börjar gälla</div>
+              <div class="tl-desc">Oacceptabel risk är förbjuden</div>
+            </div>
+            <div class="tl-point active">
+              <div class="tl-date">Aug 2025</div>
+              <div class="tl-title">GPAI-regler &amp; sanktioner</div>
+              <div class="tl-desc">Krav på modeller för allmänna ändamål</div>
+            </div>
+            <div class="tl-point">
+              <div class="tl-date">Aug 2026</div>
+              <div class="tl-title">Huvuddelen träder i kraft</div>
+              <div class="tl-desc">Inkl. högrisksystem (bilaga III)</div>
+            </div>
+            <div class="tl-point">
+              <div class="tl-date">Aug 2027</div>
+              <div class="tl-title">Inbäddad i produkter</div>
+              <div class="tl-desc">Övriga högrisksystem (bilaga I)</div>
+            </div>
+          </div>
+        </div>
+        <div class="figure-caption">
+          <strong>Figur 6.</strong> Stegvis tillämpning av AI Act. Fyllda punkter är redan i kraft, ofyllda är kommande.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">v.</div>
+        <div>
+          <h2 class="chapter-title">Sanktions<em>trappa</em></h2>
+          <p class="chapter-intro">
+            AI Act har de strängaste sanktionerna i EU efter GDPR — och faktiskt högre i absoluta tal. Tre trappsteg, beroende på vad regelbrottet handlar om.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <div class="penalty-row">
+          <div class="penalty-label">
+            Förbjudna AI-system
+            <small>Användning trots förbud</small>
+          </div>
+          <div class="penalty-bar-track">
+            <div class="penalty-bar" data-width="100%"></div>
+          </div>
+          <div class="penalty-amount">€35M / 7 %</div>
+        </div>
+        <div class="penalty-row">
+          <div class="penalty-label">
+            Brott mot övriga skyldigheter
+            <small>Bristande efterlevnad av krav</small>
+          </div>
+          <div class="penalty-bar-track">
+            <div class="penalty-bar gold" data-width="43%"></div>
+          </div>
+          <div class="penalty-amount">€15M / 3 %</div>
+        </div>
+        <div class="penalty-row">
+          <div class="penalty-label">
+            Felaktig information
+            <small>Till tillsynsmyndighet</small>
+          </div>
+          <div class="penalty-bar-track">
+            <div class="penalty-bar muted" data-width="21%"></div>
+          </div>
+          <div class="penalty-amount">€7,5M / 1 %</div>
+        </div>
+        <div class="figure-caption">
+          <strong>Figur 7.</strong> För små företag tillämpas det <em>lägre</em> beloppet i stället för det högre — en proportionalitetsregel.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GDPR -->
+<div class="tab-content" id="tab-gdpr">
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Vad är <em>GDPR</em>?</h2>
+          <p class="chapter-intro">
+            Dataskyddsförordningen (GDPR) är EU:s allmänna förordning om personuppgifter, i kraft sedan 25 maj 2018. Den ger enskilda kontroll över sina personuppgifter och tvingar organisationer att hantera dem ansvarsfullt. Sju år senare är den fortfarande den mest tongivande dataskyddslagen i världen — och en modell för många andra.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="card">
+          <div class="card-num">01 — Princip</div>
+          <h3 class="card-title">Rättighetsbaserat skydd</h3>
+          <div class="card-body">
+            <p>GDPR utgår från att personuppgifter tillhör individen. Behandling kräver en rättslig grund (samtycke, avtal, rättslig förpliktelse, vitalt intresse, allmänt intresse eller berättigat intresse) — utan grund, ingen behandling.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">02 — Räckvidd</div>
+          <h3 class="card-title">Extraterritoriell</h3>
+          <div class="card-body">
+            <p>Gäller alla organisationer som behandlar personuppgifter om personer i EU — även om organisationen sitter i USA, Indien eller någon annanstans. Att rikta sig till EU-marknaden räcker för att omfattas.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">03 — Sverige</div>
+          <h3 class="card-title">IMY som tillsyn</h3>
+          <div class="card-body">
+            <p>Integritetsskyddsmyndigheten (IMY) är tillsynsmyndighet. De granskar klagomål, gör inspektioner och utfärdar sanktionsavgifter. Kompletterande svensk lagstiftning: dataskyddslagen och sektorsspecifika regler.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">ii.</div>
+        <div>
+          <h2 class="chapter-title">Sex <em>grundprinciper</em></h2>
+          <p class="chapter-intro">
+            Artikel 5 i GDPR formulerar sex bärande principer som all personuppgiftsbehandling måste leva upp till. Bryter du mot en princip bryter du mot GDPR — oavsett vilken rättslig grund du tror dig ha.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="20"/><path d="M16 24l6 6 12-14"/></svg>
+          <div class="pillar-title">Laglighet, korrekthet, öppenhet</div>
+          <div class="pillar-body">Behandling måste vila på rättslig grund, vara korrekt och tydligt kommunicerad till den registrerade.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 14h28v20H10z"/><path d="M16 22h16M16 28h8"/></svg>
+          <div class="pillar-title">Ändamålsbegränsning</div>
+          <div class="pillar-body">Data får bara samlas in för specifika, uttalade syften — och inte återanvändas för oförenliga ändamål.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="14" width="28" height="20"/><path d="M16 24h16"/></svg>
+          <div class="pillar-title">Uppgiftsminimering</div>
+          <div class="pillar-body">Bara det som faktiskt behövs får samlas in. "Det kan vara bra att ha" är inte en giltig motivering.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 6v12M14 16l10 10 10-10M8 30h32v10H8z"/></svg>
+          <div class="pillar-title">Korrekthet</div>
+          <div class="pillar-body">Felaktiga personuppgifter ska rättas eller raderas utan dröjsmål. Procedurer krävs för detta.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="18"/><path d="M24 12v12l8 6"/></svg>
+          <div class="pillar-title">Lagringsminimering</div>
+          <div class="pillar-body">Personuppgifter får inte sparas längre än nödvändigt. Skapa gallringsrutiner och håll dem.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 4L8 10v12c0 10 7 18 16 22 9-4 16-12 16-22V10L24 4z"/></svg>
+          <div class="pillar-title">Integritet och konfidentialitet</div>
+          <div class="pillar-body">Lämplig säkerhet: kryptering, åtkomstkontroll, skydd mot förlust, intrång, ändring eller obehörig spridning.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iii.</div>
+        <div>
+          <h2 class="chapter-title">Den registrerades <em>rättigheter</em></h2>
+          <p class="chapter-intro">
+            GDPR ger människor en uppsättning rättigheter som organisationen måste kunna hantera. Praktiken: dokumenterade processer, svarstider på en månad, och inga "vi har inte tid"-undantag.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-4 reveal">
+        <div class="card"><div class="card-num">Art. 15</div><h3 class="card-title">Registerutdrag</h3><div class="card-body"><p>Den registrerade har rätt att få veta vilka uppgifter du behandlar och varför.</p></div></div>
+        <div class="card"><div class="card-num">Art. 16</div><h3 class="card-title">Rättelse</h3><div class="card-body"><p>Felaktiga uppgifter måste kunna rättas på begäran.</p></div></div>
+        <div class="card"><div class="card-num">Art. 17</div><h3 class="card-title">Radering</h3><div class="card-body"><p>"Rätten att bli glömd" — radering när det inte längre finns rättslig grund.</p></div></div>
+        <div class="card"><div class="card-num">Art. 20</div><h3 class="card-title">Dataportabilitet</h3><div class="card-body"><p>Få ut sina egna uppgifter i strukturerat, maskinläsbart format.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iv.</div>
+        <div>
+          <h2 class="chapter-title">När det blir <em>fel</em></h2>
+          <p class="chapter-intro">
+            En personuppgiftsincident ska anmälas till IMY inom 72 timmar från upptäckt — om den medför risk för individers rättigheter. Vid hög risk ska även de drabbade informeras. Sanktioner är bland de hårdaste i EU efter AI Act.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <div class="penalty-row">
+          <div class="penalty-label">Allvarliga överträdelser<small>Art. 83.5 — kärnprinciper, rättigheter</small></div>
+          <div class="penalty-bar-track"><div class="penalty-bar" data-width="100%"></div></div>
+          <div class="penalty-amount">€20M / 4 %</div>
+        </div>
+        <div class="penalty-row">
+          <div class="penalty-label">Övriga överträdelser<small>Art. 83.4 — formella krav, säkerhet</small></div>
+          <div class="penalty-bar-track"><div class="penalty-bar gold" data-width="50%"></div></div>
+          <div class="penalty-amount">€10M / 2 %</div>
+        </div>
+        <div class="penalty-row">
+          <div class="penalty-label">Incidentanmälan<small>Tidsfrist från upptäckt</small></div>
+          <div class="penalty-bar-track"><div class="penalty-bar muted" data-width="36%"></div></div>
+          <div class="penalty-amount">72 h</div>
+        </div>
+        <div class="figure-caption">
+          <strong>Figur 8.</strong> GDPR-sanktioner. Som vanligt: det högre av fast belopp eller procent av global årsomsättning. Reella böter har varit många: Meta €1,2 miljarder (2023), Amazon €746 miljoner (2021), TikTok €345 miljoner (2023).
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div class="callout-mark">"</div>
+        <div class="callout-text">
+          GDPR handlar inte om att fylla i samtyckesrutor. Det handlar om att aldrig samla in mer än du behöver, alltid kunna förklara varför, och alltid kunna leverera rättigheter på begäran.
+        </div>
+        <div class="callout-attr">— Pedagogisk sammanfattning</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DORA -->
+<div class="tab-content" id="tab-dora">
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Vad är <em>DORA</em>?</h2>
+          <p class="chapter-intro">
+            Digital Operational Resilience Act (DORA) är EU:s förordning om digital operativ motståndskraft för finanssektorn. Den trädde i kraft 17 januari 2025 och samlar alla krav på IT-säkerhet, incidenthantering, tester och leverantörshantering i en enda lag. Före DORA: lapptäcke av nationella regler. Efter: gemensamt golv från Stockholm till Aten.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="card">
+          <div class="card-num">01 — Logik</div>
+          <h3 class="card-title">Motståndskraft, inte bara säkerhet</h3>
+          <div class="card-body">
+            <p>DORA skiftar fokus från att förhindra incidenter till att <em>klara av</em> dem. Antagandet är att intrång och störningar kommer att ske — det avgörande är hur snabbt finanssektorn återhämtar sig och hur lite kunderna märker av det.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">02 — Vem berörs</div>
+          <h3 class="card-title">Hela finanssektorn</h3>
+          <div class="card-body">
+            <p>Banker, försäkringsbolag, värdepappersbolag, betalinstitut, kryptovalutaplattformar, pensionsfonder, kreditvärderingsinstitut — över 22 000 finansiella enheter i EU. Dessutom: deras kritiska IKT-leverantörer (molntjänster, datacentral, mjukvara) får direkt tillsyn av ESA.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">03 — Förordning</div>
+          <h3 class="card-title">Direkt tillämplig</h3>
+          <div class="card-body">
+            <p>Som GDPR och AI Act är DORA en förordning — den gäller likadant i alla EU-länder. Tillsyn i Sverige ligger främst hos Finansinspektionen, som också bidrar till ESMA-, EBA- och EIOPA-arbetet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">ii.</div>
+        <div>
+          <h2 class="chapter-title">Fem <em>kravområden</em></h2>
+          <p class="chapter-intro">
+            DORA samlar kraven kring fem områden som tillsammans utgör operationell motståndskraft. Alla finansiella enheter måste leva upp till samtliga — proportionellt utifrån storlek och risk.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 4L8 10v12c0 10 7 18 16 22 9-4 16-12 16-22V10L24 4z"/><path d="M18 24l4 4 8-8"/></svg>
+          <div class="pillar-title">IKT-riskhantering</div>
+          <div class="pillar-body">Ramverk för identifiering, skydd, upptäckt, hantering och återhämtning — godkänt av styrelsen.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="24" r="20"/><path d="M24 12v12l8 4"/></svg>
+          <div class="pillar-title">Incidenthantering &amp; rapportering</div>
+          <div class="pillar-body">Klassificering, eskalering och rapportering av allvarliga IKT-incidenter till tillsynsmyndighet inom snäva tidsramar.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 24l8-8 8 8 8-8 8 8M8 36l8-8 8 8 8-8 8 8"/></svg>
+          <div class="pillar-title">Tester av motståndskraft</div>
+          <div class="pillar-body">Regelbundna tester. Större enheter måste göra hot-baserade penetrationstester (TLPT) minst vart tredje år.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="14" cy="14" r="6"/><circle cx="34" cy="14" r="6"/><circle cx="24" cy="34" r="6"/><path d="M18 18l4 11M30 18l-4 11M20 14h8"/></svg>
+          <div class="pillar-title">Tredjepartsrisk (IKT)</div>
+          <div class="pillar-body">Hela livscykeln för IKT-leverantörer: due diligence, kontrakt, övervakning, exit-planer. Register över avtal krävs.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 24h28M24 10l14 14-14 14"/></svg>
+          <div class="pillar-title">Informationsdelning</div>
+          <div class="pillar-body">Frivillig men uppmuntrad delning av hotinformation mellan finansiella enheter — för kollektivt försvar.</div>
+        </div>
+        <div class="pillar">
+          <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h32v24H8z"/><path d="M16 20h16M16 28h10"/><circle cx="38" cy="14" r="4" fill="currentColor"/></svg>
+          <div class="pillar-title">Styrelseansvar</div>
+          <div class="pillar-body">Ledning ansvarar formellt för IKT-risk: godkänner ramverk, granskar, utbildas. Personligt ansvar finns.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iii.</div>
+        <div>
+          <h2 class="chapter-title">Oversight av <em>kritiska leverantörer</em></h2>
+          <p class="chapter-intro">
+            Det här är DORA:s mest unika drag. Stora molntjänster och IKT-leverantörer som hela finanssektorn är beroende av — typiskt AWS, Microsoft, Google, Salesforce — kan pekas ut som "kritiska tredjepartsleverantörer" och hamnar då under direkt EU-tillsyn.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <svg viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <!-- Title -->
+          <text x="500" y="30" text-anchor="middle" font-family="JetBrains Mono" font-size="11" letter-spacing="2" fill="#5C5C66">UTPEKANDE AV KRITISK IKT-TREDJEPARTSLEVERANTÖR</text>
+
+          <!-- Step 1 -->
+          <rect x="50" y="80" width="180" height="100" fill="#F7F1E1" stroke="#C7BFA8" stroke-width="1.5"/>
+          <text x="140" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#C8482A">STEG 01</text>
+          <text x="140" y="132" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#161618">ESA bedömer</text>
+          <text x="140" y="152" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">Kriterier: systempåverkan,</text>
+          <text x="140" y="168" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">utbredning, ersättlighet</text>
+
+          <!-- Step 2 -->
+          <rect x="280" y="80" width="180" height="100" fill="#F7F1E1" stroke="#C7BFA8" stroke-width="1.5"/>
+          <text x="370" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#C8482A">STEG 02</text>
+          <text x="370" y="132" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#161618">Utpekande</text>
+          <text x="370" y="152" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">Joint Committee beslutar.</text>
+          <text x="370" y="168" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">Lista publiceras offentligt</text>
+
+          <!-- Step 3 -->
+          <rect x="510" y="80" width="180" height="100" fill="#F7F1E1" stroke="#C7BFA8" stroke-width="1.5"/>
+          <text x="600" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#C8482A">STEG 03</text>
+          <text x="600" y="132" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#161618">Lead Overseer</text>
+          <text x="600" y="152" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">EBA, ESMA eller EIOPA tar</text>
+          <text x="600" y="168" text-anchor="middle" font-family="Manrope" font-size="11" fill="#5C5C66">huvudansvar för tillsynen</text>
+
+          <!-- Step 4 -->
+          <rect x="740" y="80" width="180" height="100" fill="#161618" stroke="#161618" stroke-width="1.5"/>
+          <text x="830" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#C8482A">STEG 04</text>
+          <text x="830" y="132" text-anchor="middle" font-family="Fraunces" font-size="15" font-weight="500" fill="#F1E9D8">Direkt befogenhet</text>
+          <text x="830" y="152" text-anchor="middle" font-family="Manrope" font-size="11" fill="#D9C99A">Inspektioner, rekommendationer,</text>
+          <text x="830" y="168" text-anchor="middle" font-family="Manrope" font-size="11" fill="#D9C99A">periodiska viten</text>
+
+          <!-- Arrows -->
+          <path d="M 230 130 L 280 130" stroke="#C7BFA8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <path d="M 460 130 L 510 130" stroke="#C7BFA8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <path d="M 690 130 L 740 130" stroke="#C7BFA8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <polygon points="0 0, 8 4, 0 8" fill="#C7BFA8"/>
+            </marker>
+          </defs>
+
+          <!-- Foot note -->
+          <text x="500" y="230" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="13" fill="#5C5C66">Resultat: en EU-myndighet kan inspektera och utfärda viten direkt mot t.ex. en molntjänsteleverantör —</text>
+          <text x="500" y="248" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="13" fill="#5C5C66">utan att gå via den finansiella enhet som råkar vara kund.</text>
+        </svg>
+        <div class="figure-caption">
+          <strong>Figur 9.</strong> Det är första gången EU-myndigheter får direkt tillsyn över privata IT-leverantörer som inte själva är finansiella företag. Förordningens art. 31–44 reglerar detta. För kunderna betyder det att tredjepartsrisken delvis hanteras "uppströms" — men inte att eget ansvar försvinner.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">iv.</div>
+        <div>
+          <h2 class="chapter-title">Tids<em>linjen</em></h2>
+          <p class="chapter-intro">
+            DORA antogs 2022, trädde i kraft 2023 och blev tillämplig 17 januari 2025. Tekniska standarder (RTS/ITS) har rullats ut etappvis under 2024–2025.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure reveal">
+        <div class="timeline">
+          <div class="timeline-track"></div>
+          <div class="timeline-points">
+            <div class="tl-point active">
+              <div class="tl-date">Dec 2022</div>
+              <div class="tl-title">Antagen</div>
+              <div class="tl-desc">Förordningen publiceras</div>
+            </div>
+            <div class="tl-point active">
+              <div class="tl-date">Jan 2023</div>
+              <div class="tl-title">Träder i kraft</div>
+              <div class="tl-desc">Tvåårig förberedelseperiod</div>
+            </div>
+            <div class="tl-point active">
+              <div class="tl-date">2024</div>
+              <div class="tl-title">Tekniska standarder</div>
+              <div class="tl-desc">RTS/ITS från ESA publiceras</div>
+            </div>
+            <div class="tl-point active">
+              <div class="tl-date">Jan 2025</div>
+              <div class="tl-title">Tillämplig</div>
+              <div class="tl-desc">Full efterlevnad krävs</div>
+            </div>
+            <div class="tl-point active">
+              <div class="tl-date">2026 →</div>
+              <div class="tl-title">Operativ fas</div>
+              <div class="tl-desc">Utpekande, TLPT-tester, inspektioner</div>
+            </div>
+          </div>
+        </div>
+        <div class="figure-caption">
+          <strong>Figur 10.</strong> DORA är formellt tillämplig sedan januari 2025. Tillsyn och utpekande av kritiska tredjepartsleverantörer rullar in successivt under 2026.
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div class="callout-mark">"</div>
+        <div class="callout-text">
+          DORA är inte ny lagstiftning för finanssektorn — det är samlad lagstiftning. Det som tidigare låg utspritt över direktiv, riktlinjer och nationell praxis finns nu i en förordning. Konsolidering är pointen.
+        </div>
+        <div class="callout-attr">— Pedagogisk sammanfattning</div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="tab-content" id="tab-compare">
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Välj två <em>ramverk</em></h2>
+          <p class="chapter-intro">
+            Fyra EU-regelverk — NIS2, AI Act, GDPR och DORA — överlappar och kompletterar varandra på olika sätt. Välj två i menyerna nedan så bygger atlasen en jämförelsetabell aspekt för aspekt, plus de viktigaste praktiska överlappen.
+          </p>
+        </div>
+      </div>
+
+      <div class="framework-selector reveal">
+        <div class="fw-pick">
+          <span class="fw-pick-label">Ramverk A</span>
+          <select id="fw-select-a">
+            <option value="nis2">NIS2</option>
+            <option value="aiact">AI Act</option>
+            <option value="gdpr">GDPR</option>
+            <option value="dora">DORA</option>
+          </select>
+        </div>
+        <div class="fw-vs">vs</div>
+        <div class="fw-pick">
+          <span class="fw-pick-label">Ramverk B</span>
+          <select id="fw-select-b">
+            <option value="nis2">NIS2</option>
+            <option value="aiact" selected>AI Act</option>
+            <option value="gdpr">GDPR</option>
+            <option value="dora">DORA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="figure reveal" id="compare-table-wrap" style="padding: 0; overflow-x: auto;">
+        <!-- Filled by JS -->
+      </div>
+
+      <div class="subhead reveal">
+        <span class="subhead-mark">— Praktiken</span>
+        <h3 class="subhead-title">Var de <em>överlappar</em></h3>
+        <div class="subhead-line"></div>
+      </div>
+
+      <div class="grid-3 reveal" id="compare-overlaps">
+        <!-- Filled by JS -->
+      </div>
+
+      <div class="callout reveal" id="compare-callout">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- QUIZ -->
+<div class="tab-content" id="tab-quiz">
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Test dina <em>kunskaper</em></h2>
+          <p class="chapter-intro">
+            Tolv frågor som blandar NIS2 och AI Act. Du får direkt feedback med förklaring efter varje svar. Vid slutet ser du ditt resultat fördelat över olika områden.
+          </p>
+        </div>
+      </div>
+
+      <div class="quiz reveal">
+        <div id="quiz-start" class="quiz-start">
+          <div class="quiz-start-num">12</div>
+          <div class="quiz-start-label">— frågor — ungefär 5 min</div>
+          <h3 class="quiz-start-title">Är du redo?</h3>
+          <p class="quiz-start-body">
+            Frågorna täcker sektorer, rapporteringstider, risknivåer, sanktioner och praktiska situationer. Ingen är direkt knepig — men några är försåtliga. Lycka till.
+          </p>
+          <button class="quiz-btn" onclick="quizStart()">Starta testet</button>
+        </div>
+
+        <div id="quiz-question" class="quiz-question" style="display:none;">
+          <div class="quiz-progress">
+            <span>Fråga <strong id="q-current">1</strong> / 12</span>
+            <span id="q-cat">NIS2 — sektorer</span>
+          </div>
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="q-progress-fill"></div>
+          </div>
+
+          <div class="quiz-category" id="q-category-label">NIS2</div>
+          <h3 class="quiz-q-text" id="q-text">Fråga laddas...</h3>
+          <div class="quiz-options" id="q-options"></div>
+
+          <div class="quiz-feedback" id="q-feedback">
+            <div class="quiz-verdict" id="q-verdict">Rätt!</div>
+            <div class="quiz-explanation" id="q-explanation">...</div>
+          </div>
+
+          <div class="quiz-actions">
+            <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase;">
+              Poäng: <span id="q-score">0</span>/<span id="q-answered">0</span>
+            </span>
+            <button class="quiz-btn" id="q-next-btn" onclick="quizNext()" disabled>Nästa →</button>
+          </div>
+        </div>
+
+        <div id="quiz-result" class="quiz-result" style="display:none;">
+          <div class="quiz-result-score"><span id="r-score">0</span><span class="of"> / 12</span></div>
+          <div class="quiz-result-label">— din poäng —</div>
+          <h3 class="quiz-result-title" id="r-title">Resultat</h3>
+          <p class="quiz-result-body" id="r-body">...</p>
+
+          <div class="quiz-result-breakdown" id="r-breakdown"></div>
+
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="quiz-btn" onclick="quizReset()">Gör om testet</button>
+            <button class="quiz-btn ghost" onclick="switchTab('check')">Gå till checklistan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CHECKLIST -->
+<div class="tab-content" id="tab-check">
+  <section class="chapter">
+    <div class="container">
+      <div class="chapter-head reveal">
+        <div class="chapter-num">i.</div>
+        <div>
+          <h2 class="chapter-title">Att <em>göra</em>-listan</h2>
+          <p class="chapter-intro">
+            En operativ checklista för efterlevnad av NIS2 och AI Act. Klicka för att bocka av — dina markeringar sparas i webbläsaren. Använd som arbetslista eller mognadsbedömning.
+          </p>
+        </div>
+      </div>
+
+      <div class="checklist-overview reveal">
+        <div class="checklist-overview-row">
+          <div class="checklist-overview-title">Övergripande <em>framsteg</em></div>
+          <div class="checklist-overall">
+            <strong id="overall-pct">0</strong>%
+            <span id="overall-count">0 / 0</span>
+          </div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="overall-fill"></div>
+        </div>
+        <div class="checklist-actions">
+          <button class="quiz-btn ghost" onclick="checkExpandAll()">Öppna alla</button>
+          <button class="quiz-btn ghost" onclick="checkCollapseAll()">Stäng alla</button>
+          <button class="quiz-btn ghost" onclick="checkReset()">Återställ</button>
+        </div>
+      </div>
+
+      <div id="checklist-container" class="reveal"></div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-title">Regelverks<em>atlas</em></div>
+    <div class="foot-line"></div>
+    <div class="foot-sub">En visuell guide · Maj 2026 · Pedagogiskt material, ej juridisk rådgivning · Made by the one and only Max Lindström</div>
+  </div>
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  function switchTab(target) {
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+    const btn = document.querySelector(`.tab[data-tab="${target}"]`);
+    if (btn) btn.classList.add('active');
+    const content = document.getElementById('tab-' + target);
+    if (content) content.classList.add('active');
+    window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 60, behavior: 'smooth' });
+    runReveal();
+    animatePenalties();
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+
+  function runReveal() {
+    const reveals = document.querySelectorAll('.tab-content.active .reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(r => {
+      r.classList.remove('in');
+      io.observe(r);
+    });
+  }
+
+  function animatePenalties() {
+    setTimeout(() => {
+      const bars = document.querySelectorAll('.tab-content.active .penalty-bar');
+      bars.forEach((b, i) => {
+        setTimeout(() => { b.style.width = b.dataset.width; }, 200 + i * 150);
+      });
+    }, 100);
+    document.querySelectorAll('.tab-content:not(.active) .penalty-bar').forEach(b => b.style.width = '0');
+  }
+
+  const pyramidData = {
+    unacceptable: {
+      tag: 'Nivå 01 — Förbjudet',
+      color: '#B73A1F',
+      title: 'Oacceptabel risk',
+      body: 'AI-system som anses utgöra ett uppenbart hot mot människors säkerhet, försörjning och rättigheter. Dessa system är helt enkelt förbjudna att släppas på EU-marknaden eller användas — oavsett om de är effektiva eller efterfrågade.',
+      examples: ['Social scoring av myndigheter', 'Manipulativ AI som utnyttjar sårbarheter', 'Realtidsbiometri i offentliga rum (med snäva undantag)', 'Känslodetektering på arbetsplats eller skola', 'Subliminal påverkan']
+    },
+    high: {
+      tag: 'Nivå 02 — Strängt reglerat',
+      color: '#D2762E',
+      title: 'Hög risk',
+      body: 'AI-system som påtagligt kan påverka människors säkerhet eller grundläggande rättigheter. Tillåtna att använda, men endast efter omfattande krav: riskhantering, datakvalitet, dokumentation, mänsklig tillsyn, robusthet och CE-märkning.',
+      examples: ['Rekrytering och HR-beslut', 'Kreditbedömning', 'Medicinsk diagnostik', 'Migration och gränskontroll', 'Rättskipning och brottsbekämpning', 'Kritisk infrastruktur', 'Utbildning och betygsättning']
+    },
+    limited: {
+      tag: 'Nivå 03 — Transparens',
+      color: '#C9A748',
+      title: 'Begränsad risk',
+      body: 'AI där huvudrisken är att människor inte vet att de interagerar med AI. Här krävs framför allt transparens: användaren ska informeras, och AI-genererat innehåll ska kunna spåras.',
+      examples: ['Chattbottar (måste avslöja att de är AI)', 'Deepfakes (måste märkas)', 'AI-genererade bilder, ljud, video', 'Emotionsigenkänning (utanför förbjudna kontexter)']
+    },
+    minimal: {
+      tag: 'Nivå 04 — Fri användning',
+      color: '#4C7A4F',
+      title: 'Minimal risk',
+      body: 'Den absoluta merparten av all AI som används idag. Ingen särskild reglering — bara generella regler som GDPR och konsumenträtt gäller. Frivilliga uppförandekoder uppmuntras.',
+      examples: ['Spamfilter', 'AI i dataspel', 'Rekommendationer (icke-känsliga)', 'Lagerhantering', 'Översättning', 'Stavnings­kontroll']
+    }
+  };
+
+  function renderPyramid(level) {
+    const data = pyramidData[level];
+    const detail = document.getElementById('pyramid-detail');
+    detail.innerHTML = `
+      <div class="pyramid-detail-tag" style="color:${data.color}">${data.tag}</div>
+      <div class="pyramid-detail-title">${data.title}</div>
+      <div class="pyramid-detail-body">${data.body}</div>
+      <div class="pyramid-detail-examples">Exempel</div>
+      <div>
+        ${data.examples.map(e => `<span class="example-tag">${e}</span>`).join('')}
+      </div>
+    `;
+    document.querySelectorAll('.pyr-level').forEach(g => {
+      const poly = g.querySelector('polygon');
+      poly.setAttribute('stroke-width', g.dataset.level === level ? '3' : '1.5');
+    });
+  }
+
+  document.querySelectorAll('.pyr-level').forEach(g => {
+    g.addEventListener('click', () => renderPyramid(g.dataset.level));
+    g.addEventListener('mouseenter', () => {
+      g.querySelector('polygon').style.filter = 'brightness(1.08)';
+    });
+    g.addEventListener('mouseleave', () => {
+      g.querySelector('polygon').style.filter = 'none';
+    });
+  });
+
+  renderPyramid('high');
+
+  // QUIZ
+  const questions = [
+    {
+      cat: 'NIS2 · Bakgrund',
+      q: 'Vilket regelverk ersätter NIS2?',
+      options: ['GDPR', 'NIS1-direktivet från 2016', 'eIDAS', 'DORA'],
+      correct: 1,
+      explanation: 'NIS2 (Direktiv 2022/2555) ersätter NIS1 från 2016. Hotbilden var en helt annan när NIS1 togs fram, och flera medlemsländer tolkade direktivet för fragmenterat.'
+    },
+    {
+      cat: 'NIS2 · Sektorer',
+      q: 'Vilket av följande är INTE en sektor som omfattas av NIS2?',
+      options: ['Energi', 'Detaljhandel', 'Avloppsvatten', 'Forskning'],
+      correct: 1,
+      explanation: 'Detaljhandel är inte en utpekad sektor i NIS2. Energi och avloppsvatten är väsentliga; forskning är en viktig sektor.'
+    },
+    {
+      cat: 'NIS2 · Klassificering',
+      q: 'Vad är den största skillnaden mellan väsentliga och viktiga entiteter i NIS2?',
+      options: [
+        'Olika säkerhetskrav',
+        'Olika rapporteringstider',
+        'Sättet för tillsyn samt sanktionsavgifternas storlek',
+        'Endast väsentliga behöver rapportera incidenter'
+      ],
+      correct: 2,
+      explanation: 'Båda kategorierna har samma säkerhetskrav och rapporteringskrav. Skillnaden ligger i tillsynsformerna (proaktiv vs reaktiv) och i sanktionsnivåer — väsentliga upp till €10M / 2 %, viktiga upp till €7M / 1,4 %.'
+    },
+    {
+      cat: 'NIS2 · Incident',
+      q: 'Hur snabbt måste en NIS2-entitet skicka en tidig varning vid en betydande incident?',
+      options: ['Omgående', 'Inom 24 timmar', 'Inom 72 timmar', 'Inom 1 vecka'],
+      correct: 1,
+      explanation: 'Tidig varning ska skickas inom 24 timmar från kännedom om en betydande incident. Sedan följer 72 h för incidentrapport och 1 månad för slutrapport.'
+    },
+    {
+      cat: 'NIS2 · Leveranskedja',
+      q: 'Enligt NIS2 — hur långt ner i leveranskedjan måste du beakta risker?',
+      options: [
+        'Bara dina direkta leverantörer (Tier 1)',
+        'Direkta leverantörer + deras direkta leverantörer (Tier 1+2)',
+        'Hela kedjan, alla nivåer, oavsett kritikalitet',
+        'Så långt som är rimligt utifrån kritikalitet och proportionalitet'
+      ],
+      correct: 3,
+      explanation: 'Artikel 21.2(d) kräver hantering av risk i leveranskedjan, men styrs av proportionalitetsprincipen. Tier 1 är obligatoriskt; djupare bedömning sker för kritiska leverantörer. EU kan dessutom via art. 22 peka ut särskilt riskfyllda leveranskedjor.'
+    },
+    {
+      cat: 'NIS2 · Styrelse',
+      q: 'Vad är styrelsens ansvar enligt NIS2?',
+      options: [
+        'Inget direkt — IT-avdelningen ansvarar',
+        'Godkänna åtgärder, övervaka efterlevnad och själv genomgå utbildning',
+        'Endast att besluta om budget',
+        'Att utse en CISO'
+      ],
+      correct: 1,
+      explanation: 'NIS2 är tydligt: styrelsen ska godkänna säkerhetsåtgärder, övervaka efterlevnad och utbildas i cybersäkerhetsrisk. Personligt ansvar kan utkrävas vid grov försumlighet.'
+    },
+    {
+      cat: 'AI Act · Klassificering',
+      q: 'AI Act delar in AI-system i hur många risknivåer?',
+      options: ['2', '3', '4', '5'],
+      correct: 2,
+      explanation: 'Fyra nivåer: oacceptabel risk (förbjuden), hög risk (strängt reglerad), begränsad risk (transparenskrav) och minimal risk (fri användning).'
+    },
+    {
+      cat: 'AI Act · Förbjudet',
+      q: 'Vilket av följande är förbjudet under AI Act?',
+      options: [
+        'Spamfilter med maskininlärning',
+        'Chatbottar i kundservice',
+        'Social scoring genomförd av myndighet',
+        'AI-rekommendationer på en streamingtjänst'
+      ],
+      correct: 2,
+      explanation: 'Social scoring av myndigheter är explicit förbjudet — det räknas som oacceptabel risk. De andra exemplen är fri användning (spamfilter, rekommendationer) eller begränsad risk med transparenskrav (chatbottar).'
+    },
+    {
+      cat: 'AI Act · Hög risk',
+      q: 'Vilket krav gäller INTE för högrisksystem under AI Act?',
+      options: [
+        'Riskhanteringssystem',
+        'Mänsklig tillsyn',
+        'Open source-licens',
+        'Teknisk dokumentation'
+      ],
+      correct: 2,
+      explanation: 'Öppen källkod är inte ett krav. Däremot krävs riskhantering, datakvalitet, dokumentation, loggning, mänsklig tillsyn, transparens och robusthet. Plus CE-märkning innan systemet får släppas på marknaden.'
+    },
+    {
+      cat: 'AI Act · Tidslinje',
+      q: 'När började förbuden i AI Act gälla?',
+      options: ['Augusti 2024', 'Februari 2025', 'Augusti 2025', 'Augusti 2026'],
+      correct: 1,
+      explanation: 'Förbuden mot AI med oacceptabel risk började gälla 2 februari 2025 — sex månader efter att förordningen trätt i kraft. Huvuddelen av övriga regler träder i kraft i augusti 2026.'
+    },
+    {
+      cat: 'AI Act · Sanktioner',
+      q: 'Vad är max sanktion för att använda ett förbjudet AI-system?',
+      options: ['€7,5M eller 1 %', '€10M eller 2 %', '€15M eller 3 %', '€35M eller 7 %'],
+      correct: 3,
+      explanation: 'Det högsta sanktionsstaffrappet i AI Act: 35 miljoner euro eller 7 % av global årsomsättning, beroende på vilket som är högst. Det är högre i absoluta termer än GDPR.'
+    },
+    {
+      cat: 'Jämförelse',
+      q: 'Vilket av följande är ett DIREKTIV (kräver nationell lagstiftning), inte en förordning?',
+      options: ['AI Act', 'GDPR', 'NIS2', 'DORA'],
+      correct: 2,
+      explanation: 'NIS2 är ett direktiv och måste genomföras i nationell lagstiftning — i Sverige via cybersäkerhetslagen. AI Act, GDPR och DORA är förordningar och gäller direkt.'
+    }
+  ];
+
+  let qIndex = 0;
+  let qScore = 0;
+  let qAnswered = 0;
+  let qResults = [];
+
+  function quizStart() {
+    qIndex = 0;
+    qScore = 0;
+    qAnswered = 0;
+    qResults = [];
+    document.getElementById('quiz-start').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'none';
+    document.getElementById('quiz-question').style.display = 'block';
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[qIndex];
+    document.getElementById('q-current').textContent = qIndex + 1;
+    document.getElementById('q-cat').textContent = q.cat;
+    document.getElementById('q-category-label').textContent = q.cat;
+    document.getElementById('q-text').textContent = q.q;
+    document.getElementById('q-progress-fill').style.width = ((qIndex / questions.length) * 100) + '%';
+
+    const optsEl = document.getElementById('q-options');
+    optsEl.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.dataset.letter = letters[i];
+      btn.textContent = opt;
+      btn.onclick = () => selectOption(i, btn);
+      optsEl.appendChild(btn);
+    });
+
+    document.getElementById('q-feedback').classList.remove('show');
+    document.getElementById('q-next-btn').disabled = true;
+    document.getElementById('q-next-btn').textContent = qIndex === questions.length - 1 ? 'Visa resultat →' : 'Nästa →';
+    document.getElementById('q-score').textContent = qScore;
+    document.getElementById('q-answered').textContent = qAnswered;
+  }
+
+  function selectOption(idx, btn) {
+    const q = questions[qIndex];
+    const allBtns = document.querySelectorAll('.quiz-option');
+    allBtns.forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.correct) b.classList.add('correct');
+      if (i === idx && i !== q.correct) b.classList.add('wrong');
+    });
+
+    const isRight = idx === q.correct;
+    if (isRight) qScore++;
+    qAnswered++;
+    qResults.push({ cat: q.cat.split(' · ')[0], correct: isRight });
+
+    const fb = document.getElementById('q-feedback');
+    const verdict = document.getElementById('q-verdict');
+    const explanation = document.getElementById('q-explanation');
+    verdict.textContent = isRight ? '✓ Rätt!' : '✗ Tyvärr fel.';
+    verdict.className = 'quiz-verdict ' + (isRight ? 'right' : 'wrong');
+    explanation.textContent = q.explanation;
+    fb.classList.add('show');
+
+    document.getElementById('q-score').textContent = qScore;
+    document.getElementById('q-answered').textContent = qAnswered;
+    document.getElementById('q-next-btn').disabled = false;
+    document.getElementById('q-progress-fill').style.width = (((qIndex + 1) / questions.length) * 100) + '%';
+  }
+
+  function quizNext() {
+    qIndex++;
+    if (qIndex >= questions.length) {
+      showResult();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('quiz-question').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    document.getElementById('r-score').textContent = qScore;
+
+    const pct = (qScore / questions.length) * 100;
+    let title, body;
+    if (pct >= 90) {
+      title = 'Imponerande <em>kunskap</em>!';
+      body = 'Du har solid förståelse för både NIS2 och AI Act. Kandidat för att leda implementationen i din organisation.';
+    } else if (pct >= 70) {
+      title = 'Bra <em>jobbat</em>';
+      body = 'Du har god grundkunskap. Några detaljer kring tidslinje och nivåer kan vara värda att slå upp igen.';
+    } else if (pct >= 50) {
+      title = 'En <em>bra start</em>';
+      body = 'Du har en känsla för regelverken, men de praktiska detaljerna behöver gå djupare. Gå tillbaka till sektorerna om NIS2 och riskpyramiden i AI Act.';
+    } else {
+      title = 'Tid för <em>repetition</em>';
+      body = 'Regelverken är komplicerade — det är okej. Gå igenom NIS2 och AI Act-sektionerna i lugn takt, och pröva sedan igen.';
+    }
+
+    document.getElementById('r-title').innerHTML = title;
+    document.getElementById('r-body').textContent = body;
+
+    const cats = {};
+    qResults.forEach(r => {
+      if (!cats[r.cat]) cats[r.cat] = { right: 0, total: 0 };
+      cats[r.cat].total++;
+      if (r.correct) cats[r.cat].right++;
+    });
+
+    const breakdown = document.getElementById('r-breakdown');
+    breakdown.innerHTML = '';
+    Object.entries(cats).forEach(([cat, data]) => {
+      const div = document.createElement('div');
+      div.className = 'quiz-breakdown-item';
+      div.innerHTML = `
+        <div class="quiz-breakdown-cat">${cat}</div>
+        <div class="quiz-breakdown-score">${data.right} / ${data.total}</div>
+      `;
+      breakdown.appendChild(div);
+    });
+  }
+
+  function quizReset() {
+    document.getElementById('quiz-result').style.display = 'none';
+    document.getElementById('quiz-question').style.display = 'none';
+    document.getElementById('quiz-start').style.display = 'block';
+  }
+
+  // CHECKLIST
+  const checklist = [
+    {
+      id: 'gov',
+      title: 'Styrelse &amp; organisation (NIS2)',
+      items: [
+        { id: 'gov-1', t: 'Är NIS2 en stående punkt på styrelseagendan?', d: 'Cybersäkerhet ska diskuteras regelbundet, inte bara vid incidenter.', ref: 'NIS2 art. 20' },
+        { id: 'gov-2', t: 'Har ledningsorganet utbildats i cybersäkerhetsrisker?', d: 'Krav på att ledningen själva genomgår utbildning.', ref: 'NIS2 art. 20.2' },
+        { id: 'gov-3', t: 'Finns en utsedd person ansvarig för NIS2-efterlevnad?', d: 'CISO eller motsvarande, med tydligt mandat och resurser.', ref: '' },
+        { id: 'gov-4', t: 'Har vi registrerat oss hos behörig myndighet?', d: 'För svenska entiteter: MSB eller sektorsmyndighet beroende på sektor.', ref: 'Cybersäkerhetslagen' },
+        { id: 'gov-5', t: 'Har styrelsen formellt godkänt vår cybersäkerhetspolicy?', d: 'Protokollfört beslut, inte bara muntligt.', ref: 'NIS2 art. 20.1' }
+      ]
+    },
+    {
+      id: 'risk',
+      title: 'Riskhantering (NIS2)',
+      items: [
+        { id: 'risk-1', t: 'Finns en dokumenterad cybersäkerhetspolicy?', d: 'Som täcker alla informationssystem och uppdateras regelbundet.', ref: 'NIS2 art. 21.2(a)' },
+        { id: 'risk-2', t: 'Genomför vi systematisk riskanalys?', d: 'Återkommande, dokumenterad, med åtgärdsplaner.', ref: 'NIS2 art. 21.2(a)' },
+        { id: 'risk-3', t: 'Har vi processer för sårbarhetshantering?', d: 'Inkluderar patchhantering och hantering av disclosure.', ref: 'NIS2 art. 21.2(e)' },
+        { id: 'risk-4', t: 'Använder vi multifaktor­autentisering (MFA)?', d: 'På alla kritiska system och fjärråtkomst.', ref: 'NIS2 art. 21.2(j)' },
+        { id: 'risk-5', t: 'Är känslig data krypterad både i vila och vid överföring?', d: 'Inklusive nyckelhantering och nyckelrotation.', ref: 'NIS2 art. 21.2(h)' },
+        { id: 'risk-6', t: 'Finns rutiner för säkerhetskopiering och återställning?', d: 'Testade och med dokumenterade RTO/RPO.', ref: 'NIS2 art. 21.2(c)' }
+      ]
+    },
+    {
+      id: 'inc',
+      title: 'Incidenthantering (NIS2)',
+      items: [
+        { id: 'inc-1', t: 'Finns en formell incidenthanteringsprocess?', d: 'Som täcker upptäckt, klassificering, hantering, rapportering och eftermät­ning.', ref: 'NIS2 art. 21.2(b)' },
+        { id: 'inc-2', t: 'Vet alla vem som ska kontaktas vid incident?', d: 'Inklusive utanför kontorstid och vid sjukfrånvaro.', ref: '' },
+        { id: 'inc-3', t: 'Kan vi rapportera till CSIRT inom 24 timmar?', d: 'Tidig varning. Använd MSB:s rapporteringsportal.', ref: 'NIS2 art. 23.4' },
+        { id: 'inc-4', t: 'Övar vi incidentscenarier regelbundet?', d: 'Tabletop-övningar minst årligen för kritiska scenarier.', ref: '' }
+      ]
+    },
+    {
+      id: 'supply',
+      title: 'Leveranskedja (NIS2)',
+      items: [
+        { id: 'sup-1', t: 'Har vi en aktuell inventarie över alla leverantörer?', d: 'Inklusive klassning efter kritikalitet.', ref: 'NIS2 art. 21.2(d)' },
+        { id: 'sup-2', t: 'Genomför vi säkerhetsbedömning av nya leverantörer?', d: 'Innan avtal tecknas, proportionerligt mot kritikalitet.', ref: 'NIS2 art. 21.2(d)' },
+        { id: 'sup-3', t: 'Innehåller våra avtal cybersäkerhets­klausuler?', d: 'Inkl. krav på incidentrapportering till oss, granskningsrätt och hävningsrätt.', ref: '' },
+        { id: 'sup-4', t: 'Bevakar vi sårbarheter och incidenter hos kritiska leverantörer?', d: 'Threat intelligence, CVE-bevakning, statusrapporter.', ref: '' },
+        { id: 'sup-5', t: 'Finns exitplaner för våra mest kritiska leverantörer?', d: 'Tekniskt, juridiskt och datamässigt.', ref: '' },
+        { id: 'sup-6', t: 'Beaktar vi EU:s riskbedömningar enligt artikel 22?', d: 'Av särskilt riskfyllda IKT-leveranskedjor.', ref: 'NIS2 art. 22' }
+      ]
+    },
+    {
+      id: 'tech',
+      title: 'Tekniska åtgärder (NIS2)',
+      items: [
+        { id: 'tech-1', t: 'Är åtkomst baserad på minsta privilegium?', d: 'Med regelbunden granskning av rättigheter.', ref: 'NIS2 art. 21.2(i)' },
+        { id: 'tech-2', t: 'Har vi nätverkssegmentering?', d: 'Så att intrång inte sprider sig fritt.', ref: '' },
+        { id: 'tech-3', t: 'Loggar och övervakar vi säkerhetshändelser?', d: 'Centralt, med tillräcklig retentionstid.', ref: '' },
+        { id: 'tech-4', t: 'Skannar vi sårbarheter regelbundet?', d: 'Både infrastruktur och applikationer.', ref: '' },
+        { id: 'tech-5', t: 'Genomför vi penetrationstester?', d: 'Minst årligen för kritiska system.', ref: '' }
+      ]
+    },
+    {
+      id: 'ai-inv',
+      title: 'Inventering &amp; klassning (AI Act)',
+      items: [
+        { id: 'ai-1', t: 'Har vi en aktuell inventarie över alla AI-system?', d: 'Egenutvecklade och inköpta, inklusive de som ingår i andra produkter.', ref: '' },
+        { id: 'ai-2', t: 'Har vi klassat varje AI-system efter risknivå?', d: 'Förbjudet / hög risk / begränsad risk / minimal risk.', ref: 'AI Act art. 6, bilaga III' },
+        { id: 'ai-3', t: 'Vet vi om vi är leverantör eller deployer för varje system?', d: 'Roll avgör vilka skyldigheter som gäller.', ref: 'AI Act art. 3' },
+        { id: 'ai-4', t: 'Finns en process för att klassa nya AI-system innan användning?', d: 'Inbakad i upphandling och utvecklingsprocess.', ref: '' }
+      ]
+    },
+    {
+      id: 'ai-high',
+      title: 'Krav för högrisksystem (AI Act)',
+      items: [
+        { id: 'aih-1', t: 'Har högrisksystem ett dokumenterat riskhanteringssystem?', d: 'Genom hela livscykeln, med uppföljning.', ref: 'AI Act art. 9' },
+        { id: 'aih-2', t: 'Är tränings- och testdata av tillräcklig kvalitet?', d: 'Relevant, representativt, bias-prövat.', ref: 'AI Act art. 10' },
+        { id: 'aih-3', t: 'Finns teknisk dokumentation enligt bilaga IV?', d: 'Färdig innan marknadsföring.', ref: 'AI Act art. 11' },
+        { id: 'aih-4', t: 'Loggar systemet relevant information automatiskt?', d: 'Så att beslut och händelser kan rekonstrueras.', ref: 'AI Act art. 12' },
+        { id: 'aih-5', t: 'Kan en människa förstå, granska och stoppa systemet?', d: 'Mänsklig tillsyn med faktiskt mandat och tid att agera.', ref: 'AI Act art. 14' },
+        { id: 'aih-6', t: 'Är systemet CE-märkt innan det släpps på marknaden?', d: 'Efter genomförd konformitets­bedömning.', ref: 'AI Act art. 49' }
+      ]
+    },
+    {
+      id: 'ai-trans',
+      title: 'Transparenskrav (AI Act)',
+      items: [
+        { id: 'ait-1', t: 'Får användare alltid veta när de pratar med en AI?', d: 'Tydlig information, inte gömt i villkoren.', ref: 'AI Act art. 50.1' },
+        { id: 'ait-2', t: 'Märks AI-genererat innehåll (deepfakes, syntetisk media)?', d: 'Tydligt och spårbart.', ref: 'AI Act art. 50.4' },
+        { id: 'ait-3', t: 'Är emotionsigenkänning och biometrisk kategorisering deklarerad?', d: 'Innan systemet får användas, om sådant förekommer.', ref: 'AI Act art. 50.3' }
+      ]
+    },
+    {
+      id: 'ai-forbid',
+      title: 'Förbjudna system (AI Act)',
+      items: [
+        { id: 'aif-1', t: 'Har vi säkerställt att vi inte använder förbjudna system?', d: 'Social scoring, manipulativ AI, otillåten realtidsbiometri m.m.', ref: 'AI Act art. 5' },
+        { id: 'aif-2', t: 'Bevakar vi nya förbud och vägledningar?', d: 'AI Office publicerar regelbundet förtydliganden.', ref: '' }
+      ]
+    },
+    {
+      id: 'ai-org',
+      title: 'Organisation &amp; process (AI Act)',
+      items: [
+        { id: 'aio-1', t: 'Finns en utsedd ägare av AI-efterlevnad?', d: 'Med mandat och budget, gärna del av riskorganisationen.', ref: '' },
+        { id: 'aio-2', t: 'Är AI-literacy en del av kompetens­planen?', d: 'Anställda som hanterar AI ska förstå hur det fungerar.', ref: 'AI Act art. 4' },
+        { id: 'aio-3', t: 'Finns process för att rapportera allvarliga AI-incidenter?', d: 'Inom 15 dagar, snabbare vid liv- och hälso­risk.', ref: 'AI Act art. 73' },
+        { id: 'aio-4', t: 'Synkroniseras AI-efterlevnaden med GDPR och NIS2?', d: 'Risken är dubbelarbete och gap mellan ansvarsområden.', ref: '' }
+      ]
+    }
+  ];
+
+  function storage() {
+    try {
+      const test = '__t__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return localStorage;
+    } catch (e) {
+      const mem = {};
+      return {
+        getItem: k => mem[k] || null,
+        setItem: (k, v) => { mem[k] = v; },
+        removeItem: k => { delete mem[k]; }
+      };
+    }
+  }
+  const store = storage();
+  const STORE_KEY = 'regelverksatlas_check_v1';
+  let checkState = {};
+  try {
+    const raw = store.getItem(STORE_KEY);
+    if (raw) checkState = JSON.parse(raw);
+  } catch (e) { checkState = {}; }
+
+  function saveCheckState() {
+    try { store.setItem(STORE_KEY, JSON.stringify(checkState)); } catch(e) {}
+  }
+
+  function renderChecklist() {
+    const container = document.getElementById('checklist-container');
+    container.innerHTML = '';
+    checklist.forEach((section, i) => {
+      const sectEl = document.createElement('div');
+      sectEl.className = 'checklist-section' + (i === 0 ? ' open' : '');
+      const totalItems = section.items.length;
+      const checkedItems = section.items.filter(it => checkState[it.id]).length;
+
+      sectEl.innerHTML = `
+        <div class="checklist-section-head" onclick="toggleSection(this)">
+          <div class="checklist-section-title">${section.title}</div>
+          <div class="checklist-section-meta">
+            <span class="checklist-section-progress"><strong data-prog="${section.id}">${checkedItems}</strong> / ${totalItems}</span>
+            <svg class="checklist-section-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 8l5 5 5-5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="checklist-items">
+          ${section.items.map(it => `
+            <div class="checklist-item ${checkState[it.id] ? 'checked' : ''}" data-id="${it.id}" onclick="toggleItem('${it.id}')">
+              <div class="checklist-checkbox"></div>
+              <div class="checklist-item-body">
+                <div class="checklist-item-title">${it.t}</div>
+                <div class="checklist-item-desc">${it.d}</div>
+                ${it.ref ? `<span class="checklist-item-ref">${it.ref}</span>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      container.appendChild(sectEl);
+    });
+    updateOverallProgress();
+  }
+
+  function toggleSection(headEl) {
+    headEl.parentElement.classList.toggle('open');
+  }
+
+  function toggleItem(id) {
+    checkState[id] = !checkState[id];
+    saveCheckState();
+    const item = document.querySelector(`.checklist-item[data-id="${id}"]`);
+    if (item) item.classList.toggle('checked', !!checkState[id]);
+    checklist.forEach(s => {
+      if (s.items.some(it => it.id === id)) {
+        const checked = s.items.filter(it => checkState[it.id]).length;
+        const prog = document.querySelector(`[data-prog="${s.id}"]`);
+        if (prog) prog.textContent = checked;
+      }
+    });
+    updateOverallProgress();
+  }
+
+  function updateOverallProgress() {
+    let total = 0, checked = 0;
+    checklist.forEach(s => {
+      total += s.items.length;
+      checked += s.items.filter(it => checkState[it.id]).length;
+    });
+    const pct = total ? Math.round((checked / total) * 100) : 0;
+    document.getElementById('overall-pct').textContent = pct;
+    document.getElementById('overall-count').textContent = `${checked} / ${total}`;
+    document.getElementById('overall-fill').style.width = pct + '%';
+  }
+
+  function checkExpandAll() {
+    document.querySelectorAll('.checklist-section').forEach(s => s.classList.add('open'));
+  }
+  function checkCollapseAll() {
+    document.querySelectorAll('.checklist-section').forEach(s => s.classList.remove('open'));
+  }
+  function checkReset() {
+    if (confirm('Vill du återställa hela checklistan? Detta nollställer alla bockar.')) {
+      checkState = {};
+      saveCheckState();
+      renderChecklist();
+    }
+  }
+
+  renderChecklist();
+  runReveal();
+  animatePenalties();
+
+  /* ============================================================
+     NIS2 PILLAR DETAIL — clickable expansion
+  ============================================================ */
+  const nis2PillarData = {
+    riskhantering: {
+      tag: 'NIS2 — Artikel 21',
+      title: 'Riskhantering',
+      lede: 'Hjärtat i NIS2. Artikel 21 listar tio konkreta säkerhetsåtgärder som varje väsentlig och viktig entitet ska ha på plats — proportionellt utifrån verksamhetens storlek, exponering och risk. Det räcker inte att "ha en brandvägg"; det handlar om ett systematiskt ramverk som styrelsen står bakom.',
+      article: 'Art. 21.2 (a–j)',
+      items: [
+        { h: 'Policyer för riskanalys', t: 'Dokumenterad metod för att identifiera, värdera och prioritera cyberrisker — uppdaterad regelbundet.' },
+        { h: 'Incidenthantering', t: 'Plan, roller och tekniska resurser för att upptäcka, agera på och återhämta sig från incidenter.' },
+        { h: 'Driftskontinuitet', t: 'Backup, katastrofåterställning och krishantering — så att kritiska tjänster håller även vid större störning.' },
+        { h: 'Säkerhet i leveranskedjan', t: 'Bedömning av leverantörers säkerhet (se separat pelare).' },
+        { h: 'Säkerhet vid utveckling och underhåll', t: 'Säkra utvecklingsmetoder, hantering av sårbarheter, säker konfiguration genom hela livscykeln.' },
+        { h: 'Policyer för att utvärdera effektivitet', t: 'Mätning av hur väl åtgärderna faktiskt fungerar — inte bara att de finns på papper.' },
+        { h: 'Grundläggande cyberhygien & utbildning', t: 'Standardiserade rutiner: lösenord, MFA, uppdateringar — och regelbunden personalutbildning.' },
+        { h: 'Kryptografi', t: 'Policyer och tillämpning av kryptering där det behövs — i vila och vid överföring.' },
+        { h: 'Personalsäkerhet, åtkomst och tillgångsförvaltning', t: 'Bakgrundskontroller där relevant, principen om minsta privilegium, hantering av enheter och konton.' },
+        { h: 'Multifaktorautentisering och säker kommunikation', t: 'MFA för känsliga system, säkra kanaler för röst-, video- och textkommunikation vid behov.' }
+      ]
+    },
+    incidentrapportering: {
+      tag: 'NIS2 — Artikel 23',
+      title: 'Incidentrapportering',
+      lede: 'NIS2 har skarpa tidsfrister för rapportering av betydande incidenter till nationell CSIRT (i Sverige: MSB) eller sektorsmyndighet. En "betydande" incident är en som orsakar eller kan orsaka allvarlig operationell störning eller ekonomisk skada — eller drabbar andra fysiska eller juridiska personer.',
+      article: 'Art. 23',
+      items: [
+        { h: '24 timmar — Tidig varning', t: 'Första larm med minimal information: vad har hänt, misstänkt orsak, sannolik gränsöverskridande påverkan. Behöver inte vara fullständig.' },
+        { h: '72 timmar — Incidentanmälan', t: 'Bedömning av allvarlighet och påverkan, indikatorer på intrång (IoC), preliminär klassificering. Kan uppdatera den tidiga varningen.' },
+        { h: '1 månad — Slutrapport', t: 'Detaljerad beskrivning av incidenten, dess grundorsak, vidtagna och planerade åtgärder, gränsöverskridande effekter.' },
+        { h: 'Mellanrapporter på begäran', t: 'CSIRT eller behörig myndighet kan begära statusuppdateringar mellan tidsstegen — speciellt vid pågående händelser.' },
+        { h: 'Informera mottagare av tjänsten', t: 'Vid behov: informera kunder och användare som direkt påverkas, särskilt om de själva behöver vidta åtgärder.' },
+        { h: 'Klockan startar vid kännedom', t: 'Tidsfristerna räknas från när du blev medveten om incidenten — inte från när angreppet faktiskt började. Detta påverkar dina detektionsförmågor.' }
+      ]
+    },
+    styrelseansvar: {
+      tag: 'NIS2 — Artikel 20',
+      title: 'Styrelseansvar',
+      lede: 'Det mest spektakulära nya med NIS2: ledning och styrelse är nu personligt ansvariga för cybersäkerhet. Det betyder inte bara godkännande av policydokument — det betyder att kunna förklara, granska och svara på frågor om verksamhetens säkerhetsposition. Vid bristande efterlevnad kan ledningen tillfälligt avstängas från sin funktion.',
+      article: 'Art. 20',
+      items: [
+        { h: 'Godkänna säkerhetsåtgärder', t: 'Ledningen ska formellt godkänna riskhanteringsåtgärderna under art. 21 — inte delegera bort beslutet.' },
+        { h: 'Övervaka genomförandet', t: 'Aktivt följa upp att åtgärderna implementeras och fungerar — inte vänta på att något brister.' },
+        { h: 'Personlig utbildning', t: 'Styrelseledamöter och ledning ska själva gå utbildning i cybersäkerhet — för att kunna förstå risker och bedöma åtgärder.' },
+        { h: 'Erbjuda utbildning till personalen', t: 'På samma villkor: regelbunden cybersäkerhetsutbildning för relevant personal.' },
+        { h: 'Personligt ansvar', t: 'Vid allvarliga överträdelser kan tillsynsmyndighet ålägga ansvar mot enskilda ledningspersoner — inklusive tillfälligt förbud att utöva ledningsfunktioner.' },
+        { h: 'Dokumentera beslut', t: 'Praxis: styrelseprotokoll bör visa att cybersäkerhet diskuterats och beslut motiverats — bevisbörda vid eventuell tillsyn.' }
+      ]
+    },
+    leveranskedja: {
+      tag: 'NIS2 — Artikel 21.2(d) & 22',
+      title: 'Leveranskedja',
+      lede: 'En av NIS2:s viktigaste nyheter. Du är ansvarig inte bara för din egen säkerhet utan för säkerheten hos hela kedjan av leverantörer du litar på — och deras leverantörer. Artikel 22 ger dessutom EU-myndigheterna rätt att göra samordnade riskbedömningar av kritiska leveranskedjor.',
+      article: 'Art. 21.2(d) & art. 22',
+      items: [
+        { h: 'Avtalskrav', t: 'Säkerhetskrav, granskningsrätt, incidentnotifiering, exit-villkor — in i leverantörsavtalen, inte i bilagor som ingen läser.' },
+        { h: 'Leverantörsbedömning', t: 'Riskbaserad due diligence före avtal — bredare för kritiska leverantörer, lättare för icke-kritiska. Dokumenterat beslut.' },
+        { h: 'Löpande tillsyn', t: 'Övervaka leverantörers säkerhetsläge över tid: certifieringar, incidenter, ägarbyten, geopolitisk exponering.' },
+        { h: 'Incidentpipeline', t: 'Tydliga rutiner för hur leverantörer ska rapportera incidenter till dig — inom vilka tider, vilken information, vem ansvarar.' },
+        { h: 'Inventarie och klassificering', t: 'Komplett register över leverantörer med klassning efter kritikalitet — du kan inte hantera vad du inte vet att du har.' },
+        { h: 'Samordnade EU-riskbedömningar', t: 'Art. 22 ger kommissionen och EU-CyCLONe rätt att göra riskbedömningar av specifika tjänster och produkter — t.ex. 5G-utrustning.' }
+      ]
+    }
+  };
+
+  function renderNis2Pillar(key) {
+    const d = nis2PillarData[key];
+    const panel = document.getElementById('nis2-pillar-detail');
+    if (!d || !panel) return;
+
+    panel.innerHTML = `
+      <div class="pillar-detail-tag">${d.tag}</div>
+      <div class="pillar-detail-title">${d.title}</div>
+      <div class="pillar-detail-lede">${d.lede}</div>
+      <div class="pillar-detail-grid">
+        ${d.items.map(it => `
+          <div class="pillar-detail-item">
+            <h5>${it.h}</h5>
+            <p>${it.t}</p>
+          </div>
+        `).join('')}
+      </div>
+      <span class="pillar-detail-article">Referens: ${d.article}</span>
+    `;
+    panel.classList.add('open', 'in');
+
+    document.querySelectorAll('[data-nis2-pillar]').forEach(p => {
+      p.classList.toggle('selected', p.dataset.nis2Pillar === key);
+    });
+
+    // Scroll the panel into view smoothly
+    setTimeout(() => {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+
+  let selectedNis2Pillar = null;
+  document.querySelectorAll('[data-nis2-pillar]').forEach(el => {
+    el.addEventListener('click', () => {
+      const key = el.dataset.nis2Pillar;
+      if (selectedNis2Pillar === key) {
+        // Toggle off
+        document.getElementById('nis2-pillar-detail').classList.remove('open');
+        el.classList.remove('selected');
+        selectedNis2Pillar = null;
+      } else {
+        selectedNis2Pillar = key;
+        renderNis2Pillar(key);
+      }
+    });
+  });
+
+  /* ============================================================
+     FRAMEWORK COMPARISON — pick 2 of 4 frameworks
+  ============================================================ */
+  const aspectLabels = [
+    ['type',         'Typ av regelverk'],
+    ['purpose',      'Syfte'],
+    ['inForce',      'I kraft sedan'],
+    ['classification','Klassificering'],
+    ['scope',        'Vem omfattas'],
+    ['focus',        'Tyngdpunkt'],
+    ['reporting',    'Rapportering vid fel'],
+    ['boardResp',    'Styrelseansvar'],
+    ['sanctions',    'Sanktioner (max)'],
+    ['supervisorSE', 'Tillsyn i Sverige']
+  ];
+
+  const frameworks = {
+    nis2: {
+      name: 'NIS2',
+      data: {
+        type: 'Direktiv — kräver nationell lagstiftning. I Sverige: cybersäkerhetslagen.',
+        purpose: 'Säkerställa hög nivå av cybersäkerhet i kritisk infrastruktur och digitala tjänster.',
+        inForce: 'Oktober 2024 (nationell tillämpning under införande).',
+        classification: 'Sektor + storlek → väsentlig eller viktig entitet.',
+        scope: 'Cirka 18 sektorer, från energi till forskning. Främst medelstora–stora företag (50+ anställda eller €10M+ omsättning).',
+        focus: 'Riskhantering, incidentrapportering, styrelseansvar, leveranskedja.',
+        reporting: '24 h tidig varning → 72 h incidentanmälan → 1 mån slutrapport.',
+        boardResp: 'Uttryckligt — ledningen ska godkänna, övervaka och utbildas. Personligt ansvar vid brister.',
+        sanctions: 'Väsentliga: €10M eller 2 % av global omsättning. Viktiga: €7M eller 1,4 %.',
+        supervisorSE: 'MSB plus sektorsmyndigheter (Finansinspektionen, Energimyndigheten m.fl.).'
+      }
+    },
+    aiact: {
+      name: 'AI Act',
+      data: {
+        type: 'Förordning — direkt tillämplig i alla EU-länder utan översättning.',
+        purpose: 'Säkerställa att AI-system i EU är säkra och respekterar grundläggande rättigheter.',
+        inForce: 'Augusti 2024 (stegvis tillämpning fram till 2027).',
+        classification: 'Användningsområde → fyra risknivåer (oacceptabel, hög, begränsad, minimal).',
+        scope: 'Leverantörer, användare, importörer av AI — oavsett bransch, om systemet hamnar på EU-marknaden.',
+        focus: 'Riskbedömning, datakvalitet, dokumentation, mänsklig tillsyn, transparens.',
+        reporting: 'Allvarliga incidenter i högrisksystem rapporteras inom 15 dagar (snabbare vid risk för liv/hälsa).',
+        boardResp: 'Inte lika explicit, men praktiskt sett krav på organisatoriskt ägarskap för efterlevnad.',
+        sanctions: 'Förbjudna system: €35M eller 7 %. Övriga skyldigheter: €15M eller 3 %. Felaktig info: €7,5M eller 1 %.',
+        supervisorSE: 'IMY föreslagen som samordnande, slutligt upplägg utreds. Sektorsmyndigheter för specifika områden.'
+      }
+    },
+    gdpr: {
+      name: 'GDPR',
+      data: {
+        type: 'Förordning — direkt tillämplig i alla EU-länder. Kompletteras av dataskyddslagen i Sverige.',
+        purpose: 'Skydda fysiska personers rättigheter vid behandling av personuppgifter.',
+        inForce: 'Maj 2018.',
+        classification: 'All behandling av personuppgifter omfattas — vissa kategorier (känsliga uppgifter, barn) har skärpta krav.',
+        scope: 'Alla organisationer som behandlar personuppgifter om personer i EU — även utanför EU vid riktade tjänster.',
+        focus: 'Rättslig grund, sex grundprinciper, registrerades rättigheter, säkerhet, dokumentation.',
+        reporting: 'Personuppgiftsincident anmäls till IMY inom 72 h. Vid hög risk även till de drabbade.',
+        boardResp: 'Inte explicit lagstadgat på styrelsenivå, men ledningen ansvarar för efterlevnad — och risken är ofta omsättningsskakande.',
+        sanctions: 'Allvarliga överträdelser: €20M eller 4 %. Övriga: €10M eller 2 %.',
+        supervisorSE: 'Integritetsskyddsmyndigheten (IMY).'
+      }
+    },
+    dora: {
+      name: 'DORA',
+      data: {
+        type: 'Förordning — direkt tillämplig i alla EU-länder. Lex specialis för finanssektorn.',
+        purpose: 'Säkerställa digital operativ motståndskraft i hela EU:s finanssektor.',
+        inForce: 'Tillämplig 17 januari 2025.',
+        classification: 'Alla finansiella enheter (banker, försäkring, värdepapper, betalinstitut m.fl.) plus kritiska IKT-tredjepartsleverantörer.',
+        scope: 'Över 22 000 finansiella enheter i EU samt deras kritiska IT-leverantörer (vissa molntjänster m.fl. får direkt tillsyn av ESA).',
+        focus: 'IKT-riskhantering, incidenthantering, tester (inkl. TLPT), tredjepartsrisk, informationsdelning.',
+        reporting: 'Allvarliga IKT-incidenter rapporteras till tillsynsmyndighet inom snäva tidsramar (initial, mellan-, slutrapport).',
+        boardResp: 'Uttryckligt — styrelsen är formellt ansvarig för IKT-riskhanteringen. Måste godkänna ramverket och granska årligen.',
+        sanctions: 'Sätts nationellt enligt proportionalitet — kan inkludera viten, sanktionsavgifter och åtgärdsförelägganden.',
+        supervisorSE: 'Finansinspektionen (och ESA — EBA, ESMA, EIOPA — för utpekade kritiska leverantörer).'
+      }
+    }
+  };
+
+  const overlapsMatrix = {
+    'nis2|aiact': [
+      { num: 'Överlapp 01', title: 'Riskhantering', body: 'Båda kräver systematisk riskhantering — fast med olika fokus (cyberrisk vs grundläggande rättigheter). Bygg ett gemensamt riskramverk och återanvänd processen, inte dokumenten.' },
+      { num: 'Överlapp 02', title: 'Incidenthantering', body: 'En cyberincident som drabbar ett AI-system kan utlösa rapporteringskrav under båda — NIS2 (om verksamheten är en entitet) och AI Act (om systemet är högrisk). Tydlig handläggning så incidenten inte ramlar mellan stolarna.' },
+      { num: 'Överlapp 03', title: 'Leveranskedja', body: 'NIS2 kräver att leverantörer bedöms cybersäkerhetsmässigt. AI Act kräver att den som köper in AI vet vad systemet är, hur det tränats och hur det presterar. Bygg in båda i upphandlingen.' }
+    ],
+    'nis2|gdpr': [
+      { num: 'Överlapp 01', title: 'Säkerhetsåtgärder', body: 'GDPR art. 32 och NIS2 art. 21 listar liknande tekniska och organisatoriska säkerhetsåtgärder. En väl byggd ISMS (t.ex. ISO 27001) täcker stora delar av båda.' },
+      { num: 'Överlapp 02', title: 'Incidentrapportering', body: 'Cyberincident som även är en personuppgiftsincident utlöser två klockor: 72 h till IMY (GDPR) och 24 h tidig varning + 72 h rapport till MSB (NIS2). Olika trösklar — kartlägg processen så ingen rapport missas.' },
+      { num: 'Överlapp 03', title: 'Tillsyn', body: 'GDPR har en tillsynsmyndighet (IMY), NIS2 har flera (MSB + sektorsmyndigheter). Vid samtidiga incidenter krävs koordinerad kommunikation mot flera myndigheter parallellt.' }
+    ],
+    'nis2|dora': [
+      { num: 'Överlapp 01', title: 'Lex specialis', body: 'DORA är lex specialis för finanssektorn — där DORA gäller, ersätter den NIS2 för samma frågor. Ett betalinstitut följer alltså DORA, inte NIS2, för IKT-riskhantering. Förstå undantaget innan dubbla projekt startas.' },
+      { num: 'Överlapp 02', title: 'Riskhantering &amp; ledning', body: 'Båda kräver formellt godkänt ramverk för riskhantering, styrelseansvar och regelbunden granskning. Logiken är densamma men DORA är detaljerad till specifikationsnivå.' },
+      { num: 'Överlapp 03', title: 'Tredjepartshantering', body: 'NIS2:s leveranskedjekrav och DORA:s tredjepartskapitel är besläktade men DORA går längre: kontraktsklausuler, register, exit-planer, direkt EU-tillsyn av kritiska leverantörer.' }
+    ],
+    'nis2|nis2': [
+      { num: 'Information', title: 'Samma ramverk', body: 'Du har valt NIS2 på båda sidor. Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.' }
+    ],
+    'aiact|gdpr': [
+      { num: 'Överlapp 01', title: 'Profilering &amp; automatiserade beslut', body: 'GDPR art. 22 reglerar automatiserade individbeslut. AI Act lägger till krav på högrisksystem som används för sådana beslut — t.ex. kreditbedömning eller rekrytering. Båda gäller parallellt.' },
+      { num: 'Överlapp 02', title: 'Data &amp; transparens', body: 'GDPR styr vilken personuppgiftsdata som får användas vid träning. AI Act ställer krav på datakvalitet, bias-pröving och dokumentation. Två lager av krav — överlapper i grunden.' },
+      { num: 'Överlapp 03', title: 'Konsekvensbedömning', body: 'GDPR kräver DPIA vid hög risk för registrerade. AI Act kräver FRIA (fundamental rights impact assessment) för vissa högrisksystem. Bygg ihop bedömningarna till en gemensam process.' }
+    ],
+    'aiact|dora': [
+      { num: 'Överlapp 01', title: 'AI i finanssektorn', body: 'Banker och försäkringsbolag som använder AI för kreditbedömning eller riskmodellering omfattas av båda. AI Act kräver dokumentation och tillsyn, DORA kräver att hela IKT-stacken (inkl. AI) ingår i riskhantering och tester.' },
+      { num: 'Överlapp 02', title: 'Tredjepartshantering', body: 'AI Act ställer krav på AI-leverantörens dokumentation och prestation. DORA kräver formell hantering av IKT-leverantörer i finanssektorn. Båda kraven måste införas i samma leverantörsavtal.' },
+      { num: 'Överlapp 03', title: 'Mänsklig tillsyn', body: 'AI Act kräver mänsklig tillsyn över högrisksystem. DORA kräver att kritiska processer kan övervakas och avbrytas. Båda kräver beslutsfattare som faktiskt förstår systemet — inte black-box.' }
+    ],
+    'gdpr|dora': [
+      { num: 'Överlapp 01', title: 'Säkerhet och incidenthantering', body: 'DORA:s krav på IKT-incidenter och GDPR:s krav på personuppgiftsincidenter överlappar — en attack på en bank kan vara både ena och andra. Två rapporteringsspår, men ofta samma underliggande process.' },
+      { num: 'Överlapp 02', title: 'Tredjepartsrisk', body: 'DORA reglerar IKT-leverantörer för finanssektorn. GDPR reglerar personuppgiftsbiträden (DPA). Vid molntjänster gäller oftast båda — kontraktet ska adressera båda.' },
+      { num: 'Överlapp 03', title: 'Styrning och dokumentation', body: 'Båda kräver dokumenterat ramverk, ledningens engagemang och spårbarhet. Bygg ett gemensamt GRC-system istället för parallella spår.' }
+    ],
+    'aiact|aiact': [
+      { num: 'Information', title: 'Samma ramverk', body: 'Du har valt AI Act på båda sidor. Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.' }
+    ],
+    'gdpr|gdpr': [
+      { num: 'Information', title: 'Samma ramverk', body: 'Du har valt GDPR på båda sidor. Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.' }
+    ],
+    'dora|dora': [
+      { num: 'Information', title: 'Samma ramverk', body: 'Du har valt DORA på båda sidor. Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.' }
+    ]
+  };
+
+  const conclusionMatrix = {
+    'nis2|aiact': 'NIS2 frågar: kan du skydda dina system? AI Act frågar: kan du svara för hur dina system tänker? Båda frågorna måste ha ett ja.',
+    'nis2|gdpr': 'NIS2 skyddar tjänsterna, GDPR skyddar människorna i datan. Samma incident kan utlösa båda — bygg en gemensam reaktionskedja, inte två parallella.',
+    'nis2|dora': 'NIS2 är golvet för cybersäkerhet i samhället. DORA är specialregeln för finanssektorn. Där DORA gäller har den företräde — men kraven är besläktade och processerna går att samköra.',
+    'aiact|gdpr': 'GDPR styr datan som matar AI:n. AI Act styr beteendet hos AI:n. Den som vill bygga AI i Europa måste hålla båda i huvudet samtidigt.',
+    'aiact|dora': 'AI i finanssektorn lever med tre myndigheter på axeln: AI Act-tillsyn, DORA-tillsyn och Finansinspektionen. Förstå rollerna innan du driftsätter modellen.',
+    'gdpr|dora': 'GDPR och DORA pratar samma språk om säkerhet och tredjepartsrisk — men adresserar olika skyddsobjekt. I praktiken: gemensamt ramverk, dubbla rapporteringsspår.',
+    'nis2|nis2': 'Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.',
+    'aiact|aiact': 'Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.',
+    'gdpr|gdpr': 'Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.',
+    'dora|dora': 'Välj ett annat ramverk i ena menyn för att se en faktisk jämförelse.'
+  };
+
+  function makePairKey(a, b) {
+    // Canonical order so 'nis2|aiact' equals 'aiact|nis2'
+    const order = ['nis2', 'aiact', 'gdpr', 'dora'];
+    const [first, second] = [a, b].sort((x, y) => order.indexOf(x) - order.indexOf(y));
+    return `${first}|${second}`;
+  }
+
+  function renderCompare() {
+    const a = document.getElementById('fw-select-a').value;
+    const b = document.getElementById('fw-select-b').value;
+    const fwA = frameworks[a];
+    const fwB = frameworks[b];
+
+    // Build table
+    const wrap = document.getElementById('compare-table-wrap');
+    wrap.innerHTML = `
+      <table class="compare">
+        <thead>
+          <tr>
+            <th style="width:22%">Aspekt</th>
+            <th style="width:39%">${fwA.name}</th>
+            <th style="width:39%">${fwB.name}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${aspectLabels.map(([key, label]) => `
+            <tr>
+              <td class="col-label">${label}</td>
+              <td>${fwA.data[key]}</td>
+              <td>${fwB.data[key]}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    // Overlaps
+    const key = makePairKey(a, b);
+    const overlaps = overlapsMatrix[key] || [];
+    const overlapsEl = document.getElementById('compare-overlaps');
+    overlapsEl.innerHTML = overlaps.map(o => `
+      <div class="card">
+        <div class="card-num">${o.num}</div>
+        <h3 class="card-title">${o.title}</h3>
+        <div class="card-body"><p>${o.body}</p></div>
+      </div>
+    `).join('');
+
+    // Callout / conclusion
+    const callout = document.getElementById('compare-callout');
+    callout.innerHTML = `
+      <div class="callout-mark">"</div>
+      <div class="callout-text">${conclusionMatrix[key]}</div>
+      <div class="callout-attr">— ${fwA.name} ⨯ ${fwB.name}</div>
+    `;
+  }
+
+  // Bind selectors
+  const selA = document.getElementById('fw-select-a');
+  const selB = document.getElementById('fw-select-b');
+  if (selA && selB) {
+    selA.addEventListener('change', renderCompare);
+    selB.addEventListener('change', renderCompare);
+    renderCompare();
+  }
+</script>
+
+
+</body>
+</html>

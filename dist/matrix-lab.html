@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YH Prep Lab – Matrix Lab (separat prototyp)</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap");
+
+    :root {
+      color-scheme: light;
+      --bg: #f5fbf8;
+      --panel: #ffffff;
+      --text: #22313a;
+      --muted: #60727b;
+      --line: #c8ded4;
+      --accent: #6ed7bf;
+      --accent-ink: #1b5e52;
+      --ok-bg: #eaf8f3;
+      --ok-ink: #136a53;
+      --warn-bg: #fff7e5;
+      --warn-ink: #8a5d0f;
+      --bad-bg: #feecec;
+      --bad-ink: #8f2222;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Public Sans", "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eff8f4 0%, #edf7f7 100%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .wrap {
+      width: min(980px, 100% - 24px);
+      margin: 12px auto 28px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 1px 0 rgba(8, 36, 25, 0.04);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.3rem, 3.8vw, 1.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    p { margin: 0; }
+
+    .muted { color: var(--muted); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      background: #f3fbf8;
+      color: var(--accent-ink);
+    }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    select, button, a.btn {
+      width: 100%;
+      min-height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 0 12px;
+      font: inherit;
+    }
+
+    button, a.btn {
+      cursor: pointer;
+      font-weight: 600;
+      background: #f5fcfa;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button:hover, a.btn:hover {
+      filter: brightness(0.98);
+    }
+
+    .actions {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .status {
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+    }
+
+    .status.ok {
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      border-color: #bde9da;
+    }
+
+    .status.warn {
+      background: var(--warn-bg);
+      color: var(--warn-ink);
+      border-color: #f0d89a;
+    }
+
+    .status.bad {
+      background: var(--bad-bg);
+      color: var(--bad-ink);
+      border-color: #efc1c1;
+    }
+
+    .preview {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: #f2f7f5;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 68vh;
+      min-height: 420px;
+      border: 0;
+      background: #fff;
+    }
+
+    .hint-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      display: grid;
+      gap: 6px;
+      font-size: 0.92rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    @media (min-width: 900px) {
+      .wrap {
+        margin-top: 18px;
+      }
+      .controls {
+        grid-template-columns: 1.2fr auto;
+        align-items: end;
+      }
+      .actions {
+        width: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Matrix Lab (separat testyta)</h1>
+      <p class="muted">Snabb prototyp för att testa gratis mönsterigenkänning utan att röra huvudappen.</p>
+      <div style="margin-top: 10px;">
+        <span class="pill">Ej integrerad i huvudkoden</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="controls">
+        <div>
+          <label for="resource">Välj övningsresurs</label>
+          <select id="resource"></select>
+        </div>
+        <div class="actions">
+          <button id="loadBtn" type="button">Ladda i ruta</button>
+          <a id="openBtn" class="btn" target="_blank" rel="noopener noreferrer">Öppna ny flik</a>
+        </div>
+      </div>
+      <div id="status" class="status warn" style="margin-top: 10px;">Välj en källa och tryck på "Ladda i ruta".</div>
+    </section>
+
+    <section class="card preview">
+      <iframe id="preview" title="Matrix resource preview" loading="lazy"></iframe>
+    </section>
+
+    <section class="card">
+      <ul class="hint-list">
+        <li>Vissa sidor blockerar <code>iframe</code> med säkerhetsregler (CSP/X-Frame-Options).</li>
+        <li>När inbäddning blockeras: öppna i ny flik och återvänd till appen efter passet.</li>
+        <li>För stabilt läge i framtiden: bygg egna matrix-uppgifter lokalt i frågebanken.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const resources = [
+      {
+        id: "iqniva",
+        name: "IQNIVA Matrix Practice",
+        url: "https://iqniva.com/practice/matrix-reasoning/",
+        embed: true,
+        tier: "Sekundär",
+        note: "Gratis, Raven-liknande set med förklaringar."
+      },
+      {
+        id: "iqpattern",
+        name: "IQ Pattern Test",
+        url: "https://iqpatterntest.com/",
+        embed: true,
+        tier: "Sekundär",
+        note: "Gratis snabbtest med 3x3-rutor och saknad del."
+      },
+      {
+        id: "openpsych",
+        name: "OpenPsychometrics FSIQ",
+        url: "https://openpsychometrics.org/tests/FSIQ/",
+        embed: true,
+        tier: "Sekundär",
+        note: "Öppen testmiljö; innehåller flera delmoment (inte bara matrix)."
+      },
+      {
+        id: "mensa",
+        name: "Mensa Norway IQ Test",
+        url: "https://test.mensa.no/Home/Test/en-UK",
+        embed: false,
+        tier: "Officiell extern",
+        note: "Bra benchmark, men blockerar inbäddning i externa sidor."
+      },
+      {
+        id: "123test",
+        name: "123test Abstract Reasoning",
+        url: "https://www.123test.com/abstract-reasoning-test/",
+        embed: false,
+        tier: "Sekundär",
+        note: "Har övningar men blockerar iframe med frame-ancestors none."
+      }
+    ];
+
+    const select = document.getElementById("resource");
+    const loadBtn = document.getElementById("loadBtn");
+    const openBtn = document.getElementById("openBtn");
+    const status = document.getElementById("status");
+    const preview = document.getElementById("preview");
+
+    for (const resource of resources) {
+      const option = document.createElement("option");
+      option.value = resource.id;
+      option.textContent = resource.name;
+      select.append(option);
+    }
+
+    function currentResource() {
+      return resources.find((item) => item.id === select.value) || resources[0];
+    }
+
+    function updateStatus(resource) {
+      openBtn.href = resource.url;
+      const level = `Källnivå: ${resource.tier}`;
+      if (resource.embed) {
+        status.className = "status ok";
+        status.textContent = `${level} · Inbäddning stöds. ${resource.note}`;
+      } else {
+        status.className = "status bad";
+        status.textContent = `${level} · Inbäddning blockeras. ${resource.note}`;
+      }
+    }
+
+    function loadSelected() {
+      const resource = currentResource();
+      updateStatus(resource);
+      if (resource.embed) {
+        preview.src = resource.url;
+      } else {
+        preview.srcdoc = `
+          <style>
+            body { font-family: Public Sans, Segoe UI, sans-serif; margin: 0; background: #f8fbfa; color: #2a3b42; display: grid; place-items: center; min-height: 100vh; padding: 20px; }
+            .box { max-width: 560px; border: 1px solid #c8ded4; border-radius: 14px; background: #fff; padding: 18px; text-align: center; }
+            h3 { margin: 0 0 8px; font-size: 1.05rem; }
+            p { margin: 0 0 12px; color: #60727b; }
+            a { display: inline-block; padding: 10px 14px; border-radius: 10px; border: 1px solid #c8ded4; text-decoration: none; color: #1b5e52; font-weight: 600; background: #f5fcfa; }
+          </style>
+          <div class="box">
+            <h3>Inbäddning blockerad av källsidan</h3>
+            <p>Denna resurs måste öppnas i ny flik.</p>
+            <a href="${resource.url}" target="_blank" rel="noopener noreferrer">Öppna resurs</a>
+          </div>
+        `;
+      }
+    }
+
+    select.value = resources[0].id;
+    updateStatus(resources[0]);
+    openBtn.href = resources[0].url;
+
+    loadBtn.addEventListener("click", loadSelected);
+    select.addEventListener("change", () => updateStatus(currentResource()));
+  </script>
+</body>
+</html>

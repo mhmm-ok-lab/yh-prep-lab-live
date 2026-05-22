@@ -1496,6 +1496,10 @@ function renderNavDropdown(): string {
       <hr class="app-nav-hr">
       <p class="app-nav-section">Kursinnehåll</p>
       ${navItem("💻", "Programmering 1", "nav-goto", 'data-view="course-prog1a"', activePage === "course-prog1a")}
+      <a class="app-nav-item app-nav-link" href="./python-minikurs.html">
+        <span class="app-nav-item-icon">🐍</span>
+        <span>Python-minikurs</span>
+      </a>
       ${navItem("🎨", "UX-design", "nav-goto", 'data-view="course-nackademin_ux"', activePage === "course-nackademin_ux")}
       ${navItem("🔒", "IT-säkerhet", "nav-goto", 'data-view="course-iths_itsec"', activePage === "course-iths_itsec")}
 

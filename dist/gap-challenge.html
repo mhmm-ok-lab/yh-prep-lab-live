@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symbol Sudoku — AON Practice</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f3;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0.75rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e0e0dc;
+      padding: 1.25rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 2px;
+      line-height: 1.2;
+    }
+
+    .subtitle-tag {
+      font-size: 12px;
+      font-weight: 400;
+      color: #999;
+      margin-left: 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .timer-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 6px;
+    }
+
+    .tnum {
+      font-size: 24px;
+      font-weight: 500;
+      color: #111;
+      min-width: 38px;
+      text-align: center;
+    }
+
+    .tnum.warn   { color: #996600; }
+    .tnum.danger { color: #aa0000; }
+
+    .tbar-wrap {
+      flex: 1;
+      height: 6px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .tbar {
+      height: 100%;
+      background: #7F77DD;
+      border-radius: 4px;
+      transition: width 0.9s linear, background 0.3s;
+    }
+
+    .grid-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 4px;
+      background: #bbb;
+      border: 1px solid #bbb;
+    }
+
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      width: 56px;
+      height: 56px;
+    }
+
+    .cell.empty   { background: #f0f0f0; }
+    .cell.qmark   { background: #eae6fa; }
+    .cell.correct { background: #e6f4e6; }
+    .cell.wrong   { background: #fce8e8; }
+    .cell.timeout { background: #fdf6e3; }
+
+    .qmark-label {
+      font-size: 22px;
+      font-weight: 700;
+      color: #534AB7;
+    }
+
+    .options {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: nowrap;
+      margin: 10px 0 6px;
+    }
+
+    .opt {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      border: 2px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: border-color 0.1s, background 0.1s;
+    }
+
+    .opt:hover        { border-color: #7F77DD; background: #f0eeff; }
+    .opt.locked       { opacity: 0.35; pointer-events: none; }
+    .opt.inactive     { opacity: 0.28; pointer-events: none; }
+
+    .feedback {
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      min-height: 20px;
+      margin: 4px 0;
+    }
+
+    .feedback.ok   { color: #2a7a2a; }
+    .feedback.bad  { color: #aa0000; }
+    .feedback.out  { color: #996600; }
+    .feedback.hint { color: #666; font-weight: 400; font-size: 13px; }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 8px 0;
+    }
+
+    .btn-main {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: 1px solid #7F77DD;
+      background: #EEEDFE;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #534AB7;
+      transition: background 0.1s;
+    }
+
+    .btn-main:hover { background: #CECBF6; }
+
+    .btn-sec {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid #d0d0cc;
+      background: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      color: #333;
+      transition: background 0.1s;
+    }
+
+    .btn-sec:hover { background: #f5f5f3; }
+
+    /* ── Below-game settings ─────────────────────────────────── */
+    .below-game {
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ctrl-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #d0d0cc;
+      background: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      color: #555;
+      white-space: nowrap;
+      transition: background 0.1s, border-color 0.1s;
+    }
+
+    .ctrl-btn:hover { background: #f0f0ee; }
+
+    .ctrl-btn.active {
+      background: #EEEDFE;
+      border-color: #7F77DD;
+      color: #534AB7;
+      font-weight: 500;
+    }
+
+    .ctrl-btn.color-active {
+      background: #fff8e1;
+      border-color: #f0b429;
+      color: #7a5a00;
+      font-weight: 500;
+    }
+
+    .diff-row .ctrl-btn {
+      flex: 1;
+      text-align: center;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    .ctrl-label {
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .ctrl-input {
+      width: 58px;
+      padding: 3px 6px;
+      border: 1px solid #d0d0cc;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #111;
+      text-align: center;
+    }
+
+    /* ── Stats ───────────────────────────────────────────────── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+
+    .stat {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+
+    .stat span {
+      display: block;
+      font-size: 18px;
+      font-weight: 500;
+      color: #111;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Symbol Sudoku <span class="subtitle-tag">GapChallenge · Latin Square</span></h1>
+  <p class="subtitle">Hitta formen som saknas i <strong>?</strong>-rutan — ingen form upprepas i rad eller kolumn.</p>
+
+  <div class="timer-row">
+    <div class="tnum" id="tnum">—</div>
+    <div class="tbar-wrap"><div class="tbar" id="tbar" style="width:0%"></div></div>
+  </div>
+
+  <div class="grid-wrap" id="grid-wrap"></div>
+
+  <div class="options" id="options"></div>
+
+  <div class="feedback" id="feedback">&nbsp;</div>
+
+  <div class="action-row">
+    <button class="btn-main" onclick="onNext()">Start / Nästa</button>
+    <button class="btn-sec" onclick="hint()">Ledtråd</button>
+  </div>
+
+  <div class="below-game">
+    <div class="ctrl-row">
+      <button class="ctrl-btn active" id="n4" onclick="setSize(4)">4×4</button>
+      <button class="ctrl-btn"        id="n5" onclick="setSize(5)">5×5</button>
+      <div style="flex:1"></div>
+      <button class="ctrl-btn" id="coltoggle" onclick="toggleColor()">Färg</button>
+    </div>
+    <div class="ctrl-row diff-row">
+      <button class="ctrl-btn active" id="deasy"     onclick="setDiff('easy')">Easy</button>
+      <button class="ctrl-btn"        id="dmedium"   onclick="setDiff('medium')">Medium</button>
+      <button class="ctrl-btn"        id="dhard"     onclick="setDiff('hard')">Hard</button>
+      <button class="ctrl-btn"        id="dforgetit" onclick="setDiff('forgetit')">Forget it 💀</button>
+    </div>
+    <div class="ctrl-row">
+      <label class="ctrl-label" for="timeinput">Tid&nbsp;(sek)</label>
+      <input type="number" id="timeinput" value="36" min="5" max="300" class="ctrl-input">
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span id="sc">0</span>rätt</div>
+    <div class="stat"><span id="sw">0</span>fel</div>
+    <div class="stat"><span id="st">0</span>timeout</div>
+    <div class="stat"><span id="sa">—</span>sek/fråga</div>
+  </div>
+</div>
+
+<script>
+  const SHAPES4 = ['circle','square','triangle','cross'];
+  const SHAPES5 = ['circle','square','triangle','cross','star'];
+
+  const SHAPE_COLORS = {
+    circle:   '#2e9e5b',
+    square:   '#cc3322',
+    triangle: '#2255cc',
+    cross:    '#00aacc',
+    star:     '#7744cc'
+  };
+
+  // ── Color mode ───────────────────────────────────────────────────
+  let colorMode = localStorage.getItem('gc-color') === '1';
+
+  function shapeColor(shape) {
+    return colorMode ? (SHAPE_COLORS[shape] || '#111') : '#111';
+  }
+
+  function toggleColor() {
+    colorMode = !colorMode;
+    localStorage.setItem('gc-color', colorMode ? '1' : '0');
+    const btn = document.getElementById('coltoggle');
+    if (colorMode) {
+      btn.textContent = 'B&W';
+      btn.classList.remove('active');
+      btn.classList.add('color-active');
+    } else {
+      btn.textContent = 'Färg';
+      btn.classList.remove('color-active');
+      btn.classList.remove('active');
+    }
+    renderGrid();
+    renderOptions(active);
+  }
+
+  function makeSVG(shape, size) {
+    const s = size || 32;
+    const f = shapeColor(shape);
+    const h = s / 2;
+    const d = {
+      circle:   `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><circle cx="${h}" cy="${h}" r="${h*0.72}" fill="${f}"/></svg>`,
+      square:   `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><rect x="${s*0.14}" y="${s*0.14}" width="${s*0.72}" height="${s*0.72}" fill="${f}"/></svg>`,
+      triangle: `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><polygon points="${h},${s*0.1} ${s*0.92},${s*0.9} ${s*0.08},${s*0.9}" fill="${f}"/></svg>`,
+      cross:    `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><rect x="${s*0.38}" y="${s*0.1}" width="${s*0.24}" height="${s*0.8}" fill="${f}"/><rect x="${s*0.1}" y="${s*0.38}" width="${s*0.8}" height="${s*0.24}" fill="${f}"/></svg>`,
+      star:     `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><polygon points="50,5 60.6,35.4 92.8,36.1 67.1,55.6 76.4,86.4 50,68 23.6,86.4 32.9,55.6 7.2,36.1 39.4,35.4" fill="${f}"/></svg>`
+    };
+    return d[shape] || '';
+  }
+
+  // ── State ────────────────────────────────────────────────────────
+  let N = 4, diff = 'easy';
+  let puzzle = [], sol = null, qr = 0, qc = 0;
+  let active = false, done = false;
+  let correctC = 0, wrongC = 0, timeoutC = 0, times = [];
+  let timerInterval = null, startTime = 0, remaining = 0;
+  let currentTimeLimit = 36;
+
+  function shapes() { return N === 4 ? SHAPES4 : SHAPES5; }
+
+  function getTimeLimit() {
+    return Math.max(5, parseInt(document.getElementById('timeinput').value) || 36);
+  }
+
+  // ── Solver: classify deduction depth for ? cell ──────────────────
+  function classifyDepth(grid, tqr, tqc, n, sh) {
+    const state = grid.map(row => [...row]);
+
+    function candidates(r, c) {
+      const rowVis = new Set(state[r].filter(v => v !== null && v !== '?'));
+      const colVis = new Set(state.map(row => row[c]).filter(v => v !== null && v !== '?'));
+      return sh.filter(s => !rowVis.has(s) && !colVis.has(s));
+    }
+
+    function isQSolvable() {
+      if (candidates(tqr, tqc).length === 1) return true;
+      for (const s of sh) {
+        let count = 0, foundC = -1;
+        for (let c = 0; c < n; c++) {
+          if ((state[tqr][c] === null || state[tqr][c] === '?') && candidates(tqr, c).includes(s)) {
+            count++; foundC = c;
+          }
+        }
+        if (count === 1 && foundC === tqc) return true;
+      }
+      for (const s of sh) {
+        let count = 0, foundR = -1;
+        for (let r = 0; r < n; r++) {
+          if ((state[r][tqc] === null || state[r][tqc] === '?') && candidates(r, tqc).includes(s)) {
+            count++; foundR = r;
+          }
+        }
+        if (count === 1 && foundR === tqr) return true;
+      }
+      return false;
+    }
+
+    if (isQSolvable()) return 0;
+
+    let steps = 0;
+    for (let iter = 0; iter < n * n; iter++) {
+      let progressed = false;
+
+      for (let r = 0; r < n && !progressed; r++) {
+        for (let c = 0; c < n && !progressed; c++) {
+          if (state[r][c] !== null) continue;
+          const cands = candidates(r, c);
+          if (cands.length === 1) {
+            state[r][c] = cands[0];
+            steps++;
+            progressed = true;
+            if (isQSolvable()) return steps;
+          }
+        }
+      }
+
+      for (let r = 0; r < n && !progressed; r++) {
+        for (const s of sh) {
+          let count = 0, foundC = -1;
+          for (let c = 0; c < n; c++) {
+            if (state[r][c] === null && candidates(r, c).includes(s)) {
+              count++; foundC = c;
+            }
+          }
+          if (count === 1 && foundC !== -1) {
+            state[r][foundC] = s;
+            steps++;
+            progressed = true;
+            if (isQSolvable()) return steps;
+            break;
+          }
+        }
+      }
+
+      for (let c = 0; c < n && !progressed; c++) {
+        for (const s of sh) {
+          let count = 0, foundR = -1;
+          for (let r = 0; r < n; r++) {
+            if (state[r][c] === null && candidates(r, c).includes(s)) {
+              count++; foundR = r;
+            }
+          }
+          if (count === 1 && foundR !== -1) {
+            state[foundR][c] = s;
+            steps++;
+            progressed = true;
+            if (isQSolvable()) return steps;
+            break;
+          }
+        }
+      }
+
+      if (!progressed) return Infinity;
+    }
+    return Infinity;
+  }
+
+  function depthMatchesDiff(depth) {
+    if (depth === Infinity) return false;
+    switch (diff) {
+      case 'easy':     return depth === 0;
+      case 'medium':   return depth >= 1 && depth <= 2;
+      case 'hard':     return depth >= 3 && depth <= 5;
+      case 'forgetit': return depth >= 6;
+      default:         return true;
+    }
+  }
+
+  // ── Puzzle generation ────────────────────────────────────────────
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function buildPuzzle() {
+    const sh = shapes();
+    const hideRatio = diff === 'forgetit' ? 0.65 : 0.50;
+    const MAX_ATTEMPTS = 300;
+
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      const s = [...sh]; shuffle(s);
+      const off = Array.from({length: N}, (_, i) => i); shuffle(off);
+      const full = off.map(o => Array.from({length: N}, (_, c) => s[(o + c) % N]));
+
+      const tqr = Math.floor(Math.random() * N);
+      const tqc = Math.floor(Math.random() * N);
+      const tsol = full[tqr][tqc];
+
+      const pos = [];
+      for (let r = 0; r < N; r++)
+        for (let c = 0; c < N; c++)
+          if (!(r === tqr && c === tqc)) pos.push([r, c]);
+      shuffle(pos);
+
+      const hideCount = Math.max(1, Math.floor(N * N * hideRatio));
+      const p = full.map(r => [...r]);
+      pos.slice(0, hideCount - 1).forEach(([r, c]) => { p[r][c] = null; });
+      p[tqr][tqc] = '?';
+
+      const depth = classifyDepth(p, tqr, tqc, N, sh);
+
+      if (depthMatchesDiff(depth)) {
+        puzzle = p; qr = tqr; qc = tqc; sol = tsol;
+        return;
+      }
+    }
+
+    // Fallback: Medium
+    for (;;) {
+      const s = [...sh]; shuffle(s);
+      const off = Array.from({length: N}, (_, i) => i); shuffle(off);
+      const full = off.map(o => Array.from({length: N}, (_, c) => s[(o + c) % N]));
+      const tqr = Math.floor(Math.random() * N);
+      const tqc = Math.floor(Math.random() * N);
+      const tsol = full[tqr][tqc];
+      const pos = [];
+      for (let r = 0; r < N; r++)
+        for (let c = 0; c < N; c++)
+          if (!(r === tqr && c === tqc)) pos.push([r, c]);
+      shuffle(pos);
+      const p = full.map(r => [...r]);
+      pos.slice(0, Math.floor(N * N * 0.5) - 1).forEach(([r, c]) => { p[r][c] = null; });
+      p[tqr][tqc] = '?';
+      const depth = classifyDepth(p, tqr, tqc, N, sh);
+      if (depth >= 1 && depth <= 2) {
+        puzzle = p; qr = tqr; qc = tqc; sol = tsol;
+        return;
+      }
+    }
+  }
+
+  // ── Controls ─────────────────────────────────────────────────────
+  function setSize(n) {
+    N = n;
+    ['n4','n5'].forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById('n' + n).classList.add('active');
+    buildPuzzle(); renderGrid(); renderOptions(false); resetTimer();
+  }
+
+  function setDiff(d) {
+    diff = d;
+    ['deasy','dmedium','dhard','dforgetit'].forEach(id =>
+      document.getElementById(id).classList.remove('active'));
+    document.getElementById('d' + d).classList.add('active');
+  }
+
+  // ── Rendering ────────────────────────────────────────────────────
+  function renderGrid() {
+    const wrap = document.getElementById('grid-wrap');
+    const g = document.createElement('div');
+    g.className = 'grid';
+    g.style.gridTemplateColumns = `repeat(${N}, 56px)`;
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+      const cell = document.createElement('div');
+      const v = puzzle[r][c];
+      if (v === '?')       { cell.className = 'cell qmark'; cell.id = 'qcell'; cell.innerHTML = '<span class="qmark-label">?</span>'; }
+      else if (v === null) { cell.className = 'cell empty'; }
+      else                 { cell.className = 'cell'; cell.innerHTML = makeSVG(v, 32); }
+      g.appendChild(cell);
+    }
+    wrap.innerHTML = ''; wrap.appendChild(g);
+  }
+
+  function renderOptions(enabled) {
+    const shuffled = [...shapes()]; shuffle(shuffled);
+    const el = document.getElementById('options'); el.innerHTML = '';
+    shuffled.forEach(s => {
+      const b = document.createElement('div');
+      b.className = 'opt' + (enabled ? '' : ' inactive');
+      b.innerHTML = makeSVG(s, 32);
+      b.onclick = () => pick(s);
+      el.appendChild(b);
+    });
+  }
+
+  // ── Timer ────────────────────────────────────────────────────────
+  function resetTimer() {
+    clearInterval(timerInterval); active = false;
+    document.getElementById('tnum').textContent = '—';
+    document.getElementById('tnum').className = 'tnum';
+    document.getElementById('tbar').style.width = '0%';
+  }
+
+  function beginTimer() {
+    currentTimeLimit = getTimeLimit();
+    remaining = currentTimeLimit; startTime = Date.now(); updateTimerUI();
+    timerInterval = setInterval(() => {
+      remaining = currentTimeLimit - Math.floor((Date.now() - startTime) / 1000);
+      if (remaining <= 0) { clearInterval(timerInterval); onTimeout(); }
+      else updateTimerUI();
+    }, 500);
+  }
+
+  function updateTimerUI() {
+    const r = Math.max(0, remaining);
+    const el = document.getElementById('tnum');
+    el.textContent = r;
+    el.className = 'tnum' + (r <= 8 ? ' danger' : r <= 15 ? ' warn' : '');
+    document.getElementById('tbar').style.width = (r / currentTimeLimit * 100) + '%';
+    document.getElementById('tbar').style.background = r <= 8 ? '#cc2222' : r <= 15 ? '#cc8800' : '#7F77DD';
+  }
+
+  // ── Game logic ───────────────────────────────────────────────────
+  function onNext() {
+    clearInterval(timerInterval);
+    done = false; active = true;
+    document.getElementById('feedback').innerHTML = '&nbsp;';
+    document.getElementById('feedback').className = 'feedback';
+    buildPuzzle(); renderGrid(); renderOptions(true); beginTimer();
+  }
+
+  function onTimeout() {
+    if (done) return; done = true; active = false; timeoutC++;
+    lockOptions();
+    const qcell = document.getElementById('qcell');
+    qcell.innerHTML = makeSVG(sol, 32); qcell.className = 'cell timeout';
+    document.getElementById('feedback').textContent = 'Timeout! Svaret var ' + sol;
+    document.getElementById('feedback').className = 'feedback out';
+    updateStats();
+  }
+
+  function pick(s) {
+    if (done || !active) return;
+    clearInterval(timerInterval); done = true; active = false;
+    const elapsed = Math.round((Date.now() - startTime) / 1000);
+    times.push(elapsed); lockOptions();
+    const qcell = document.getElementById('qcell');
+    qcell.innerHTML = makeSVG(sol, 32);
+    const fb = document.getElementById('feedback');
+    if (s === sol) {
+      correctC++; fb.textContent = 'Rätt! ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback ok'; qcell.className = 'cell correct';
+    } else {
+      wrongC++; fb.textContent = 'Fel — svaret var ' + sol + ' (' + elapsed + 's)'; fb.className = 'feedback bad'; qcell.className = 'cell wrong';
+    }
+    updateStats();
+  }
+
+  function lockOptions() {
+    document.querySelectorAll('.opt').forEach(b => b.classList.add('locked'));
+  }
+
+  function hint() {
+    if (!active) return;
+    const sh = shapes();
+    const rowHas = puzzle[qr].filter(v => v && v !== '?');
+    const colHas = puzzle.map(r => r[qc]).filter(v => v && v !== '?');
+    const rMiss = sh.filter(s => !rowHas.includes(s)).join(', ');
+    const cMiss = sh.filter(s => !colHas.includes(s)).join(', ');
+    document.getElementById('feedback').textContent = 'Rad saknar: ' + rMiss + ' · Kolumn saknar: ' + cMiss;
+    document.getElementById('feedback').className = 'feedback hint';
+  }
+
+  function updateStats() {
+    document.getElementById('sc').textContent = correctC;
+    document.getElementById('sw').textContent = wrongC;
+    document.getElementById('st').textContent = timeoutC;
+    const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) + 's' : '—';
+    document.getElementById('sa').textContent = avg;
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────
+  if (colorMode) {
+    const btn = document.getElementById('coltoggle');
+    btn.textContent = 'B&W';
+    btn.classList.add('color-active');
+  }
+
+  buildPuzzle(); renderGrid(); renderOptions(false);
+</script>
+</body>
+</html>

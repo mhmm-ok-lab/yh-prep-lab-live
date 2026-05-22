@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python-minikurs — Nackademin</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ── Tokens ── */
+:root{
+  --font-ui:"Space Grotesk","Avenir Next","Segoe UI",sans-serif;
+  --font-code:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+  --bg:#ffffff;--bg2:#fafafa;--bg3:#f5f5f5;
+  --text:#1a1a1a;--text2:#6b7280;
+  --border:#e5e5e5;
+  --acc:#185FA5;--acc-l:#EFF6FF;
+  --ok-bg:#EAF3DE;--ok-bd:#639922;--ok-tx:#27500A;
+  --er-bg:#FCEBEB;--er-bd:#A32D2D;--er-tx:#501313;
+  --warn-bg:#FAEEDA;--warn-bd:#BA7517;--warn-tx:#633806;
+  --code-bg:#f5f5f5;
+  --kw:#185FA5;--str-c:#3B6D11;--num-c:#854F0B;--cmt-c:#9ca3af;
+  --nav-w:220px;--switch-h:38px;
+}
+body[data-theme="calm-public"],body[data-theme="calm-slate"]{
+  --font-ui:"Public Sans","Segoe UI",sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1a1a1a;--bg2:#222222;--bg3:#2a2a2a;
+    --text:#e5e5e5;--text2:#9ca3af;
+    --border:#333333;
+    --acc:#60a5fa;--acc-l:#1e3a5f;
+    --ok-bg:#1a2e1a;--ok-bd:#4ade80;--ok-tx:#86efac;
+    --er-bg:#2e1a1a;--er-bd:#f87171;--er-tx:#fca5a5;
+    --warn-bg:#2e2010;--warn-bd:#fbbf24;--warn-tx:#fcd34d;
+    --code-bg:#2a2a2a;
+    --kw:#60a5fa;--str-c:#86efac;--num-c:#fcd34d;--cmt-c:#6b7280;
+  }
+}
+
+/* ── Base ── */
+body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;font-size:15px;padding-top:var(--switch-h)}
+#app{display:flex;min-height:calc(100vh - var(--switch-h))}
+
+/* ── Compact switch bar ── */
+#switchbar{
+  position:fixed;top:0;left:0;right:0;height:var(--switch-h);
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:6px;padding:0 10px;z-index:60
+}
+.sw-menu{
+  position:relative;
+  z-index:70;
+}
+.sw-menu>summary{
+  list-style:none;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+  height:28px;padding:0 10px;border-radius:999px;border:1px solid var(--acc);
+  background:var(--acc-l);color:var(--acc);font-size:12px;font-weight:700
+}
+.sw-menu>summary::-webkit-details-marker{display:none}
+.sw-menu>summary::after{content:"▼";margin-left:6px;font-size:10px}
+.sw-menu[open]>summary::after{content:"▲"}
+.sw-menu-body{
+  position:absolute;left:0;top:calc(100% + 6px);
+  min-width:200px;padding:8px;
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  box-shadow:0 10px 22px rgb(15 23 42 / .14);
+  display:grid;gap:6px;z-index:120
+}
+.sw-link{
+  display:inline-flex;align-items:center;justify-content:flex-start;white-space:nowrap;
+  min-height:30px;padding:0 10px;border-radius:999px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text2);font-size:12px;font-weight:600;text-decoration:none
+}
+.sw-link:hover{background:var(--bg3);color:var(--text)}
+.sw-link.current{background:var(--acc-l);color:var(--acc);border-color:var(--acc);font-weight:700}
+.sw-user{
+  margin-left:auto;
+  width:30px;height:30px;border-radius:999px;
+  border:1px solid var(--acc);background:var(--acc-l);color:var(--acc);
+  font-size:11px;font-weight:700;line-height:1;position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0
+}
+.sw-user-icon{font-size:14px;line-height:1}
+.sw-user-initial{
+  position:absolute;right:-2px;bottom:-2px;
+  min-width:13px;height:13px;border-radius:999px;
+  border:1px solid var(--border);background:var(--bg);color:var(--text);
+  font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;padding:0 2px
+}
+.sw-user:hover{filter:brightness(0.97)}
+.sw-user-menu{margin-left:auto}
+.sw-user-menu>summary::after{display:none}
+.sw-user-list{display:grid;gap:6px;max-height:160px;overflow:auto}
+.sw-user-action{
+  display:inline-flex;align-items:center;justify-content:flex-start;white-space:nowrap;
+  min-height:30px;padding:0 10px;border-radius:999px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text2);font-size:12px;font-weight:600;text-decoration:none
+}
+.sw-user-action.active{background:var(--acc-l);color:var(--acc);border-color:var(--acc);font-weight:700}
+.sw-user-note{font-size:11px;color:var(--text2);margin:2px 0}
+
+/* ── Sidebar ── */
+#sidebar{
+  width:var(--nav-w);background:var(--bg2);border-right:1px solid var(--border);
+  position:sticky;top:var(--switch-h);height:calc(100vh - var(--switch-h));overflow-y:auto;flex-shrink:0
+}
+.nav-top{
+  padding:18px 16px 12px;font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--text2);
+  border-bottom:1px solid var(--border);margin-bottom:4px
+}
+.nav-group{
+  padding:10px 16px 3px;font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--text2)
+}
+.nav-sep{height:1px;background:var(--border);margin:6px 0}
+.nav-item{
+  display:flex;align-items:center;gap:8px;padding:9px 16px;
+  cursor:pointer;font-size:13px;color:var(--text2);
+  border-left:3px solid transparent;
+  transition:background .12s,color .12s;user-select:none
+}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{
+  border-left-color:var(--acc);color:var(--acc);
+  background:var(--acc-l);font-weight:600
+}
+.nav-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--border);flex-shrink:0;transition:background .2s
+}
+.nav-item.done .nav-dot{background:var(--ok-bd)}
+.nav-item.active .nav-dot{background:var(--acc)}
+
+/* ── Main content ── */
+#main{flex:1;padding:2.5rem 2.25rem;min-width:0}
+#main-inner{max-width:680px}
+
+/* ── Section header ── */
+.sec-badge{
+  display:inline-block;padding:2px 8px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:20px;
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text2);margin-bottom:10px
+}
+.sec-title{font-size:22px;font-weight:500;margin-bottom:1.5rem;line-height:1.3;color:var(--text)}
+
+/* ── Lesson body ── */
+.lesson-body{line-height:1.8;margin-bottom:2.5rem;color:var(--text)}
+.lesson-body p{margin-bottom:.75rem;color:var(--text)}
+.lesson-body h3{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--text2);margin:1.5rem 0 .6rem
+}
+.lesson-body ul{padding-left:1.2rem;margin-bottom:.75rem}
+.lesson-body li{margin-bottom:.25rem}
+
+/* ── Typography ── */
+pre,code{font-family:var(--font-code)}
+code{
+  background:var(--code-bg);padding:1px 5px;border-radius:4px;
+  font-size:12.5px;color:var(--text)
+}
+pre{
+  background:var(--code-bg);padding:1rem 1.1rem;border-radius:8px;
+  overflow-x:auto;font-size:13px;line-height:1.8;
+  margin:.75rem 0 1rem;border:1px solid var(--border);color:var(--text)
+}
+pre code{background:none;padding:0;font-size:inherit;color:inherit}
+
+/* ── Syntax highlight spans ── */
+.kw{color:var(--kw);font-weight:600}
+.str{color:var(--str-c)}
+.num{color:var(--num-c)}
+.cmt{color:var(--cmt-c);font-style:italic}
+
+/* ── Info boxes ── */
+.ibox{
+  background:var(--acc-l);border:1px solid var(--acc);
+  border-left:3px solid var(--acc);border-radius:8px;
+  padding:.75rem 1rem;margin:.75rem 0;font-size:13.5px;color:var(--text)
+}
+.okbox{
+  background:var(--ok-bg);border:1px solid var(--ok-bd);
+  border-left:3px solid var(--ok-bd);border-radius:8px;
+  padding:.75rem 1rem;margin:.75rem 0;font-size:13.5px;color:var(--ok-tx)
+}
+.errbox{
+  background:var(--er-bg);border:1px solid var(--er-bd);
+  border-left:3px solid var(--er-bd);border-radius:8px;
+  padding:.75rem 1rem;margin:.75rem 0;font-size:13.5px;color:var(--er-tx)
+}
+
+/* ── Range lab ── */
+.lab{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:1rem 1.25rem;margin:1rem 0
+}
+.lab-h{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--text2);margin-bottom:1rem
+}
+.lab-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13.5px}
+.lab-row label{font-family:var(--font-ui);font-weight:700;min-width:52px;color:var(--acc)}
+.lab-row input[type=range]{flex:1;accent-color:var(--acc)}
+.lab-row .lv{font-family:var(--font-code);font-weight:700;min-width:26px;text-align:right;color:var(--acc)}
+.lab-out{
+  background:var(--code-bg);border:1px solid var(--border);
+  border-radius:8px;padding:.75rem 1rem;
+  font-family:var(--font-code);font-size:13px;margin-top:.5rem;min-height:52px
+}
+.lab-expr{color:var(--acc);margin-bottom:5px;font-weight:700}
+.lab-res{color:var(--ok-tx)}
+
+/* ── Quiz section ── */
+.quiz-wrap{
+  border-top:1px solid var(--border);
+  padding-top:2rem;margin-top:.5rem
+}
+.quiz-h{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--text2);margin-bottom:1rem
+}
+
+/* ── Progress dots ── */
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.dot-wrap{position:relative;display:inline-flex}
+.dot{
+  width:24px;height:24px;border-radius:50%;
+  border:1px solid var(--border);background:var(--bg3);
+  cursor:default;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;
+  transition:transform .15s ease-out,border-color .15s;
+  color:var(--text2);flex-shrink:0
+}
+.dot.cur{
+  background:var(--warn-bg);border-color:var(--warn-bd);
+  color:var(--warn-tx)
+}
+.dot.ok{
+  background:var(--ok-bg);border-color:var(--ok-bd);
+  color:var(--ok-tx);cursor:pointer
+}
+.dot.fail{
+  background:var(--er-bg);border-color:var(--er-bd);
+  color:var(--er-tx);cursor:pointer
+}
+.dot.ok:hover,.dot.fail:hover{transform:scale(1.15)}
+.dot.extra{border-style:dashed}
+/* Tooltip */
+.dot-tip{
+  display:none;position:absolute;bottom:calc(100% + 6px);left:50%;
+  transform:translateX(-50%);
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:6px;padding:4px 8px;
+  font-size:11px;white-space:nowrap;color:var(--text);
+  pointer-events:none;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.08)
+}
+.dot-wrap:hover .dot-tip{display:block}
+
+/* ── Question card ── */
+.qcard{
+  border:1px solid var(--border);border-radius:12px;
+  padding:1rem 1.25rem;margin-bottom:.75rem;background:var(--bg)
+}
+.qcard.review-mode{opacity:.8}
+.python-badge{
+  display:inline-block;padding:2px 8px;
+  background:#E6F1FB;border-radius:20px;
+  font-size:11px;font-weight:600;color:#0C447C;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:.6rem
+}
+.extra-badge{
+  display:inline-block;padding:2px 8px;
+  background:var(--warn-bg);border-radius:20px;
+  font-size:11px;font-weight:600;color:var(--warn-tx);
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:.6rem
+}
+@media(prefers-color-scheme:dark){
+  .python-badge{background:#0c2340;color:#7db8f7}
+}
+.qtxt{font-size:15px;font-weight:400;line-height:1.65;margin-bottom:.5rem;color:var(--text)}
+.qcode{margin:.5rem 0}
+
+/* ── Options ── */
+.opts{display:grid;gap:6px;margin-top:.75rem}
+.opt{
+  display:block;width:100%;text-align:left;
+  padding:10px 14px;background:var(--bg);
+  border:1px solid var(--border);border-radius:8px;
+  cursor:pointer;font-size:13.5px;font-family:inherit;
+  color:var(--text);transition:background .12s,border-color .12s;line-height:1.45
+}
+.opt:hover:not(:disabled){background:var(--bg3)}
+.opt.sel-ok{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok-tx);font-weight:600}
+.opt.sel-fail{background:var(--er-bg);border-color:var(--er-bd);color:var(--er-tx);font-weight:600}
+.opt.show-ok{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok-tx)}
+.opt:disabled{cursor:default}
+
+/* ── Feedback ── */
+.fb{margin-top:.75rem;padding:.75rem 1rem;border-radius:8px;font-size:13.5px;line-height:1.7}
+.fb.ok{background:var(--ok-bg);border-left:3px solid var(--ok-bd);color:var(--ok-tx)}
+.fb.fail{background:var(--er-bg);border-left:3px solid var(--er-bd);color:var(--er-tx)}
+.fb-title{font-weight:700;font-size:14px;margin-bottom:4px}
+
+/* ── Buttons ── */
+.btn-next{
+  margin-top:.75rem;padding:8px 18px;
+  background:var(--bg);color:var(--text);
+  border:1px solid var(--border);border-radius:8px;
+  cursor:pointer;font-size:13px;font-family:inherit;
+  transition:background .12s;
+}
+.btn-next:hover{background:var(--bg3)}
+.btn-go{
+  padding:9px 24px;background:var(--bg);color:var(--ok-tx);
+  border:1px solid var(--ok-bd);border-radius:8px;
+  cursor:pointer;font-size:14px;font-family:inherit;
+  transition:background .12s
+}
+.btn-go:hover{background:#C0DD97;color:var(--ok-tx)}
+@media(prefers-color-scheme:dark){
+  .btn-go:hover{background:#1f4a1f}
+}
+
+/* ── Done panel ── */
+.done-panel{
+  margin-top:1.5rem;padding:1.5rem;
+  background:var(--ok-bg);border:1px solid var(--ok-bd);
+  border-radius:12px;text-align:center
+}
+.done-panel h3{font-size:20px;font-weight:500;color:var(--ok-tx);margin-bottom:.5rem}
+.done-panel p{color:var(--ok-tx);margin-bottom:1rem;font-size:14px}
+
+/* ── Result list ── */
+.res-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.res-icon{flex-shrink:0;margin-top:2px}
+.res-q{flex:1;color:var(--text)}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  :root{--switch-h:34px}
+  #app{flex-direction:column}
+  #sidebar{
+    width:100%;height:auto;position:static;
+    display:flex;overflow-x:auto;overflow-y:hidden;
+    padding:6px 8px;gap:4px;flex-wrap:nowrap;
+    border-right:none;border-bottom:1px solid var(--border)
+  }
+  .nav-top,.nav-sep,.nav-group{display:none}
+  .nav-item{
+    white-space:nowrap;padding:6px 11px;border-left:none;
+    border-radius:6px;border-bottom:2px solid transparent;font-size:12px
+  }
+  .nav-item.active{border-left:none;border-bottom-color:var(--acc);background:var(--acc-l)}
+  .nav-dot{display:none}
+  #main{padding:1rem}
+  #main-inner{max-width:100%}
+  .sec-title{font-size:20px}
+  pre{font-size:12px}
+  .dot{width:20px;height:20px;font-size:9px}
+  .opt{font-size:13px}
+  #switchbar{padding:0 8px;gap:5px}
+  .sw-menu>summary{height:24px;padding:0 8px;font-size:11px}
+  .sw-menu-body{min-width:180px}
+  .sw-link{min-height:26px;padding:0 8px;font-size:11px}
+  .sw-user{width:24px;height:24px}
+  .sw-user-icon{font-size:11px}
+  .sw-user-initial{min-width:11px;height:11px;font-size:7px}
+  .sw-user-action{min-height:26px;padding:0 8px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="switchbar">
+  <details class="sw-menu">
+    <summary>Python-minikurs</summary>
+    <div class="sw-menu-body">
+      <a class="sw-link" href="./?view=overview">YH Prep: Översikt</a>
+      <a class="sw-link" href="./?view=bank&track=prog1a">YH Prep: Frågebank (Prog)</a>
+      <a class="sw-link" href="./?view=mock">YH Prep: Mockprov</a>
+      <a class="sw-link current" href="./python-minikurs.html">Python-minikurs</a>
+    </div>
+  </details>
+  <details class="sw-menu sw-user-menu">
+    <summary id="user-avatar" class="sw-user" title="Byt användare">
+      <span class="sw-user-icon" aria-hidden="true">👤</span>
+      <span id="sw-user-initial" class="sw-user-initial">G</span>
+    </summary>
+    <div class="sw-menu-body">
+      <p id="sw-user-active" class="sw-user-note">Aktiv: gäst</p>
+      <button class="sw-user-action" data-action="quick-switch-user">Välj användare i lista</button>
+      <button class="sw-user-action" data-action="quick-create-user">Skapa ny användare</button>
+      <button class="sw-user-action" data-action="quick-switch-guest">Byt till gäst</button>
+      <p class="sw-user-note">Tidigare användare</p>
+      <div id="sw-user-list" class="sw-user-list"></div>
+    </div>
+  </details>
+</div>
+<div id="app">
+  <nav id="sidebar"></nav>
+  <main id="main"></main>
+</div>
+<script>
+// ================================================================
+// COURSE DATA
+// ================================================================
+const SECTIONS = [
+
+// ----------------------------------------------------------------
+// LEKTION 1
+// ----------------------------------------------------------------
+{
+  id:'l1', type:'lesson', navTitle:'L1: Variabler', badge:'Grunderna',
+  title:'Lektion 1: Variabler och datatyper',
+  body:`
+<p>En <strong>variabel</strong> är som en namngiven låda på skrivbordet — du lägger ett värde i den och kan plocka upp det senare. I Python behöver du aldrig deklarera typen, den räknar ut det själv.</p>
+<pre><code>x = 42           # int — heltal
+pris = 9.99      # float — decimaltal
+namn = "Martin"  # str — text
+aktiv = True     # bool — sant/falskt</code></pre>
+<h3>De fyra grundtyperna</h3>
+<p><code>int</code> — heltal: <code>0, 1, -5, 1000</code><br>
+<code>float</code> — decimaltal: <code>3.14, -0.5, 1.0</code><br>
+<code>str</code> — text inom citattecken: <code>"hej"</code>, <code>'a'</code><br>
+<code>bool</code> — sant eller falskt: <code>True</code>, <code>False</code></p>
+<div class="ibox"><strong>type()</strong> berättar vilken typ ett värde har:<br>
+<code>print(type(42))</code> → <code>&lt;class 'int'&gt;</code><br>
+<code>print(type(3.14))</code> → <code>&lt;class 'float'&gt;</code></div>
+<h3>Dynamisk typning</h3>
+<p>Python är <em>dynamiskt typat</em> — en variabel kan byta typ:</p>
+<pre><code>x = 5       # x är int
+x = "fem"   # nu är x str — helt OK</code></pre>
+<h3>Vanliga nybörjarfel</h3>
+<div class="errbox"><strong>NameError</strong> — du använder en variabel som inte är definierad:<br>
+<code>print(ålder)  # NameError om ålder inte finns</code></div>
+<div class="errbox"><strong>Skiftlägeskänslighet</strong> — <code>Namn</code> och <code>namn</code> är OLIKA variabler.</div>
+<div class="okbox"><strong>Namnkonvention:</strong> använd <code>lower_case_with_underscores</code>. Börja aldrig med siffra.</div>`,
+  questions:[
+    {
+      txt:'Vilken datatyp tilldelas variabeln <code>x</code> i denna Python-kod?',
+      code:'x = 42',
+      opts:['int','float','str','number'],
+      ok:0,
+      why:[
+        '✓ Rätt! 42 är ett heltal utan decimalpunkt — Python ger det automatiskt typen <code>int</code>.',
+        '✗ <code>float</code> används för decimaltal som <code>42.0</code>. Utan decimalpunkt blir 42 en <code>int</code>.',
+        '✗ <code>str</code> kräver citattecken: <code>x = "42"</code>. Utan citattecken tolkas 42 som ett heltal.',
+        '✗ Python har ingen typ som heter <code>number</code>. Heltal kallas <code>int</code> och decimaltal kallas <code>float</code>.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vilken datatyp har variabeln <code>y</code>?',
+        code:'y = 3.14',
+        opts:['float','int','double','str'],
+        ok:0,
+        why:[
+          '✓ Rätt! 3.14 har en decimalpunkt — Python ger det typen <code>float</code>.',
+          '✗ <code>int</code> är enbart heltal utan decimalpunkt. 3.14 innehåller en punkt och är alltså <code>float</code>.',
+          '✗ Python har ingen typ som heter <code>double</code>. Decimaltal kallas <code>float</code>.',
+          '✗ <code>str</code> kräver citattecken runt sig. <code>y = 3.14</code> är ett decimaltal, inte text.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'print(type("hej"))',
+      opts:["&lt;class 'str'&gt;",'str','"hej"','string'],
+      ok:0,
+      why:[
+        "✓ Rätt! <code>type()</code> returnerar ett klassobjekt. I Python 3 visas det som <code>&lt;class 'str'&gt;</code>.",
+        "✗ <code>type()</code> returnerar inte bara texten 'str' utan ett klassobjekt: <code>&lt;class 'str'&gt;</code>.",
+        '✗ <code>type()</code> returnerar typen av värdet, inte värdet självt. "hej" är vad vi skickar in, inte vad som skrivs ut.',
+        "✗ Python kallar texttypen <code>str</code>, inte <code>string</code>. Och <code>type()</code> ger ett klassobjekt, inte ett namn."
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver denna Python-kod ut?',
+        code:'print(type(True))',
+        opts:["&lt;class 'bool'&gt;",'bool','True',"&lt;class 'int'&gt;"],
+        ok:0,
+        why:[
+          "✓ Rätt! <code>True</code> har typen <code>bool</code>. <code>type()</code> returnerar <code>&lt;class 'bool'&gt;</code>.",
+          "✗ <code>type()</code> returnerar ett klassobjekt, inte bara strängen 'bool'.",
+          '✗ <code>True</code> är värdet vi skickar in till <code>type()</code>, inte utskriften.',
+          '✗ <code>bool</code> är visserligen en underklass till <code>int</code> i Python, men <code>type(True)</code> ger ändå <code>bool</code>, inte <code>int</code>.'
+        ]
+      }
+    },
+    {
+      txt:'Vilket av dessa är ett giltigt variabelnamn i Python?',
+      code:null,
+      opts:['min_ålder','1ålder','min-ålder','min ålder'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>min_ålder</code> börjar med en bokstav och innehåller bara bokstäver och understreck — helt OK.',
+        '✗ <code>1ålder</code> börjar med en siffra, vilket är förbjudet. Python ger <code>SyntaxError</code>.',
+        '✗ <code>min-ålder</code> innehåller ett minustecken som Python tolkar som subtraktionsoperatorn, inte som namnets del.',
+        '✗ Mellanslag är aldrig tillåtet i ett variabelnamn. Använd understreck: <code>min_ålder</code>.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vilket av dessa är ett giltigt Python-variabelnamn?',
+        code:null,
+        opts:['_räknare','2räknare','räkn-are','räkn are'],
+        ok:0,
+        why:[
+          '✓ Rätt! Understreck i början är tillåtet. <code>_räknare</code> är ett giltigt variabelnamn.',
+          '✗ Variabelnamn får aldrig börja med en siffra. Python ger <code>SyntaxError</code>.',
+          '✗ Bindestreck är inte tillåtet — Python tolkar det som minus-operator.',
+          '✗ Mellanslag är aldrig tillåtet i ett variabelnamn.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'aktiv = True\nprint(not aktiv)',
+      opts:['False','True','not True','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>not</code> vänder på ett boolskt värde. <code>not True</code> ger <code>False</code>.',
+        '✗ <code>not</code> inverterar värdet. <code>aktiv</code> är <code>True</code>, så <code>not aktiv</code> ger <code>False</code>.',
+        '✗ Python utvärderar <code>not aktiv</code> och skriver ut resultatet (<code>False</code>), inte textsträngen "not True".',
+        '✗ Det finns inget fel. <code>not</code> är en giltig logisk operator för boolska värden.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'print(not False)',
+        opts:['True','False','not False','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>not False</code> vänder på <code>False</code> och ger <code>True</code>.',
+          '✗ <code>not</code> inverterar. <code>not False</code> ger det motsatta av <code>False</code>, alltså <code>True</code>.',
+          '✗ Python utvärderar uttrycket och skriver ut resultatet, inte texten "not False".',
+          '✗ Det finns inget fel. <code>not</code> är en giltig logisk operator.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 5\nx = x + 1\nprint(x)',
+      opts:['6','5','x + 1','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Rad 1: x = 5. Rad 2: högerledet beräknas (5+1=6) och lagras i x. Rad 3: skriver ut 6.',
+        '✗ <code>x</code> uppdateras på rad 2. <code>x + 1</code> beräknas till 6 och det nya värdet lagras i <code>x</code>.',
+        '✗ Python utvärderar <code>x + 1</code> matematiskt (till 6) och lagrar resultatet — inte texten.',
+        '✗ Det finns inget fel. Det är helt giltigt att tilldela en variabel ett nytt värde baserat på det gamla.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'n = 10\nn = n * 2\nprint(n)',
+        opts:['20','10','n * 2','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! n börjar som 10. Rad 2 beräknar 10×2=20 och lagrar i n. Utskriften blir 20.',
+          '✗ n uppdateras till 20 på rad 2. Det gamla värdet 10 skrivs inte ut.',
+          '✗ Python beräknar <code>n * 2</code> till 20 och lagrar det — inte textsträngen.',
+          '✗ Det är giltig Python. En variabel kan alltid tilldelas ett nytt beräknat värde.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// LEKTION 2
+// ----------------------------------------------------------------
+{
+  id:'l2', type:'lesson', navTitle:'L2: Operatorer', badge:'Grunderna',
+  title:'Lektion 2: Operatorer',
+  body:`
+<p>Operatorer är symboler som utför beräkningar eller jämförelser på värden.</p>
+<h3>Matematiska operatorer</h3>
+<pre><code>10 + 3   # 13   addition
+10 - 3   # 7    subtraktion
+10 * 3   # 30   multiplikation
+10 / 3   # 3.333...  division (ger alltid float)
+10 // 3  # 3    heltalsdivision (avrundar nedåt)
+10 % 3   # 1    modulus (resten efter division)
+2 ** 3   # 8    upphöjt till</code></pre>
+<div class="ibox"><strong>Modulus %</strong> — tänk klockan: 14 % 12 = 2 (det som "är kvar"). Används ofta för att kolla om ett tal är jämnt: <code>x % 2 == 0</code></div>
+<h3>Jämförelseoperatorer</h3>
+<pre><code>x == y   # lika med (två likhetstecken!)
+x != y   # inte lika med
+x > y    # större än
+x < y    # mindre än
+x >= y   # större än eller lika med
+x <= y   # mindre än eller lika med</code></pre>
+<div class="errbox"><strong>Vanligt misstag:</strong> <code>=</code> är tilldelning, <code>==</code> är jämförelse. <code>if x = 5:</code> ger <code>SyntaxError</code>.</div>
+<h3>Logiska operatorer</h3>
+<pre><code>True and False  # False  (båda måste vara True)
+True or False   # True   (minst en måste vara True)
+not True        # False  (vänder på värdet)</code></pre>`,
+  questions:[
+    {
+      txt:'Vad returnerar följande Python-uttryck?',
+      code:'10 % 3',
+      opts:['1','3','3.33','0'],
+      ok:0,
+      why:[
+        '✓ Rätt! % är modulus — resten efter heltalsdivision. 10 = 3×3 + 1, så resten är 1.',
+        '✗ 3 är kvoten (hur många gånger 3 går i 10), inte resten. % ger resten, inte kvoten.',
+        '✗ 3.33 är resultatet av vanlig division (10/3). Modulus % ger alltid ett heltal — resten.',
+        '✗ 0 skulle innebära att 10 är jämnt delbart med 3, men 3×3=9 och 3×4=12 — 10 är inte delbart med 3.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad returnerar följande Python-uttryck?',
+        code:'17 % 5',
+        opts:['2','3','5','1'],
+        ok:0,
+        why:[
+          '✓ Rätt! 17 = 5×3 + 2. Resten är 2.',
+          '✗ Kontrollera: 5×3=15, 17-15=2. Resten är 2, inte 3.',
+          '✗ 5 är divisorn, inte resten. % ger resten efter division.',
+          '✗ 17 = 5×3 + 2. Resten är 2, inte 1.'
+        ]
+      }
+    },
+    {
+      txt:'Vad returnerar följande Python-uttryck?',
+      code:'10 // 3',
+      opts:['3','3.33','4','1'],
+      ok:0,
+      why:[
+        '✓ Rätt! // är heltalsdivision — avrundar alltid nedåt. 10/3 = 3.33, avrundat nedåt = 3.',
+        '✗ 3.33 är resultatet av vanlig division (<code>/</code>). Dubbelt snedstreck <code>//</code> ger heltal, avrundat nedåt.',
+        '✗ 4 vore avrundning uppåt. <code>//</code> avrundar alltid NEDÅT. 10/3 = 3.33 → nedåt = 3.',
+        '✗ 1 är resten (modulus). <code>//</code> ger kvoten (hur många hela gånger 3 ryms i 10).'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad returnerar följande Python-uttryck?',
+        code:'15 // 4',
+        opts:['3','4','3.75','1'],
+        ok:0,
+        why:[
+          '✓ Rätt! 15/4 = 3.75, avrundat nedåt = 3. Det är vad <code>//</code> gör.',
+          '✗ 4 är divisorn. 15//4 = 3 (hur många gånger 4 ryms helt i 15).',
+          '✗ 3.75 är resultatet av vanlig division (<code>/</code>). <code>//</code> returnerar heltal.',
+          '✗ 1 är inte svaret här. 15 = 4×3 + 3, så kvoten är 3 och resten är 3.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 5\nprint(x == 5)',
+      opts:['True','False','5','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>==</code> jämför om två värden är lika. x är 5 och vi jämför med 5 — de är lika, alltså <code>True</code>.',
+        '✗ Värdena är lika (x=5 och vi jämför med 5), så <code>==</code> ger <code>True</code>, inte <code>False</code>.',
+        '✗ <code>print(x == 5)</code> skriver ut resultatet av jämförelsen (<code>True</code>), inte värdet på x.',
+        '✗ Det finns inget fel. <code>==</code> är en giltig jämförelseoperator i Python.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'y = 7\nprint(y != 10)',
+        opts:['True','False','7','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>!=</code> betyder "inte lika med". 7 är inte 10, alltså är påståendet sant: <code>True</code>.',
+          '✗ <code>!=</code> är "inte lika med". 7 ≠ 10, så uttrycket är sant (<code>True</code>), inte <code>False</code>.',
+          '✗ <code>print(y != 10)</code> skriver ut resultatet av jämförelsen, inte värdet på y.',
+          '✗ Det finns inget fel. <code>!=</code> är en giltig jämförelseoperator.'
+        ]
+      }
+    },
+    {
+      txt:'Vad är värdet av följande Python-uttryck?',
+      code:'True and False',
+      opts:['False','True','None','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>and</code> kräver att BÅDA sidor är <code>True</code>. Här är ena sidan <code>False</code>, så resultatet är <code>False</code>.',
+        '✗ <code>and</code> kräver att BÅDA är sanna. En sida är <code>False</code>, så helheten är <code>False</code>.',
+        '✗ <code>and</code> returnerar ett boolskt värde (<code>True</code> eller <code>False</code>), inte <code>None</code>.',
+        '✗ Det finns inget fel. <code>and</code> är en giltig logisk operator i Python.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad är värdet av följande Python-uttryck?',
+        code:'False or True',
+        opts:['True','False','None','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>or</code> kräver att MINST EN sida är <code>True</code>. Här är ena sidan <code>True</code>, så resultatet är <code>True</code>.',
+          '✗ <code>or</code> räcker med att EN sida är sann. Här är <code>True</code> på höger sida, så helheten är <code>True</code>.',
+          '✗ <code>or</code> returnerar ett boolskt värde, inte <code>None</code>.',
+          '✗ Det finns inget fel. <code>or</code> är en giltig logisk operator.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 10\ny = 3\nprint(x > 5 and y < 2)',
+      opts:['False','True','Error','None'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>x > 5</code> → True (10 > 5). <code>y < 2</code> → False (3 < 2 är falskt). True and False = <code>False</code>.',
+        '✗ Dela upp: <code>x > 5</code> är True, men <code>y < 2</code> är False (3 är inte mindre än 2). True AND False = False.',
+        '✗ Koden är syntaktiskt korrekt. Beräkningar med <code>and</code> och jämförelseoperatorer fungerar i Python.',
+        '✗ <code>print()</code> med ett boolskt uttryck skriver ut <code>True</code> eller <code>False</code>, inte <code>None</code>.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'a = 8\nb = 4\nprint(a > 5 or b > 10)',
+        opts:['True','False','Error','None'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>a > 5</code> → True. <code>b > 10</code> → False. True or False = <code>True</code>. (or räcker med en sant.)',
+          '✗ <code>or</code> kräver bara EN sann sida. <code>a > 5</code> är True, så hela uttrycket är True.',
+          '✗ Koden är korrekt Python. Beräkningarna körs utan problem.',
+          '✗ <code>print()</code> med ett boolskt uttryck skriver ut True eller False.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// LEKTION 3
+// ----------------------------------------------------------------
+{
+  id:'l3', type:'lesson', navTitle:'L3: Villkor', badge:'Grunderna',
+  title:'Lektion 3: Villkor — if, elif, else',
+  body:`
+<p>Villkor låter programmet ta olika vägar beroende på om ett uttryck är sant eller falskt.</p>
+<pre><code>ålder = 20
+
+if ålder >= 18:
+    print("Du får rösta")
+elif ålder >= 16:
+    print("Du får cykla utan hjälm")
+else:
+    print("Du är ung")</code></pre>
+<div class="ibox"><strong>Indentering är kod i Python!</strong> Allt som ska köras inuti ett if-block måste ha 4 mellanslags indrag. Python tvingar dig till läsbar kod.</div>
+<h3>Hur det fungerar</h3>
+<p>Python testar villkoren uppifrån och ned. Det första blocket vars villkor är <code>True</code> körs — sedan hoppas resten över. <code>else</code> körs bara om inget villkor ovan var sant.</p>
+<pre><code>x = 7
+if x > 10:
+    print("A")      # hoppas över
+elif x > 5:
+    print("B")      # körs! (7 > 5)
+else:
+    print("C")      # hoppas över</code></pre>
+<h3>Kombinera villkor</h3>
+<pre><code>if ålder >= 18 and medborgarskap == "SE":
+    print("Du får rösta i riksdagsvalet")</code></pre>
+<div class="errbox"><strong>Vanligt misstag:</strong> <code>if x = 5:</code> ger SyntaxError. Det är <code>==</code> (jämförelse) som gäller i ett villkor, inte <code>=</code> (tilldelning).</div>
+<div class="okbox"><strong>Sant/falskt i Python:</strong> <code>0</code>, <code>""</code>, <code>[]</code> och <code>None</code> är "falsy" — behandlas som False i ett if-block.</div>`,
+  questions:[
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 10\nif x > 5:\n    print("stor")\nelse:\n    print("liten")',
+      opts:['"stor"','"liten"','Error','10'],
+      ok:0,
+      why:[
+        '✓ Rätt! x är 10 och 10 > 5 är sant, så if-blocket körs och skriver ut "stor".',
+        '✗ else-blocket körs bara om villkoret är falskt. 10 > 5 är sant, så if-blocket körs och "stor" skrivs ut.',
+        '✗ Koden är syntaktiskt korrekt. Indenteringen är rätt och villkoret är giltigt.',
+        '✗ <code>print("stor")</code> skriver ut texten "stor", inte värdet på x.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'y = 3\nif y > 10:\n    print("hög")\nelse:\n    print("låg")',
+        opts:['"låg"','"hög"','Error','3'],
+        ok:0,
+        why:[
+          '✓ Rätt! 3 > 10 är falskt, så else-blocket körs och "låg" skrivs ut.',
+          '✗ 3 > 10 är falskt. If-blocket körs inte. Else-blocket körs och skriver ut "låg".',
+          '✗ Koden är korrekt Python med rätt indentering.',
+          '✗ <code>print("låg")</code> skriver ut texten "låg", inte värdet på y.'
+        ]
+      }
+    },
+    {
+      txt:'Vad är felet i följande Python-kod?',
+      code:'x = 5\nif x = 5:\n    print("fem")',
+      opts:['= ska vara == i if-villkoret','Indenteringen är fel','print ska ha stort P','Inget fel'],
+      ok:0,
+      why:[
+        '✓ Rätt! I ett if-villkor används <code>==</code> (jämförelse). Ett ensamt <code>=</code> är tilldelning och ger SyntaxError.',
+        '✗ Indenteringen är korrekt (4 mellanslag). Felet är på rad 2: <code>=</code> ska vara <code>==</code>.',
+        '✗ <code>print</code> är korrekt med liten bokstav. Python är skiftlägeskänsligt — Print (med stor P) skulle ge NameError.',
+        '✗ Det finns ett fel: <code>if x = 5:</code> är ogiltig syntax. Det ska vara <code>if x == 5:</code>.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad är felet i följande Python-kod?',
+        code:'namn = "Anna"\nif namn = "Anna":\n    print("hej Anna")',
+        opts:['= ska vara == i if-villkoret','Strängar kan inte jämföras','Saknas else-block','Inget fel'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>if namn = "Anna":</code> ger SyntaxError. I villkor används <code>==</code>, inte <code>=</code>.',
+          '✗ Strängar kan mycket väl jämföras med <code>==</code>. Det är <code>=</code> i villkoret som är problemet.',
+          '✗ else är alltid valfritt. Man behöver inte ha else efter ett if.',
+          '✗ Det finns ett fel: <code>=</code> i villkoret ska vara <code>==</code>.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 7\nif x > 10:\n    print("A")\nelif x > 5:\n    print("B")\nelse:\n    print("C")',
+      opts:['"B"','"A"','"C"','"A" och "B"'],
+      ok:0,
+      why:[
+        '✓ Rätt! x=7. Villkor 1: 7>10 är falskt. Villkor 2: 7>5 är sant → "B" skrivs ut. Resten hoppas över.',
+        '✗ 7>10 är falskt, så "A" skrivs inte ut. Python hoppar till elif.',
+        '✗ "C" skrivs bara ut om BÅDA villkoren är falska. Men elif-villkoret 7>5 är sant, så "C" hoppas över.',
+        '✗ I if/elif/else körs max ETT block — det första vars villkor är sant. Aldrig flera.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'p = 85\nif p >= 90:\n    print("A")\nelif p >= 70:\n    print("B")\nelse:\n    print("C")',
+        opts:['"B"','"A"','"C"','"A" och "B"'],
+        ok:0,
+        why:[
+          '✓ Rätt! p=85. 85>=90 är falskt. 85>=70 är sant → "B" skrivs ut.',
+          '✗ 85>=90 är falskt, så "A" skrivs inte ut.',
+          '✗ "C" skrivs bara ut om båda villkoren är falska. Här är elif-villkoret sant.',
+          '✗ Bara ett block kan köras i en if/elif/else-kedja.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 5\ny = 10\nif x > 3 and y > 8:\n    print("ja")\nelse:\n    print("nej")',
+      opts:['"ja"','"nej"','Error','True'],
+      ok:0,
+      why:[
+        '✓ Rätt! x>3 → True. y>8 → True. True and True = True → if-blocket körs → "ja".',
+        '✗ Båda villkoren är sanna (5>3 och 10>8), alltså är and-uttrycket True och "ja" skrivs ut.',
+        '✗ Koden är giltig Python. Kombinerade villkor med <code>and</code> fungerar felfritt.',
+        '✗ <code>print("ja")</code> skriver ut texten "ja", inte boolskt True.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'a = 2\nb = 15\nif a > 5 and b > 10:\n    print("ja")\nelse:\n    print("nej")',
+        opts:['"nej"','"ja"','Error','False'],
+        ok:0,
+        why:[
+          '✓ Rätt! a>5 → False (2 är inte >5). Eftersom ena sidan av <code>and</code> är False, är helheten False → "nej".',
+          '✗ a>5 är falskt (2>5 stämmer inte). False and True = False → else-blocket → "nej".',
+          '✗ Koden är korrekt Python.',
+          '✗ <code>print("nej")</code> skriver ut texten "nej", inte boolskt False.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'x = 15\nif x > 20:\n    print("stor")\nelif x > 10:\n    print("medel")\nelif x > 5:\n    print("liten")\nelse:\n    print("mini")',
+      opts:['"medel"','"liten"','"stor"','"mini"'],
+      ok:0,
+      why:[
+        '✓ Rätt! x=15. Villkor 1: 15>20 falskt. Villkor 2: 15>10 sant → "medel" skrivs ut. Resten hoppas över.',
+        '✗ "liten" kräver att villkor 1 och 2 är falska. Men villkor 2 (15>10) är sant, så "liten" nås aldrig.',
+        '✗ 15>20 är falskt, så "stor" skrivs inte ut.',
+        '✗ "mini" skrivs bara ut om ALLA tre villkor är falska. Villkor 2 är sant (15>10).'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'t = 4\nif t > 20:\n    print("stor")\nelif t > 10:\n    print("medel")\nelif t > 5:\n    print("liten")\nelse:\n    print("mini")',
+        opts:['"mini"','"liten"','"medel"','"stor"'],
+        ok:0,
+        why:[
+          '✓ Rätt! t=4. Alla tre villkor (>20, >10, >5) är falska. Else-blocket körs → "mini".',
+          '✗ "liten" kräver t>5. 4>5 är falskt, så det blocket körs inte.',
+          '✗ "medel" kräver t>10. 4>10 är falskt.',
+          '✗ "stor" kräver t>20. 4>20 är falskt.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// REPETITION 1
+// ----------------------------------------------------------------
+{
+  id:'rep1', type:'rep', navTitle:'Repetition 1', badge:'Repetition L1–3',
+  title:'Repetition 1: Lektion 1–3',
+  body:`<p>Sex frågor — lite svårare än i lektionerna. Täcker variabler, operatorer och villkor.</p>`,
+  questions:[
+    {
+      txt:'Vad returnerar följande Python-uttryck?',
+      code:'type(3.14)',
+      opts:["&lt;class 'float'&gt;",'float',"&lt;class 'int'&gt;",'3.14'],
+      ok:0,
+      why:[
+        "✓ Rätt! 3.14 är ett decimaltal — typen är <code>float</code>. <code>type()</code> returnerar klassobjektet <code>&lt;class 'float'&gt;</code>.",
+        "✗ <code>type()</code> returnerar inte bara strängen 'float' utan ett klassobjekt: <code>&lt;class 'float'&gt;</code>.",
+        '✗ 3.14 är ett decimaltal, alltså <code>float</code>. Det vore <code>int</code> om det inte hade någon decimalpunkt.',
+        '✗ 3.14 är värdet vi skickar in. <code>type()</code> returnerar typen, inte värdet.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad returnerar <code>type()</code> för följande värde?',
+        code:'type("42")',
+        opts:["&lt;class 'str'&gt;",'str',"&lt;class 'int'&gt;",'42'],
+        ok:0,
+        why:[
+          "✓ Rätt! \"42\" har citattecken — det är en sträng, alltså <code>&lt;class 'str'&gt;</code>.",
+          "✗ <code>type()</code> returnerar ett klassobjekt, inte bara strängen 'str'.",
+          '✗ "42" är en sträng (text), inte ett heltal. Citattecknen avgör detta.',
+          '✗ 42 är värdet. <code>type()</code> returnerar typen, inte värdet.'
+        ]
+      }
+    },
+    {
+      txt:'Vilken rad ger ett NameError i följande Python-kod?',
+      code:'x = 5\nprint(y)',
+      opts:['Rad 2 (print(y))','Rad 1 (x = 5)','Ingen rad — koden är korrekt','Båda raderna'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>y</code> är aldrig definierad. Python hittar inget med det namnet → NameError på rad 2.',
+        '✗ Rad 1 är korrekt — den skapar variabeln x. Det finns inget fel där.',
+        '✗ Koden har ett fel: variabeln <code>y</code> används men är aldrig definierad → NameError.',
+        '✗ Bara rad 2 ger fel. Rad 1 är korrekt och skapar variabeln x utan problem.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad händer när du kör denna Python-kod?',
+        code:'print(Namn)',
+        opts:['NameError — Namn är inte definierad','Skriver ut "Namn"','Skriver ut None','SyntaxError'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>Namn</code> är ett variabelnamn som inte är definierat → NameError.',
+          '✗ Python skriver inte ut variabelnamnet som text. Det försöker slå upp variabelns värde — men den finns inte.',
+          '✗ <code>None</code> skrivs ut bara om variabeln har värdet <code>None</code>. Här finns variabeln inte alls.',
+          '✗ Det är inte ett syntaxfel. Python förstår vad du försöker göra — problemet är att variabeln saknas.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'print(7 % 2 == 1)',
+      opts:['True','False','1','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Steg 1: 7 % 2 = 1 (resten). Steg 2: 1 == 1 → True. Alltså skrivs True ut.',
+        '✗ 7 % 2 = 1, och 1 == 1 är sant → True. Beräkna inuti parenteserna först.',
+        '✗ 1 är resultatet av 7%2, men sedan jämförs det med 1 via ==. Jämförelsen ger True.',
+        '✗ Koden är giltig. Python hanterar uttrycket steg för steg utan problem.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'print(8 % 2 == 0)',
+        opts:['True','False','0','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! 8 % 2 = 0 (8 är jämnt). 0 == 0 → True.',
+          '✗ 8 är jämnt delbart med 2, så resten är 0. 0 == 0 är sant → True.',
+          '✗ 0 är resultatet av 8%2, men jämförelsen 0==0 ger True som skrivs ut.',
+          '✗ Koden är korrekt Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vad är värdet av följande Python-uttryck?',
+      code:'not (True or False)',
+      opts:['False','True','None','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Inre parentesen: True or False = True. Sedan: not True = False.',
+        '✗ True or False = True, och not True = False. Beräkna inifrån och ut.',
+        '✗ Logiska operatorer returnerar boolska värden, inte None.',
+        '✗ Koden är giltig Python med korrekt syntax.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad är värdet av följande Python-uttryck?',
+        code:'not (False and True)',
+        opts:['True','False','None','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! False and True = False. not False = True.',
+          '✗ False and True = False. not False = True, inte False.',
+          '✗ Logiska operatorer returnerar True eller False, inte None.',
+          '✗ Koden är giltig Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut? (Tips: 0 är "falsy" i Python)',
+      code:'x = 0\nif x:\n    print("A")\nelse:\n    print("B")',
+      opts:['"B"','"A"','Error','Ingenting'],
+      ok:0,
+      why:[
+        '✓ Rätt! 0 är "falsy" i Python — det behandlas som False i ett if-villkor. Else-blocket körs → "B".',
+        '✗ 0 är "falsy" — det behandlas som False. If-blocket körs inte, utan else-blocket.',
+        '✗ Koden är syntaktiskt korrekt. Att använda ett heltal direkt i ett if-villkor är tillåtet.',
+        '✗ Koden skriver alltid ut antingen "A" eller "B". Else garanterar att något körs.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut? (Tom sträng är "falsy")',
+        code:'text = ""\nif text:\n    print("fylld")\nelse:\n    print("tom")',
+        opts:['"tom"','"fylld"','Error','""'],
+        ok:0,
+        why:[
+          '✓ Rätt! En tom sträng <code>""</code> är "falsy" — behandlas som False. Else körs → "tom".',
+          '✗ Tom sträng är "falsy". If-blocket körs inte — else körs och skriver ut "tom".',
+          '✗ Koden är korrekt Python.',
+          '✗ <code>print("tom")</code> skriver ut texten tom, inte tomma citattecken.'
+        ]
+      }
+    },
+    {
+      txt:'Hur många elif-block kan en if-sats ha i Python?',
+      code:null,
+      opts:['Hur många som helst','Exakt ett','Maximalt två','Noll — elif finns inte'],
+      ok:0,
+      why:[
+        '✓ Rätt! Du kan ha hur många elif-block du vill. Python testar dem i ordning tills ett är sant.',
+        '✗ Det finns ingen begränsning på ett. Du kan ha 0, 1, 5 eller 100 elif-block om du vill.',
+        '✗ Det finns ingen begränsning på två. Antalet elif-block är obegränsat i Python.',
+        '✗ elif finns absolut i Python och är en viktig del av if/elif/else-strukturen.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vilket påstående om else-blocket i Python stämmer?',
+        code:null,
+        opts:['else är valfritt och kan utelämnas','else måste alltid finnas','Det kan bara finnas ett elif','else körs alltid'],
+        ok:0,
+        why:[
+          '✓ Rätt! else är helt valfritt i Python. Du kan ha if utan elif och utan else.',
+          '✗ else är aldrig obligatoriskt. En if-sats kan stå helt ensam utan else.',
+          '✗ Antalet elif-block är obegränsat, inte begränsat till ett.',
+          '✗ else körs bara om INGET av de ovanstående villkoren var sant — inte alltid.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// LEKTION 4
+// ----------------------------------------------------------------
+{
+  id:'l4', type:'lesson', navTitle:'L4: Loopar', badge:'Flödeskontroll',
+  title:'Lektion 4: Loopar',
+  body:`
+<p>En loop låter dig upprepa kod utan att skriva den flera gånger.</p>
+<h3>for-loopen</h3>
+<pre><code>for i in range(5):
+    print(i)
+# Skriver ut: 0, 1, 2, 3, 4</code></pre>
+<h3>range() — tre varianter</h3>
+<pre><code>range(5)        # 0, 1, 2, 3, 4     (start=0, stopp=5)
+range(2, 7)     # 2, 3, 4, 5, 6     (start=2, stopp=7)
+range(0, 10, 2) # 0, 2, 4, 6, 8    (start=0, stopp=10, steg=2)
+range(5, 0, -1) # 5, 4, 3, 2, 1    (räknar bakåt)</code></pre>
+<div class="ibox"><strong>Viktigt:</strong> stoppvärdet är aldrig inkluderat. <code>range(5)</code> ger 0–4, inte 0–5.</div>
+<div class="lab" id="range-lab">
+  <div class="lab-h">🔬 Interaktivt range-labb — utforska range(start, stopp, steg)</div>
+  <div class="lab-row"><label>start:</label><input type="range" id="rl-start" min="0" max="10" value="0"><span class="lv" id="rl-sv">0</span></div>
+  <div class="lab-row"><label>stopp:</label><input type="range" id="rl-stop" min="1" max="20" value="5"><span class="lv" id="rl-pv">5</span></div>
+  <div class="lab-row"><label>steg:</label><input type="range" id="rl-step" min="-5" max="5" value="1"><span class="lv" id="rl-tv">1</span></div>
+  <div class="lab-out"><div class="lab-expr" id="rl-expr">range(0, 5, 1)</div><div class="lab-res" id="rl-res">→ [0, 1, 2, 3, 4]</div></div>
+</div>
+<h3>while-loopen</h3>
+<pre><code>x = 0
+while x < 3:
+    print(x)
+    x += 1
+# Skriver ut: 0, 1, 2</code></pre>
+<div class="errbox"><strong>Oändlig loop</strong> — om villkoret aldrig blir False kör loopen för evigt. Glöm inte att uppdatera variabeln inuti while-blocket!</div>
+<h3>break och continue</h3>
+<pre><code>for i in range(10):
+    if i == 3:
+        break       # avbryter loopen helt
+    print(i)        # skriver: 0, 1, 2
+
+for i in range(5):
+    if i == 2:
+        continue    # hoppar över resten av DENNA iteration
+    print(i)        # skriver: 0, 1, 3, 4</code></pre>`,
+  questions:[
+    {
+      txt:'Hur många gånger körs loopen i följande Python-kod?',
+      code:'for i in range(5):\n    print(i)',
+      opts:['5 gånger','4 gånger','6 gånger','Oändligt'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>range(5)</code> ger värdena 0, 1, 2, 3, 4 — det är 5 värden, alltså 5 iterationer.',
+        '✗ <code>range(5)</code> börjar på 0 (inte 1), så det blir 0,1,2,3,4 — fem värden, inte fyra.',
+        '✗ Stoppvärdet (5) är aldrig inkluderat. range(5) ger exakt 5 värden (0–4).',
+        '✗ range(5) är ändligt — det ger exakt 5 värden och loopen slutar.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Hur många gånger körs följande Python-loop?',
+        code:'for i in range(1, 6):\n    print(i)',
+        opts:['5 gånger','6 gånger','4 gånger','Oändligt'],
+        ok:0,
+        why:[
+          '✓ Rätt! range(1,6) ger 1,2,3,4,5 — fem värden, fem iterationer.',
+          '✗ Stoppvärdet 6 är inte inkluderat. range(1,6) ger 1,2,3,4,5 — fem värden.',
+          '✗ range(1,6) börjar på 1 och slutar INNAN 6: 1,2,3,4,5 — fem värden.',
+          '✗ range(1,6) är ändligt med exakt fem värden.'
+        ]
+      }
+    },
+    {
+      txt:'Vilket är det FÖRSTA talet som skrivs ut av följande Python-kod?',
+      code:'for i in range(2, 8, 2):\n    print(i)',
+      opts:['2','0','8','1'],
+      ok:0,
+      why:[
+        '✓ Rätt! range(2, 8, 2) börjar på 2 (startvärdet). Sekvensen är 2, 4, 6.',
+        '✗ 0 är standardstartvärdet för range(n), men här anges start=2 explicit.',
+        '✗ 8 är stoppvärdet och är aldrig inkluderat. Sekvensen slutar på 6.',
+        '✗ 1 är varken start- eller stegvärdet. range(2,8,2) börjar på 2 med steg 2.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vilka tal skriver följande Python-kod ut?',
+        code:'for i in range(1, 10, 3):\n    print(i)',
+        opts:['1, 4, 7','1, 3, 6, 9','0, 3, 6, 9','1, 4, 7, 10'],
+        ok:0,
+        why:[
+          '✓ Rätt! range(1,10,3): start=1, steg=3. 1 → 4 → 7 → (10 är >= stopp, stannar).',
+          '✗ Steget är 3 (inte 2). 1+3=4, 4+3=7, 7+3=10 (stopp) → 1,4,7.',
+          '✗ Start är 1, inte 0. range(1,10,3) börjar på 1.',
+          '✗ 10 är stoppvärdet och inkluderas aldrig. Sekvensen stannar på 7.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut? (En rad per tal)',
+      code:'x = 0\nwhile x < 3:\n    print(x)\n    x += 1',
+      opts:['0, 1, 2','0, 1, 2, 3','1, 2, 3','Oändligt — ingen utskrift'],
+      ok:0,
+      why:[
+        '✓ Rätt! x börjar på 0. Loop: skriv ut 0 (x=0<3), skriv ut 1 (x=1<3), skriv ut 2 (x=2<3), sedan x=3 och 3<3 är falskt → stopp.',
+        '✗ När x=3 är villkoret 3<3 falskt. Loopen slutar INNAN 3 skrivs ut.',
+        '✗ x börjar på 0, inte 1. Första utskriften är 0.',
+        '✗ Loopen är ändlig. x ökar med 1 varje iteration (x+=1) och når snart 3.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'n = 5\nwhile n > 2:\n    print(n)\n    n -= 1',
+        opts:['5, 4, 3','5, 4, 3, 2','3, 4, 5','Oändligt'],
+        ok:0,
+        why:[
+          '✓ Rätt! n=5>2 → skriv 5, n=4>2 → skriv 4, n=3>2 → skriv 3, n=2, 2>2 är falskt → stopp.',
+          '✗ När n=2 är 2>2 falskt. 2 skrivs aldrig ut.',
+          '✗ n börjar på 5 och minskar. Ordningen är 5, 4, 3 — inte uppåt.',
+          '✗ n minskar med 1 varje varv (n-=1) och når snart villkoret.'
+        ]
+      }
+    },
+    {
+      txt:'Vad gör <code>break</code> inuti en loop i Python?',
+      code:null,
+      opts:['Avslutar loopen omedelbart','Hoppar till nästa iteration','Startar om loopen från början','Ger ett SyntaxError'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>break</code> avbryter loopen helt och omedelbart. Koden efter loopen körs sedan.',
+        '✗ Det är <code>continue</code> som hoppar till nästa iteration. <code>break</code> avslutar loopen.',
+        '✗ Ingen inbyggd loopoperator startar om från början. <code>break</code> avslutar loopen.',
+        '✗ <code>break</code> är ett giltigt nyckelord i Python. Det ger inget syntaxfel.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad gör <code>continue</code> inuti en loop i Python?',
+        code:null,
+        opts:['Hoppar till nästa iteration','Avslutar loopen omedelbart','Pausar programmet','Ger SyntaxError'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>continue</code> hoppar över resten av NUVARANDE iteration och går direkt till nästa.',
+          '✗ Det är <code>break</code> som avslutar loopen. <code>continue</code> hoppar bara över nuvarande iteration.',
+          '✗ Det finns ingen inbyggd paus-funktion för loopar. <code>continue</code> hoppar iteration.',
+          '✗ <code>continue</code> är ett giltigt nyckelord i Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut? (En rad per tal)',
+      code:'for i in range(5):\n    if i == 3:\n        break\n    print(i)',
+      opts:['0, 1, 2','0, 1, 2, 3','0, 1, 2, 3, 4','3'],
+      ok:0,
+      why:[
+        '✓ Rätt! i=0: print 0. i=1: print 1. i=2: print 2. i=3: break → loopen avslutas. 3 skrivs aldrig ut.',
+        '✗ break körs när i==3, INNAN print(3). Alltså skrivs 3 inte ut.',
+        '✗ break på i==3 avbryter loopen. 4 nås aldrig.',
+        '✗ 3 är inte det enda som skrivs ut — 0, 1 och 2 skrivs ut innan break triggas.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'for i in range(5):\n    if i == 2:\n        continue\n    print(i)',
+        opts:['0, 1, 3, 4','0, 1, 2, 3, 4','0, 1','2'],
+        ok:0,
+        why:[
+          '✓ Rätt! continue hoppar över print(i) när i==2. Övriga värden (0,1,3,4) skrivs ut.',
+          '✗ continue hoppar över 2, men loopen fortsätter med 3 och 4.',
+          '✗ continue hoppar bara over i==2. Loopen fortsätter med 3 och 4.',
+          '✗ 2 skrivs INTE ut — det är just det som continue hoppar över.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// LEKTION 5
+// ----------------------------------------------------------------
+{
+  id:'l5', type:'lesson', navTitle:'L5: Funktioner', badge:'Funktioner',
+  title:'Lektion 5: Funktioner',
+  body:`
+<p>En funktion är ett namngivet kodblock du kan anropa hur många gånger som helst. Det är grundstenen i återanvändbar kod.</p>
+<pre><code>def hälsa(namn):
+    print("Hej, " + namn + "!")
+
+hälsa("Martin")   # Hej, Martin!
+hälsa("Anna")     # Hej, Anna!</code></pre>
+<h3>Syntax</h3>
+<pre><code>def funktionsnamn(parameter1, parameter2):
+    # kod här (måste vara indenterad)
+    return värde    # valfritt</code></pre>
+<div class="errbox"><strong>Vanligt misstag:</strong> glömt kolon efter parenteserna. <code>def hälsa(namn)</code> ger SyntaxError. Det ska vara <code>def hälsa(namn):</code></div>
+<h3>return vs print</h3>
+<pre><code>def addera(a, b):
+    return a + b      # skickar tillbaka värdet
+
+def addera_v2(a, b):
+    print(a + b)      # skriver ut men skickar inget tillbaka
+
+resultat = addera(3, 4)    # resultat = 7 ✓
+resultat = addera_v2(3, 4) # resultat = None ✗</code></pre>
+<div class="ibox"><strong>return</strong> skickar ett värde ur funktionen som du kan lagra eller använda. <strong>print</strong> visar bara på skärmen — värdet försvinner.</div>
+<h3>Standardvärden</h3>
+<pre><code>def hälsa(namn="Världen"):
+    print("Hej " + namn)
+
+hälsa()          # Hej Världen
+hälsa("Martin")  # Hej Martin</code></pre>
+<h3>Scope — variablers räckvidd</h3>
+<pre><code>x = 10           # global variabel
+
+def func():
+    x = 20       # lokal variabel — ANNAN x!
+    print(x)     # 20
+
+func()
+print(x)         # 10 — den globala x är oförändrad</code></pre>
+<div class="okbox">Lokala variabler (inuti en funktion) existerar bara under funktionens körning och syns inte utanför.</div>`,
+  questions:[
+    {
+      txt:'Vad är felet i följande Python-kod?',
+      code:'def hälsa()\n    print("Hej!")',
+      opts:['Saknar kolon efter parenteserna','Saknar parametrar','print ska börja med stor P','Inget fel'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>def hälsa()</code> saknar kolon på slutet. Korrekt syntax: <code>def hälsa():</code>',
+        '✗ Det är helt OK att ha en funktion utan parametrar. Det är kolonet som saknas.',
+        '✗ Python är skiftlägeskänsligt och <code>print</code> är korrekt med liten bokstav. Print (stor P) vore fel.',
+        '✗ Det finns ett syntaxfel: kolonet saknas efter <code>hälsa()</code>.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad är felet i följande Python-kod?',
+        code:'def beräkna(x, y)\n    return x + y',
+        opts:['Saknar kolon efter parenteserna','return är ogiltigt','Parametrar ska ha typer','Inget fel'],
+        ok:0,
+        why:[
+          '✓ Rätt! Kolonet saknas efter <code>(x, y)</code>. Korrekt: <code>def beräkna(x, y):</code>',
+          '✗ <code>return</code> är helt giltigt i Python-funktioner.',
+          '✗ Python är dynamiskt typat — parametrar behöver inga typdeklarationer.',
+          '✗ Det finns ett syntaxfel: kolonet saknas efter parameterlistan.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'def addera(a, b):\n    return a + b\n\nresultat = addera(3, 4)\nprint(resultat)',
+      opts:['7','3','4','None'],
+      ok:0,
+      why:[
+        '✓ Rätt! Funktionen returnerar a+b = 3+4 = 7. Det lagras i resultat och skrivs ut.',
+        '✗ 3 är bara det första argumentet. Funktionen returnerar summan av båda: 3+4=7.',
+        '✗ 4 är bara det andra argumentet. Funktionen returnerar summan: 7.',
+        '✗ None returneras bara om funktionen saknar return-sats. Här returneras 7.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'def multiplicera(x, y):\n    return x * y\n\nprint(multiplicera(5, 3))',
+        opts:['15','5','3','None'],
+        ok:0,
+        why:[
+          '✓ Rätt! Funktionen returnerar 5*3=15. print() skriver ut returvärdet direkt.',
+          '✗ 5 är bara det första argumentet. Funktionen returnerar produkten: 15.',
+          '✗ 3 är bara det andra argumentet. Funktionen returnerar produkten: 15.',
+          '✗ None returneras bara om return saknas. Här returneras 15.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'def hälsa(namn="Världen"):\n    print("Hej " + namn)\n\nhälsa()',
+      opts:['"Hej Världen"','"Hej namn"','Error','"Hej "'],
+      ok:0,
+      why:[
+        '✓ Rätt! Inget argument skickas, så standardvärdet "Världen" används. Utskriften: Hej Världen.',
+        '✗ <code>namn</code> är variabelnamnet, inte värdet. Värdet som används är standardvärdet "Världen".',
+        '✗ Koden är giltig Python. Standardvärden hanteras utan problem.',
+        '✗ Standardvärdet "Världen" fyller in <code>namn</code>, så hela strängen "Hej Världen" skrivs ut.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'def poäng(p, bonus=10):\n    print(p + bonus)\n\npoäng(90)',
+        opts:['100','90','10','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! Inget bonus-argument skickas, så standardvärdet 10 används. 90+10=100.',
+          '✗ 90 är p-parameterns värde. Bonus-standardvärdet (10) läggs till: 90+10=100.',
+          '✗ 10 är standardvärdet för bonus, men funktionen skriver ut summan: 90+10=100.',
+          '✗ Koden är giltig Python med ett giltigt standardvärde.'
+        ]
+      }
+    },
+    {
+      txt:'Vad är den viktigaste skillnaden mellan <code>return</code> och <code>print</code> i en Python-funktion?',
+      code:null,
+      opts:['return skickar ett värde tillbaka; print visar det bara på skärmen','De gör exakt samma sak','print skickar värdet tillbaka; return visar det på skärmen','return används bara utanför funktioner'],
+      ok:0,
+      why:[
+        '✓ Rätt! return skickar värdet ut ur funktionen så det kan lagras eller användas vidare. print visar det bara — värdet "försvinner".',
+        '✗ De gör fundamentalt olika saker. return ger tillbaka ett värde; print visar det och kasta bort det.',
+        '✗ Det är tvärtom. return skickar tillbaka värdet; print visar det på skärmen.',
+        '✗ return används inuti funktioner, inte utanför dem.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad lagras i variabeln <code>r</code> efter denna Python-kod?',
+        code:'def visa(x):\n    print(x)\n\nr = visa(42)',
+        opts:['None','42','visa','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>visa()</code> har ingen return-sats. Funktioner utan return returnerar automatiskt None.',
+          '✗ 42 skrivs UT på skärmen, men lagras inte. Utan return lagrar funktionen None.',
+          '✗ "visa" är funktionens namn, inte vad den returnerar.',
+          '✗ Koden är korrekt Python. Den skriver ut 42 och lagrar None i r.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut? (Två rader)',
+      code:'x = 10\n\ndef func():\n    x = 20\n    print(x)\n\nfunc()\nprint(x)',
+      opts:['20 sedan 10','10 sedan 20','20 sedan 20','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! func() skapar en lokal x=20 och skriver ut 20. Den globala x=10 påverkas inte. Sista print(x) ger 10.',
+        '✗ Den globala x=10 ändras inte av att funktionen skapar sin lokala x=20.',
+        '✗ Funktionen skapar en LOKAL x=20. Den globala x=10 ändras inte, så sista raden ger 10.',
+        '✗ Koden är giltig. Lokala variabler i Python skuggar globala utan att ändra dem.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'namn = "Global"\n\ndef func():\n    namn = "Lokal"\n    print(namn)\n\nfunc()\nprint(namn)',
+        opts:['"Lokal" sedan "Global"','"Global" sedan "Lokal"','"Lokal" sedan "Lokal"','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! func() skapar lokal "Lokal" och skriver ut den. Den globala "Global" ändras inte.',
+          '✗ func() skriver ut sin lokala variabel "Lokal". Men den globala förblir "Global".',
+          '✗ Den lokala variabeln ändrar inte den globala. Sista print(namn) ger "Global".',
+          '✗ Koden är giltig Python. Scope-regler gäller som förväntat.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// LEKTION 6
+// ----------------------------------------------------------------
+{
+  id:'l6', type:'lesson', navTitle:'L6: Listor & fel', badge:'Listor & Felsökning',
+  title:'Lektion 6: Listor och felsökning',
+  body:`
+<p>En lista är en ordnad samling av värden. I Python kan en lista innehålla blandade typer.</p>
+<pre><code>frukter = ["äpple", "banan", "körsbär"]
+tal = [1, 2, 3, 4, 5]
+blandat = [42, "hej", True, 3.14]</code></pre>
+<h3>Indexering — börjar alltid på 0</h3>
+<pre><code>lst = ["a", "b", "c", "d"]
+lst[0]   # "a"  (första elementet)
+lst[1]   # "b"
+lst[-1]  # "d"  (sista elementet)
+lst[-2]  # "c"  (näst sista)</code></pre>
+<div class="ibox">Negativt index räknar bakifrån. <code>lst[-1]</code> är alltid sista elementet — praktiskt!</div>
+<h3>Vanliga metoder</h3>
+<pre><code>lst = [1, 2, 3]
+lst.append(4)    # [1, 2, 3, 4]   — lägg till sist
+lst.remove(2)    # [1, 3, 4]      — ta bort första 2
+len(lst)         # 3              — antal element</code></pre>
+<h3>Slicing — hämta delar</h3>
+<pre><code>lst = [10, 20, 30, 40, 50]
+lst[1:3]    # [20, 30]    (index 1 till 2, ej 3)
+lst[:2]     # [10, 20]    (från början till index 1)
+lst[2:]     # [30, 40, 50] (från index 2 till slutet)</code></pre>
+<h3>De tre vanligaste felen</h3>
+<pre><code># SyntaxError — felaktig Python-syntax
+if x = 5:      # ska vara ==
+
+# NameError — variabel finns inte
+print(odefinierad_variabel)
+
+# TypeError — fel typ i en operation
+5 + "hej"      # kan inte addera int och str
+
+# IndexError — index utanför listans gränser
+lst = [1,2,3]
+print(lst[5])  # IndexError!</code></pre>
+<div class="okbox"><strong>Läsa felmeddelanden:</strong> Titta alltid på den SISTA raden i ett felmeddelande — det är där felet faktiskt är.</div>`,
+  questions:[
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'lst = [10, 20, 30]\nprint(lst[0])',
+      opts:['10','20','30','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Listor indexeras från 0. lst[0] är det FÖRSTA elementet, alltså 10.',
+        '✗ 20 är lst[1] — det andra elementet (index 1). Indexering börjar på 0.',
+        '✗ 30 är lst[2] — det tredje elementet (index 2).',
+        '✗ lst[0] är ett giltigt index. Listan har tre element (index 0, 1, 2).'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'tal = [5, 10, 15, 20]\nprint(tal[2])',
+        opts:['15','10','20','5'],
+        ok:0,
+        why:[
+          '✓ Rätt! tal[2] är det tredje elementet (index 0=5, 1=10, 2=15): alltså 15.',
+          '✗ 10 är tal[1] — index 1, inte index 2.',
+          '✗ 20 är tal[3] — det sista elementet med index 3.',
+          '✗ 5 är tal[0] — det första elementet med index 0.'
+        ]
+      }
+    },
+    {
+      txt:'Vad returnerar <code>lst[-1]</code> för följande Python-lista?',
+      code:'lst = [1, 2, 3]',
+      opts:['3','1','-1','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Negativt index räknar bakifrån. <code>lst[-1]</code> är alltid det SISTA elementet — alltså 3.',
+        '✗ 1 är lst[0] eller lst[-3] — det första elementet. -1 pekar på det sista.',
+        '✗ -1 är indexet, inte värdet. Värdet på den positionen är 3 (sista elementet).',
+        '✗ -1 är ett giltigt index i Python. Det pekar på det sista elementet.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad returnerar <code>data[-2]</code>?',
+        code:'data = ["a", "b", "c", "d"]',
+        opts:['"c"','"d"','"b"','"a"'],
+        ok:0,
+        why:[
+          '✓ Rätt! -2 pekar på näst sista elementet. Bakifrån: -1="d", -2="c".',
+          '✗ "d" är data[-1] — det sista elementet. -2 pekar ett steg längre in.',
+          '✗ "b" är data[1] eller data[-3]. -2 ger näst sista: "c".',
+          '✗ "a" är data[0] eller data[-4] — det första elementet.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'lst = [1, 2, 3]\nlst.append(4)\nprint(len(lst))',
+      opts:['4','3','5','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Listan börjar med 3 element. append(4) lägger till ett fjärde. len() returnerar 4.',
+        '✗ 3 var längden INNAN append. append(4) lägger till ett element, så längden är nu 4.',
+        '✗ append lägger bara till ETT element. 3+1=4, inte 5.',
+        '✗ Koden är giltig Python. append() och len() fungerar utan problem.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'lst = ["a", "b"]\nlst.append("c")\nlst.append("d")\nprint(len(lst))',
+        opts:['4','2','3','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! Börjar med 2 element, lägger till 2 via append. 2+2=4.',
+          '✗ 2 var startlängden. Två append-anrop lägger till 2 element till.',
+          '✗ En append lägger till ett element (3 totalt). Här är det TWÅ append → 4.',
+          '✗ Koden är korrekt Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vilket fel ger följande Python-kod?',
+      code:'x = 5 + "hej"',
+      opts:['TypeError','SyntaxError','NameError','ValueError'],
+      ok:0,
+      why:[
+        '✓ Rätt! Du försöker addera en <code>int</code> (5) med en <code>str</code> ("hej"). Python tillåter inte blandade typer i addition → TypeError.',
+        '✗ SyntaxError är när koden är grammatiskt fel. Syntaxen <code>5 + "hej"</code> är syntaktiskt korrekt — problemet är typerna.',
+        '✗ NameError är när en variabel inte är definierad. Här är problemet typ-inkompatibilitet.',
+        '✗ ValueError uppstår när ett värde har fel format, t.ex. int("abc"). Här är det typerna som krockar.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vilket fel ger följande Python-kod?',
+        code:'lst = [1, 2, 3]\nprint(lst[10])',
+        opts:['IndexError','TypeError','NameError','SyntaxError'],
+        ok:0,
+        why:[
+          '✓ Rätt! lst har index 0, 1, 2. Index 10 är utanför listans gränser → IndexError.',
+          '✗ TypeError uppstår vid fel typ i en operation. Här är typen korrekt (int-index), men indexet är utanför gränserna.',
+          '✗ NameError är när en variabel saknas. Här finns lst, men indexet är för stort.',
+          '✗ SyntaxError är grammatikfel. Syntaxen <code>lst[10]</code> är korrekt — problemet är det ogiltiga indexet.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'lst = [5, 3, 8, 1]\nlst.remove(3)\nprint(lst)',
+      opts:['[5, 8, 1]','[5, 3, 8]','[3, 5, 8, 1]','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>remove(3)</code> tar bort det FÖRSTA förekomsten av värdet 3. Kvar: [5, 8, 1].',
+        '✗ [5, 3, 8] vore om vi tagit bort 1. Vi tar bort 3 — som är det andra elementet.',
+        '✗ remove() tar bort ett element ur listan, inte lägger till. Och ordningen förblir densamma för resterande element.',
+        '✗ 3 finns i listan, så remove(3) fungerar utan fel.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'lst = ["a", "b", "c", "b"]\nlst.remove("b")\nprint(lst)',
+        opts:['["a", "c", "b"]','["a", "c"]','["b", "c", "b"]','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! remove() tar bort FÖRSTA förekomsten av "b". Den andra "b":n är kvar: ["a", "c", "b"].',
+          '✗ remove() tar bara bort den FÖRSTA förekomsten. Den andra "b":n (index 3) är kvar.',
+          '✗ Det är "a" som är kvar, inte ersatt. remove("b") tar bort index 1 ("b"), inte index 0 ("a").',
+          '✗ "b" finns i listan, så remove("b") fungerar utan fel.'
+        ]
+      }
+    }
+  ]
+},
+
+// ----------------------------------------------------------------
+// REPETITION 2
+// ----------------------------------------------------------------
+{
+  id:'rep2', type:'rep', navTitle:'Repetition 2', badge:'Repetition L4–6',
+  title:'Repetition 2: Lektion 4–6',
+  body:`<p>Sex frågor på tentanivå — täcker loopar, funktioner och listor.</p>`,
+  questions:[
+    {
+      txt:'Vad skriver följande Python-kod ut? (En rad per tal)',
+      code:'for i in range(3, 0, -1):\n    print(i)',
+      opts:['3, 2, 1','0, 1, 2','3, 2, 1, 0','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! range(3, 0, -1) räknar nedåt: start=3, stopp=0 (exkluderat), steg=-1. Ger: 3, 2, 1.',
+        '✗ Negativt steg räknar nedåt, inte uppåt. Dessutom är 0 exkluderat.',
+        '✗ Stoppvärdet 0 är aldrig inkluderat. range(3, 0, -1) ger 3, 2, 1 — inte 0.',
+        '✗ Negativt steg är giltigt i Python. Det räknar bara nedåt.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'for i in range(10, 4, -2):\n    print(i)',
+        opts:['10, 8, 6','10, 8, 6, 4','4, 6, 8, 10','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! range(10, 4, -2): start=10, stopp=4 (exkluderat), steg=-2. Ger: 10, 8, 6.',
+          '✗ Stoppvärdet 4 är exkluderat. Sekvensen stannar på 6.',
+          '✗ Negativt steg räknar nedåt, inte uppåt.',
+          '✗ Negativt steg är giltigt Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vad händer om du inte uppdaterar loopvariabeln i en Python while-loop?',
+      code:'x = 0\nwhile x < 5:\n    print(x)\n# x += 1 saknas!',
+      opts:['Oändlig loop — programmet fastnar','SyntaxError','Loopen körs en gång','Loopen körs 5 gånger'],
+      ok:0,
+      why:[
+        '✓ Rätt! x stannar på 0 för alltid. x < 5 är alltid sant → programmet fastnar i en oändlig loop.',
+        '✗ Det är inget syntaxfel — koden är grammatiskt korrekt. Problemet är logikfel (oändlig loop).',
+        '✗ Villkoret x < 5 är sant redan från start och förblir det. Loopen kör om och om igen.',
+        '✗ Loopen räknar inte automatiskt — x ändras aldrig och villkoret är alltid sant.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad är det snabbaste sättet att avbryta en oändlig Python-loop?',
+        code:null,
+        opts:['Ctrl+C (KeyboardInterrupt)','Stäng fönstret och öppna igen','Lägg till break direkt i koden','Vänta tills datorn stannar'],
+        ok:0,
+        why:[
+          '✓ Rätt! Ctrl+C skickar en KeyboardInterrupt och avbryter det körande Python-programmet.',
+          '✗ Att stänga och öppna fönstret kan fungera men är drastiskt. Ctrl+C är snabbast.',
+          '✗ Du kan inte redigera koden medan den kör. break måste finnas med INNAN du kör.',
+          '✗ En oändlig loop tar aldrig slut av sig själv — du måste avbryta manuellt.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'def dubbel(x):\n    return x * 2\n\nprint(dubbel(5) + dubbel(3))',
+      opts:['16','10','6','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! dubbel(5)=10, dubbel(3)=6. 10+6=16.',
+        '✗ 10 är dubbel(5) men vi lägger till dubbel(3)=6. 10+6=16.',
+        '✗ 6 är dubbel(3) men vi lägger till dubbel(5)=10. 10+6=16.',
+        '✗ Koden är giltig. Funktionsanrop kan användas direkt i ett uttryck.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'def kvadrat(n):\n    return n * n\n\nprint(kvadrat(3) + kvadrat(4))',
+        opts:['25','7','12','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! kvadrat(3)=9, kvadrat(4)=16. 9+16=25.',
+          '✗ 7 är 3+4, inte 3²+4². Funktionen multiplicerar n med sig självt.',
+          '✗ 12 är 3×4, inte 3²+4². Kvadrat ger n*n.',
+          '✗ Koden är giltig Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'def func(a, b=10):\n    return a + b\n\nprint(func(5))',
+      opts:['15','5','10','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! Inget b-argument skickas, så standardvärdet b=10 används. a+b = 5+10 = 15.',
+        '✗ 5 är värdet på a. b används med sitt standardvärde (10). Summan är 5+10=15.',
+        '✗ 10 är standardvärdet för b. Funktionen returnerar summan a+b = 15.',
+        '✗ Koden är giltig. Standardvärden gör parametern valfri.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'def välkommen(namn, hälsning="Hej"):\n    return hälsning + " " + namn\n\nprint(välkommen("Martin"))',
+        opts:['"Hej Martin"','"Martin Hej"','"hälsning Martin"','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! hälsning använder standardvärdet "Hej". Returnerar "Hej" + " " + "Martin" = "Hej Martin".',
+          '✗ Ordningen är hälsning + " " + namn, inte namn + " " + hälsning.',
+          '✗ "hälsning" är parameternamnet. Värdet som används är standardvärdet "Hej".',
+          '✗ Koden är giltig Python med ett standardvärde.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver följande Python-kod ut?',
+      code:'lst = [1, 2, 3, 4, 5]\nprint(lst[1:3])',
+      opts:['[2, 3]','[1, 2, 3]','[2, 3, 4]','Error'],
+      ok:0,
+      why:[
+        '✓ Rätt! lst[1:3] hämtar element från index 1 upp till (men EJ inkl.) index 3: lst[1]=2, lst[2]=3 → [2, 3].',
+        '✗ [1, 2, 3] vore lst[0:3]. lst[1:3] börjar på index 1, inte 0.',
+        '✗ [2, 3, 4] vore lst[1:4]. lst[1:3] stannar INNAN index 3.',
+        '✗ Slicing är giltig Python. lst[1:3] ger alltid ett giltigt resultat.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vad skriver följande Python-kod ut?',
+        code:'lst = ["a", "b", "c", "d", "e"]\nprint(lst[2:])',
+        opts:['["c", "d", "e"]','["a", "b"]','["c", "d"]','Error'],
+        ok:0,
+        why:[
+          '✓ Rätt! lst[2:] tar från index 2 till slutet: "c", "d", "e".',
+          '✗ ["a", "b"] är lst[:2] — de FÖRSTA elementen. lst[2:] tar FRÅN index 2.',
+          '✗ ["c", "d"] saknar "e". lst[2:] inkluderar allt från index 2 till slutet.',
+          '✗ lst[2:] är giltig slice-syntax.'
+        ]
+      }
+    },
+    {
+      txt:'Vilket fel uppstår när du anropar en funktion som inte finns i Python?',
+      code:'print(min_funktion())',
+      opts:['NameError','TypeError','SyntaxError','AttributeError'],
+      ok:0,
+      why:[
+        '✓ Rätt! Python letar upp namnet <code>min_funktion</code> men hittar det inte → NameError.',
+        '✗ TypeError uppstår vid fel typ i en operation, t.ex. <code>"hej" + 5</code>. Här handlar det om ett saknat namn.',
+        '✗ SyntaxError uppstår vid grammatikfel i koden. <code>min_funktion()</code> är syntaktiskt korrekt.',
+        '✗ AttributeError uppstår när du försöker nå en egenskap på ett objekt som inte har den, t.ex. <code>5.append</code>.'
+      ],
+      extra:{
+        txt:'Träningsuppgift: Vilket fel ger följande Python-kod?',
+        code:'tal = "fem"\nresultat = tal + 5',
+        opts:['TypeError','NameError','SyntaxError','ValueError'],
+        ok:0,
+        why:[
+          '✓ Rätt! Du försöker addera en str ("fem") med en int (5) — inkompatibla typer → TypeError.',
+          '✗ NameError uppstår vid odefinerade namn. Här finns tal, men typerna krockar.',
+          '✗ SyntaxError är grammatikfel. <code>tal + 5</code> är korrekt syntax.',
+          '✗ ValueError uppstår vid ogiltigt värde, t.ex. <code>int("hej")</code>. Här är det typerna som krockar.'
+        ]
+      }
+    }
+  ]
+}
+
+]; // end SECTIONS
+
+// ================================================================
+// USER CONTEXT (shared with YH Prep app)
+// ================================================================
+const USER_KEY = 'yh.current-user-id';
+const KNOWN_USERS_KEY = 'yh.known-user-ids';
+const THEME_KEY = 'yh.ui-theme';
+const GUEST_USER_ID = 'guest';
+const LEGACY_GUEST_IDS = new Set(['gäst', 'gast', 'gst', 'g', GUEST_USER_ID]);
+let knownUserIds = [];
+
+function loadTheme() {
+  const stored = localStorage.getItem(THEME_KEY);
+  if (stored === 'calm-public' || stored === 'calm-slate' || stored === 'calm-mint') return stored;
+  return 'calm-mint';
+}
+
+function applyTheme(themeId) {
+  document.body.dataset.theme = themeId;
+}
+
+function sanitizeUserId(value) {
+  const normalized = String(value || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  const safe = normalized.replace(/[^a-z0-9_-]/g, '');
+  if (!safe || LEGACY_GUEST_IDS.has(safe)) return GUEST_USER_ID;
+  return safe;
+}
+
+function formatUserLabel(userId) {
+  const normalized = sanitizeUserId(userId);
+  return normalized === GUEST_USER_ID ? 'gäst' : normalized;
+}
+
+function loadKnownUsers() {
+  try {
+    const raw = localStorage.getItem(KNOWN_USERS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    const values = Array.isArray(parsed) ? parsed : [];
+    const unique = values
+      .map((value) => sanitizeUserId(String(value)))
+      .filter((value, index, list) => value.length > 0 && list.indexOf(value) === index);
+    if (!unique.includes(GUEST_USER_ID)) unique.push(GUEST_USER_ID);
+    return unique;
+  } catch {
+    return [GUEST_USER_ID];
+  }
+}
+
+function saveKnownUsers(userIds) {
+  localStorage.setItem(KNOWN_USERS_KEY, JSON.stringify(userIds));
+}
+
+function rememberUser(userId) {
+  const normalized = sanitizeUserId(userId);
+  const existing = loadKnownUsers().filter((id) => id !== normalized);
+  knownUserIds = [normalized, ...existing].slice(0, 25);
+  saveKnownUsers(knownUserIds);
+  return knownUserIds;
+}
+
+function setCurrentUserId(userId) {
+  const normalized = sanitizeUserId(userId);
+  localStorage.setItem(USER_KEY, normalized);
+  rememberUser(normalized);
+  return normalized;
+}
+
+function copyLegacyGuestDataIfNeeded(fromId) {
+  if (!fromId || fromId === GUEST_USER_ID) return;
+  const keysToCopy = [
+    `yh.study-sessions.${fromId}`,
+    `yh.active-session.${fromId}`,
+    `yh.study-profile.${fromId}`
+  ];
+  for (const key of keysToCopy) {
+    const nextKey = key.replace(`.${fromId}`, `.${GUEST_USER_ID}`);
+    if (!localStorage.getItem(nextKey)) {
+      const value = localStorage.getItem(key);
+      if (value) localStorage.setItem(nextKey, value);
+    }
+  }
+}
+
+function getCurrentUserId() {
+  const stored = localStorage.getItem(USER_KEY) || GUEST_USER_ID;
+  const legacySource = String(stored || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9_-]/g, '');
+  const normalized = sanitizeUserId(stored);
+  if (normalized === GUEST_USER_ID && legacySource && legacySource !== GUEST_USER_ID) {
+    copyLegacyGuestDataIfNeeded(legacySource);
+  }
+  return setCurrentUserId(normalized);
+}
+
+function userBadge(userId) {
+  const normalized = sanitizeUserId(userId);
+  if (normalized === GUEST_USER_ID) return 'G';
+  const parts = normalized.split(/[-_]+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return normalized.slice(0, 2).toUpperCase() || 'G';
+}
+
+function renderUserAvatar() {
+  const btn = document.getElementById('user-avatar');
+  const initial = document.getElementById('sw-user-initial');
+  const active = document.getElementById('sw-user-active');
+  const userList = document.getElementById('sw-user-list');
+  if (!btn) return;
+  const userId = getCurrentUserId();
+  if (initial) initial.textContent = userBadge(userId);
+  if (active) active.textContent = `Aktiv: ${formatUserLabel(userId)}`;
+  if (userList) {
+    userList.innerHTML = knownUserIds
+      .map((id) => {
+        const cls = id === userId ? 'sw-user-action active' : 'sw-user-action';
+        return `<button class="${cls}" data-action="quick-select-user" data-user="${id}">${formatUserLabel(id)}</button>`;
+      })
+      .join('');
+  }
+  btn.title = `Användare: ${formatUserLabel(userId)}. Klicka för att byta.`;
+}
+
+function closeSwitchMenus(except) {
+  document.querySelectorAll('details.sw-menu[open]').forEach((menu) => {
+    if (!except || menu !== except) menu.open = false;
+  });
+}
+
+function initSwitchMenuBehavior() {
+  document.addEventListener('toggle', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLDetailsElement)) return;
+    if (!target.matches('details.sw-menu')) return;
+    if (target.open) closeSwitchMenus(target);
+  }, true);
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest('details.sw-menu')) return;
+    closeSwitchMenus();
+  }, true);
+}
+
+function initUserMenuActions() {
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const actionEl = target.closest('[data-action]');
+    if (!actionEl) return;
+    const action = actionEl.dataset.action;
+    if (!action) return;
+
+    if (action === 'quick-switch-user') {
+      const firstUserBtn = document.querySelector('#sw-user-list button[data-action="quick-select-user"]');
+      if (firstUserBtn instanceof HTMLElement) firstUserBtn.focus();
+      return;
+    }
+
+    if (action === 'quick-create-user') {
+      const input = window.prompt('Skapa användar-id (a-z, 0-9, bindestreck/underscore):', '');
+      if (input === null) return;
+      const normalized = sanitizeUserId(input);
+      if (!normalized || normalized === GUEST_USER_ID) return;
+      setCurrentUserId(normalized);
+      renderUserAvatar();
+      return;
+    }
+
+    if (action === 'quick-switch-guest') {
+      setCurrentUserId(GUEST_USER_ID);
+      renderUserAvatar();
+      return;
+    }
+
+    if (action === 'quick-select-user') {
+      const selected = actionEl.dataset.user;
+      if (!selected) return;
+      setCurrentUserId(selected);
+      renderUserAvatar();
+      const menu = actionEl.closest('details.sw-menu');
+      if (menu) menu.open = false;
+    }
+  });
+}
+
+// ================================================================
+// APP STATE
+// ================================================================
+let curSec = 0;
+
+const secState = {}; // sectionId -> { queue, answers, reviewPos }
+
+function initSecState(sec) {
+  if (secState[sec.id]) return;
+  secState[sec.id] = {
+    queue: sec.questions.map((_,i) => ({type:'main', qIdx:i})),
+    answers: {}, // pos -> {sel, correct}
+    reviewPos: null
+  };
+}
+
+// ================================================================
+// RENDER NAV
+// ================================================================
+function renderNav() {
+  const nav = document.getElementById('sidebar');
+  let html = '<div class="nav-top">Python-minikurs</div>';
+  html += '<div class="nav-group">Grunderna</div>';
+  SECTIONS.forEach((sec, i) => {
+    const st = secState[sec.id];
+    const allAnswered = st && Object.keys(st.answers).length >= st.queue.length;
+    const isDone = st && allAnswered;
+    const cls = [
+      'nav-item',
+      i === curSec ? 'active' : '',
+      isDone ? 'done' : ''
+    ].join(' ');
+    if (i === 3) html += '<div class="nav-sep"></div><div class="nav-group">Block 2</div>';
+    if (i === 7) html += '<div class="nav-sep"></div>';
+    html += `<div class="${cls}" onclick="goSec(${i})"><span class="nav-dot"></span>${sec.navTitle}</div>`;
+  });
+  nav.innerHTML = html;
+}
+
+// ================================================================
+// RENDER MAIN
+// ================================================================
+function renderMain() {
+  const sec = SECTIONS[curSec];
+  initSecState(sec);
+  const st = secState[sec.id];
+
+  let html = `<div id="main-inner">
+    <div class="sec-badge">${sec.badge}</div>
+    <h1 class="sec-title">${sec.title}</h1>
+    <div class="lesson-body">${sec.body}</div>
+    <div class="quiz-wrap">
+      <div class="quiz-h">Kunskapstest &mdash; Python</div>
+      ${renderDots(sec, st)}
+      <div id="quiz-body">${renderQuizBody(sec, st)}</div>
+    </div>
+  </div>`;
+
+  document.getElementById('main').innerHTML = html;
+  hlAll();
+
+  // Init range lab if lesson 4
+  if (sec.id === 'l4') initRangeLab();
+
+  bindDots(sec, st);
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderDots(sec, st) {
+  let html = '<div class="dots" id="dots-bar">';
+  st.queue.forEach((item, pos) => {
+    const ans = st.answers[pos];
+    let cls = 'dot';
+    let label = pos + 1;
+    let tipTxt = item.type === 'extra' ? `Träning ${pos+1}` : `Fråga ${pos+1}`;
+    if (item.type === 'extra') { cls += ' extra'; label = '+'; }
+    if (ans === undefined) {
+      if (pos === Object.keys(st.answers).length) cls += ' cur';
+    } else {
+      cls += ans.correct ? ' ok' : ' fail';
+      tipTxt += ans.correct ? ' — rätt' : ' — fel';
+    }
+    if (st.reviewPos === pos) cls += ' cur';
+    html += `<div class="dot-wrap"><div class="${cls}" data-pos="${pos}">${label}</div><div class="dot-tip">${tipTxt}</div></div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderQuizBody(sec, st) {
+  const answered = Object.keys(st.answers).length;
+
+  // Review mode
+  if (st.reviewPos !== null && st.reviewPos !== undefined) {
+    const item = st.queue[st.reviewPos];
+    const q = getQ(sec, item);
+    const ans = st.answers[st.reviewPos];
+    return renderQuestion(q, item.type, st.reviewPos, ans, true);
+  }
+
+  // All done
+  if (answered >= st.queue.length) {
+    return renderDone(sec, st);
+  }
+
+  // Current question
+  const pos = answered;
+  const item = st.queue[pos];
+  const q = getQ(sec, item);
+  const ans = st.answers[pos];
+  return renderQuestion(q, item.type, pos, ans, false);
+}
+
+function getQ(sec, item) {
+  if (item.type === 'main') return sec.questions[item.qIdx];
+  return sec.questions[item.parentIdx].extra;
+}
+
+function renderQuestion(q, type, pos, ans, review) {
+  const badge = type === 'extra'
+    ? '<span class="extra-badge">🔁 Träningsuppgift — Python</span>'
+    : '<span class="python-badge">🐍 Python</span>';
+
+  let codeHtml = q.code ? `<div class="qcode"><pre><code>${esc(q.code)}</code></pre></div>` : '';
+
+  let optsHtml = '<div class="opts">';
+  q.opts.forEach((opt, i) => {
+    let cls = 'opt';
+    let disabled = '';
+    if (ans !== undefined || review) {
+      disabled = 'disabled';
+      if (i === q.ok) cls += ' show-ok';
+      if (ans !== undefined && i === ans.sel && !ans.correct) cls += ' sel-fail';
+      if (ans !== undefined && i === ans.sel && ans.correct) cls += ' sel-ok';
+    }
+    optsHtml += `<button class="${cls}" ${disabled} onclick="answer(${pos},${i})">${opt}</button>`;
+  });
+  optsHtml += '</div>';
+
+  let fbHtml = '';
+  if (ans !== undefined) {
+    const why = q.why[ans.sel];
+    if (ans.correct) {
+      fbHtml = `<div class="fb ok"><div class="fb-title">✓ Rätt!</div>${why}</div>`;
+    } else {
+      fbHtml = `<div class="fb fail"><div class="fb-title">✗ Fel svar</div>${why}</div>`;
+    }
+  }
+
+  let nextBtn = '';
+  if (ans !== undefined && !review) {
+    const sec = SECTIONS[curSec];
+    const st = secState[sec.id];
+    const totalAnswered = Object.keys(st.answers).length;
+    if (totalAnswered < st.queue.length) {
+      nextBtn = `<button class="btn-next" onclick="nextQ()">Nästa fråga →</button>`;
+    } else {
+      nextBtn = `<button class="btn-next" onclick="refreshQuiz()">Se resultat →</button>`;
+    }
+  }
+
+  return `<div class="qcard${review ? ' review-mode' : ''}">${badge}<div class="qtxt">${q.txt}</div>${codeHtml}${optsHtml}${fbHtml}${nextBtn}</div>`;
+}
+
+function renderDone(sec, st) {
+  const total = st.queue.filter(i => i.type==='main').length;
+  const correct = st.queue.filter((item,pos) => item.type==='main' && st.answers[pos]?.correct).length;
+
+  let items = '';
+  let mainIdx = 0;
+  st.queue.forEach((item, pos) => {
+    if (item.type !== 'main') return;
+    mainIdx++;
+    const ans = st.answers[pos];
+    const icon = ans?.correct ? '✅' : '❌';
+    const q = getQ(sec, item);
+    items += `<div class="res-item"><div class="res-icon">${icon}</div><div class="res-q">Fråga ${mainIdx} — ${ans?.correct ? 'rätt' : 'fel'}</div></div>`;
+  });
+
+  const pct = Math.round(correct/total*100);
+  const nextIdx = curSec + 1;
+  const hasNext = nextIdx < SECTIONS.length;
+
+  return `
+    <div class="done-panel">
+      <h3>${correct}/${total} rätt (${pct}%)</h3>
+      <p>${pct >= 80 ? 'Bra jobbat! Redo för nästa avsnitt.' : 'Repetera gärna och gör om lektionen.'}</p>
+      ${hasNext ? `<button class="btn-go" onclick="goSec(${nextIdx})">Nästa avsnitt →</button>` : '<p><strong>🎉 Du är klar med hela kursen!</strong></p>'}
+    </div>
+    <div class="result-summary">${items}</div>`;
+}
+
+// ================================================================
+// INTERACTIONS
+// ================================================================
+function answer(pos, sel) {
+  const sec = SECTIONS[curSec];
+  const st = secState[sec.id];
+  if (st.answers[pos] !== undefined) return; // already answered
+
+  const item = st.queue[pos];
+  const q = getQ(sec, item);
+  const correct = sel === q.ok;
+  st.answers[pos] = {sel, correct};
+
+  // Inject extra if wrong and not already an extra and question has extra
+  if (!correct && item.type === 'main' && q.extra) {
+    st.queue.splice(pos + 1, 0, {type:'extra', parentIdx: item.qIdx});
+  }
+
+  refreshQuiz();
+}
+
+function nextQ() {
+  const sec = SECTIONS[curSec];
+  const st = secState[sec.id];
+  st.reviewPos = null;
+  refreshQuiz();
+}
+
+// ================================================================
+// SYNTAX HIGHLIGHTING
+// ================================================================
+function hlCode(raw) {
+  // Process line by line so comment spans don't bleed
+  return raw.split('\n').map(line => {
+    // 1. escape HTML first (code was already unescaped via textContent trick)
+    // raw is plain text here — escape for HTML
+    // 2. Find comment — everything after unquoted #
+    let commentStart = -1;
+    let inStr = false; let strCh = '';
+    for (let i=0;i<line.length;i++){
+      const c = line[i];
+      if (!inStr && (c==='"'||c==="'")){inStr=true;strCh=c;}
+      else if (inStr && c===strCh){inStr=false;}
+      else if (!inStr && c==='#'){commentStart=i;break;}
+    }
+    let code = commentStart>=0 ? line.slice(0,commentStart) : line;
+    let comment = commentStart>=0 ? line.slice(commentStart) : '';
+
+    // Tokenise the code part: strings first, then keywords/numbers
+    // Escape html in non-string segments
+    function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+    // Split on string literals (single or double quoted, no multiline)
+    const parts = code.split(/((?:"[^"]*"|'[^']*'))/);
+    code = parts.map((p,i)=>{
+      if(i%2===1){
+        // string literal
+        return `<span class="str">${escH(p)}</span>`;
+      }
+      // escape, then highlight keywords and numbers
+      let s = escH(p);
+      // keywords
+      const kws = ['for','while','if','elif','else','def','return','True','False','None','not','and','or','in','range','break','continue','print','append','remove','len','type','input','pass','import','from','class','with','as','try','except','raise'];
+      kws.forEach(k=>{
+        const re = new RegExp(`(?<![\\w.])${k}(?![\\w])`, 'g');
+        s = s.replace(re, `<span class="kw">${k}</span>`);
+      });
+      // numbers (not inside words)
+      s = s.replace(/(?<!\w)(\d+\.?\d*)(?!\w)/g,'<span class="num">$1</span>');
+      return s;
+    }).join('');
+
+    // comment part
+    if(comment){
+      comment = `<span class="cmt">${escH(comment)}</span>`;
+    }
+    return code + comment;
+  }).join('\n');
+}
+
+function hlAll() {
+  document.querySelectorAll('pre code').forEach(el => {
+    // only process if not already highlighted
+    if (el.dataset.hl) return;
+    el.dataset.hl = '1';
+    const plain = el.textContent;
+    el.innerHTML = hlCode(plain);
+  });
+}
+
+function bindDots(sec, st) {
+  document.querySelectorAll('#dots-bar .dot[data-pos]').forEach(d => {
+    d.addEventListener('click', () => {
+      const pos = parseInt(d.dataset.pos);
+      if (st.answers[pos] !== undefined) {
+        st.reviewPos = (st.reviewPos === pos) ? null : pos;
+        refreshQuiz();
+      }
+    });
+  });
+}
+
+function refreshQuiz() {
+  const sec = SECTIONS[curSec];
+  const st = secState[sec.id];
+  // Re-render dots and quiz body
+  const dotsEl = document.getElementById('dots-bar');
+  if (dotsEl) dotsEl.outerHTML = renderDots(sec, st);
+  document.getElementById('quiz-body').innerHTML = renderQuizBody(sec, st);
+  hlAll();
+  bindDots(sec, st);
+  // Re-render nav
+  renderNav();
+  // Re-init range lab
+  if (sec.id === 'l4') initRangeLab();
+  // Scroll to quiz on mobile
+  if (window.innerWidth < 620) {
+    document.getElementById('quiz-body').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+function goSec(idx) {
+  curSec = idx;
+  const sec = SECTIONS[curSec];
+  initSecState(sec);
+  secState[sec.id].reviewPos = null;
+  renderNav();
+  renderMain();
+  window.scrollTo(0, 0);
+}
+
+// ================================================================
+// RANGE LAB
+// ================================================================
+function initRangeLab() {
+  const startEl = document.getElementById('rl-start');
+  const stopEl = document.getElementById('rl-stop');
+  const stepEl = document.getElementById('rl-step');
+  if (!startEl) return;
+
+  function update() {
+    const s = parseInt(startEl.value);
+    const p = parseInt(stopEl.value);
+    const t = parseInt(stepEl.value) || 1;
+    document.getElementById('rl-sv').textContent = s;
+    document.getElementById('rl-pv').textContent = p;
+    document.getElementById('rl-tv').textContent = t;
+    document.getElementById('rl-expr').textContent = `range(${s}, ${p}, ${t})`;
+
+    const vals = [];
+    if (t > 0) { for (let i=s; i<p && vals.length<30; i+=t) vals.push(i); }
+    else if (t < 0) { for (let i=s; i>p && vals.length<30; i+=t) vals.push(i); }
+
+    const res = vals.length === 0
+      ? '→ [] (tom — kontrollera start/stopp/steg)'
+      : '→ [' + vals.join(', ') + (vals.length===30 ? ', ...' : '') + ']';
+    document.getElementById('rl-res').textContent = res;
+  }
+
+  startEl.addEventListener('input', update);
+  stopEl.addEventListener('input', update);
+  stepEl.addEventListener('input', update);
+  update();
+}
+
+// ================================================================
+// INIT
+// ================================================================
+applyTheme(loadTheme());
+knownUserIds = loadKnownUsers();
+renderUserAvatar();
+initSwitchMenuBehavior();
+initUserMenuActions();
+SECTIONS.forEach(initSecState);
+renderNav();
+renderMain();
+</script>
+</body>
+</html>
