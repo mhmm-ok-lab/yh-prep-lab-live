@@ -344,6 +344,52 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 .res-icon{flex-shrink:0;margin-top:2px}
 .res-q{flex:1;color:var(--text)}
 
+/* ── Why box (relevans) ── */
+.why-box{
+  background:var(--warn-bg);border:1px solid var(--warn-bd);
+  border-left:3px solid var(--warn-bd);border-radius:8px;
+  padding:.7rem 1rem;margin:.75rem 0;font-size:13.5px;color:var(--warn-tx)
+}
+/* ── Mechanic box (mekaniken bakom) ── */
+.mech-box{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--text2);border-radius:8px;
+  padding:.7rem 1rem;margin:.75rem 0;font-size:13px;color:var(--text2)
+}
+/* ── Text input question ── */
+.txt-input-wrap{display:flex;gap:8px;margin-top:.75rem;flex-wrap:wrap}
+.txt-input{
+  flex:1;min-width:160px;padding:9px 12px;
+  background:var(--bg);color:var(--text);
+  border:1px solid var(--border);border-radius:8px;
+  font-size:13.5px;font-family:var(--font-code);
+  outline:none;transition:border-color .12s
+}
+.txt-input:focus{border-color:var(--acc)}
+.btn-txt-submit{
+  padding:9px 16px;background:var(--acc);color:#fff;
+  border:none;border-radius:8px;
+  cursor:pointer;font-size:13px;font-family:inherit;
+  white-space:nowrap;transition:opacity .12s
+}
+.btn-txt-submit:hover{opacity:.88}
+.txt-ans-display{
+  margin-top:.75rem;padding:9px 12px;
+  font-family:var(--font-code);font-size:13.5px;
+  border:1px solid var(--border);border-radius:8px;background:var(--bg3)
+}
+/* ── Nav progress bar ── */
+.nav-progress{padding:14px 16px;border-top:1px solid var(--border)}
+.nav-prog-bar{
+  height:4px;background:var(--border);border-radius:999px;
+  overflow:hidden;margin-bottom:6px
+}
+.nav-prog-fill{
+  height:100%;background:var(--ok-bd);border-radius:999px;
+  transition:width .3s ease
+}
+.nav-prog-label{font-size:11px;color:var(--text2);font-weight:600}
+
 /* ── Mobile ── */
 @media(max-width:768px){
   :root{--switch-h:34px}
@@ -1683,6 +1729,913 @@ print(lst[5])  # IndexError!</code></pre>
       }
     }
   ]
+},
+
+// ── L7: Fler datatyper ──────────────────────────────────────────
+{
+  id:'l7', type:'lesson', navTitle:'L7: Fler datatyper', badge:'Datatyper+',
+  title:'Lektion 7: Fler datatyper',
+  body:`
+<p>Listor är flexibla — men ibland vill du ha data som <em>inte kan ändras</em>. Och ibland vill du slå upp ett värde på ett namn i stället för ett nummer. Det är det <strong>tuple</strong> och <strong>dict</strong> löser.</p>
+
+<h3>Tuple — oföränderlig lista</h3>
+<p>En tuple ser ut som en lista men med parenteser. Den kan inte ändras efter att den skapats.</p>
+<pre><code>koordinater = (59.33, 18.07)  # lat, lon
+print(koordinater[0])          # 59.33
+# koordinater[0] = 0  ← TypeError! Tuple är immutable.</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> Tuple är en "förseglad" lista. Python kan optimera den i minnet just för att innehållet aldrig ändras — och du skyddar data som inte ska råka skrivas över.</div>
+
+<h3>Dictionary — nyckel-värde</h3>
+<p>En dict lagrar data som nyckel-värde-par. Du söker på nyckeln, inte på positionen.</p>
+<pre><code>person = {"namn": "Karin", "ålder": 28, "aktiv": True}
+print(person["namn"])   # Karin
+print(person["ålder"])  # 28</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> Dict är som ett telefonregister — du slår upp på namn (nyckel) och får tillbaka numret (värdet). Internt använder Python en hashtabell, så sökning är blixtsnabb oavsett storlek.</div>
+
+<h3>Type casting</h3>
+<p>Omvandla mellan typer med inbyggda funktioner: <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code>.</p>
+<pre><code>int("42")    # → 42      (str → int)
+float(3)     # → 3.0     (int → float)
+str(100)     # → "100"   (int → str)
+bool(0)      # → False   (0, "", [], None ger False)</code></pre>
+<div class="why-box"><strong>Varför lär du dig detta?</strong> Dict ersätter långa if/elif-kedjor när du vill slå upp ett värde. Tuple skyddar fast data som koordinater. Type casting behöver du varje gång du läser från användaren — <code>input()</code> returnerar alltid en sträng.</div>`,
+  questions:[
+    {
+      txt:'Vad skriver den här koden ut?',
+      code:'koordinater = (59.33, 18.07)\nprint(koordinater[1])',
+      opts:['18.07','59.33','(18.07)','IndexError'],
+      ok:0,
+      why:[
+        '✓ Rätt! Index 1 ger det andra värdet i tupeln — 18.07.',
+        '✗ Index 0 ger det första värdet (59.33). Index 1 är nästa element.',
+        '✗ Python skriver ut värdet utan parenteser.',
+        '✗ Tupeln har index 0 och 1 — ingen IndexError uppstår.'
+      ],
+      extra:{
+        txt:'Träning: Vad skriver koden ut?',
+        code:'färger = ("röd", "grön", "blå")\nprint(färger[2])',
+        opts:['blå','"blå"','IndexError','grön'],
+        ok:0,
+        why:[
+          '✓ Rätt! Index 2 är det tredje elementet — blå (utan citattecken i utskriften).',
+          '✗ <code>print()</code> skriver ut värdet utan citattecken.',
+          '✗ Tupeln har 3 element (index 0–2) — inget IndexError.',
+          '✗ Grön är index 1, inte index 2.'
+        ]
+      }
+    },
+    {
+      txt:'Vad händer om du kör den här koden?',
+      code:'punkt = (3, 4)\npunkt[0] = 10',
+      opts:['TypeError — tuples kan inte ändras','punkt[0] är nu 10','Python skapar en ny tuple (10, 4)','SyntaxError'],
+      ok:0,
+      why:[
+        '✓ Rätt! Tuples är immutable — du kan inte ändra, lägga till eller ta bort element. Python kastar TypeError.',
+        '✗ Tuples är skrivskyddade. Tilldelning på index fungerar bara för listor.',
+        '✗ Python ändrar inte tupeln — den avbryter med ett fel.',
+        '✗ Syntaxen är korrekt Python. Felet är logiskt (immutability), inte grammatiskt.'
+      ],
+      extra:{
+        txt:'Träning: Vilket påstående om tuples stämmer?',
+        code:null,
+        opts:['Du kan lägga till element med .append()','En tuple kan blanda typer: (1, "hej", True)','Du kan ändra element men inte ta bort dem','Tuples är alltid långsammare än listor'],
+        ok:1,
+        why:[
+          '✗ <code>.append()</code> finns inte på tuples. Tuples är helt immutable.',
+          '✓ Rätt! En tuple kan blanda typer precis som en lista.',
+          '✗ Varken ändra eller ta bort. Hela poängen med tuple är att ingenting kan ändras.',
+          '✗ Tuples är ofta snabbare än listor för fast data, inte långsammare.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver koden ut?',
+      code:'person = {"namn": "Karin", "ålder": 28}\nprint(person["namn"])',
+      opts:['Karin','namn','"Karin"','KeyError'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>person["namn"]</code> slår upp värdet för nyckeln "namn" — strängen Karin.',
+        '✗ "namn" är nyckeln du söker på, inte värdet du får tillbaka.',
+        '✗ <code>print()</code> skriver ut värdet utan citattecken.',
+        '✗ Nyckeln "namn" finns — ingen KeyError uppstår.'
+      ],
+      extra:{
+        txt:'Träning: Vad skriver koden ut?',
+        code:'d = {"a": 1, "b": 2, "c": 3}\nprint(d["b"] + d["c"])',
+        opts:['5','bc','23','KeyError'],
+        ok:0,
+        why:[
+          '✓ Rätt! d["b"] är 2 och d["c"] är 3. 2 + 3 = 5.',
+          '✗ Värdena är heltal, inte strängar. Additionsresultatet är 5, inte "bc".',
+          '✗ Det vore strängkonkatenation. Här adderas heltal: 2 + 3 = 5.',
+          '✗ Båda nycklarna finns — ingen KeyError.'
+        ]
+      }
+    },
+    {
+      txt:'Vad är resultatet av <code>int("42")</code>?',
+      code:null,
+      opts:['42 (heltal)','42.0 (float)','"42" (sträng kvar)','ValueError'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>int()</code> omvandlar strängen "42" till heltalet 42.',
+        '✗ <code>float()</code> ger 42.0. <code>int()</code> ger ett heltal.',
+        '✗ Värdet är strängen — <code>int()</code> omvandlar den till ett heltal.',
+        '✗ "42" kan tolkas som heltal. ValueError uppstår vid t.ex. <code>int("hej")</code>.'
+      ],
+      extra:{
+        txt:'Träning: Vad händer vid <code>int("3.14")</code>?',
+        code:null,
+        opts:['ValueError','3','3.14','0'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>int()</code> kan inte tolka en decimalsträng direkt. Gör <code>int(float("3.14"))</code> istället.',
+          '✗ För att få 3 behöver du <code>int(float("3.14"))</code> — inte direkt <code>int("3.14")</code>.',
+          '✗ <code>float("3.14")</code> ger 3.14, men <code>int()</code> direkt på strängen ger ett fel.',
+          '✗ Resultatet är inte 0 — Python kastar ett ValueError.'
+        ]
+      }
+    },
+    {
+      txt:'Skriv anropet som omvandlar heltalet <code>42</code> till en sträng.',
+      code:null,
+      inputType:'text',
+      acceptedAnswers:['str(42)'],
+      why:'<code>str()</code> omvandlar ett värde till en sträng. Användbart när du vill sätta ihop tal med text, t.ex. <code>"Poäng: " + str(poäng)</code>.',
+      whyFail:'Funktionen heter <code>str()</code> och tar värdet som argument: <code>str(42)</code>.',
+      extra:{
+        txt:'Träning: Vilket uttryck omvandlar strängen <code>"28"</code> till ett heltal?',
+        code:null,
+        opts:['int("28")','float("28")','str(28)','integer("28")'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>int()</code> omvandlar en heltals-sträng till ett heltal.',
+          '✗ <code>float()</code> ger 28.0 (decimaltal), inte ett heltal.',
+          '✗ <code>str()</code> omvandlar i andra riktningen — från tal till sträng.',
+          '✗ Python har ingen funktion som heter <code>integer()</code>.'
+        ]
+      }
+    }
+  ]
+},
+
+// ── L8: Dokumentation och docstrings ────────────────────────────
+{
+  id:'l8', type:'lesson', navTitle:'L8: Docstrings', badge:'Dokumentation',
+  title:'Lektion 8: Dokumentation och docstrings',
+  body:`
+<p>Tre månader efter att du skrivit en funktion — förstår du fortfarande vad den gör? Docstrings löser det: de är dokumentation som lever inuti koden.</p>
+
+<h3>Vad är en docstring?</h3>
+<p>En docstring är en sträng med trippla citattecken direkt under <code>def</code>-raden. Python sparar den automatiskt som funktionens dokumentation.</p>
+<pre><code>def beräkna_area(bredd, höjd):
+    """Beräknar arean av en rektangel."""
+    return bredd * höjd</code></pre>
+
+<h3>Flerrads docstring</h3>
+<p>För mer komplexa funktioner kan du förklara parametrar och returvärde:</p>
+<pre><code>def hälsa(namn, formell=False):
+    """
+    Hälsar på en person.
+
+    namn    - personens namn (str)
+    formell - om True används "God dag" (bool)
+    """
+    if formell:
+        return f"God dag, {namn}."
+    return f"Hej, {namn}!"</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> Python lagrar docstringen i funktionsobjektets <code>__doc__</code>-attribut. Det är det <code>help()</code> läser och visar — ingen extra fil, inget extra steg.</div>
+
+<h3>help()-funktionen</h3>
+<p>Du kan läsa dokumentationen för vilken funktion som helst — din egen eller Pythons inbyggda.</p>
+<pre><code>help(len)        # visar dokumentation för len()
+help(beräkna_area)  # visar din docstring</code></pre>
+<div class="why-box"><strong>Varför lär du dig detta?</strong> En odokumenterad funktion är en svart låda. Docstrings kostar 30 sekunder att skriva och sparar timmar av förvirring — för dig, för en teamkollega, för framtida-dig.</div>`,
+  questions:[
+    {
+      txt:'Var ska en docstring placeras i en funktion?',
+      code:'def min_funktion(x):\n    ???\n    return x * 2',
+      opts:['Direkt under def-raden, före koden','Sist i funktionen, efter return','Ovanför def-raden som en kommentar','Var som helst i funktionen'],
+      ok:0,
+      why:[
+        '✓ Rätt! Docstringen ska vara det allra första i funktionskroppen — direkt under <code>def</code>-raden.',
+        '✗ Efter <code>return</code> är koden aldrig nåbar. Python läser inte docstringen därifrån heller.',
+        '✗ En kommentar med <code>#</code> är inte en docstring. Python sparar inte kommentarer som dokumentation.',
+        '✗ Platsen spelar roll. Python känner bara igen docstringen om den är det första i funktionskroppen.'
+      ],
+      extra:{
+        txt:'Träning: Vad är det korrekta sättet att skriva en docstring?',
+        code:null,
+        opts:['"""Förklarar vad funktionen gör."""','# Förklarar vad funktionen gör','// Förklarar vad funktionen gör','"Förklarar vad funktionen gör."'],
+        ok:0,
+        why:[
+          '✓ Rätt! Trippla citattecken (<code>"""..."""</code>) är standardsättet för docstrings i Python.',
+          '✗ <code>#</code> är en kommentar, inte en docstring. Python sparar den inte i <code>__doc__</code>.',
+          '✗ <code>//</code> är inte giltig kommentarsyntax i Python överhuvudtaget.',
+          '✗ Enkla citattecken fungerar tekniskt, men trippla är standard och krävs för flerrads.'
+        ]
+      }
+    },
+    {
+      txt:'Vilket kodstycke lägger till en korrekt docstring i funktionen?',
+      code:'def dubblera(x):\n    ___\n    return x * 2',
+      opts:['"""Returnerar det dubbla värdet av x."""','# Returnerar det dubbla värdet av x','"Returnerar det dubbla värdet av x"','return "Returnerar det dubbla värdet av x"'],
+      ok:0,
+      why:[
+        '✓ Rätt! Trippla citattecken direkt under def-raden är en giltig docstring.',
+        '✗ En kommentar (<code>#</code>) är inte en docstring. <code>help()</code> visar den inte.',
+        '✗ Enkla citattecken fungerar för enkla strängar, men trippla är standard för docstrings.',
+        '✗ <code>return</code> avbryter funktionen direkt — koden efter körs aldrig.'
+      ],
+      extra:{
+        txt:'Träning: En flerrads docstring avslutas med:',
+        code:null,
+        opts:['"""','---','###','*/'],
+        ok:0,
+        why:[
+          '✓ Rätt! Trippla citattecken avslutar docstringen, precis som de öppnade den.',
+          '✗ <code>---</code> är inte Python-syntax för att avsluta en docstring.',
+          '✗ <code>###</code> är kommentarer i markdown — inte Python.',
+          '✗ <code>*/</code> är avslutning för block-kommentarer i C/JavaScript, inte Python.'
+        ]
+      }
+    },
+    {
+      txt:'Vad händer om du kör <code>help(len)</code>?',
+      code:null,
+      opts:['Python visar dokumentationen för len()-funktionen','Python räknar antalet element i len','Du får ett NameError','Ingenting — help() är en kommentar'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>help()</code> läser funktionens <code>__doc__</code>-attribut och visar det formaterat.',
+        '✗ <code>len</code> utan parentes är funktionsobjektet, inte ett anrop. <code>help()</code> dokumenterar det.',
+        '✗ <code>len</code> är en inbyggd funktion — Python känner igen den utan problem.',
+        '✗ <code>help()</code> är en funktion, inte en kommentar. Den kör och visar dokumentation.'
+      ],
+      extra:{
+        txt:'Träning: Du har skrivit en funktion <code>räkna_ord(text)</code> med en docstring. Hur visar du dokumentationen?',
+        code:null,
+        opts:['help(räkna_ord)','print(räkna_ord)','doc(räkna_ord)','räkna_ord.help()'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>help(funktionsnamn)</code> visar docstringen.',
+          '✗ <code>print(räkna_ord)</code> skriver ut att det är ett function-objekt — inte dokumentationen.',
+          '✗ Python har ingen inbyggd funktion som heter <code>doc()</code>.',
+          '✗ <code>help()</code> är en fristående funktion, inte en metod på funktionsobjektet.'
+        ]
+      }
+    },
+    {
+      txt:'Varför är dokumentation viktig även för kod bara du själv skriver?',
+      code:null,
+      opts:['Framtida-du minns inte varför du valde den lösningen','Python kräver docstrings för att köra koden','Dokumentation gör koden snabbare','Kommentarer och docstrings är samma sak'],
+      ok:0,
+      why:[
+        '✓ Rätt! Kod utan dokumentation är en gåta — och det är du som får lösa den sex månader senare.',
+        '✗ Python kräver inga docstrings. Koden körs lika bra utan dem.',
+        '✗ Dokumentation påverkar inte prestanda. Det är ren text som Python lagrar men inte exekverar.',
+        '✗ Kommentarer (<code>#</code>) sparas inte som <code>__doc__</code>. Docstrings har ett helt annat syfte.'
+      ],
+      extra:{
+        txt:'Träning: Vilket är det primära syftet med en docstring jämfört med en kommentar?',
+        code:null,
+        opts:['Docstringen är åtkomlig via help() och __doc__','Docstrings körs som kod','Kommentarer är synliga, docstrings är dolda','Docstrings är obligatoriska i Python 3'],
+        ok:0,
+        why:[
+          '✓ Rätt! Docstringen sparas i funktionsobjektet och är åtkomlig programmatiskt.',
+          '✗ Docstrings exekveras aldrig. De är bara strängliteraler som Python lagrar.',
+          '✗ Tvärtom — kommentarer är osynliga för Python-maskinen. Docstrings är det som sparas.',
+          '✗ Docstrings är frivilliga i Python. Bra praxis, men inte krav.'
+        ]
+      }
+    },
+    {
+      txt:'Skriv hur du visar dokumentationen för den inbyggda funktionen <code>sum</code>.',
+      code:null,
+      inputType:'text',
+      acceptedAnswers:['help(sum)','print(help(sum))'],
+      why:'<code>help(sum)</code> visar Pythons inbyggda dokumentation för <code>sum()</code> — inklusive parametrar och exempel.',
+      whyFail:'Syntaxen är <code>help(funktionsnamn)</code> utan citattecken runt namnet.',
+      extra:{
+        txt:'Träning: Hur läser du docstringen för en funktion direkt (utan help())?',
+        code:'def hälsa():\n    """Skriver ut en hälsning."""\n    print("Hej!")',
+        opts:['print(hälsa.__doc__)','print(hälsa.doc)','hälsa.help()','doc(hälsa)'],
+        ok:0,
+        why:[
+          '✓ Rätt! Python lagrar docstringen i <code>__doc__</code>-attributet — åtkomligt med punkt-notation.',
+          '✗ Attributet heter <code>__doc__</code> med dubbla understreck på varje sida.',
+          '✗ <code>help()</code> är en funktion, inte en metod på funktionsobjektet.',
+          '✗ Python har ingen inbyggd <code>doc()</code>-funktion.'
+        ]
+      }
+    }
+  ]
+},
+
+// ── L9: Klasser och objekt ───────────────────────────────────────
+{
+  id:'l9', type:'lesson', navTitle:'L9: Klasser', badge:'OOP',
+  title:'Lektion 9: Klasser och objekt',
+  body:`
+<p>Tänk om du kunde skapa 100 spelkaraktärer utan att kopiera kod 100 gånger. Det är exakt vad klasser löser — en klass är en mall, och varje objekt är ett exemplar av den mallen.</p>
+
+<h3>Klass och __init__</h3>
+<p><code>class</code> definierar mallen. <code>__init__</code> är konstruktorn — den körs automatiskt när du skapar ett nytt objekt.</p>
+<pre><code>class Bil:
+    def __init__(self, märke, år):
+        self.märke = märke   # attribut
+        self.år = år
+
+min_bil = Bil("Volvo", 2020)   # skapa ett objekt
+print(min_bil.märke)           # Volvo</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>self</code> är en referens till det specifika objektet som skapas just nu. Utan <code>self</code> vet Python inte vilket av alla Bil-objekt det gäller. Tänk på det som "det här exemplaret".</div>
+
+<h3>Metoder</h3>
+<p>Metoder är funktioner som tillhör klassen. De har alltid <code>self</code> som första parameter.</p>
+<pre><code>class Bil:
+    def __init__(self, märke):
+        self.märke = märke
+
+    def presentera(self):
+        return f"Jag är en {self.märke}."
+
+b = Bil("Saab")
+print(b.presentera())   # Jag är en Saab.</code></pre>
+
+<h3>Arv</h3>
+<p>En subklass ärver allt från sin föräldraklass och kan lägga till eller skriva om beteenden.</p>
+<pre><code>class Djur:
+    def __init__(self, namn):
+        self.namn = namn
+
+class Hund(Djur):            # Hund ärver från Djur
+    def skäll(self):
+        return f"{self.namn} säger: Vov!"
+
+h = Hund("Bella")
+print(h.skäll())   # Bella säger: Vov!</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>super().__init__()</code> anropar föräldraklassens konstruktor — nödvändigt om du vill att även arvsattribut ska initieras korrekt i subklassen.</div>
+<div class="why-box"><strong>Varför lär du dig detta?</strong> Klasser är grunden i nästan all modern mjukvaruutveckling. Allt från webbramverk till spel bygger på klasser. Utan dem repeterar du kod — med dem skapar du system.</div>`,
+  questions:[
+    {
+      txt:'Vad är <code>self</code> i en klass?',
+      code:null,
+      opts:['En referens till det aktuella objektet','Namnet på klassen','En inbyggd Python-variabel med fast värde','Ett nyckelord som ersätter return'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>self</code> refererar till det specifika objektet som metoden anropas på just nu.',
+        '✗ Klassens namn är det du skriver efter <code>class</code>, t.ex. <code>Bil</code>.',
+        '✗ <code>self</code> är en konvention, inte ett reserverat nyckelord. Du kan kalla det vad som helst — men gör det inte.',
+        '✗ <code>self</code> ersätter ingenting. <code>return</code> används fortfarande för att returnera värden.'
+      ],
+      extra:{
+        txt:'Träning: Varför behöver metoder <code>self</code> som första parameter?',
+        code:null,
+        opts:['Så att metoden vet vilket objekt den arbetar med','Så att Python hittar klassen','Det är bara konvention utan teknisk funktion','Annars kan inte metoden använda return'],
+        ok:0,
+        why:[
+          '✓ Rätt! Python skickar automatiskt objektreferensen som första argument — <code>self</code> tar emot den.',
+          '✗ Python hittar klassen via definitionen, inte via <code>self</code>.',
+          '✗ Det är inte bara konvention. Python kräver parametern för att veta vilket objekt som avses.',
+          '✗ <code>return</code> fungerar oberoende av <code>self</code>.'
+        ]
+      }
+    },
+    {
+      txt:'Vad kallas <code>__init__</code> och när körs den?',
+      code:null,
+      opts:['Konstruktorn — automatiskt när ett objekt skapas','Destruktorn — när ett objekt tas bort','En vanlig metod — du måste anropa den manuellt','Arvsmetoden — den ärvs automatiskt'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>__init__</code> är konstruktorn. Python anropar den automatiskt vid <code>Klass()</code>.',
+        '✗ Destruktorn i Python heter <code>__del__</code> och körs vid sophämtning.',
+        '✗ <code>__init__</code> anropas automatiskt — du behöver aldrig kalla den direkt.',
+        '✗ Arv handlar om att ärva metoder, inte om vad <code>__init__</code> heter eller gör.'
+      ],
+      extra:{
+        txt:'Träning: Vad skriver koden ut?',
+        code:'class Hund:\n    def __init__(self, namn):\n        self.namn = namn\n\nh = Hund("Rex")\nprint(h.namn)',
+        opts:['Rex','namn','Hund','__init__'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>h.namn</code> är attributet som sattes till "Rex" i konstruktorn.',
+          '✗ <code>namn</code> är parameternamnet, inte värdet. Värdet som skickades in var "Rex".',
+          '✗ <code>h.namn</code> ger attributvärdet, inte klassnamnet.',
+          '✗ <code>__init__</code> är metodens namn, inte något som skrivs ut.'
+        ]
+      }
+    },
+    {
+      txt:'Hur skapar du ett objekt av klassen <code>Bil</code> med märke "Volvo"?',
+      code:'class Bil:\n    def __init__(self, märke):\n        self.märke = märke',
+      opts:['b = Bil("Volvo")','b = new Bil("Volvo")','Bil.create("Volvo")','b = Bil.init("Volvo")'],
+      ok:0,
+      why:[
+        '✓ Rätt! Du skapar ett objekt genom att anropa klassen som en funktion: <code>Bil("Volvo")</code>.',
+        '✗ <code>new</code> är Java/JavaScript-syntax. Python använder det inte.',
+        '✗ Python-klasser har ingen <code>create()</code>-metod som standard.',
+        '✗ <code>__init__</code> anropas automatiskt och aldrig direkt så här.'
+      ],
+      extra:{
+        txt:'Träning: Vad skriver koden ut?',
+        code:'class Cirkel:\n    def __init__(self, r):\n        self.radie = r\n    def area(self):\n        return 3.14 * self.radie ** 2\n\nc = Cirkel(5)\nprint(c.area())',
+        opts:['78.5','25','3.14','TypeError'],
+        ok:0,
+        why:[
+          '✓ Rätt! 3.14 × 5² = 3.14 × 25 = 78.5.',
+          '✗ 25 är radien i kvadrat (5²), innan multiplikationen med pi.',
+          '✗ 3.14 är pi-värdet, inte resultatet av area-beräkningen.',
+          '✗ Koden är korrekt — ingen TypeError uppstår.'
+        ]
+      }
+    },
+    {
+      txt:'Vad innebär arv i Python?',
+      code:null,
+      opts:['En subklass ärver attribut och metoder från sin föräldraklass','En klass kopierar sin kod till en annan fil','Arv gör att du kan skapa objekt utan __init__','Subklassen ersätter helt föräldraklassen i minnet'],
+      ok:0,
+      why:[
+        '✓ Rätt! Subklassen får tillgång till allt föräldraklassen har definierat, utan att du skriver om det.',
+        '✗ Arv handlar om koddelning i programmet — inga filer kopieras.',
+        '✗ Arv tar inte bort kravet på <code>__init__</code>. Subklassen ärver förälderns om den inte har en egen.',
+        '✗ Föräldraklassen lever kvar. Subklassen är ett tillägg, inte en ersättning.'
+      ],
+      extra:{
+        txt:'Träning: Varför används <code>super().__init__()</code> i en subklass?',
+        code:null,
+        opts:['För att köra föräldraklassens konstruktor och initiera ärvda attribut','För att skapa en ny klass inuti subklassen','Det är obligatoriskt i Python 3','För att förhindra att föräldraklassen används direkt'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>super().__init__()</code> anropar förälderns konstruktor så att ärvda attribut initieras korrekt.',
+          '✗ <code>super()</code> refererar till föräldern, inte skapar en ny klass.',
+          '✗ Det är inte obligatoriskt — men ofta nödvändigt för korrekt initiering.',
+          '✗ Föräldraklassen kan användas direkt oavsett om subklassen anropar <code>super()</code> eller inte.'
+        ]
+      }
+    },
+    {
+      txt:'Skriv rad 1 i definitionen av en klass som heter <code>Djur</code>.',
+      code:null,
+      inputType:'text',
+      acceptedAnswers:['class Djur:','class Djur():'],
+      why:'En klass definieras med nyckelordet <code>class</code> följt av klassnamnet och ett kolon: <code>class Djur:</code>',
+      whyFail:'Syntaxen är <code>class Klassnamn:</code> — nyckelordet class, ett mellanslag, namnet, kolon.',
+      extra:{
+        txt:'Träning: Hur definierar du klassen <code>Hund</code> som ärver från <code>Djur</code>?',
+        code:null,
+        opts:['class Hund(Djur):','class Hund extends Djur:','class Hund inherits Djur:','Hund = class(Djur)'],
+        ok:0,
+        why:[
+          '✓ Rätt! Föräldraklassen skrivs inom parenteser efter klassnamnet.',
+          '✗ <code>extends</code> är Java/JavaScript-syntax. Python använder parenteser.',
+          '✗ Python har inget nyckelord <code>inherits</code>.',
+          '✗ Klasser definieras inte med tilldelningssyntax i Python.'
+        ]
+      }
+    }
+  ]
+},
+
+// ── L10: Bibliotek, filer och felhantering ───────────────────────
+{
+  id:'l10', type:'lesson', navTitle:'L10: Bibliotek & filer', badge:'Avancerat',
+  title:'Lektion 10: Bibliotek, filer och felhantering',
+  body:`
+<p>Python-standardbiblioteket är som en verktygslåda — du behöver inte bygga allt själv. <code>import</code> är det du gör för att hämta ett verktyg. Och när något går fel finns det ett strukturerat sätt att hantera det.</p>
+
+<h3>Import</h3>
+<pre><code>import math
+print(math.pi)        # 3.141592653589793
+print(math.sqrt(16))  # 4.0
+
+from math import sqrt   # importera bara sqrt
+print(sqrt(25))         # 5.0</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>import math</code> laddar hela modulen — du når funktioner med <code>math.funktionsnamn</code>. <code>from math import sqrt</code> laddar bara <code>sqrt</code> direkt i namnrymden — kortare att skriva, men du förlorar tydligheten av att veta var funktionen kom ifrån.</div>
+
+<h3>Filhantering</h3>
+<p>Öppna och läs filer med <code>open()</code> och <code>with</code>-satsen — den stänger filen automatiskt.</p>
+<pre><code>with open("data.txt", "r") as f:   # "r" = läs
+    innehåll = f.read()
+
+with open("resultat.txt", "w") as f:  # "w" = skriv (ersätter)
+    f.write("Klar!")
+
+# "a" = append (lägger till utan att radera)</code></pre>
+
+<h3>Felhantering</h3>
+<p>Använd <code>try/except</code> för att fånga fel och hantera dem på ett kontrollerat sätt.</p>
+<pre><code>try:
+    x = int(input("Ange ett tal: "))
+    print(10 / x)
+except ValueError:
+    print("Det var inte ett heltal.")
+except ZeroDivisionError:
+    print("Division med noll.")
+finally:
+    print("Klart — oavsett vad som hände.")</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> Python provar <code>try</code>-blocket. Vid ett undantag hoppar den till rätt <code>except</code>-gren. <code>finally</code> körs alltid — perfekt för att städa upp (t.ex. stänga filer eller anslutningar).</div>
+<div class="why-box"><strong>Varför lär du dig detta?</strong> Alla program som läser data från världen utanför kan misslyckas: filer saknas, användaren skriver fel, nätverket är nere. Felhantering är det som skiljer ett krascht program från ett som klarar sig.</div>`,
+  questions:[
+    {
+      txt:'Vad skriver koden ut?',
+      code:'import math\nprint(math.sqrt(9))',
+      opts:['3.0','3','9.0','sqrt(9)'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>math.sqrt()</code> returnerar alltid ett float — kvadratroten ur 9 är 3.0.',
+        '✗ <code>sqrt()</code> returnerar float, inte int. Svaret är 3.0, inte 3.',
+        '✗ 9.0 är argumentet, inte resultatet. Roten ur 9 är 3.0.',
+        '✗ <code>print()</code> skriver ut värdet, inte källkoden.'
+      ],
+      extra:{
+        txt:'Träning: Vad är skillnaden mellan <code>import math</code> och <code>from math import sqrt</code>?',
+        code:null,
+        opts:['import math ger tillgång till hela modulen via math.xxx; from math import sqrt ger bara sqrt direkt','De är identiska','from math import sqrt är snabbare att köra','import math kräver installation, from math import sqrt gör inte det'],
+        ok:0,
+        why:[
+          '✓ Rätt! Den avgörande skillnaden är namnrymd och synlighet.',
+          '✗ De är inte identiska — tillgångssättet och namnrymden skiljer sig.',
+          '✗ Prestanda skiljer sig inte i praktiken för standardbiblioteket.',
+          '✗ Båda är delar av standardbiblioteket och kräver ingen installation.'
+        ]
+      }
+    },
+    {
+      txt:'Vad gör <code>with open("fil.txt", "r") as f:</code>?',
+      code:null,
+      opts:['Öppnar filen för läsning och stänger den automatiskt efteråt','Öppnar filen och du måste stänga den manuellt med f.close()','Skapar en ny fil med namnet "fil.txt"','Läser hela filen och sparar i variabeln f'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>with</code>-satsen garanterar att filen stängs automatiskt — även om ett fel uppstår inne i blocket.',
+        '✗ Det är just det <code>with</code> löser — du slipper anropa <code>f.close()</code> manuellt.',
+        '✗ Läget <code>"r"</code> öppnar en befintlig fil. För att skapa används <code>"w"</code>.',
+        '✗ <code>f</code> är filhandtaget, inte innehållet. Du läser med <code>f.read()</code> inuti blocket.'
+      ],
+      extra:{
+        txt:'Träning: Vilket läge använder du för att lägga till text i slutet av en fil utan att radera befintligt innehåll?',
+        code:null,
+        opts:['"a"','"w"','"r+"','"add"'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>"a"</code> (append) öppnar filen och lägger till text i slutet.',
+          '✗ <code>"w"</code> ersätter hela filens innehåll. Allt som fanns innan försvinner.',
+          '✗ <code>"r+"</code> öppnar för läs/skriv men skriver over från början av filen.',
+          '✗ Python har inget läge som heter <code>"add"</code>.'
+        ]
+      }
+    },
+    {
+      txt:'Vilken exception kastas vid <code>int("abc")</code>?',
+      code:null,
+      opts:['ValueError','TypeError','SyntaxError','NameError'],
+      ok:0,
+      why:[
+        '✓ Rätt! "abc" kan inte tolkas som ett heltal — Python kastar ValueError (ogiltigt värde).',
+        '✗ TypeError uppstår vid fel typ-operation, t.ex. <code>"hej" + 5</code>. Här är typen rätt (str), men värdet är ogiltigt.',
+        '✗ SyntaxError är grammatikfel i koden. <code>int("abc")</code> är korrekt syntax.',
+        '✗ NameError uppstår om en variabel inte är definierad. Här är allt definierat.'
+      ],
+      extra:{
+        txt:'Träning: Vad skriver koden ut?',
+        code:'try:\n    x = 10 / 0\nexcept ZeroDivisionError:\n    print("Noll!")\nfinally:\n    print("Klart")',
+        opts:['Noll!\nKlart','Klart','Noll!','ZeroDivisionError'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>except</code>-grenen körs vid ZeroDivisionError, sedan körs <code>finally</code> alltid.',
+          '✗ <code>finally</code> körs alltid — men <code>except</code>-grenen körs också eftersom ett fel uppstod.',
+          '✗ Bara "Noll!" är inte komplett — <code>finally</code> körs alltid och skriver ut "Klart" också.',
+          '✗ Felet fångas av <code>except ZeroDivisionError</code> — Python kraschar inte.'
+        ]
+      }
+    },
+    {
+      txt:'Vad fyller du i <code>___</code> för att fånga ett ValueError?',
+      code:'try:\n    x = int("hej")\n___:\n    print("Ogiltigt tal")',
+      opts:['except ValueError','catch ValueError','error ValueError','handle ValueError'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>except TypAvFel:</code> är syntaxen för att fånga ett specifikt undantag.',
+        '✗ <code>catch</code> används i Java och JavaScript. Python använder <code>except</code>.',
+        '✗ Python har inget nyckelord <code>error</code> för felhantering.',
+        '✗ Python har inget nyckelord <code>handle</code> för felhantering.'
+      ],
+      extra:{
+        txt:'Träning: Vad gör <code>finally</code>-blocket?',
+        code:null,
+        opts:['Körs alltid — oavsett om ett fel uppstod eller inte','Körs bara om inget fel uppstår','Körs bara om ett fel uppstår','Avbryter try-blocket direkt'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>finally</code> körs alltid — det är dess hela poäng. Perfekt för städning.',
+          '✗ Det är <code>else</code>-grenen i try/except som körs när inget fel uppstår.',
+          '✗ <code>except</code>-grenarna körs vid fel. <code>finally</code> körs alltid.',
+          '✗ <code>finally</code> avbryter ingenting. Det är sista steget, inte ett avbrott.'
+        ]
+      }
+    },
+    {
+      txt:'Skriv importraden som hämtar bara funktionen <code>sqrt</code> från modulen <code>math</code>.',
+      code:null,
+      inputType:'text',
+      acceptedAnswers:['from math import sqrt'],
+      why:'<code>from math import sqrt</code> laddar bara <code>sqrt</code> direkt i namnrymden — du kan sedan skriva <code>sqrt(9)</code> utan <code>math.</code> framför.',
+      whyFail:'Syntaxen är: <code>from modulnamn import funktionsnamn</code>',
+      extra:{
+        txt:'Träning: Vilket alternativ importerar hela math-modulen?',
+        code:null,
+        opts:['import math','from math import *','include math','require math'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>import math</code> laddar hela modulen. Du når funktioner med <code>math.xxx</code>.',
+          '✗ <code>from math import *</code> importerar allt direkt i namnrymden — fungerar men rekommenderas inte.',
+          '✗ <code>include</code> är C-syntax. Python använder <code>import</code>.',
+          '✗ <code>require</code> är Node.js-syntax. Python använder <code>import</code>.'
+        ]
+      }
+    }
+  ]
+},
+
+// ── REP3: Repetition L7–10 ───────────────────────────────────────
+{
+  id:'rep3', type:'rep', navTitle:'Repetition 3', badge:'Repetition L7–10',
+  title:'Repetition 3: Lektion 7–10',
+  body:`<p>Sex frågor på tentanivå — täcker fler datatyper, docstrings, klasser och bibliotek.</p>`,
+  questions:[
+    {
+      txt:'Vad skriver koden ut?',
+      code:'d = {"python": 3, "java": 2, "c": 1}\nfor k in d:\n    print(k)',
+      opts:['python\njava\nc','3\n2\n1','{"python": 3, "java": 2, "c": 1}','KeyError'],
+      ok:0,
+      why:[
+        '✓ Rätt! Iteration över en dict ger nycklarna — inte värdena. Ordningen är insättningsordningen i Python 3.7+.',
+        '✗ Värdena får du med <code>for v in d.values()</code>, inte <code>for k in d</code>.',
+        '✗ <code>print(k)</code> skriver ut varje nyckel separat, inte hela dict-representationen.',
+        '✗ Iterering över en dict ger inga KeyError — det är ett normalt och säkert mönster.'
+      ],
+      extra:{
+        txt:'Träning: Hur itererar du över både nycklar och värden samtidigt?',
+        code:'d = {"a": 1, "b": 2}',
+        opts:['for k, v in d.items():','for k, v in d:','for k in d.keys(), v in d.values():','for k, v in d.values():'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>.items()</code> returnerar nyckel-värde-par som tuples — du packar upp med <code>k, v</code>.',
+          '✗ Iteration direkt över <code>d</code> ger bara nycklar — du kan inte packa upp till <code>k, v</code>.',
+          '✗ Det är inte giltig Python-syntax.',
+          '✗ <code>.values()</code> ger bara värden — du kan inte packa upp till <code>k, v</code>.'
+        ]
+      }
+    },
+    {
+      txt:'Klassen <code>Katt</code> ärver från <code>Djur</code>. Vilka metoder har <code>Katt</code> tillgång till?',
+      code:'class Djur:\n    def andas(self):\n        return "Pust"\n\nclass Katt(Djur):\n    def mjau(self):\n        return "Mjau"',
+      opts:['Både andas() och mjau()','Bara mjau()','Bara andas()','Inga — arv kopierar inte metoder'],
+      ok:0,
+      why:[
+        '✓ Rätt! Katt ärver <code>andas()</code> från Djur och definierar <code>mjau()</code> själv.',
+        '✗ Katt har sina egna metoder och de ärvda. Arv adderar, det ersätter inte.',
+        '✗ Djurets metoder ärvs till Katt. Katt har tillgång till båda.',
+        '✗ Arv innebär just att metoder delas. Katt ärver allt från Djur.'
+      ],
+      extra:null
+    },
+    {
+      txt:'Vilken feltyp uppstår om du försöker öppna en fil som inte finns?',
+      code:'with open("saknas.txt", "r") as f:\n    innehåll = f.read()',
+      opts:['FileNotFoundError','ValueError','IOError','NameError'],
+      ok:0,
+      why:[
+        '✓ Rätt! Python kastar <code>FileNotFoundError</code> när filen inte hittas.',
+        '✗ ValueError uppstår vid ogiltiga värden, t.ex. <code>int("abc")</code>. Inte vid filproblem.',
+        '✗ <code>IOError</code> är ett äldre alias som finns kvar, men det moderna rätta svaret är <code>FileNotFoundError</code>.',
+        '✗ NameError uppstår vid odefinerade variabelnamn, inte vid filoperationer.'
+      ],
+      extra:{
+        txt:'Träning: Hur fångar du FileNotFoundError och skriver ut ett eget meddelande?',
+        code:null,
+        opts:['except FileNotFoundError:\n    print("Filen hittades inte")','catch FileNotFoundError:\n    print("Filen hittades inte")','except "FileNotFoundError":\n    print("Filen hittades inte")','on FileNotFoundError:\n    print("Filen hittades inte")'],
+        ok:0,
+        why:[
+          '✓ Rätt! <code>except FelTyp:</code> fångar det specifika undantaget.',
+          '✗ Python använder <code>except</code>, inte <code>catch</code>.',
+          '✗ Undantagstypen skrivs utan citattecken — det är en klass, inte en sträng.',
+          '✗ Python har inget nyckelord <code>on</code> för felhantering.'
+        ]
+      }
+    },
+    {
+      txt:'Vad skriver <code>help(min_funktion)</code> ut?',
+      code:'def min_funktion(x):\n    """Returnerar x gånger två."""\n    return x * 2',
+      opts:['Returnerar x gånger två.','x * 2','min_funktion(x)','Ingenting — funktionen har ingen utskrift'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>help()</code> läser och visar docstringen.',
+        '✗ <code>x * 2</code> är implementationen, inte dokumentationen. <code>help()</code> visar docstringen.',
+        '✗ <code>min_funktion(x)</code> är signaturen — den visas också, men huvudinnehållet är docstringen.',
+        '✗ <code>help()</code> är designat för att skriva ut dokumentation.'
+      ],
+      extra:null
+    },
+    {
+      txt:'Du vill omvandla ett värde till bool. Vad returnerar <code>bool([])</code>?',
+      code:null,
+      opts:['False','True','[]','TypeError'],
+      ok:0,
+      why:[
+        '✓ Rätt! En tom lista är "falsy" i Python — <code>bool([])</code> ger False. Samma gäller 0, "", None.',
+        '✗ En tom lista är falsy. True ges av icke-tomma strukturer.',
+        '✗ <code>bool()</code> returnerar alltid True eller False — aldrig listan själv.',
+        '✗ <code>bool()</code> fungerar på alla Python-objekt — ingen TypeError.'
+      ],
+      extra:{
+        txt:'Träning: Vilket av dessa värden är "truthy" i Python?',
+        code:null,
+        opts:['"hej"','0','[]','None'],
+        ok:0,
+        why:[
+          '✓ Rätt! En icke-tom sträng är truthy — <code>bool("hej")</code> ger True.',
+          '✗ 0 är falsy — <code>bool(0)</code> ger False.',
+          '✗ Tom lista är falsy — <code>bool([])</code> ger False.',
+          '✗ None är falsy — <code>bool(None)</code> ger False.'
+        ]
+      }
+    },
+    {
+      txt:'Vad fyller du i <code>___</code> så att koden skriver ut 5.0?',
+      code:'___ math import sqrt\nprint(sqrt(25))',
+      opts:['from','import','include','using'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>from math import sqrt</code> importerar sqrt direkt — du kan sedan anropa den utan <code>math.</code>',
+        '✗ <code>import math import sqrt</code> är inte giltig Python-syntax.',
+        '✗ <code>include</code> är C-syntax och finns inte i Python.',
+        '✗ <code>using</code> är C#-syntax och finns inte i Python.'
+      ],
+      extra:null
+    }
+  ]
+},
+
+// ── L11: Algoritmiskt tänkande ───────────────────────────────────
+{
+  id:'l11', type:'lesson', navTitle:'L11: Algoritmtänkande', badge:'Avslutning',
+  title:'Lektion 11: Kombinera allt — algoritmiskt tänkande',
+  body:`
+<p>All kod du skrivit hittills är delar av en algoritm. En algoritm är bara ett precist recept för att lösa ett problem — och du har redan tänkt algoritmiskt utan att kalla det så.</p>
+
+<h3>Vad är en algoritm?</h3>
+<p>En exakt, väldefinierad sekvens av steg som löser ett problem. Tre egenskaper: den ska vara <em>tydlig</em>, <em>ändlig</em> och ge ett <em>resultat</em>.</p>
+<div class="mech-box"><strong>Mekaniken:</strong> En kokboksrecept är en algoritm. Googles sökmotor är en algoritm. Skillnaden är komplexiteten — inte principen.</div>
+
+<h3>Decomposition — dela upp problemet</h3>
+<p>Stora problem löses bäst i steg. Bryt ner problemet i deluppgifter, lös varje del för sig.</p>
+<pre><code># Problem: hitta det största talet i en lista
+# Del 1: börja med första elementet som kandidat
+# Del 2: jämför med varje övriga
+# Del 3: uppdatera om du hittar något större
+def hitta_max(tal):
+    störst = tal[0]
+    for t in tal[1:]:
+        if t > störst:
+            störst = t
+    return störst</code></pre>
+
+<h3>main()-funktionen</h3>
+<p>En konvention i Python: samla programmets startpunkt i en funktion som heter <code>main()</code> och anropa den med ett standardmönster.</p>
+<pre><code>def main():
+    print("Programmet startar")
+    # all logik här
+
+if __name__ == "__main__":
+    main()</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>__name__ == "__main__"</code> är sant bara när filen körs direkt — inte när den importeras av ett annat program. Det gör koden återanvändbar som modul.</div>
+
+<h3>Pseudokod och BFS — The Maze</h3>
+<p>Pseudokod är ett sätt att planera innan du kodar: naturspråk i kodstruktur. Kursens "Maze"-tema bygger på BFS (Breadth-First Search) — en algoritm som utforskar en labyrint systematiskt.</p>
+<pre><code># Pseudokod för BFS i en labyrint:
+# Starta vid ingången, lägg den i en kö
+# Medan kön inte är tom:
+#   Ta ut nästa position
+#   Om det är utgången: klart!
+#   Annars: lägg till alla obesökta grannar i kön
+#   Markera positionen som besökt</code></pre>
+<div class="why-box"><strong>Varför lär du dig detta?</strong> Kod utan plan är kaos. De programmerare som löser problem snabbast är de som tänker igenom lösningen i pseudokod innan de skriver en rad Python. BFS är ett av de viktigaste algoritmiska mönstren du kommer möta i utbildningen.</div>`,
+  questions:[
+    {
+      txt:'Vad är en algoritm?',
+      code:null,
+      opts:['En exakt sekvens av väldefinierade steg för att lösa ett problem','Ett annat namn för ett Python-program','En funktion med mer än tio rader kod','En lista med instruktioner som inte behöver ha ett slutresultat'],
+      ok:0,
+      why:[
+        '✓ Rätt! En algoritm är precis, ändlig och producerar ett resultat — oavsett om den är ett recept eller googles sökmotor.',
+        '✗ Alla Python-program implementerar algoritmer, men en algoritm är ett bredare begrepp än ett program.',
+        '✗ Längden på koden har inget med algoritmbegreppet att göra.',
+        '✗ En algoritm måste terminera och producera ett resultat — annars är det en oändlig loop, inte en algoritm.'
+      ],
+      extra:{
+        txt:'Träning: Vilket av dessa är ett exempel på en algoritm i vardagen?',
+        code:null,
+        opts:['Ett recept som steg-för-steg beskriver hur man bakar bröd','En slumpmässig sekvens av handlingar','En lista med ingredienser utan instruktioner','En tanke som inte är nedskriven'],
+        ok:0,
+        why:[
+          '✓ Rätt! Ett recept är en klassisk algoritm — väldefinierade steg, tydlig ordning, ett mål.',
+          '✗ En algoritm är per definition inte slumpmässig — varje steg är väldefinierat.',
+          '✗ En ingredienslista utan instruktioner saknar steg och ordning — det är ingen algoritm.',
+          '✗ En algoritm måste vara nedskriven och exakt nog att följas av någon annan (eller en dator).'
+        ]
+      }
+    },
+    {
+      txt:'Vad fyller du i <code>___</code> för att <code>main()</code> bara anropas när filen körs direkt?',
+      code:'def main():\n    print("Startar")\n\nif __name__ == "___":\n    main()',
+      opts:['__main__','main','__init__','start'],
+      ok:0,
+      why:[
+        '✓ Rätt! <code>__name__</code> sätts till strängen <code>"__main__"</code> av Python när filen körs direkt.',
+        '✗ <code>"main"</code> är inte värdet Python sätter på <code>__name__</code> — det är <code>"__main__"</code>.',
+        '✗ <code>__init__</code> är konstruktorns namn i klasser — inget med filkörning att göra.',
+        '✗ Python har ingen inbyggd variabel som heter <code>start</code>.'
+      ],
+      extra:{
+        txt:'Träning: Varför är <code>if __name__ == "__main__":</code> användbart?',
+        code:null,
+        opts:['Koden i blocket körs inte när filen importeras som modul — bara vid direkt körning','Det gör programmet snabbare','Det krävs för att Python ska hitta main()-funktionen','Det förhindrar syntaxfel'],
+        ok:0,
+        why:[
+          '✓ Rätt! Det gör filen återanvändbar — du kan importera funktioner från den utan att starta programmet.',
+          '✗ Det är ett kontrollflödesvillkor, inte en prestandaoptimering.',
+          '✗ Python hittar funktioner via import — det kräver inget speciellt mönster.',
+          '✗ <code>if __name__ == "__main__":</code> förhindrar inga syntaxfel.'
+        ]
+      }
+    },
+    {
+      txt:'Vad är pseudokod?',
+      code:null,
+      opts:['En beskrivning av ett programs logik i naturspråk, innan koden skrivs','Python-kod med medvetna syntaxfel','Kommentarer som förklarar vad koden gör','Kod som körs men inte visas för användaren'],
+      ok:0,
+      why:[
+        '✓ Rätt! Pseudokod är ett planeringsverktyg — du tänker igenom lösningen utan att binda dig till exakt syntax.',
+        '✗ Pseudokod är avsiktligt vag och informell — det är inte kod med fel.',
+        '✗ Kommentarer förklarar befintlig kod. Pseudokod är planering innan koden existerar.',
+        '✗ Pseudokod körs aldrig — det är ett skriftligt verktyg för att tänka, inte ett program.'
+      ],
+      extra:{
+        txt:'Träning: Vilket är ett bra tillfälle att skriva pseudokod?',
+        code:null,
+        opts:['Innan du börjar koda ett komplext problem','När koden redan är klar och fungerar','För att ersätta kommentarer i koden','Bara när läraren kräver det'],
+        ok:0,
+        why:[
+          '✓ Rätt! Pseudokod är som ritning innan bygget — den tydliggör lösningen och sparar tid.',
+          '✗ Pseudokod är planeringssteget före kodning, inte ett efterarbete.',
+          '✗ Pseudokod och kommentarer tjänar olika syften och kan kombineras.',
+          '✗ Pseudokod är ett kraftfullt personligt verktyg oavsett om det är ett krav.'
+        ]
+      }
+    },
+    {
+      txt:'Vad gör BFS (Breadth-First Search) i ett labyrintproblem?',
+      code:null,
+      opts:['Utforskar alla möjliga vägar på samma avstånd från start innan den går längre','Väljer alltid den längsta vägen','Utforskar slumpmässigt tills den hittar utgången','Går djupast möjligt i ett spår innan den backar'],
+      ok:0,
+      why:[
+        '✓ Rätt! BFS expanderar "lager för lager" — alla grannar på avstånd 1, sedan 2, osv. Det garanterar kortaste vägen.',
+        '✗ BFS hittar alltid den kortaste vägen — inte den längsta.',
+        '✗ BFS är systematisk, inte slumpmässig. Varje position besöks exakt en gång.',
+        '✗ Det är Depth-First Search (DFS) som beskriver det beteendet — inte BFS.'
+      ],
+      extra:{
+        txt:'Träning: Vilket datastruktur används i BFS för att hålla koll på nästa nod att utforska?',
+        code:null,
+        opts:['Kö (queue) — FIFO','Stack — LIFO','Lista med slumpmässig ordning','Dict'],
+        ok:0,
+        why:[
+          '✓ Rätt! En kö (First In, First Out) säkerställer att närmaste noder utforskas först.',
+          '✗ En stack ger DFS-beteende (djupast möjligt), inte BFS.',
+          '✗ Slumpmässig ordning ger varken BFS eller DFS — och garanterar inte korrekthet.',
+          '✗ En dict används för att markera besökta noder — inte som köstruktur i BFS.'
+        ]
+      }
+    },
+    {
+      txt:'Skriv nyckelordet som används för att definiera en klass i Python.',
+      code:null,
+      inputType:'text',
+      acceptedAnswers:['class'],
+      why:'<code>class</code> är nyckelordet som definierar en klass — grunden för objektorienterad programmering i Python.',
+      whyFail:'Nyckelordet är <code>class</code> — enbart det, utan kolon eller annat.',
+      extra:{
+        txt:'Träning: Vad menas med "decomposition" i algoritmiskt tänkande?',
+        code:null,
+        opts:['Att dela upp ett komplext problem i mindre, hanterbara deluppgifter','Att ta bort delar av ett program för att göra det kortare','Att komprimera koden till färre rader','Att felsöka ett program rad för rad'],
+        ok:0,
+        why:[
+          '✓ Rätt! Decomposition är att bryta ner komplexitet — ett av de viktigaste tänkesätten i programutveckling.',
+          '✗ Att ta bort kod är förenkling, inte decomposition.',
+          '✗ Komprimering (minifiering) är ett annat begrepp och har inget med algoritmtänkande att göra.',
+          '✗ Felsökning rad för rad är debugging, inte decomposition.'
+        ]
+      }
+    }
+  ]
 }
 
 ]; // end SECTIONS
@@ -1914,8 +2867,16 @@ function renderNav() {
     ].join(' ');
     if (i === 3) html += '<div class="nav-sep"></div><div class="nav-group">Block 2</div>';
     if (i === 7) html += '<div class="nav-sep"></div>';
+    if (i === 8) html += '<div class="nav-sep"></div><div class="nav-group">Block 3</div>';
     html += `<div class="${cls}" onclick="goSec(${i})"><span class="nav-dot"></span>${sec.navTitle}</div>`;
   });
+  const done = SECTIONS.filter(s => {
+    const st = secState[s.id];
+    return st && Object.keys(st.answers).length >= st.queue.length;
+  }).length;
+  const total = SECTIONS.length;
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  html += `<div class="nav-progress"><div class="nav-prog-bar"><div class="nav-prog-fill" style="width:${pct}%"></div></div><div class="nav-prog-label">${done}/${total} avsnitt klara</div></div>`;
   nav.innerHTML = html;
 }
 
@@ -2008,27 +2969,46 @@ function renderQuestion(q, type, pos, ans, review) {
 
   let codeHtml = q.code ? `<div class="qcode"><pre><code>${esc(q.code)}</code></pre></div>` : '';
 
-  let optsHtml = '<div class="opts">';
-  q.opts.forEach((opt, i) => {
-    let cls = 'opt';
-    let disabled = '';
+  let inputHtml = '';
+  if (q.inputType === 'text') {
     if (ans !== undefined || review) {
-      disabled = 'disabled';
-      if (i === q.ok) cls += ' show-ok';
-      if (ans !== undefined && i === ans.sel && !ans.correct) cls += ' sel-fail';
-      if (ans !== undefined && i === ans.sel && ans.correct) cls += ' sel-ok';
+      inputHtml = `<div class="txt-ans-display">${esc(String(ans.sel || ''))}</div>`;
+    } else {
+      inputHtml = `<div class="txt-input-wrap"><input type="text" id="txt-ans" class="txt-input" placeholder="Skriv ditt svar…" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" onkeydown="if(event.key==='Enter')answerText(${pos})"><button class="btn-txt-submit" onclick="answerText(${pos})">Kontrollera →</button></div>`;
     }
-    optsHtml += `<button class="${cls}" ${disabled} onclick="answer(${pos},${i})">${opt}</button>`;
-  });
-  optsHtml += '</div>';
+  } else {
+    let optsHtml = '<div class="opts">';
+    q.opts.forEach((opt, i) => {
+      let cls = 'opt';
+      let disabled = '';
+      if (ans !== undefined || review) {
+        disabled = 'disabled';
+        if (i === q.ok) cls += ' show-ok';
+        if (ans !== undefined && i === ans.sel && !ans.correct) cls += ' sel-fail';
+        if (ans !== undefined && i === ans.sel && ans.correct) cls += ' sel-ok';
+      }
+      optsHtml += `<button class="${cls}" ${disabled} onclick="answer(${pos},${i})">${opt}</button>`;
+    });
+    optsHtml += '</div>';
+    inputHtml = optsHtml;
+  }
 
   let fbHtml = '';
   if (ans !== undefined) {
-    const why = q.why[ans.sel];
-    if (ans.correct) {
-      fbHtml = `<div class="fb ok"><div class="fb-title">✓ Rätt!</div>${why}</div>`;
+    if (q.inputType === 'text') {
+      const why = ans.correct ? q.why : (q.whyFail || q.why);
+      if (ans.correct) {
+        fbHtml = `<div class="fb ok"><div class="fb-title">✓ Rätt!</div>${why}</div>`;
+      } else {
+        fbHtml = `<div class="fb fail"><div class="fb-title">✗ Rätt svar: <code>${esc(q.acceptedAnswers[0])}</code></div>${why}</div>`;
+      }
     } else {
-      fbHtml = `<div class="fb fail"><div class="fb-title">✗ Fel svar</div>${why}</div>`;
+      const why = q.why[ans.sel];
+      if (ans.correct) {
+        fbHtml = `<div class="fb ok"><div class="fb-title">✓ Rätt!</div>${why}</div>`;
+      } else {
+        fbHtml = `<div class="fb fail"><div class="fb-title">✗ Fel svar</div>${why}</div>`;
+      }
     }
   }
 
@@ -2044,7 +3024,7 @@ function renderQuestion(q, type, pos, ans, review) {
     }
   }
 
-  return `<div class="qcard${review ? ' review-mode' : ''}">${badge}<div class="qtxt">${q.txt}</div>${codeHtml}${optsHtml}${fbHtml}${nextBtn}</div>`;
+  return `<div class="qcard${review ? ' review-mode' : ''}">${badge}<div class="qtxt">${q.txt}</div>${codeHtml}${inputHtml}${fbHtml}${nextBtn}</div>`;
 }
 
 function renderDone(sec, st) {
@@ -2093,6 +3073,27 @@ function answer(pos, sel) {
     st.queue.splice(pos + 1, 0, {type:'extra', parentIdx: item.qIdx});
   }
 
+  refreshQuiz();
+}
+
+function normTxt(s) {
+  return String(s).trim().replace(/\s+/g, '').toLowerCase();
+}
+
+function answerText(pos) {
+  const sec = SECTIONS[curSec];
+  const st = secState[sec.id];
+  if (st.answers[pos] !== undefined) return;
+  const input = document.getElementById('txt-ans');
+  if (!input) return;
+  const val = input.value;
+  const item = st.queue[pos];
+  const q = getQ(sec, item);
+  const correct = (q.acceptedAnswers || []).some(a => normTxt(a) === normTxt(val));
+  st.answers[pos] = {sel: val, correct};
+  if (!correct && item.type === 'main' && q.extra) {
+    st.queue.splice(pos + 1, 0, {type: 'extra', parentIdx: item.qIdx});
+  }
   refreshQuiz();
 }
 
