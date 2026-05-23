@@ -506,13 +506,13 @@ aktiv = True     # bool — sant/falskt</code></pre>
 <code>print(type(42))</code> → <code>&lt;class 'int'&gt;</code><br>
 <code>print(type(3.14))</code> → <code>&lt;class 'float'&gt;</code></div>
 <h3>Dynamisk typning</h3>
-<p>Python är <em>dynamiskt typat</em> — en variabel kan byta typ:</p>
+<p>Python är <em>dynamically typed</em> — en variabel kan byta typ:</p>
 <pre><code>x = 5       # x är int
 x = "fem"   # nu är x str — helt OK</code></pre>
 <h3>Vanliga nybörjarfel</h3>
 <div class="errbox"><strong>NameError</strong> — du använder en variabel som inte är definierad:<br>
 <code>print(ålder)  # NameError om ålder inte finns</code></div>
-<div class="errbox"><strong>Skiftlägeskänslighet</strong> — <code>Namn</code> och <code>namn</code> är OLIKA variabler.</div>
+<div class="errbox"><strong>Case sensitivity</strong> — <code>Namn</code> och <code>namn</code> är OLIKA variabler.</div>
 <div class="okbox"><strong>Namnkonvention:</strong> använd <code>lower_case_with_underscores</code>. Börja aldrig med siffra.</div>`,
   questions:[
     {
@@ -1225,7 +1225,7 @@ for i in range(5):
         '✓ Rätt! <code>break</code> avbryter loopen helt och omedelbart. Koden efter loopen körs sedan.',
         '✗ Det är <code>continue</code> som hoppar till nästa iteration. <code>break</code> avslutar loopen.',
         '✗ Ingen inbyggd loopoperator startar om från början. <code>break</code> avslutar loopen.',
-        '✗ <code>break</code> är ett giltigt nyckelord i Python. Det ger inget syntaxfel.'
+        '✗ <code>break</code> är ett giltigt keyword i Python. Det ger inget syntaxfel.'
       ],
       extra:{
         txt:'Träningsuppgift: Vad gör <code>continue</code> inuti en loop i Python?',
@@ -1236,7 +1236,7 @@ for i in range(5):
           '✓ Rätt! <code>continue</code> hoppar över resten av NUVARANDE iteration och går direkt till nästa.',
           '✗ Det är <code>break</code> som avslutar loopen. <code>continue</code> hoppar bara över nuvarande iteration.',
           '✗ Det finns ingen inbyggd paus-funktion för loopar. <code>continue</code> hoppar iteration.',
-          '✗ <code>continue</code> är ett giltigt nyckelord i Python.'
+          '✗ <code>continue</code> är ett giltigt keyword i Python.'
         ]
       }
     },
@@ -1331,7 +1331,7 @@ print(x)         # 10 — den globala x är oförändrad</code></pre>
         why:[
           '✓ Rätt! Kolonet saknas efter <code>(x, y)</code>. Korrekt: <code>def beräkna(x, y):</code>',
           '✗ <code>return</code> är helt giltigt i Python-funktioner.',
-          '✗ Python är dynamiskt typat — parametrar behöver inga typdeklarationer.',
+          '✗ Python är dynamically typed — parametrar behöver inga typdeklarationer.',
           '✗ Det finns ett syntaxfel: kolonet saknas efter parameterlistan.'
         ]
       }
@@ -1763,7 +1763,7 @@ print(lst[5])  # IndexError!</code></pre>
   body:`
 <p>Listor är flexibla — men ibland vill du ha data som <em>inte kan ändras</em>. Och ibland vill du slå upp ett värde på ett namn i stället för ett nummer. Det är det <strong>tuple</strong> och <strong>dict</strong> löser.</p>
 
-<h3>Tuple — oföränderlig lista</h3>
+<h3>Tuple — immutable list</h3>
 <p>En tuple ser ut som en lista men med parenteser. Den kan inte ändras efter att den skapats.</p>
 <pre><code>koordinater = (59.33, 18.07)  # lat, lon
 print(koordinater[0])          # 59.33
@@ -1816,7 +1816,7 @@ bool(0)      # → False   (0, "", [], None ger False)</code></pre>
       ok:0,
       why:[
         '✓ Rätt! Tuples är immutable — du kan inte ändra, lägga till eller ta bort element. Python kastar TypeError.',
-        '✗ Tuples är skrivskyddade. Tilldelning på index fungerar bara för listor.',
+        '✗ Tuples är immutable. Tilldelning på index fungerar bara för listor.',
         '✗ Python ändrar inte tupeln — den avbryter med ett fel.',
         '✗ Syntaxen är korrekt Python. Felet är logiskt (immutability), inte grammatiskt.'
       ],
@@ -2064,7 +2064,7 @@ help(beräkna_area)  # visar din docstring</code></pre>
 <p>Tänk om du kunde skapa 100 spelkaraktärer utan att kopiera kod 100 gånger. Det är exakt vad klasser löser — en klass är en mall, och varje objekt är ett exemplar av den mallen.</p>
 
 <h3>Klass och __init__</h3>
-<p><code>class</code> definierar mallen. <code>__init__</code> är konstruktorn — den körs automatiskt när du skapar ett nytt objekt.</p>
+<p><code>class</code> definierar mallen. <code>__init__</code> är constructorn — den körs automatiskt när du skapar ett nytt objekt.</p>
 <pre><code>class Bil:
     def __init__(self, märke, år):
         self.märke = märke   # attribut
@@ -2098,18 +2098,18 @@ class Hund(Djur):            # Hund ärver från Djur
 
 h = Hund("Bella")
 print(h.skäll())   # Bella säger: Vov!</code></pre>
-<div class="mech-box"><strong>Mekaniken:</strong> <code>super().__init__()</code> anropar föräldraklassens konstruktor — nödvändigt om du vill att även arvsattribut ska initieras korrekt i subklassen.</div>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>super().__init__()</code> anropar föräldraklassens constructor — nödvändigt om du vill att även inherited attributes ska initieras korrekt i subklassen.</div>
 <div class="why-box"><strong>Varför lär du dig detta?</strong> Klasser är grunden i nästan all modern mjukvaruutveckling. Allt från webbramverk till spel bygger på klasser. Utan dem repeterar du kod — med dem skapar du system.</div>`,
   questions:[
     {
       txt:'Vad är <code>self</code> i en klass?',
       code:null,
-      opts:['En referens till det aktuella objektet','Namnet på klassen','En inbyggd Python-variabel med fast värde','Ett nyckelord som ersätter return'],
+      opts:['En referens till det aktuella objektet','Namnet på klassen','En inbyggd Python-variabel med fast värde','Ett keyword som ersätter return'],
       ok:0,
       why:[
         '✓ Rätt! <code>self</code> refererar till det specifika objektet som metoden anropas på just nu.',
         '✗ Klassens namn är det du skriver efter <code>class</code>, t.ex. <code>Bil</code>.',
-        '✗ <code>self</code> är en konvention, inte ett reserverat nyckelord. Du kan kalla det vad som helst — men gör det inte.',
+        '✗ <code>self</code> är en konvention, inte ett reserverat keyword. Du kan kalla det vad som helst — men gör det inte.',
         '✗ <code>self</code> ersätter ingenting. <code>return</code> används fortfarande för att returnera värden.'
       ],
       extra:{
@@ -2131,8 +2131,8 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
       opts:['Konstruktorn — automatiskt när ett objekt skapas','Destruktorn — när ett objekt tas bort','En vanlig metod — du måste anropa den manuellt','Arvsmetoden — den ärvs automatiskt'],
       ok:0,
       why:[
-        '✓ Rätt! <code>__init__</code> är konstruktorn. Python anropar den automatiskt vid <code>Klass()</code>.',
-        '✗ Destruktorn i Python heter <code>__del__</code> och körs vid sophämtning.',
+        '✓ Rätt! <code>__init__</code> är constructorn. Python anropar den automatiskt vid <code>Klass()</code>.',
+        '✗ Destruktorn i Python heter <code>__del__</code> och körs vid garbage collection.',
         '✗ <code>__init__</code> anropas automatiskt — du behöver aldrig kalla den direkt.',
         '✗ Arv handlar om att ärva metoder, inte om vad <code>__init__</code> heter eller gör.'
       ],
@@ -2142,7 +2142,7 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
         opts:['Rex','namn','Hund','__init__'],
         ok:0,
         why:[
-          '✓ Rätt! <code>h.namn</code> är attributet som sattes till "Rex" i konstruktorn.',
+          '✓ Rätt! <code>h.namn</code> är attributet som sattes till "Rex" i constructorn.',
           '✗ <code>namn</code> är parameternamnet, inte värdet. Värdet som skickades in var "Rex".',
           '✗ <code>h.namn</code> ger attributvärdet, inte klassnamnet.',
           '✗ <code>__init__</code> är metodens namn, inte något som skrivs ut.'
@@ -2174,7 +2174,7 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
       }
     },
     {
-      txt:'Vad innebär arv i Python?',
+      txt:'Vad innebär inheritance i Python?',
       code:null,
       opts:['En subklass ärver attribut och metoder från sin föräldraklass','En klass kopierar sin kod till en annan fil','Arv gör att du kan skapa objekt utan __init__','Subklassen ersätter helt föräldraklassen i minnet'],
       ok:0,
@@ -2187,10 +2187,10 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
       extra:{
         txt:'Träning: Varför används <code>super().__init__()</code> i en subklass?',
         code:null,
-        opts:['För att köra föräldraklassens konstruktor och initiera ärvda attribut','För att skapa en ny klass inuti subklassen','Det är obligatoriskt i Python 3','För att förhindra att föräldraklassen används direkt'],
+        opts:['För att köra föräldraklassens constructor och initiera ärvda attribut','För att skapa en ny klass inuti subklassen','Det är obligatoriskt i Python 3','För att förhindra att föräldraklassen används direkt'],
         ok:0,
         why:[
-          '✓ Rätt! <code>super().__init__()</code> anropar förälderns konstruktor så att ärvda attribut initieras korrekt.',
+          '✓ Rätt! <code>super().__init__()</code> anropar förälderns constructor så att ärvda attribut initieras korrekt.',
           '✗ <code>super()</code> refererar till föräldern, inte skapar en ny klass.',
           '✗ Det är inte obligatoriskt — men ofta nödvändigt för korrekt initiering.',
           '✗ Föräldraklassen kan användas direkt oavsett om subklassen anropar <code>super()</code> eller inte.'
@@ -2202,8 +2202,8 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
       code:null,
       inputType:'text',
       acceptedAnswers:['class Djur:','class Djur():'],
-      why:'En klass definieras med nyckelordet <code>class</code> följt av klassnamnet och ett kolon: <code>class Djur:</code>',
-      whyFail:'Syntaxen är <code>class Klassnamn:</code> — nyckelordet class, ett mellanslag, namnet, kolon.',
+      why:'En klass definieras med keywordet <code>class</code> följt av klassnamnet och ett kolon: <code>class Djur:</code>',
+      whyFail:'Syntaxen är <code>class Klassnamn:</code> — keywordet class, ett mellanslag, namnet, kolon.',
       extra:{
         txt:'Träning: Hur definierar du klassen <code>Hund</code> som ärver från <code>Djur</code>?',
         code:null,
@@ -2212,7 +2212,7 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
         why:[
           '✓ Rätt! Föräldraklassen skrivs inom parenteser efter klassnamnet.',
           '✗ <code>extends</code> är Java/JavaScript-syntax. Python använder parenteser.',
-          '✗ Python har inget nyckelord <code>inherits</code>.',
+          '✗ Python har inget keyword <code>inherits</code>.',
           '✗ Klasser definieras inte med tilldelningssyntax i Python.'
         ]
       }
@@ -2220,10 +2220,10 @@ print(h.skäll())   # Bella säger: Vov!</code></pre>
   ]
 },
 
-// ── L10: Bibliotek, filer och felhantering ───────────────────────
+// ── L10: Bibliotek, filer och exception handling ───────────────────────
 {
-  id:'l10', type:'lesson', navTitle:'L10: Bibliotek & filer', badge:'Avancerat',
-  title:'Lektion 10: Bibliotek, filer och felhantering',
+  id:'l10', type:'lesson', navTitle:'L10: Libraries & filer', badge:'Avancerat',
+  title:'Lektion 10: Libraries, filer och exception handling',
   body:`
 <p>Python-standardbiblioteket är som en verktygslåda — du behöver inte bygga allt själv. <code>import</code> är det du gör för att hämta ett verktyg. Och när något går fel finns det ett strukturerat sätt att hantera det.</p>
 
@@ -2234,7 +2234,7 @@ print(math.sqrt(16))  # 4.0
 
 from math import sqrt   # importera bara sqrt
 print(sqrt(25))         # 5.0</code></pre>
-<div class="mech-box"><strong>Mekaniken:</strong> <code>import math</code> laddar hela modulen — du når funktioner med <code>math.funktionsnamn</code>. <code>from math import sqrt</code> laddar bara <code>sqrt</code> direkt i namnrymden — kortare att skriva, men du förlorar tydligheten av att veta var funktionen kom ifrån.</div>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>import math</code> laddar hela modulen — du når funktioner med <code>math.funktionsnamn</code>. <code>from math import sqrt</code> laddar bara <code>sqrt</code> direkt i namespace — kortare att skriva, men du förlorar tydligheten av att veta var funktionen kom ifrån.</div>
 
 <h3>Filhantering</h3>
 <p>Öppna och läs filer med <code>open()</code> och <code>with</code>-satsen — den stänger filen automatiskt.</p>
@@ -2277,8 +2277,8 @@ finally:
         opts:['import math ger tillgång till hela modulen via math.xxx; from math import sqrt ger bara sqrt direkt','De är identiska','from math import sqrt är snabbare att köra','import math kräver installation, from math import sqrt gör inte det'],
         ok:0,
         why:[
-          '✓ Rätt! Den avgörande skillnaden är namnrymd och synlighet.',
-          '✗ De är inte identiska — tillgångssättet och namnrymden skiljer sig.',
+          '✓ Rätt! Den avgörande skillnaden är namespace och synlighet.',
+          '✗ De är inte identiska — tillgångssättet och namespace skiljer sig.',
           '✗ Prestanda skiljer sig inte i praktiken för standardbiblioteket.',
           '✗ Båda är delar av standardbiblioteket och kräver ingen installation.'
         ]
@@ -2340,8 +2340,8 @@ finally:
       why:[
         '✓ Rätt! <code>except TypAvFel:</code> är syntaxen för att fånga ett specifikt undantag.',
         '✗ <code>catch</code> används i Java och JavaScript. Python använder <code>except</code>.',
-        '✗ Python har inget nyckelord <code>error</code> för felhantering.',
-        '✗ Python har inget nyckelord <code>handle</code> för felhantering.'
+        '✗ Python har inget keyword <code>error</code> för exception handling.',
+        '✗ Python har inget keyword <code>handle</code> för exception handling.'
       ],
       extra:{
         txt:'Träning: Vad gör <code>finally</code>-blocket?',
@@ -2361,7 +2361,7 @@ finally:
       code:null,
       inputType:'text',
       acceptedAnswers:['from math import sqrt'],
-      why:'<code>from math import sqrt</code> laddar bara <code>sqrt</code> direkt i namnrymden — du kan sedan skriva <code>sqrt(9)</code> utan <code>math.</code> framför.',
+      why:'<code>from math import sqrt</code> laddar bara <code>sqrt</code> direkt i namespace — du kan sedan skriva <code>sqrt(9)</code> utan <code>math.</code> framför.',
       whyFail:'Syntaxen är: <code>from modulnamn import funktionsnamn</code>',
       extra:{
         txt:'Träning: Vilket alternativ importerar hela math-modulen?',
@@ -2370,7 +2370,7 @@ finally:
         ok:0,
         why:[
           '✓ Rätt! <code>import math</code> laddar hela modulen. Du når funktioner med <code>math.xxx</code>.',
-          '✗ <code>from math import *</code> importerar allt direkt i namnrymden — fungerar men rekommenderas inte.',
+          '✗ <code>from math import *</code> importerar allt direkt i namespace — fungerar men rekommenderas inte.',
           '✗ <code>include</code> är C-syntax. Python använder <code>import</code>.',
           '✗ <code>require</code> är Node.js-syntax. Python använder <code>import</code>.'
         ]
@@ -2383,7 +2383,7 @@ finally:
 {
   id:'rep3', type:'rep', navTitle:'Repetition 3', badge:'Repetition L7–10',
   title:'Repetition 3: Lektion 7–10',
-  body:`<p>Sex frågor på tentanivå — täcker fler datatyper, docstrings, klasser och bibliotek.</p>`,
+  body:`<p>Sex frågor på tentanivå — täcker fler datatyper, docstrings, klasser och libraries.</p>`,
   questions:[
     {
       txt:'Vad skriver koden ut?',
@@ -2412,7 +2412,7 @@ finally:
     {
       txt:'Klassen <code>Katt</code> ärver från <code>Djur</code>. Vilka metoder har <code>Katt</code> tillgång till?',
       code:'class Djur:\n    def andas(self):\n        return "Pust"\n\nclass Katt(Djur):\n    def mjau(self):\n        return "Mjau"',
-      opts:['Både andas() och mjau()','Bara mjau()','Bara andas()','Inga — arv kopierar inte metoder'],
+      opts:['Både andas() och mjau()','Bara mjau()','Bara andas()','Inga — inheritance kopierar inte metoder'],
       ok:0,
       why:[
         '✓ Rätt! Katt ärver <code>andas()</code> från Djur och definierar <code>mjau()</code> själv.',
@@ -2442,7 +2442,7 @@ finally:
           '✓ Rätt! <code>except FelTyp:</code> fångar det specifika undantaget.',
           '✗ Python använder <code>except</code>, inte <code>catch</code>.',
           '✗ Undantagstypen skrivs utan citattecken — det är en klass, inte en sträng.',
-          '✗ Python har inget nyckelord <code>on</code> för felhantering.'
+          '✗ Python har inget keyword <code>on</code> för exception handling.'
         ]
       }
     },
@@ -2576,7 +2576,7 @@ if __name__ == "__main__":
       why:[
         '✓ Rätt! <code>__name__</code> sätts till strängen <code>"__main__"</code> av Python när filen körs direkt.',
         '✗ <code>"main"</code> är inte värdet Python sätter på <code>__name__</code> — det är <code>"__main__"</code>.',
-        '✗ <code>__init__</code> är konstruktorns namn i klasser — inget med filkörning att göra.',
+        '✗ <code>__init__</code> är constructorns namn i klasser — inget med filkörning att göra.',
         '✗ Python har ingen inbyggd variabel som heter <code>start</code>.'
       ],
       extra:{
@@ -2641,11 +2641,11 @@ if __name__ == "__main__":
       }
     },
     {
-      txt:'Skriv nyckelordet som används för att definiera en klass i Python.',
+      txt:'Skriv keywordet som används för att definiera en klass i Python.',
       code:null,
       inputType:'text',
       acceptedAnswers:['class'],
-      why:'<code>class</code> är nyckelordet som definierar en klass — grunden för objektorienterad programmering i Python.',
+      why:'<code>class</code> är keywordet som definierar en klass — grunden för objektorienterad programmering i Python.',
       whyFail:'Nyckelordet är <code>class</code> — enbart det, utan kolon eller annat.',
       extra:{
         txt:'Träning: Vad menas med "decomposition" i algoritmiskt tänkande?',
