@@ -498,17 +498,27 @@ pris = 9.99      # float — decimaltal
 namn = "Martin"  # str — text
 aktiv = True     # bool — sant/falskt</code></pre>
 <h3>De fyra grundtyperna</h3>
-<p><code>int</code> — heltal: <code>0, 1, -5, 1000</code><br>
-<code>float</code> — decimaltal: <code>3.14, -0.5, 1.0</code><br>
-<code>str</code> — text inom citattecken: <code>"hej"</code>, <code>'a'</code><br>
-<code>bool</code> — sant eller falskt: <code>True</code>, <code>False</code></p>
+<p><code>int</code> — heltal, utan decimalpunkt: <code>0, 1, -5, 1000</code><br>
+<code>float</code> — decimaltal, med punkt: <code>3.14, -0.5, 1.0</code><br>
+<code>str</code> — text, alltid inom citattecken: <code>"hej"</code>, <code>'a'</code><br>
+<code>bool</code> — ett ja/nej-värde: antingen <code>True</code> eller <code>False</code>, inget annat</p>
+
+<div class="mech-box"><strong>bool i praktiken:</strong> bool används när något antingen stämmer eller inte stämmer. Till exempel: är användaren inloggad? Är poängen över 100? Svaret är alltid ja (<code>True</code>) eller nej (<code>False</code>).
+<pre><code>inloggad = True
+poäng = 95
+över_hundra = poäng > 100   # → False (95 är inte > 100)</code></pre></div>
+
 <div class="ibox"><strong>type()</strong> berättar vilken typ ett värde har:<br>
 <code>print(type(42))</code> → <code>&lt;class 'int'&gt;</code><br>
-<code>print(type(3.14))</code> → <code>&lt;class 'float'&gt;</code></div>
-<h3>Dynamisk typning</h3>
-<p>Python är <em>dynamically typed</em> — en variabel kan byta typ:</p>
-<pre><code>x = 5       # x är int
-x = "fem"   # nu är x str — helt OK</code></pre>
+<code>print(type(3.14))</code> → <code>&lt;class 'float'&gt;</code><br>
+<code>print(type("hej"))</code> → <code>&lt;class 'str'&gt;</code><br>
+<code>print(type(True))</code> → <code>&lt;class 'bool'&gt;</code></div>
+
+<h3>Dynamically typed — Python bestämmer typen åt dig</h3>
+<p>I språk som Java måste du deklarera typen manuellt: <code>int x = 5;</code>. Python räknar ut typen själv och tillåter att en variabel byter typ:</p>
+<pre><code>x = 5       # Python ser 5 → bestämmer att x är int
+x = "fem"   # Python ser "fem" → nu är x str — helt OK</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> Python tittar på värdet till höger om <code>=</code> och väljer typ baserat på hur värdet ser ut. Heltal utan punkt → <code>int</code>. Med punkt → <code>float</code>. Med citattecken → <code>str</code>. Exakt <code>True</code> eller <code>False</code> → <code>bool</code>.</div>
 <h3>Vanliga nybörjarfel</h3>
 <div class="errbox"><strong>NameError</strong> — du använder en variabel som inte är definierad:<br>
 <code>print(ålder)  # NameError om ålder inte finns</code></div>
@@ -646,27 +656,63 @@ x = "fem"   # nu är x str — helt OK</code></pre>
   title:'Lektion 2: Operatorer',
   body:`
 <p>Operatorer är symboler som utför beräkningar eller jämförelser på värden.</p>
+
 <h3>Matematiska operatorer</h3>
-<pre><code>10 + 3   # 13   addition
-10 - 3   # 7    subtraktion
-10 * 3   # 30   multiplikation
-10 / 3   # 3.333...  division (ger alltid float)
-10 // 3  # 3    heltalsdivision (avrundar nedåt)
-10 % 3   # 1    modulus (resten efter division)
-2 ** 3   # 8    upphöjt till</code></pre>
-<div class="ibox"><strong>Modulus %</strong> — tänk klockan: 14 % 12 = 2 (det som "är kvar"). Används ofta för att kolla om ett tal är jämnt: <code>x % 2 == 0</code></div>
+<pre><code>10 + 3   # 13      addition
+10 - 3   # 7       subtraktion
+10 * 3   # 30      multiplikation
+10 / 3   # 3.333…  division
+10 // 3  # 3       integer division
+10 % 3   # 1       modulus
+2 ** 3   # 8       upphöjt till (2³)</code></pre>
+
+<h3>Division / — ger alltid float</h3>
+<p>I Python ger <code>/</code> alltid ett decimaltal, även om resultatet är jämnt:</p>
+<pre><code>10 / 2   # 5.0  — inte 5, utan 5.0 (float)
+10 / 3   # 3.3333...</code></pre>
+<div class="mech-box"><strong>Varför?</strong> Python 3 bestämde att <code>/</code> alltid returnerar float för att aldrig dölja att det är division. Annars kunde <code>10 / 2</code> ge 5 (int) men <code>10 / 3</code> ge 3.333 (float) — inkonsekvent och förvirrande.</div>
+
+<h3>Integer division // — avrundar alltid nedåt</h3>
+<p>Ger heltalsdelen av divisionen — decimaldelen kastas bort:</p>
+<pre><code>10 // 3   # steg 1: 10 / 3 = 3.333...
+          # steg 2: ta bara heltalsdelen → 3
+7 // 2    # 7 / 2 = 3.5 → heltalsdelen → 3
+-7 // 2   # -7 / 2 = -3.5 → avrundar NEDÅT → -4</code></pre>
+<div class="mech-box"><strong>Viktigt:</strong> "nedåt" betyder mot minus oändlighet, inte mot noll. -3.5 avrundas nedåt till -4, inte uppåt till -3.</div>
+
+<h3>Modulus % — resten efter division</h3>
+<p>Modulus ger det som <em>blir kvar</em> efter att du delat så många hela gånger som möjligt.</p>
+<pre><code># Räkna ut 10 % 3 steg för steg:
+# Steg 1: Hur många hela gånger går 3 in i 10?  → 3 gånger (3 × 3 = 9)
+# Steg 2: Vad är kvar?  10 − 9 = 1
+# Svar: 10 % 3 = 1
+
+# Fler exempel:
+17 % 5   # 5 × 3 = 15, kvar: 17 − 15 = 2  → 2
+14 % 12  # 12 × 1 = 12, kvar: 14 − 12 = 2  → 2
+ 8 % 4   # 4 × 2 = 8,  kvar: 8 − 8 = 0    → 0 (jämnt delbart!)</code></pre>
+<div class="okbox"><strong>Vanligaste användningen:</strong> kolla om ett tal är jämnt. Om <code>x % 2 == 0</code> är resten noll — talet går att dela med 2 utan rest, alltså jämnt.</div>
+
+<h3>Operatorprioritet — vad räknas först?</h3>
+<p>Python följer samma regler som i matten: multiplikation och division före addition och subtraktion.</p>
+<pre><code>10 + 3 * 2   # → 10 + 6 = 16  (INTE 13 * 2 = 26!)
+(10 + 3) * 2 # → 13 * 2 = 26  (parenteser räknas alltid först)</code></pre>
+<div class="mech-box"><strong>Prioritetsordning (hög → låg):</strong> <code>**</code> → <code>* / // %</code> → <code>+ -</code>. När du är osäker: använd parenteser.</div>
+
 <h3>Jämförelseoperatorer</h3>
+<p>Jämförelseoperatorer returnerar alltid <code>True</code> eller <code>False</code>.</p>
 <pre><code>x == y   # lika med (två likhetstecken!)
 x != y   # inte lika med
 x > y    # större än
 x < y    # mindre än
 x >= y   # större än eller lika med
 x <= y   # mindre än eller lika med</code></pre>
-<div class="errbox"><strong>Vanligt misstag:</strong> <code>=</code> är tilldelning, <code>==</code> är jämförelse. <code>if x = 5:</code> ger <code>SyntaxError</code>.</div>
+<div class="errbox"><strong>Vanligt misstag:</strong> <code>=</code> är tilldelning (lagrar ett värde). <code>==</code> är jämförelse (frågar "är de lika?"). <code>if x = 5:</code> ger <code>SyntaxError</code> — Python förstår att du troligen menade <code>==</code>.</div>
+
 <h3>Logiska operatorer</h3>
-<pre><code>True and False  # False  (båda måste vara True)
-True or False   # True   (minst en måste vara True)
-not True        # False  (vänder på värdet)</code></pre>`,
+<pre><code>True and False  # False  — båda måste vara True för att ge True
+True or False   # True   — minst en måste vara True för att ge True
+not True        # False  — vänder på värdet (True→False, False→True)</code></pre>`,
   questions:[
     {
       txt:'Vad returnerar följande Python-uttryck?',
@@ -1117,8 +1163,14 @@ else:
 <pre><code>range(5)        # 0, 1, 2, 3, 4     (start=0, stopp=5)
 range(2, 7)     # 2, 3, 4, 5, 6     (start=2, stopp=7)
 range(0, 10, 2) # 0, 2, 4, 6, 8    (start=0, stopp=10, steg=2)
-range(5, 0, -1) # 5, 4, 3, 2, 1    (räknar bakåt)</code></pre>
-<div class="ibox"><strong>Viktigt:</strong> stoppvärdet är aldrig inkluderat. <code>range(5)</code> ger 0–4, inte 0–5.</div>
+range(5, 0, -1) # 5, 4, 3, 2, 1    (räknar bakåt med steg -1)</code></pre>
+
+<div class="ibox"><strong>Varför är stoppvärdet inte inkluderat?</strong><br>
+<code>range(5)</code> ger 0, 1, 2, 3, 4 — fem värden, men aldrig 5 självt. Designvalet är konsekvent: <code>range(2, 5)</code> ger exakt 5 − 2 = 3 värden. Enkelt att räkna ut utan att hålla på med ±1.</div>
+
+<div class="mech-box"><strong>Negativt steg — mekaniken:</strong> Med ett negativt steg räknar Python bakåt. Då måste start vara <em>större</em> än stopp — annars är sekvensen tom.<br>
+<code>range(5, 0, -1)</code>: börja på 5, ta steg om -1, fortsätt tills du når 0 (exkluderat) → 5, 4, 3, 2, 1.<br>
+<code>range(0, 5, -1)</code>: start (0) är redan lägre än stopp (5), ingen riktning kvar → tom sekvens.</div>
 <div class="lab" id="range-lab">
   <div class="lab-h">🔬 Interaktivt range-labb — utforska range(start, stopp, steg)</div>
   <div class="lab-row"><label>start:</label><input type="range" id="rl-start" min="0" max="10" value="0"><span class="lv" id="rl-sv">0</span></div>
@@ -1127,12 +1179,17 @@ range(5, 0, -1) # 5, 4, 3, 2, 1    (räknar bakåt)</code></pre>
   <div class="lab-out"><div class="lab-expr" id="rl-expr">range(0, 5, 1)</div><div class="lab-res" id="rl-res">→ [0, 1, 2, 3, 4]</div></div>
 </div>
 <h3>while-loopen</h3>
+<p>En while-loop kör sitt block om och om igen <em>så länge</em> villkoret är <code>True</code>. Innan varje varv kontrollerar Python villkoret — är det <code>False</code> stannar loopen.</p>
+<pre><code>x = 0
+while x < 3:    # Varv 1: x=0, 0<3 är True → kör
+    print(x)    # Varv 2: x=1, 1<3 är True → kör
+    x += 1      # Varv 3: x=2, 2<3 är True → kör
+                # Varv 4: x=3, 3<3 är False → stopp
+# Skriver ut: 0, 1, 2</code></pre>
+<div class="errbox"><strong>Oändlig loop</strong> — om villkoret aldrig blir <code>False</code> kör loopen för evigt och programmet fryser. Det händer om du glömmer att ändra variabeln inuti loopen:<br>
 <pre><code>x = 0
 while x < 3:
-    print(x)
-    x += 1
-# Skriver ut: 0, 1, 2</code></pre>
-<div class="errbox"><strong>Oändlig loop</strong> — om villkoret aldrig blir False kör loopen för evigt. Glöm inte att uppdatera variabeln inuti while-blocket!</div>
+    print(x)   # x ändras aldrig → x < 3 är alltid True → oändlig loop!</code></pre></div>
 <h3>break och continue</h3>
 <pre><code>for i in range(10):
     if i == 3:
@@ -1286,15 +1343,18 @@ hälsa("Anna")     # Hej, Anna!</code></pre>
     return värde    # valfritt</code></pre>
 <div class="errbox"><strong>Vanligt misstag:</strong> glömt kolon efter parenteserna. <code>def hälsa(namn)</code> ger SyntaxError. Det ska vara <code>def hälsa(namn):</code></div>
 <h3>return vs print</h3>
+<p><code>return</code> och <code>print</code> ser liknande ut men gör fundamentalt olika saker:</p>
 <pre><code>def addera(a, b):
-    return a + b      # skickar tillbaka värdet
+    return a + b      # ger tillbaka värdet till den som anropade
 
 def addera_v2(a, b):
-    print(a + b)      # skriver ut men skickar inget tillbaka
+    print(a + b)      # skriver ut på skärmen, ger ingenting tillbaka
 
-resultat = addera(3, 4)    # resultat = 7 ✓
-resultat = addera_v2(3, 4) # resultat = None ✗</code></pre>
-<div class="ibox"><strong>return</strong> skickar ett värde ur funktionen som du kan lagra eller använda. <strong>print</strong> visar bara på skärmen — värdet försvinner.</div>
+resultat = addera(3, 4)    # resultat = 7  ✓  (värdet sparades)
+resultat = addera_v2(3, 4) # skriver ut 7 på skärmen, men...
+                           # resultat = None  ✗  (inget returnerades)</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> När Python kör <code>return a + b</code> beräknar den <code>a + b</code>, avslutar funktionen och lämnar tillbaka värdet till den rad som anropade funktionen. Den raden kan lagra det: <code>resultat = addera(3, 4)</code>.<br><br>
+När Python kör <code>print(a + b)</code> visas värdet på skärmen — men funktionen lämnar tillbaka <code>None</code> (ingenting). Om du försöker lagra det: <code>resultat = addera_v2(3, 4)</code> får du <code>None</code>, inte 7.</div>
 <h3>Standardvärden</h3>
 <pre><code>def hälsa(namn="Världen"):
     print("Hej " + namn)
@@ -1302,15 +1362,16 @@ resultat = addera_v2(3, 4) # resultat = None ✗</code></pre>
 hälsa()          # Hej Världen
 hälsa("Martin")  # Hej Martin</code></pre>
 <h3>Scope — variablers räckvidd</h3>
-<pre><code>x = 10           # global variabel
+<p>En variabel skapad inuti en funktion är <em>lokal</em> — den existerar bara under funktionens körning och är helt osynlig utanför.</p>
+<pre><code>x = 10           # global variabel (lever hela programmet)
 
 def func():
-    x = 20       # lokal variabel — ANNAN x!
-    print(x)     # 20
+    x = 20       # lokal variabel — Python skapar en NY x, bara här
+    print(x)     # 20  (ser den lokala x)
 
 func()
-print(x)         # 10 — den globala x är oförändrad</code></pre>
-<div class="okbox">Lokala variabler (inuti en funktion) existerar bara under funktionens körning och syns inte utanför.</div>`,
+print(x)         # 10  (den globala x är helt orörd)</code></pre>
+<div class="mech-box"><strong>Varför finns scope?</strong> Utan det skulle varje funktion riskera att av misstag skriva över varandras variabler. Med lokalt scope kan du använda samma variabelnamn i tusen olika funktioner utan att de krockar — de lever i var sin bubbla och försvinner när funktionen är klar.</div>`,
   questions:[
     {
       txt:'Vad är felet i följande Python-kod?',
@@ -1447,36 +1508,48 @@ print(x)         # 10 — den globala x är oförändrad</code></pre>
 tal = [1, 2, 3, 4, 5]
 blandat = [42, "hej", True, 3.14]</code></pre>
 <h3>Indexering — börjar alltid på 0</h3>
+<p>Varje element i en lista har ett nummer — ett index. Det första elementet är alltid index 0, inte 1.</p>
 <pre><code>lst = ["a", "b", "c", "d"]
-lst[0]   # "a"  (första elementet)
-lst[1]   # "b"
-lst[-1]  # "d"  (sista elementet)
+#       0     1     2     3   ← positiva index (framifrån)
+#      -4    -3    -2    -1   ← negativa index (bakifrån)
+
+lst[0]   # "a"  (första)
+lst[3]   # "d"  (fjärde)
+lst[-1]  # "d"  (sista — Python räknar: len(lst) - 1 = 3)
 lst[-2]  # "c"  (näst sista)</code></pre>
-<div class="ibox">Negativt index räknar bakifrån. <code>lst[-1]</code> är alltid sista elementet — praktiskt!</div>
+<div class="mech-box"><strong>Mekaniken bakom negativt index:</strong> <code>lst[-1]</code> är exakt samma sak som <code>lst[len(lst) - 1]</code>. Python räknar bakifrån genom att subtrahera från listans längd. För en lista med 4 element: -1 → index 3, -2 → index 2, osv.</div>
+
 <h3>Vanliga metoder</h3>
 <pre><code>lst = [1, 2, 3]
 lst.append(4)    # [1, 2, 3, 4]   — lägg till sist
-lst.remove(2)    # [1, 3, 4]      — ta bort första 2
+lst.remove(2)    # [1, 3, 4]      — tar bort första förekomsten av 2
 len(lst)         # 3              — antal element</code></pre>
-<h3>Slicing — hämta delar</h3>
+
+<h3>Slicing — hämta delar av en lista</h3>
+<p>Slicing följer samma regel som range: startindex inkluderas, stoppindex exkluderas.</p>
 <pre><code>lst = [10, 20, 30, 40, 50]
-lst[1:3]    # [20, 30]    (index 1 till 2, ej 3)
-lst[:2]     # [10, 20]    (från början till index 1)
-lst[2:]     # [30, 40, 50] (från index 2 till slutet)</code></pre>
-<h3>De tre vanligaste felen</h3>
-<pre><code># SyntaxError — felaktig Python-syntax
-if x = 5:      # ska vara ==
+#       0   1   2   3   4
 
-# NameError — variabel finns inte
-print(odefinierad_variabel)
+lst[1:3]  # index 1 och 2, ej 3 → [20, 30]
+lst[:2]   # från index 0 till 1  → [10, 20]
+lst[2:]   # från index 2 till slutet → [30, 40, 50]</code></pre>
+<div class="mech-box"><strong>Varför exkluderas stoppindex?</strong> <code>lst[1:3]</code> ger exakt 3 − 1 = 2 element. Enkelt att räkna: stoppindex minus startindex = antal element du får.</div>
 
-# TypeError — fel typ i en operation
-5 + "hej"      # kan inte addera int och str
+<h3>De fyra vanligaste felen</h3>
+<p>Python talar om precis vad som gick fel — om du vet vad felen betyder.</p>
+<pre><code># SyntaxError — Python förstår inte koden innan den ens körs
+if x = 5:        # = är tilldelning, inte jämförelse. Ska vara ==
 
-# IndexError — index utanför listans gränser
-lst = [1,2,3]
-print(lst[5])  # IndexError!</code></pre>
-<div class="okbox"><strong>Läsa felmeddelanden:</strong> Titta alltid på den SISTA raden i ett felmeddelande — det är där felet faktiskt är.</div>`,
+# NameError — Python körs men hittar ett namn den aldrig sett
+print(poäng)     # om 'poäng' aldrig tilldelats något värde
+
+# TypeError — rätt syntax, rätt namn, men fel typ i operationen
+5 + "hej"        # int + str är inte definierat
+
+# IndexError — index finns inte i listan
+lst = [1, 2, 3]  # index 0, 1, 2 finns
+print(lst[5])    # index 5 finns inte → IndexError</code></pre>
+<div class="okbox"><strong>Läsa felmeddelanden:</strong> Titta alltid på den <em>sista</em> raden i felmeddelandet — det är där felet faktiskt uppstod, och typen (SyntaxError, NameError etc.) talar om vilken kategori det tillhör.</div>`,
   questions:[
     {
       txt:'Vad skriver följande Python-kod ut?',
