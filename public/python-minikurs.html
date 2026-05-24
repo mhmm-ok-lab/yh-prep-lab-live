@@ -415,6 +415,15 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 }
 .nav-prog-label{font-size:11px;color:var(--text2);font-weight:600}
 
+/* ── Symbol reference table ── */
+.sym-table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:13.5px}
+.sym-table th{text-align:left;padding:6px 10px;background:var(--bg3);color:var(--text2);font-weight:600;border-bottom:1px solid var(--border)}
+.sym-table td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.sym-table tr:last-child td{border-bottom:none}
+.sym-ref{font-size:13px;color:var(--text2);margin-top:1.25rem;padding:8px 12px;background:var(--bg3);border-radius:6px;border-left:3px solid var(--acc)}
+.sym-ref a{color:var(--acc);text-decoration:none;font-weight:600;cursor:pointer}
+.sym-ref a:hover{text-decoration:underline}
+
 /* ── Mobile ── */
 @media(max-width:768px){
   :root{--switch-h:34px}
@@ -486,6 +495,125 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 const SECTIONS = [
 
 // ----------------------------------------------------------------
+// SYMBOLGUIDE
+// ----------------------------------------------------------------
+{
+  id:'guide', type:'lesson', navTitle:'Symbolguide', badge:'Referens',
+  title:'Symbolguide: Pythonskriften',
+  body:`
+<p>Python-kod är full av specialtecken. Här är en snabbreferens — kom tillbaka hit när du ser ett tecken du inte känner igen.</p>
+
+<h3>Tilldelning och jämförelse</h3>
+<table class="sym-table">
+<thead><tr><th>Symbol</th><th>Namn (engelska)</th><th>Gör</th></tr></thead>
+<tbody>
+<tr><td><code>=</code></td><td>assignment operator</td><td>Sparar ett värde i en variabel: <code>x = 5</code></td></tr>
+<tr><td><code>==</code></td><td>equality operator</td><td>Jämför — returnerar <code>True</code> eller <code>False</code>: <code>x == 5</code></td></tr>
+<tr><td><code>!=</code></td><td>not-equal operator</td><td>Sant om värdena är olika: <code>x != 0</code></td></tr>
+<tr><td><code>&lt;</code> <code>&gt;</code></td><td>less/greater-than</td><td>Jämför storlek: <code>ålder &lt; 18</code>, <code>poäng &gt; 0</code></td></tr>
+<tr><td><code>&lt;=</code> <code>&gt;=</code></td><td>less/greater-or-equal</td><td>Inklusive gränsen: <code>i &lt;= 10</code>, <code>temp &gt;= 37.0</code></td></tr>
+</tbody>
+</table>
+
+<h3>Matematik</h3>
+<table class="sym-table">
+<tbody>
+<tr><td><code>+</code> <code>-</code> <code>*</code></td><td>addition, subtraction, multiplication</td><td>Grundräkning: <code>3 + 2</code>, <code>10 - 3</code>, <code>4 * 5</code></td></tr>
+<tr><td><code>/</code></td><td>division operator</td><td>Division med decimal: <code>7 / 2</code> → <code>3.5</code></td></tr>
+<tr><td><code>//</code></td><td>floor division</td><td>Heltalsdivision, kapar decimaler: <code>7 // 2</code> → <code>3</code></td></tr>
+<tr><td><code>%</code></td><td>modulo operator</td><td>Resten efter heltalsdivision: <code>7 % 2</code> → <code>1</code></td></tr>
+<tr><td><code>**</code></td><td>exponentiation</td><td>Upphöjt till: <code>2 ** 8</code> → <code>256</code></td></tr>
+</tbody>
+</table>
+
+<h3>Parenteser och avdelare</h3>
+<table class="sym-table">
+<tbody>
+<tr><td><code>()</code></td><td>parentheses</td><td>Funktionsanrop och gruppering: <code>print("hej")</code>, <code>(2 + 3) * 4</code></td></tr>
+<tr><td><code>[]</code></td><td>square brackets</td><td>Listor och indexering: <code>[1, 2, 3]</code>, <code>lista[0]</code></td></tr>
+<tr><td><code>{}</code></td><td>curly braces</td><td>Dictionaries: <code>{"namn": "Ali", "ålder": 25}</code></td></tr>
+<tr><td><code>:</code></td><td>colon</td><td>Startar ett block (if, for, def, class): <code>if x &gt; 0:</code></td></tr>
+<tr><td><code>.</code></td><td>dot / period</td><td>Åtkomst till metod eller attribut: <code>namn.upper()</code></td></tr>
+<tr><td><code>,</code></td><td>comma</td><td>Separerar argument och element: <code>print(a, b)</code></td></tr>
+</tbody>
+</table>
+
+<h3>Text och kommentarer</h3>
+<table class="sym-table">
+<tbody>
+<tr><td><code>#</code></td><td>hash / comment</td><td>Kommentar — Python ignorerar resten av raden: <code># förklaring</code></td></tr>
+<tr><td><code>"</code> / <code>'</code></td><td>quote mark</td><td>Avgränsar en sträng: <code>"hej"</code>, <code>'världen'</code></td></tr>
+<tr><td><code>"""</code></td><td>triple quotes</td><td>Flerrads-sträng eller docstring</td></tr>
+<tr><td><code>f""</code></td><td>f-string prefix</td><td>Sätter in variabler direkt i text: <code>f"Hej {namn}!"</code></td></tr>
+<tr><td><code>\\</code></td><td>backslash</td><td>Escape-tecken: <code>\\n</code> = ny rad, <code>\\t</code> = tab</td></tr>
+<tr><td><code>_</code></td><td>underscore</td><td>Del av variabelnamn: <code>mitt_namn</code>. Ensam <code>_</code> = ignorerat värde.</td></tr>
+</tbody>
+</table>
+
+<h3>Logiska operatorer</h3>
+<table class="sym-table">
+<tbody>
+<tr><td><code>and</code></td><td>logical AND</td><td>Sant om BÅDA är sanna: <code>x &gt; 0 and x &lt; 10</code></td></tr>
+<tr><td><code>or</code></td><td>logical OR</td><td>Sant om MINST EN är sann: <code>x == 0 or x == 1</code></td></tr>
+<tr><td><code>not</code></td><td>logical NOT</td><td>Inverterar ett booleskt värde: <code>not True</code> → <code>False</code></td></tr>
+</tbody>
+</table>
+`,
+  questions:[
+    {
+      q:'Vad är skillnaden mellan <code>=</code> och <code>==</code> i Python?',
+      opts:[
+        '<code>=</code> tilldelar ett värde till en variabel. <code>==</code> jämför om två värden är lika.',
+        '<code>==</code> tilldelar ett värde till en variabel. <code>=</code> jämför om två värden är lika.',
+        'De gör exakt samma sak — det beror på sammanhang vilken som används.',
+        '<code>=</code> används bara i if-satser, <code>==</code> bara i funktioner.',
+      ],
+      ok:0,
+      why:'<code>=</code> är assignment operator — den sparar ett värde: <code>x = 5</code>. <code>==</code> är equality operator — den jämför och returnerar <code>True</code> eller <code>False</code>: <code>if x == 5:</code>. Skriver du <code>if x = 5:</code> ger Python ett syntaxfel.',
+      whyFail:'Vanligt att blanda! Ett likhetstecken <code>=</code> = tilldela ett värde. Dubbelt <code>==</code> = jämföra två värden.',
+    },
+    {
+      q:'Vad returnerar <code>10 % 3</code>?',
+      opts:['<code>1</code> — resten','<code>3</code> — kvoten','<code>3.33</code> — decimalresultatet','<code>0</code> — inget att dela'],
+      ok:0,
+      why:'<code>%</code> är modulo operator — den ger resten efter heltalsdivision. 3 ryms jämnt tre gånger i 10: 3 × 3 = 9. Resten: 10 − 9 = 1.',
+      whyFail:'Modulo ger RESTEN, inte kvoten. Steg: hur många hela gånger ryms divisorn? → multiplicera tillbaka → subtrahera.',
+    },
+    {
+      q:'Vilket tecken används för att skriva en kommentar i Python?',
+      opts:['<code>#</code>','<code>//</code>','<code>/*</code>','<code>--</code>'],
+      ok:0,
+      why:'<code>#</code> markerar en kommentar i Python. Allt på raden efter <code>#</code> ignoreras av Python helt. De andra tillhör andra språk: <code>//</code> i JavaScript, <code>/*</code> i C/Java, <code>--</code> i SQL.',
+      whyFail:'Python använder <code>#</code> för kommentarer — det är unikt för Python och lätt att minnas.',
+    },
+    {
+      q:'Vad används <code>[]</code> till i Python?',
+      opts:[
+        'Skapa listor och indexera element: <code>[1, 2, 3]</code> och <code>lista[0]</code>',
+        'Skapa dictionaries: <code>["namn": "Ali"]</code>',
+        'Gruppera matematiska uttryck: <code>[2 + 3] * 4</code>',
+        'Anropa funktioner: <code>print[1, 2, 3]</code>',
+      ],
+      ok:0,
+      why:'Square brackets <code>[]</code> har två roller: skapa en lista (<code>[1, 2, 3]</code>) och indexera ett element ur den (<code>lista[0]</code>). Dictionaries använder curly braces <code>{}</code>. Parentheses <code>()</code> används för funktionsanrop.',
+      whyFail:'<code>[]</code> = listor och indexering. <code>{}</code> = dictionaries. <code>()</code> = funktionsanrop och gruppering.',
+    },
+    {
+      q:'Vad gör <code>f"Hej {namn}!"</code> i Python?',
+      opts:[
+        'En f-string — sätter in värdet av <code>namn</code> automatiskt i texten',
+        'En vanlig sträng som skriver ut <code>{namn}</code> bokstavligen',
+        'Ett syntaxfel — strängar kan inte börja med en bokstav',
+        'En kommentar som formateras och sedan ignoreras',
+      ],
+      ok:0,
+      why:'<code>f""</code> är en f-string (formatted string literal). Allt inuti <code>{}</code> tolkas som Python-kod och ersätts med sitt värde. Om <code>namn = "Karin"</code> returnerar <code>f"Hej {namn}!"</code> strängen <code>"Hej Karin!"</code>.',
+      whyFail:'Utan <code>f</code> framför strängen behandlas <code>{namn}</code> som vanlig text och skrivs ut bokstavligen.',
+    },
+  ],
+},
+
+// ----------------------------------------------------------------
 // LEKTION 1
 // ----------------------------------------------------------------
 {
@@ -523,7 +651,8 @@ x = "fem"   # Python ser "fem" → nu är x str — helt OK</code></pre>
 <div class="errbox"><strong>NameError</strong> — du använder en variabel som inte är definierad:<br>
 <code>print(ålder)  # NameError om ålder inte finns</code></div>
 <div class="errbox"><strong>Case sensitivity</strong> — <code>Namn</code> och <code>namn</code> är OLIKA variabler.</div>
-<div class="okbox"><strong>Namnkonvention:</strong> använd <code>lower_case_with_underscores</code>. Börja aldrig med siffra.</div>`,
+<div class="okbox"><strong>Namnkonvention:</strong> använd <code>lower_case_with_underscores</code>. Börja aldrig med siffra.</div>
+<p class="sym-ref">Ny symbol? <a onclick="goSec(0)">→ Symbolguide</a> — fullständig lista över alla tecken som används i Python.</p>`,
   questions:[
     {
       txt:'Vilken datatyp tilldelas variabeln <code>x</code> i denna Python-kod?',
@@ -712,7 +841,8 @@ x <= y   # mindre än eller lika med</code></pre>
 <h3>Logiska operatorer</h3>
 <pre><code>True and False  # False  — båda måste vara True för att ge True
 True or False   # True   — minst en måste vara True för att ge True
-not True        # False  — vänder på värdet (True→False, False→True)</code></pre>`,
+not True        # False  — vänder på värdet (True→False, False→True)</code></pre>
+<p class="sym-ref">Alla operatorer i en lista: <a onclick="goSec(0)">→ Symbolguide</a></p>`,
   questions:[
     {
       txt:'Vad returnerar följande Python-uttryck?',
@@ -2963,9 +3093,9 @@ function renderNav() {
       i === curSec ? 'active' : '',
       isDone ? 'done' : ''
     ].join(' ');
-    if (i === 3) html += '<div class="nav-sep"></div><div class="nav-group">Block 2</div>';
-    if (i === 7) html += '<div class="nav-sep"></div>';
-    if (i === 8) html += '<div class="nav-sep"></div><div class="nav-group">Block 3</div>';
+    if (i === 4) html += '<div class="nav-sep"></div><div class="nav-group">Block 2</div>';
+    if (i === 8) html += '<div class="nav-sep"></div>';
+    if (i === 9) html += '<div class="nav-sep"></div><div class="nav-group">Block 3</div>';
     html += `<div class="${cls}" onclick="goSec(${i})"><span class="nav-dot"></span>${sec.navTitle}</div>`;
   });
   const done = SECTIONS.filter(s => {
