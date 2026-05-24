@@ -1979,6 +1979,14 @@ print(koordinater[0])          # 59.33
 print(person["namn"])   # Karin
 print(person["ålder"])  # 28</code></pre>
 <div class="mech-box"><strong>Mekaniken:</strong> Dict är som ett telefonregister — du slår upp på namn (nyckel) och får tillbaka numret (värdet). Internt använder Python en hashtabell, så sökning är blixtsnabb oavsett storlek.</div>
+<p>Tre inbyggda metoder ger dig olika vyer av en dict:</p>
+<pre><code>person = {"namn": "Karin", "ålder": 28}
+print(person.keys())    # dict_keys(['namn', 'ålder'])
+print(person.values())  # dict_values(['Karin', 28])
+print(person.items())   # dict_items([('namn', 'Karin'), ('ålder', 28)])
+
+for nyckel, värde in person.items():
+    print(nyckel, "→", värde)</code></pre>
 
 <h3>Type casting</h3>
 <p>Omvandla mellan typer med inbyggda funktioner: <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code>.</p>
@@ -2301,7 +2309,20 @@ class Hund(Djur):            # Hund ärver från Djur
 
 h = Hund("Bella")
 print(h.skäll())   # Bella säger: Vov!</code></pre>
-<div class="mech-box"><strong>Mekaniken:</strong> <code>super().__init__()</code> anropar föräldraklassens constructor — nödvändigt om du vill att även inherited attributes ska initieras korrekt i subklassen.</div>
+<p>När subklassen har egna attribut behöver den sin egen <code>__init__</code> — men den måste också anropa förälderns med <code>super()</code>:</p>
+<pre><code>class Djur:
+    def __init__(self, namn):
+        self.namn = namn
+
+class Hund(Djur):
+    def __init__(self, namn, ras):
+        super().__init__(namn)   # anropar Djurets __init__
+        self.ras = ras           # Hundens eget attribut
+
+h = Hund("Bella", "Labrador")
+print(h.namn)   # Bella   — ärvt från Djur
+print(h.ras)    # Labrador — Hundens eget</code></pre>
+<div class="mech-box"><strong>Mekaniken:</strong> <code>super().__init__()</code> anropar föräldraklassens constructor — nödvändigt om du vill att även inherited attributes ska initieras korrekt i subklassen. Utan det saknas <code>self.namn</code> och du får AttributeError.</div>
 <div class="why-box"><strong>Varför lär du dig detta?</strong> Klasser är grunden i nästan all modern mjukvaruutveckling. Allt från webbramverk till spel bygger på klasser. Utan dem repeterar du kod — med dem skapar du system.</div>`,
   questions:[
     {
