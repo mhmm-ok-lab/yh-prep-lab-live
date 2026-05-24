@@ -368,6 +368,9 @@ pre code{background:none;padding:0;font-size:inherit;color:inherit}
 }
 .btn-rev-nav:hover{background:var(--bg3)}
 .rev-pos{font-size:12px;color:var(--text2);font-weight:600;text-align:center}
+.rev-nav-right{display:flex;gap:6px;align-items:center}
+.btn-rev-exit{border-color:var(--border);color:var(--text2);font-size:12px;padding:6px 10px}
+.btn-rev-exit:hover{background:var(--er-bg);color:var(--er-tx)}
 
 /* ── Why box (relevans) ── */
 .why-box{
@@ -3283,7 +3286,10 @@ function renderQuestion(q, type, pos, ans, review) {
     reviewNav = `<div class="review-nav">
       ${hasPrev ? `<button class="btn-rev-nav" onclick="reviewGo(${pos-1})">← Föregående</button>` : '<span></span>'}
       <span class="rev-pos">Svar ${pos+1} av ${total}</span>
-      ${hasNext ? `<button class="btn-rev-nav" onclick="reviewGo(${pos+1})">Nästa →</button>` : `<button class="btn-rev-nav" onclick="reviewDone()">Tillbaka →</button>`}
+      <span class="rev-nav-right">
+        ${hasNext ? `<button class="btn-rev-nav" onclick="reviewGo(${pos+1})">Nästa →</button>` : ''}
+        <button class="btn-rev-nav btn-rev-exit" onclick="reviewDone()">✕ Stäng</button>
+      </span>
     </div>`;
   }
 
