@@ -564,7 +564,7 @@ const SECTIONS = [
 `,
   questions:[
     {
-      q:'Vad är skillnaden mellan <code>=</code> och <code>==</code> i Python?',
+      txt:'Vad är skillnaden mellan <code>=</code> och <code>==</code> i Python?',
       opts:[
         '<code>=</code> tilldelar ett värde till en variabel. <code>==</code> jämför om två värden är lika.',
         '<code>==</code> tilldelar ett värde till en variabel. <code>=</code> jämför om två värden är lika.',
@@ -572,25 +572,37 @@ const SECTIONS = [
         '<code>=</code> används bara i if-satser, <code>==</code> bara i funktioner.',
       ],
       ok:0,
-      why:'<code>=</code> är assignment operator — den sparar ett värde: <code>x = 5</code>. <code>==</code> är equality operator — den jämför och returnerar <code>True</code> eller <code>False</code>: <code>if x == 5:</code>. Skriver du <code>if x = 5:</code> ger Python ett syntaxfel.',
-      whyFail:'Vanligt att blanda! Ett likhetstecken <code>=</code> = tilldela ett värde. Dubbelt <code>==</code> = jämföra två värden.',
+      why:[
+        '✓ Rätt! <code>=</code> är assignment operator — sparar ett värde: <code>x = 5</code>. <code>==</code> är equality operator — jämför och returnerar <code>True</code> eller <code>False</code>: <code>if x == 5:</code>.',
+        '✗ Det är tvärtom. <code>=</code> tilldelar (sparar värdet). <code>==</code> jämför (frågar om de är lika). Skriver du <code>if x = 5:</code> ger Python ett syntaxfel.',
+        '✗ De gör fundamentalt olika saker. <code>=</code> sparar ett värde i en variabel. <code>==</code> returnerar True eller False.',
+        '✗ <code>=</code> används överallt för att tilldela värden, inte bara i if-satser. Felaktig uppdelning.',
+      ],
     },
     {
-      q:'Vad returnerar <code>10 % 3</code>?',
+      txt:'Vad returnerar <code>10 % 3</code>?',
       opts:['<code>1</code> — resten','<code>3</code> — kvoten','<code>3.33</code> — decimalresultatet','<code>0</code> — inget att dela'],
       ok:0,
-      why:'<code>%</code> är modulo operator — den ger resten efter heltalsdivision. 3 ryms jämnt tre gånger i 10: 3 × 3 = 9. Resten: 10 − 9 = 1.',
-      whyFail:'Modulo ger RESTEN, inte kvoten. Steg: hur många hela gånger ryms divisorn? → multiplicera tillbaka → subtrahera.',
+      why:[
+        '✓ Rätt! <code>%</code> är modulo — ger resten efter heltalsdivision. 3 ryms tre gånger i 10 (3×3=9). Kvar: 10−9 = 1.',
+        '✗ 3 är kvoten (hur många gånger 3 ryms i 10), inte resten. Modulo ger alltid RESTEN.',
+        '✗ 3.33 är vanlig division (<code>10/3</code>). Modulo <code>%</code> ger ett heltal — resten.',
+        '✗ 0 vore svaret om 10 delades jämnt med 3. Men 3×3=9 ≠ 10, så resten är 1.',
+      ],
     },
     {
-      q:'Vilket tecken används för att skriva en kommentar i Python?',
+      txt:'Vilket tecken används för att skriva en kommentar i Python?',
       opts:['<code>#</code>','<code>//</code>','<code>/*</code>','<code>--</code>'],
       ok:0,
-      why:'<code>#</code> markerar en kommentar i Python. Allt på raden efter <code>#</code> ignoreras av Python helt. De andra tillhör andra språk: <code>//</code> i JavaScript, <code>/*</code> i C/Java, <code>--</code> i SQL.',
-      whyFail:'Python använder <code>#</code> för kommentarer — det är unikt för Python och lätt att minnas.',
+      why:[
+        '✓ Rätt! <code>#</code> är comment symbol i Python. Allt på raden efter <code>#</code> ignoreras helt av Python.',
+        '✗ <code>//</code> är floor division i Python (heltalsdivision). Kommentarer skrivs med <code>#</code>.',
+        '✗ <code>/*</code> är block-kommentar i C och Java. Python använder <code>#</code>.',
+        '✗ <code>--</code> är kommentar i SQL. Python använder <code>#</code>.',
+      ],
     },
     {
-      q:'Vad används <code>[]</code> till i Python?',
+      txt:'Vad används <code>[]</code> till i Python?',
       opts:[
         'Skapa listor och indexera element: <code>[1, 2, 3]</code> och <code>lista[0]</code>',
         'Skapa dictionaries: <code>["namn": "Ali"]</code>',
@@ -598,11 +610,15 @@ const SECTIONS = [
         'Anropa funktioner: <code>print[1, 2, 3]</code>',
       ],
       ok:0,
-      why:'Square brackets <code>[]</code> har två roller: skapa en lista (<code>[1, 2, 3]</code>) och indexera ett element ur den (<code>lista[0]</code>). Dictionaries använder curly braces <code>{}</code>. Parentheses <code>()</code> används för funktionsanrop.',
-      whyFail:'<code>[]</code> = listor och indexering. <code>{}</code> = dictionaries. <code>()</code> = funktionsanrop och gruppering.',
+      why:[
+        '✓ Rätt! Square brackets <code>[]</code> används för att skapa listor och indexera element ur dem.',
+        '✗ Dictionaries använder curly braces <code>{}</code>, inte <code>[]</code>. <code>{"namn": "Ali"}</code> är rätt syntax.',
+        '✗ Matematisk gruppering görs med parentheses <code>()</code>, inte <code>[]</code>.',
+        '✗ Funktionsanrop kräver parentheses: <code>print(1, 2, 3)</code>. Brackets <code>[]</code> i den positionen ger TypeError.',
+      ],
     },
     {
-      q:'Vad gör <code>f"Hej {namn}!"</code> i Python?',
+      txt:'Vad gör <code>f"Hej {namn}!"</code> i Python?',
       opts:[
         'En f-string — sätter in värdet av <code>namn</code> automatiskt i texten',
         'En vanlig sträng som skriver ut <code>{namn}</code> bokstavligen',
@@ -610,8 +626,12 @@ const SECTIONS = [
         'En kommentar som formateras och sedan ignoreras',
       ],
       ok:0,
-      why:'<code>f""</code> är en f-string (formatted string literal). Allt inuti <code>{}</code> tolkas som Python-kod och ersätts med sitt värde. Om <code>namn = "Karin"</code> returnerar <code>f"Hej {namn}!"</code> strängen <code>"Hej Karin!"</code>.',
-      whyFail:'Utan <code>f</code> framför strängen behandlas <code>{namn}</code> som vanlig text och skrivs ut bokstavligen.',
+      why:[
+        '✓ Rätt! <code>f""</code> är en f-string. Allt inuti <code>{}</code> tolkas som Python-kod och ersätts med sitt värde. Om <code>namn = "Karin"</code> returnerar den <code>"Hej Karin!"</code>.',
+        '✗ Utan <code>f</code> framför strängen skrivs <code>{namn}</code> ut bokstavligen. Med <code>f</code> ersätts det med variabelns värde.',
+        '✗ Strängar kan börja med ett <code>f</code> — det är f-string prefix-syntaxen, helt giltig i Python 3.',
+        '✗ <code>f""</code> är en körbar sträng, inte en kommentar. Kommentarer skrivs med <code>#</code>.',
+      ],
     },
   ],
 },
