@@ -1020,7 +1020,21 @@ else:
 <pre><code>if ålder >= 18 and medborgarskap == "SE":
     print("Du får rösta i riksdagsvalet")</code></pre>
 <div class="errbox"><strong>Vanligt misstag:</strong> <code>if x = 5:</code> ger SyntaxError. Det är <code>==</code> (jämförelse) som gäller i ett villkor, inte <code>=</code> (tilldelning).</div>
-<div class="okbox"><strong>Sant/falskt i Python:</strong> <code>0</code>, <code>""</code>, <code>[]</code> och <code>None</code> är "falsy" — behandlas som False i ett if-block.</div>`,
+<div class="mech-box"><strong>Truthy och falsy — Python utvärderar mer än bara True/False</strong><br>
+Ett if-villkor behöver inte vara ett jämförelseuttryck. Python konverterar värdet till bool automatiskt. Dessa värden är <em>falsy</em> (behandlas som False):
+<pre><code>0        # noll
+""       # tom sträng
+[]       # tom lista
+None     # inget värde
+
+# Alla andra värden är truthy (behandlas som True):
+# 1, -5, "hej", [1,2], True …</code></pre>
+Det betyder att <code>if x:</code> är ett vanligt mönster — det körs om x har ett "riktigt" värde:
+<pre><code>svar = ""
+if svar:
+    print("Du svarade:", svar)
+else:
+    print("Inget svar angavs")</code></pre></div>`,
   questions:[
     {
       txt:'Vad skriver följande Python-kod ut?',
