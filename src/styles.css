@@ -2833,11 +2833,18 @@ details:not(.mini-menu)[open] {
   letter-spacing: 0.02em;
 }
 
+/* Remove details element as positioning context so .app-nav (fixed) becomes
+   the containing block — this anchors the dropdown to the nav bar's right
+   edge instead of the tiny 34px icon, preventing off-screen overflow. */
+details.app-nav-user-menu {
+  position: static;
+}
+
 /* User dropdown body */
 .app-nav-user-body {
-  right: 8px;
+  right: 16px;   /* aligned with nav's right padding */
   left: auto;
-  top: 48px;
+  top: 56px;     /* flush below the 56px nav bar */
   min-width: 240px;
   max-height: calc(100dvh - 70px);
   overflow-y: auto;
