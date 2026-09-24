@@ -98,12 +98,73 @@ UHR:s provtexter är upphovsrättsskyddat material och får inte kopieras eller 
 
 ---
 
+## Guide: bli bättre på LÄS (appinnehåll)
+
+Den här guiden är skriven för att klistras in rakt av i appen — varje knep ryms på en mobilskärm.
+
+### Knepen
+
+**1. Läs frågan, inte texten, först**
+Så gör du: innan du ens tittar på texten, läs de 2–4 frågorna som hör till den. Du vet nu vad du letar efter.
+Varför det funkar: du läser texten med ett syfte i stället för att läsa allt lika noga — sparar tid och energi. [hpguiden.se](https://hpguiden.se/forumet/topic/tips-angaende-denna-strategi-19565)
+
+**2. Skumma innan du fördjupar**
+Så gör du: läs texten snabbt en gång för att fånga struktur och huvudtanke — inte varje ord. Fördjupa dig först när du letar efter en detalj.
+Varför det funkar: skumläsning ger en helhetsbild snabbt, vilket gör den senare sökläsningen effektivare. [hv.se](https://www.hv.se/student/studentstod/studieresurser/akademiskt-sprak/guide-till-lasande-skrivande-och-retorik/lasa-akademiska-texter/lasteknik/lasstrategier/)
+
+**3. Använd fingret som ankare**
+Så gör du: låt fingret (eller pekaren på skärmen) följa raden du läser. När du hoppar tillbaka för att leta detaljer, använd det för att hålla koll på var du är.
+Varför det funkar: ett fysiskt ankare minskar risken att tappa platsen och läsa om samma stycke i onödan — särskilt vid koncentrationssvårigheter.
+
+**4. Ett stycke i taget, inte hela texten**
+Så gör du: dela texten i sina naturliga stycken. Läs ett stycke, fråga dig snabbt "vad handlade det om?", gå vidare.
+Varför det funkar: chunking minskar belastningen på arbetsminnet — du hanterar mindre bitar i taget i stället för att hålla hela texten i huvudet. [Bedrock Learning](https://bedrocklearning.org/literacy-blogs/improving-reading-comprehension-for-students-with-adhd/)
+
+**5. Sätt en tidsruta per text**
+Så gör du: bestäm i förväg hur många minuter texten + frågorna får ta (se tidsbudget i §2) och håll koll med en synlig klocka, inte en nedräkning.
+Varför det funkar: en tydlig tidsruta motverkar tidsblindhet och hjälper dig fördela tiden jämnt över hela passet, i stället för att en text äter upp resten.
+
+**6. Uteslut innan du väljer**
+Så gör du: läs alla fyra alternativ och stryk mentalt (eller peka bort) de som är uppenbart fel innan du väljer bland de kvarvarande.
+Varför det funkar: att eliminera 1–2 alternativ höjer din träffchans rejält även när du är osäker. [hogskoleprovskurser.se](https://www.hogskoleprovskurser.se/besegra-hogskoleprovet/besegra-verbal/las-strategi/)
+
+**7. Fastna aldrig — gissa och gå vidare**
+Så gör du: om en fråga tar längre än din tidsruta, gör en kvalificerad gissning och gå direkt vidare. Markera den gärna för att kika på den sist om du hinner.
+Varför det funkar: ingen minuspoäng finns på högskoleprovet, så ett fastnat svar kostar bara tid — ett gissat svar kostar ingenting extra. [hogskoleprovskurser.se](https://www.hogskoleprovskurser.se/besegra-hogskoleprovet/besegra-verbal/las-strategi/)
+
+**8. Svara på "vad handlar det om"-frågor sist**
+Så gör du: spara huvudtanke- och syftesfrågor till efter att du besvarat detaljfrågorna för samma text.
+Varför det funkar: du har då läst hela texten mest noggrant och har helhetsbilden färskast i minnet.
+
+### Daglig vana, 10 min
+
+Träna på texttyper som återkommer i LÄS: **populärvetenskap** (t.ex. artiklar om forskning), **debattartiklar** (opinion/argumenterande text) och **samhällstext** (nyhetsanalyser, historia). Läs en kort artikel om dagen från t.ex. en dagstidnings kultur-/debattsida eller en populärvetenskaplig sajt.
+
+Läs aktivt, inte passivt:
+- Stanna efter varje stycke och sammanfatta det för dig själv i en mening.
+- Fråga dig: "vad är författarens poäng här — och håller jag med?"
+- Lägg märke till värdeladdade ord (t.ex. "tyvärr", "tveklöst") — de avslöjar ofta författarens attityd, vilket är precis vad syftesfrågor testar.
+
+10 minuter räcker — målet är repetition av vanan, inte volym.
+
+### På provdagen
+
+- Läs frågorna före texten, varje gång — låt det vara automatiskt, inte ett val du tar ställning till under press.
+- Håll din tidsruta per text synlig och lita på den, även om det känns som du "nästan" löst en svår fråga.
+- Gissa och gå vidare direkt när tiden är ute på en fråga — kom ihåg: ingen minuspoäng.
+- Spara de svåraste texterna till sist om provet tillåter fri navigering inom passet — bygg självförtroende med de lättare först.
+- Andas en gång innan du börjar ett nytt pass — en kort paus kostar sekunder men återställer fokus.
+
+---
+
 ## Källor
 
 - [hpspelet.se — LÄS på högskoleprovet 2026](https://www.hpspelet.se/delprov/las)
 - [hpspelet.se — Läsförståelse högskoleprovet: Komplett guide till LÄS-delen](https://www.hpspelet.se/blog/lasforstaelse-svenska-hogskoleprovet-guide)
 - [hpguiden.se — Svensk läsförståelse (LÄS) på högskoleprovet](https://hpguiden.se/allt-om-hogskoleprovet/las-svensk-lasforstaelse)
+- [hpguiden.se — forumtråd: Tips angående denna strategi](https://hpguiden.se/forumet/topic/tips-angaende-denna-strategi-19565)
 - [hogskoleprovskurser.se — LÄS-strategi](https://www.hogskoleprovskurser.se/besegra-hogskoleprovet/besegra-verbal/las-strategi/)
+- [Bedrock Learning — Improving reading comprehension for students with ADHD](https://bedrocklearning.org/literacy-blogs/improving-reading-comprehension-for-students-with-adhd/)
 - [hpbuddy.se — ELF högskoleprovet: guide till engelsk läsförståelse](https://www.hpbuddy.se/blog/hogskoleprovet/elf)
 - [sprakforskning.se — Strategier för läsförståelse - evidens för alla](https://www.sprakforskning.se/forskningsbloggen2/2015/11/10/strategier)
 - [skolforskningsportalen.se — Läsförståelse och undervisning om lässtrategier](https://skolforskningsportalen.se/digital-publikation/lasforstaelse-och-undervisning-om-lasstrategier/)
