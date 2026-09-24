@@ -144,6 +144,7 @@ Martin tränar mest på mobilen. All HP-design utgår från 375 px bredd och ska
 
 - **Tumzon:** svarsalternativ och "Nästa" i nedre halvan av skärmen, inom tummens räckvidd (Fitts lag). Inga viktiga knappar i övre hörnen.
 - **Tryckytor minst 44 × 44 px.** Svarsalternativ som helbreddsknappar staplade vertikalt, 8 px mellanrum så man inte trycker fel.
+- **Det viktigaste syns utan scroll på alla HP-skärmar:** nästa handling (t.ex. "Starta dagens pass"), dagar kvar och dagens progress ligger ovanför vecket i 375 × 812. Scroll bara för sekundärt innehåll som historik och statistik.
 - **En fråga per skärm, ingen scroll** under drillen. Ordet stort överst, tempomätaren liten under.
 - **Ingen hover-beroende info** — allt som visas vid hover på desktop måste synas eller nås med tryck.
 - **Tryck var som helst** för att gå vidare efter rätt svar (se beslut 1).
