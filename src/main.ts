@@ -1,20 +1,27 @@
 import "./styles.css";
 import { GLOSSARY, LS_ITEMS, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
+import { HP_WORDS } from "./hp-words";
+import type { HpWord } from "./hp-words";
 import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
+  addHpRepeatWord,
   clearActiveSession,
   exportStudyDataSnapshot,
   importStudyDataSnapshot,
   loadActiveSession,
+  loadHpProgress,
+  loadHpRepeatQueue,
   loadStudySessions,
+  recordHpPassCompleted,
+  removeHpRepeatWord,
   saveActiveSession,
   saveStudySession,
   setStorageNamespace
 } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
-type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning";
+type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning" | "hp";
 type ThemeId = "calm-mint" | "calm-public" | "calm-slate";
 
 interface ProfileOption {
@@ -92,6 +99,19 @@ interface LSSession {
   trapCounts: Partial<Record<LSTrap, number>>;
 }
 
+/** HP ORD-drillen. Följer samma tillstånds-mönster som VRSession/LSSession. */
+interface HpWordSession {
+  items: HpWord[];
+  currentIndex: number;
+  userAnswer: number | null;
+  showFeedback: boolean;
+  correct: number;
+  wrong: number;
+  questionStartedAt: number;
+  tempoSeconds: number[];
+  missedItems: HpWord[];
+}
+
 interface AdaptiveSuggestion {
   trackId: TrackId;
   topic: string;
@@ -140,7 +160,8 @@ const pageLabels: Record<Page, string> = {
   "course-prog1a": "Programmering 1",
   "course-nackademin_ux": "UX-design",
   "course-iths_itsec": "IT-säkerhet",
-  "iths-antagning": "Antagningsprov"
+  "iths-antagning": "Antagningsprov",
+  hp: "HP"
 };
 
 
@@ -355,6 +376,9 @@ let filters: QuestionFilters = {
 let activeGlossaryTerm: GlossaryEntry | null = null;
 let vrSession: VRSession | null = null;
 let lsSession: LSSession | null = null;
+let hpSession: HpWordSession | null = null;
+let hpAutoAdvanceTimer: number | null = null;
+let hpTempoIntervalRef: number | null = null;
 let navOpen = false;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
@@ -469,6 +493,77 @@ function buildTrackProgress(sessions: StudySession[]): Record<TrackId, number> {
     iths_itsec: Math.round(totals.iths_itsec / divisor),
     prog1a: Math.round(totals.prog1a / divisor)
   };
+}
+
+const HP_EXAM_DATE = new Date("2026-10-18T00:00:00");
+const HP_WORDS_PER_PASS = 10;
+const HP_TEMPO_TARGET_SECONDS = 20;
+
+function hpDaysLeft(): number {
+  const diffMs = HP_EXAM_DATE.getTime() - Date.now();
+  return Math.max(0, Math.ceil(diffMs / 86_400_000));
+}
+
+/** Bygger dagens ORD-pass: repetitionskön (missade ord) prioriteras, sedan nya ord.
+ *  Om ordbanken är mindre än ett pass fylls resten genom att cykla banken igen. */
+function buildHpPass(): HpWord[] {
+  if (HP_WORDS.length === 0) {
+    return [];
+  }
+  const byId = new Map(HP_WORDS.map((w) => [w.id, w]));
+  const repeatIds = loadHpRepeatQueue();
+  const repeatWords = repeatIds.map((id) => byId.get(id)).filter((w): w is HpWord => Boolean(w));
+  const usedIds = new Set(repeatWords.map((w) => w.id));
+  const freshPool = HP_WORDS.filter((w) => !usedIds.has(w.id)).sort(() => Math.random() - 0.5);
+  const combined = [...repeatWords, ...freshPool];
+  const pass = combined.slice(0, HP_WORDS_PER_PASS);
+  let cycleIndex = 0;
+  while (pass.length < HP_WORDS_PER_PASS) {
+    pass.push(HP_WORDS[cycleIndex % HP_WORDS.length]);
+    cycleIndex++;
+  }
+  return pass;
+}
+
+function stopHpTempoInterval(): void {
+  if (hpTempoIntervalRef) {
+    window.clearInterval(hpTempoIntervalRef);
+    hpTempoIntervalRef = null;
+  }
+}
+
+function updateHpTempoUI(): void {
+  if (!hpSession || hpSession.showFeedback) {
+    return;
+  }
+  const el = app.querySelector<HTMLElement>("[data-hp-tempo]");
+  if (!el) {
+    return;
+  }
+  const elapsed = Math.round((Date.now() - hpSession.questionStartedAt) / 1000);
+  el.textContent = `${elapsed}s / ${HP_TEMPO_TARGET_SECONDS}s mål`;
+  el.classList.toggle("hp-tempo-over", elapsed > HP_TEMPO_TARGET_SECONDS);
+}
+
+function startHpTempoInterval(): void {
+  stopHpTempoInterval();
+  updateHpTempoUI();
+  hpTempoIntervalRef = window.setInterval(updateHpTempoUI, 500);
+}
+
+function hpAdvanceQuestion(): void {
+  if (!hpSession) {
+    return;
+  }
+  hpSession.currentIndex++;
+  if (hpSession.currentIndex >= hpSession.items.length) {
+    recordHpPassCompleted(hpSession.items.length);
+  } else {
+    hpSession.userAnswer = null;
+    hpSession.showFeedback = false;
+    hpSession.questionStartedAt = Date.now();
+  }
+  render();
 }
 
 function getLogicQuestions(): Question[] {
@@ -1530,6 +1625,7 @@ function renderNavDropdown(): string {
       <hr class="app-nav-hr">
       <p class="app-nav-section">Dagligt</p>
       ${navItem("🏠", "Hem", "nav-goto", 'data-view="overview"', activePage === "overview" && !activeTrainer)}
+      ${navItem("🎓", "HP", "nav-goto", 'data-view="hp"', activePage === "hp")}
 
       <hr class="app-nav-hr">
       <p class="app-nav-section">Kursinnehåll</p>
@@ -1652,6 +1748,136 @@ function renderAppNav(): string {
       </details>
     </nav>
   `;
+}
+
+function renderHpHome(): string {
+  const daysLeft = hpDaysLeft();
+  const progress = loadHpProgress();
+  const repeatCount = loadHpRepeatQueue().length;
+  const hasWords = HP_WORDS.length > 0;
+
+  return `
+    <div class="hp-home">
+      <div class="hp-countdown-card">
+        <p class="hp-countdown-label">Dagar kvar till högskoleprovet</p>
+        <p class="hp-countdown-value">${daysLeft}</p>
+        <p class="hp-countdown-sub">18 okt 2026</p>
+      </div>
+      <div class="hp-progress-row">
+        <div class="stat-widget">
+          <div class="stat-widget-top">
+            <span class="stat-widget-label">Idag</span>
+            <span class="stat-widget-icon">📚</span>
+          </div>
+          <span class="stat-widget-value">${progress.wordsCompleted}<span class="stat-widget-unit">ord</span></span>
+          <span class="stat-widget-sub">${progress.passesCompleted} pass klara</span>
+        </div>
+        <div class="stat-widget">
+          <div class="stat-widget-top">
+            <span class="stat-widget-label">Repetition</span>
+            <span class="stat-widget-icon">🔁</span>
+          </div>
+          <span class="stat-widget-value">${repeatCount}</span>
+          <span class="stat-widget-sub">${repeatCount > 0 ? "väntande ord från tidigare pass" : "inga just nu"}</span>
+        </div>
+      </div>
+      ${hasWords
+        ? `<button class="hp-cta-btn" data-action="hp-start-pass">Starta dagens pass</button>`
+        : `<p class="hp-empty-note">Ordlistan fylls på just nu — kom tillbaka strax.</p>`}
+    </div>
+  `;
+}
+
+function renderHpQuestion(): string {
+  if (!hpSession) {
+    return "";
+  }
+  const { items, currentIndex, userAnswer, showFeedback } = hpSession;
+  const total = items.length;
+  const item = items[currentIndex];
+  const isCorrect = showFeedback && userAnswer === item.correct;
+
+  const pips = items
+    .map((_, i) => `<span class="hp-pip ${i < currentIndex ? "hp-pip-done" : i === currentIndex ? "hp-pip-active" : ""}"></span>`)
+    .join("");
+
+  const optionsHtml = item.options
+    .map((opt, i) => {
+      let cls = "hp-option-btn";
+      if (showFeedback) {
+        if (i === item.correct) cls += " hp-option-correct";
+        else if (i === userAnswer) cls += " hp-option-wrong";
+        else cls += " hp-option-neutral";
+      }
+      return `<button class="${cls}" data-action="hp-answer" data-index="${i}" ${showFeedback ? "disabled" : ""}>${opt}</button>`;
+    })
+    .join("");
+
+  const feedbackHtml = showFeedback
+    ? isCorrect
+      ? `<div class="hp-feedback hp-feedback-ok">
+          <p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
+        </div>`
+      : `<div class="hp-feedback hp-feedback-wrong">
+          <p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
+          <p class="hp-feedback-explanation">${item.explanation}</p>
+          <button class="hp-next-btn" data-action="hp-next">Nästa</button>
+        </div>`
+    : "";
+
+  return `
+    <div class="hp-drill" ${showFeedback && isCorrect ? 'data-action="hp-tap-advance"' : ""}>
+      <div class="hp-drill-top">
+        <span class="hp-drill-progress">Ord ${currentIndex + 1}/${total}</span>
+        <span class="hp-tempo" data-hp-tempo>0s / ${HP_TEMPO_TARGET_SECONDS}s mål</span>
+      </div>
+      <div class="hp-pip-row">${pips}</div>
+      <p class="hp-word">${item.word}</p>
+      <div class="hp-options">${optionsHtml}</div>
+      ${feedbackHtml}
+    </div>
+  `;
+}
+
+function renderHpSummary(): string {
+  if (!hpSession) {
+    return "";
+  }
+  const { items, correct, tempoSeconds, missedItems } = hpSession;
+  const total = items.length;
+  const avgTempo = tempoSeconds.length > 0 ? Math.round(tempoSeconds.reduce((a, b) => a + b, 0) / tempoSeconds.length) : 0;
+  const underTarget = avgTempo > 0 && avgTempo <= HP_TEMPO_TARGET_SECONDS;
+
+  return `
+    <div class="hp-summary">
+      <p class="hp-summary-heading">Passet klart</p>
+      <div class="hp-progress-row">
+        <div class="stat-widget">
+          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-value">${correct}<span class="stat-widget-unit">/${total}</span></span>
+        </div>
+        <div class="stat-widget">
+          <span class="stat-widget-label">Snitt-tempo</span>
+          <span class="stat-widget-value">${avgTempo}<span class="stat-widget-unit">s/ord</span></span>
+          <span class="stat-widget-sub">${underTarget ? "under målet ✓" : `över ${HP_TEMPO_TARGET_SECONDS} s-målet`}</span>
+        </div>
+      </div>
+      ${missedItems.length > 0
+        ? `<div class="hp-missed-list">
+            <p class="hp-missed-heading">Missade ord — kommer tillbaka i nästa pass</p>
+            ${missedItems.map((w) => `<p class="hp-missed-item">${w.word} — ${w.options[w.correct]}</p>`).join("")}
+          </div>`
+        : `<p class="hp-summary-clean">Inga missade ord — starkt jobbat!</p>`}
+      <button class="hp-cta-btn" data-action="hp-close">Klart för idag</button>
+    </div>
+  `;
+}
+
+function renderHp(): string {
+  if (hpSession) {
+    return hpSession.currentIndex >= hpSession.items.length ? renderHpSummary() : renderHpQuestion();
+  }
+  return renderHpHome();
 }
 
 function renderLSSession(): string {
@@ -2634,6 +2860,8 @@ function renderPage(): string {
       return renderCourseView("iths_itsec");
     case "iths-antagning":
       return renderIthsAntagning();
+    case "hp":
+      return renderHp();
     default:
       return renderOverview();
   }
@@ -2656,6 +2884,12 @@ function render(): void {
     </div>
     ${activeGlossaryTerm ? renderGlossaryOverlay(activeGlossaryTerm) : ""}
   `;
+
+  if (page === "hp" && hpSession && hpSession.currentIndex < hpSession.items.length && !hpSession.showFeedback) {
+    startHpTempoInterval();
+  } else {
+    stopHpTempoInterval();
+  }
 }
 
 app.addEventListener("click", (event) => {
@@ -2668,7 +2902,8 @@ app.addEventListener("click", (event) => {
         overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
         research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖",
         "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒",
-        "iths-antagning": "🔒"
+        "iths-antagning": "🔒",
+        hp: "🎓"
       };
       pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
       history.replaceState(null, "", `?view=${targetView}`);
@@ -3066,7 +3301,8 @@ app.addEventListener("click", (event) => {
         overview: "🏠", tracks: "💻", bank: "📚", mock: "📋",
         research: "🔬", logic: "🧩", walkthrough: "📖", glossary: "📖",
         "course-prog1a": "💻", "course-nackademin_ux": "🎨", "course-iths_itsec": "🔒",
-        "iths-antagning": "🔒"
+        "iths-antagning": "🔒",
+        hp: "🎓"
       };
       pushRecentView({ label: pageLabels[targetView], icon: pageIconMap[targetView], action: "nav-goto", dataView: targetView });
       history.replaceState(null, "", `?view=${targetView}`);
@@ -3109,6 +3345,69 @@ app.addEventListener("click", (event) => {
     pushRecentView({ label: "Språkliga färdigheter", icon: "🇸🇪", action: "nav-start-ls" });
     navOpen = false;
     page = "tracks";
+    render();
+    return;
+  }
+
+  if (action === "hp-start-pass") {
+    hpSession = {
+      items: buildHpPass(),
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      questionStartedAt: Date.now(),
+      tempoSeconds: [],
+      missedItems: []
+    };
+    render();
+    return;
+  }
+
+  if (action === "hp-answer") {
+    if (!hpSession || hpSession.showFeedback) return;
+    const index = Number(actionEl.dataset.index);
+    const item = hpSession.items[hpSession.currentIndex];
+    const elapsedSeconds = (Date.now() - hpSession.questionStartedAt) / 1000;
+    hpSession.tempoSeconds.push(elapsedSeconds);
+    const isCorrect = index === item.correct;
+    if (isCorrect) {
+      hpSession.correct++;
+      removeHpRepeatWord(item.id);
+      hpAutoAdvanceTimer = window.setTimeout(() => {
+        hpAutoAdvanceTimer = null;
+        hpAdvanceQuestion();
+      }, 2000);
+    } else {
+      hpSession.wrong++;
+      hpSession.missedItems.push(item);
+      addHpRepeatWord(item.id);
+    }
+    hpSession.userAnswer = index;
+    hpSession.showFeedback = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-tap-advance") {
+    if (!hpSession || !hpSession.showFeedback) return;
+    if (hpAutoAdvanceTimer) {
+      window.clearTimeout(hpAutoAdvanceTimer);
+      hpAutoAdvanceTimer = null;
+    }
+    hpAdvanceQuestion();
+    return;
+  }
+
+  if (action === "hp-next") {
+    if (!hpSession) return;
+    hpAdvanceQuestion();
+    return;
+  }
+
+  if (action === "hp-close") {
+    hpSession = null;
     render();
     return;
   }

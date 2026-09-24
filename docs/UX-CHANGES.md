@@ -3,6 +3,22 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-09-24 — HP-flik byggd: ORD-drillen (första skärmen från HP-UX-SPEC.md)
+
+**Vad:** Ny toppnivå-flik "HP" i navet (`src/main.ts`, `pageLabels`/`renderNavDropdown`), byggd enligt `docs/HP-UX-SPEC.md`. HP-hem visar dagar kvar till högskoleprovet (18 okt 2026), dagens progress (ord tränade, pass klara) och en primärknapp "Starta dagens pass" — allt ovanför vecket i 375×812. ORD-drillen kör 10 ord/pass från `HP_WORDS` (`src/hp-words.ts`), med en tempomätare som räknar uppåt mot 20 s synlig från fråga 1. Rätt svar: valt alternativ grönt + "ord = betydelse" i ~2 s, sedan auto-nästa (tryck var som helst för att gå direkt). Fel svar: ditt rött, rätt grönt, förklaring, stannar till "Nästa". Missade ord läggs i en repetitionskö (localStorage, try/catch) och prioriteras i nästa pass; rätträttade ord plockas ur kön. Sammanfattning efter passet visar rätt/fel, snitt-tempo mot 20 s-målet och lista över missade ord.
+
+**Före:** Ingen HP-flik existerade. Antagningsprov-träning och HP-förberedelse låg inte separerade i navet.
+
+**Efter:** Egen "HP"-flik i nav-dropdownens "Dagligt"-sektion. Sessionsstate (`HpWordSession`) följer exakt samma mönster som befintliga `VRSession`/`LSSession` i `src/main.ts` — inget nytt arkitekturkoncept, bara ett nytt ordregister och en ny drillskärm.
+
+**Mobile first — verifierat i 375×812:** Hela flödet (hem → fråga → rätt-feedback → fel-feedback → sammanfattning) testat i mobilstorlek. Inget av det viktiga kräver scroll. Svarsknappar är helbreddsknappar i undre halvan av skärmen, min-height 44 px, 8 px mellanrum (tumzon, Fitts lag). Desktop kontrollerat efteråt — layouten centreras (max-width 560px) och fungerar utan ändringar.
+
+**Avvikelse från spec:** §3.1 nämner "4 svarsalternativ", men den parallellt byggda `HpWord`-typen i `src/hp-words.ts` (som denna uppgift inte fick röra) definierar 5 fasta alternativ per ord — samma format som på riktiga högskoleprovet. Datamodellen följdes eftersom den är den faktiska källan att bygga mot; UI:t renderar därför 5 svarsknappar, inte 4.
+
+**Stitch-princip:** Stitch No-Line rule — inga borders som sektionsavdelare i de nya `.hp-*`-klasserna, bara `--card`/ambient shadow. Alla nya CSS-klasser använder enbart designsystemets tokens (`--ok`/`--danger` för feedback, `--accent`/`--accent-container` för CTA-gradient, `--text-xs/sm/md` för de tre fontstorlekarna) — ingen ny färg eller fontstorlek introducerad. Pill-höjder 28 px (nav) / 36 px (action, "Starta dagens pass"/"Nästa") enligt CLAUDE.md.
+
+---
+
 ## 2026-09-24 — HP-flik UX-spec skapad
 
 **Vad:** Ny fil `docs/HP-UX-SPEC.md` — UX-spec (ingen kod) för en ny HP-flik (Högskoleprovet, 18 okt 2026). Beskriver mål/principer, informationsarkitektur, ORD-drillen i detalj (start/fråga/rätt/fel/sammanfattning/repetition) samt kortfattat övriga planerade skärmar (nedräkning+dagens pass, formeldrill, NOG-tränare, KVA/DTK, provpass-logg, felanalys, 55-min timer).

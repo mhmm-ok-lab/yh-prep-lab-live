@@ -2,8 +2,16 @@ import type { SessionDraft, StudySession } from "./types";
 
 const STUDY_SESSIONS_KEY = "yh.study-sessions";
 const ACTIVE_SESSION_KEY = "yh.active-session";
+const HP_REPEAT_QUEUE_KEY = "yh.hp-repeat-queue";
+const HP_PROGRESS_KEY = "yh.hp-progress";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
+
+export interface HpProgress {
+  date: string;
+  wordsCompleted: number;
+  passesCompleted: number;
+}
 
 export interface StudyDataSnapshot {
   version: number;
@@ -61,6 +69,63 @@ export function saveActiveSession(session: SessionDraft): void {
 
 export function clearActiveSession(): void {
   localStorage.removeItem(namespacedKey(ACTIVE_SESSION_KEY));
+}
+
+export function loadHpRepeatQueue(): string[] {
+  return safeParse<string[]>(localStorage.getItem(namespacedKey(HP_REPEAT_QUEUE_KEY)), []);
+}
+
+function saveHpRepeatQueue(queue: string[]): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_REPEAT_QUEUE_KEY), JSON.stringify(queue));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+/** Lägg till ett ord i repetitionskön (om det inte redan väntar där). */
+export function addHpRepeatWord(wordId: string): void {
+  const queue = loadHpRepeatQueue();
+  if (!queue.includes(wordId)) {
+    queue.push(wordId);
+    saveHpRepeatQueue(queue);
+  }
+}
+
+/** Ta bort ett ord ur repetitionskön (klarat igen). */
+export function removeHpRepeatWord(wordId: string): void {
+  const queue = loadHpRepeatQueue();
+  const next = queue.filter((id) => id !== wordId);
+  if (next.length !== queue.length) {
+    saveHpRepeatQueue(next);
+  }
+}
+
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+export function loadHpProgress(): HpProgress {
+  const stored = safeParse<HpProgress | null>(localStorage.getItem(namespacedKey(HP_PROGRESS_KEY)), null);
+  if (!stored || stored.date !== todayIso()) {
+    return { date: todayIso(), wordsCompleted: 0, passesCompleted: 0 };
+  }
+  return stored;
+}
+
+export function recordHpPassCompleted(wordsInPass: number): HpProgress {
+  const current = loadHpProgress();
+  const next: HpProgress = {
+    date: todayIso(),
+    wordsCompleted: current.wordsCompleted + wordsInPass,
+    passesCompleted: current.passesCompleted + 1
+  };
+  try {
+    localStorage.setItem(namespacedKey(HP_PROGRESS_KEY), JSON.stringify(next));
+  } catch {
+    // tyst fallback — progress visas ändå för denna session, sparas bara inte
+  }
+  return next;
 }
 
 export function exportStudyDataSnapshot(): StudyDataSnapshot {
