@@ -132,7 +132,7 @@ Vi lånar inte: hpappens statistik-tunga "9 miljoner svar"-ramverk (för tungt f
 
 ## Beslut (Martin, 2026-09-24)
 
-1. **Rätt svar → auto-nästa efter ~1 s.** Fel svar stannar alltid tills man trycker vidare.
+1. **Rätt svar → valt alternativ grönt + "ord = betydelse" visas ~2 s, sedan auto-nästa** (tryck var som helst för att gå direkt). Motiv: bekräftelsen ska hinna läsas — extra exponering befäster minnet. **Fel svar →** ditt rött, rätt grönt, stannar tills "Nästa".
 2. **Tempomätaren (20 s/ord) syns direkt från första frågan.**
 3. **Ingen felkategorisering i ORD** — bara i matte-delproven (XYZ/KVA/NOG/DTK).
 4. **HP är en egen toppnivå-flik.**
