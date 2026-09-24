@@ -1,4 +1,5 @@
 import type { HpMathArea } from "./hp-math";
+import type { HpDelprov } from "./hp-twins";
 import type { SessionDraft, StudySession } from "./types";
 
 const STUDY_SESSIONS_KEY = "yh.study-sessions";
@@ -6,6 +7,8 @@ const ACTIVE_SESSION_KEY = "yh.active-session";
 const HP_REPEAT_QUEUE_KEY = "yh.hp-repeat-queue";
 const HP_PROGRESS_KEY = "yh.hp-progress";
 const HP_MATH_RESULT_KEY = "yh.hp-math-result";
+const HP_TWIN_REPEAT_KEY = "yh.hp-twin-repeat";
+const HP_TWIN_RESULT_KEY = "yh.hp-twin-result";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
 
@@ -154,6 +157,75 @@ export function loadHpMathResult(): HpMathResult | null {
 export function saveHpMathResult(result: HpMathResult): void {
   try {
     localStorage.setItem(namespacedKey(HP_MATH_RESULT_KEY), JSON.stringify(result));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+export type HpTwinErrorTag = "slarv" | "kunde-inte" | "missforstod";
+
+export interface HpTwinResult {
+  completedAt: string;
+  delprov: HpDelprov;
+  correct: number;
+  total: number;
+  errorTags: Partial<Record<HpTwinErrorTag, number>>;
+}
+
+type HpTwinRepeatMap = Partial<Record<HpDelprov, string[]>>;
+
+function loadHpTwinRepeatMap(): HpTwinRepeatMap {
+  return safeParse<HpTwinRepeatMap>(localStorage.getItem(namespacedKey(HP_TWIN_REPEAT_KEY)), {});
+}
+
+function saveHpTwinRepeatMap(map: HpTwinRepeatMap): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_TWIN_REPEAT_KEY), JSON.stringify(map));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+/** Repetitionskö per delprov (XYZ/KVA/NOG/DTK) — samma mönster som HP_REPEAT_QUEUE för ORD. */
+export function loadHpTwinRepeatQueue(delprov: HpDelprov): string[] {
+  return loadHpTwinRepeatMap()[delprov] ?? [];
+}
+
+export function addHpTwinRepeatItem(delprov: HpDelprov, id: string): void {
+  const map = loadHpTwinRepeatMap();
+  const queue = map[delprov] ?? [];
+  if (!queue.includes(id)) {
+    map[delprov] = [...queue, id];
+    saveHpTwinRepeatMap(map);
+  }
+}
+
+export function removeHpTwinRepeatItem(delprov: HpDelprov, id: string): void {
+  const map = loadHpTwinRepeatMap();
+  const queue = map[delprov] ?? [];
+  const next = queue.filter((qid) => qid !== id);
+  if (next.length !== queue.length) {
+    map[delprov] = next;
+    saveHpTwinRepeatMap(map);
+  }
+}
+
+type HpTwinResultMap = Partial<Record<HpDelprov, HpTwinResult>>;
+
+function loadHpTwinResultMap(): HpTwinResultMap {
+  return safeParse<HpTwinResultMap>(localStorage.getItem(namespacedKey(HP_TWIN_RESULT_KEY)), {});
+}
+
+/** Senast sparade resultat för ett delprov (visas som liten rad under respektive knapp på HP-hem). */
+export function loadHpTwinResult(delprov: HpDelprov): HpTwinResult | null {
+  return loadHpTwinResultMap()[delprov] ?? null;
+}
+
+export function saveHpTwinResult(result: HpTwinResult): void {
+  try {
+    const map = loadHpTwinResultMap();
+    map[result.delprov] = result;
+    localStorage.setItem(namespacedKey(HP_TWIN_RESULT_KEY), JSON.stringify(map));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
   }

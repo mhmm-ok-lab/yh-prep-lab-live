@@ -2,12 +2,15 @@ import "./styles.css";
 import { GLOSSARY, LS_ITEMS, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
 import { HP_MATH_AREAS, HP_MATH_QUESTIONS } from "./hp-math";
 import type { HpMathArea, HpMathQuestion } from "./hp-math";
+import { HP_TWINS } from "./hp-twins";
+import type { HpDelprov, HpTwin } from "./hp-twins";
 import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
 import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
   addHpRepeatWord,
+  addHpTwinRepeatItem,
   clearActiveSession,
   exportStudyDataSnapshot,
   importStudyDataSnapshot,
@@ -15,15 +18,19 @@ import {
   loadHpMathResult,
   loadHpProgress,
   loadHpRepeatQueue,
+  loadHpTwinRepeatQueue,
+  loadHpTwinResult,
   loadStudySessions,
   recordHpPassCompleted,
   removeHpRepeatWord,
+  removeHpTwinRepeatItem,
   saveActiveSession,
   saveHpMathResult,
+  saveHpTwinResult,
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import type { HpMathAreaResult, HpMathLevel } from "./storage";
+import type { HpMathAreaResult, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning" | "hp";
@@ -125,6 +132,21 @@ interface HpMathSession {
   showFeedback: boolean;
   questionStartedAt: number;
   answers: { area: HpMathArea; correct: boolean; seconds: number }[];
+}
+
+/** HP Tvillingträning (XYZ/KVA/NOG/DTK). Ett svar per uppgift, felkategori valfri per fel svar. */
+interface HpTwinSession {
+  delprov: HpDelprov;
+  items: HpTwin[];
+  currentIndex: number;
+  userAnswer: number | null;
+  showFeedback: boolean;
+  correct: number;
+  wrong: number;
+  questionStartedAt: number;
+  missedItems: HpTwin[];
+  errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
+  currentTag: HpTwinErrorTag | null;
 }
 
 interface AdaptiveSuggestion {
@@ -397,6 +419,8 @@ let hpTempoIntervalRef: number | null = null;
 let hpMathSession: HpMathSession | null = null;
 let hpMathTempoIntervalRef: number | null = null;
 let hpMathViewingSaved = false;
+let hpTwinSession: HpTwinSession | null = null;
+let hpTwinTempoIntervalRef: number | null = null;
 let navOpen = false;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
@@ -679,6 +703,100 @@ function hpMathAdvanceQuestion(): void {
     hpMathSession.userAnswer = null;
     hpMathSession.showFeedback = false;
     hpMathSession.questionStartedAt = Date.now();
+  }
+  render();
+}
+
+const HP_TWIN_DELPROV_INFO: Record<HpDelprov, { label: string; desc: string }> = {
+  XYZ: { label: "XYZ", desc: "Problemlösning" },
+  KVA: { label: "KVA", desc: "Jämför två värden" },
+  NOG: { label: "NOG", desc: "Räcker informationen?" },
+  DTK: { label: "DTK", desc: "Läs tabeller" }
+};
+
+/** Delprov där svarsordningen blandas — KVA och NOG har fasta alternativ i fast ordning som på provet. */
+function hpTwinShufflesOptions(delprov: HpDelprov): boolean {
+  return delprov === "XYZ" || delprov === "DTK";
+}
+
+function hpTwinTempoTarget(delprov: HpDelprov): number {
+  return delprov === "NOG" || delprov === "DTK" ? 90 : 60;
+}
+
+function hpTwinBank(delprov: HpDelprov): HpTwin[] {
+  return HP_TWINS.filter((t) => t.delprov === delprov);
+}
+
+function shuffleTwinOptions(t: HpTwin): HpTwin {
+  const indices = t.options.map((_, i) => i).sort(() => Math.random() - 0.5);
+  const options = indices.map((i) => t.options[i]);
+  const correct = indices.indexOf(t.correct);
+  return { ...t, options, correct };
+}
+
+/** Bygger dagens pass för ett delprov: missade uppgifter (repetitionskö) prioriteras först,
+ *  sedan resten av banken i slumpad ordning. Svarsordningen blandas endast för XYZ/DTK. */
+function buildHpTwinPass(delprov: HpDelprov): HpTwin[] {
+  const bank = hpTwinBank(delprov);
+  const byId = new Map(bank.map((t) => [t.id, t]));
+  const repeatIds = loadHpTwinRepeatQueue(delprov);
+  const repeatItems = repeatIds.map((id) => byId.get(id)).filter((t): t is HpTwin => Boolean(t));
+  const usedIds = new Set(repeatItems.map((t) => t.id));
+  const freshItems = bank.filter((t) => !usedIds.has(t.id)).sort(() => Math.random() - 0.5);
+  const ordered = [...repeatItems, ...freshItems];
+  return hpTwinShufflesOptions(delprov) ? ordered.map(shuffleTwinOptions) : ordered;
+}
+
+function stopHpTwinTempoInterval(): void {
+  if (hpTwinTempoIntervalRef) {
+    window.clearInterval(hpTwinTempoIntervalRef);
+    hpTwinTempoIntervalRef = null;
+  }
+}
+
+function updateHpTwinTempoUI(): void {
+  if (!hpTwinSession || hpTwinSession.showFeedback) {
+    return;
+  }
+  const el = app.querySelector<HTMLElement>("[data-hp-twin-tempo]");
+  if (!el) {
+    return;
+  }
+  const target = hpTwinTempoTarget(hpTwinSession.delprov);
+  const elapsed = Math.round((Date.now() - hpTwinSession.questionStartedAt) / 1000);
+  el.textContent = `${elapsed}s / ${target}s mål`;
+  el.classList.toggle("hp-tempo-over", elapsed > target);
+}
+
+function startHpTwinTempoInterval(): void {
+  stopHpTwinTempoInterval();
+  updateHpTwinTempoUI();
+  hpTwinTempoIntervalRef = window.setInterval(updateHpTwinTempoUI, 500);
+}
+
+function hpTwinAdvanceQuestion(): void {
+  if (!hpTwinSession) {
+    return;
+  }
+  if (hpTwinSession.currentTag) {
+    const tag = hpTwinSession.currentTag;
+    hpTwinSession.errorTagCounts[tag] = (hpTwinSession.errorTagCounts[tag] ?? 0) + 1;
+  }
+  hpTwinSession.currentIndex++;
+  if (hpTwinSession.currentIndex < hpTwinSession.items.length) {
+    hpTwinSession.userAnswer = null;
+    hpTwinSession.showFeedback = false;
+    hpTwinSession.currentTag = null;
+    hpTwinSession.questionStartedAt = Date.now();
+  } else {
+    const result: HpTwinResult = {
+      completedAt: new Date().toISOString(),
+      delprov: hpTwinSession.delprov,
+      correct: hpTwinSession.correct,
+      total: hpTwinSession.items.length,
+      errorTags: hpTwinSession.errorTagCounts
+    };
+    saveHpTwinResult(result);
   }
   render();
 }
@@ -1926,6 +2044,61 @@ function renderHpHome(): string {
       <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
       ${lastMathHtml}
       <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
+      ${renderHpTwinHomeSection()}
+    </div>
+  `;
+}
+
+function renderHpTwinHomeSection(): string {
+  const delprover: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
+  const cards = delprover
+    .map((delprov) => {
+      const info = HP_TWIN_DELPROV_INFO[delprov];
+      const count = hpTwinBank(delprov).length;
+      const lastResult = loadHpTwinResult(delprov);
+      const lastResultHtml = lastResult
+        ? `<span class="hp-twin-card-last">senast ${lastResult.correct}/${lastResult.total}</span>`
+        : "";
+      return `
+        <button class="hp-twin-card" data-action="hp-twin-start" data-delprov="${delprov}">
+          <span class="hp-twin-card-name">${info.label}</span>
+          <span class="hp-twin-card-desc">${info.desc}</span>
+          <span class="hp-twin-card-count">${count} uppgifter</span>
+          ${lastResultHtml}
+        </button>
+      `;
+    })
+    .join("");
+
+  return `
+    <div class="hp-twin-section">
+      <p class="hp-twin-section-heading">Träna matte som på provet</p>
+      <div class="hp-twin-grid">${cards}</div>
+    </div>
+  `;
+}
+
+/** Enkel markdown-tabellrenderare (header, avdelarrad, datarader) — anpassad för HP_TWINS.table. */
+function renderHpTwinTable(markdown: string): string {
+  const lines = markdown.trim().split("\n").filter(Boolean);
+  if (lines.length < 2) {
+    return "";
+  }
+  const parseRow = (line: string) =>
+    line
+      .trim()
+      .replace(/^\|/, "")
+      .replace(/\|$/, "")
+      .split("|")
+      .map((cell) => cell.trim());
+  const header = parseRow(lines[0]);
+  const dataRows = lines.slice(2).map(parseRow);
+  return `
+    <div class="hp-twin-table-wrap">
+      <table class="hp-twin-table">
+        <thead><tr>${header.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+        <tbody>${dataRows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table>
     </div>
   `;
 }
@@ -2132,12 +2305,118 @@ function renderHpMathSavedResult(): string {
   return renderHpMathResultFromData(result.correct, result.total, result.areas);
 }
 
+const HP_TWIN_TAG_LABEL: Record<HpTwinErrorTag, string> = {
+  slarv: "Slarv",
+  "kunde-inte": "Kunde inte",
+  missforstod: "Missförstod frågan"
+};
+
+function renderHpTwinQuestion(): string {
+  if (!hpTwinSession) {
+    return "";
+  }
+  const { items, currentIndex, userAnswer, showFeedback, delprov, currentTag } = hpTwinSession;
+  const total = items.length;
+  const item = items[currentIndex];
+  const isCorrect = showFeedback && userAnswer === item.correct;
+  const target = hpTwinTempoTarget(delprov);
+
+  const optionsHtml = item.options
+    .map((opt, i) => {
+      let cls = "hp-option-btn";
+      if (showFeedback) {
+        if (i === item.correct) cls += " hp-option-correct";
+        else if (i === userAnswer) cls += " hp-option-wrong";
+        else cls += " hp-option-neutral";
+      }
+      return `<button class="${cls}" data-action="hp-twin-answer" data-index="${i}" ${showFeedback ? "disabled" : ""}>${opt}</button>`;
+    })
+    .join("");
+
+  const tagRowHtml = showFeedback && !isCorrect
+    ? `<div class="hp-twin-tag-row">
+        ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[])
+          .map(
+            (tag) =>
+              `<button class="hp-twin-tag-btn ${currentTag === tag ? "hp-twin-tag-selected" : ""}" data-action="hp-twin-tag" data-tag="${tag}">${HP_TWIN_TAG_LABEL[tag]}</button>`
+          )
+          .join("")}
+      </div>`
+    : "";
+
+  const feedbackHtml = showFeedback
+    ? `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
+        <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : "Fel svar"}</p>
+        <p class="hp-feedback-explanation">${item.solution}</p>
+        ${tagRowHtml}
+        <a class="hp-twin-original-link" href="${item.twinOf.url}" target="_blank" rel="noopener">Se originaluppgiften (${item.twinOf.prov}, provpass ${item.twinOf.provpass}, uppgift ${item.twinOf.uppgift}) ↗</a>
+        <button class="hp-next-btn" data-action="hp-twin-next">Nästa</button>
+      </div>`
+    : "";
+
+  return `
+    <div class="hp-drill">
+      <div class="hp-drill-top">
+        <span class="hp-drill-progress">${delprov} ${currentIndex + 1}/${total}</span>
+        <span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>
+      </div>
+      <p class="hp-twin-prompt">${item.prompt}</p>
+      ${item.table ? renderHpTwinTable(item.table) : ""}
+      <div class="hp-options">${optionsHtml}</div>
+      ${feedbackHtml}
+    </div>
+  `;
+}
+
+function renderHpTwinSummary(): string {
+  if (!hpTwinSession) {
+    return "";
+  }
+  const { items, correct, missedItems, delprov, errorTagCounts } = hpTwinSession;
+  const total = items.length;
+  const tagEntries = (Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[])
+    .map((tag) => ({ tag, count: errorTagCounts[tag] ?? 0 }))
+    .filter((entry) => entry.count > 0);
+
+  return `
+    <div class="hp-summary">
+      <p class="hp-summary-heading">${delprov} — passet klart</p>
+      <div class="hp-progress-row">
+        <div class="stat-widget">
+          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-value">${correct}<span class="stat-widget-unit">/${total}</span></span>
+        </div>
+        <div class="stat-widget">
+          <span class="stat-widget-label">Fel</span>
+          <span class="stat-widget-value">${total - correct}</span>
+        </div>
+      </div>
+      ${tagEntries.length > 0
+        ? `<div class="hp-twin-tag-summary">
+            <p class="hp-missed-heading">Felanalys</p>
+            ${tagEntries.map((entry) => `<div class="hp-twin-tag-summary-row"><span>${HP_TWIN_TAG_LABEL[entry.tag]}</span><span>${entry.count}</span></div>`).join("")}
+          </div>`
+        : ""}
+      ${missedItems.length > 0
+        ? `<div class="hp-missed-list">
+            <p class="hp-missed-heading">Missade uppgifter — kommer tillbaka i nästa pass</p>
+            ${missedItems.map((t) => `<p class="hp-missed-item">${t.area}</p>`).join("")}
+          </div>`
+        : `<p class="hp-summary-clean">Inga missade uppgifter — starkt jobbat!</p>`}
+      <button class="hp-cta-btn" data-action="hp-twin-close">Klart</button>
+    </div>
+  `;
+}
+
 function renderHp(): string {
   if (hpMathSession) {
     return hpMathSession.currentIndex >= hpMathSession.items.length ? renderHpMathResult() : renderHpMathQuestion();
   }
   if (hpMathViewingSaved) {
     return renderHpMathSavedResult();
+  }
+  if (hpTwinSession) {
+    return hpTwinSession.currentIndex >= hpTwinSession.items.length ? renderHpTwinSummary() : renderHpTwinQuestion();
   }
   if (hpSession) {
     return hpSession.currentIndex >= hpSession.items.length ? renderHpSummary() : renderHpQuestion();
@@ -3161,6 +3440,12 @@ function render(): void {
   } else {
     stopHpMathTempoInterval();
   }
+
+  if (page === "hp" && hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length && !hpTwinSession.showFeedback) {
+    startHpTwinTempoInterval();
+  } else {
+    stopHpTwinTempoInterval();
+  }
 }
 
 app.addEventListener("click", (event) => {
@@ -3742,6 +4027,65 @@ app.addEventListener("click", (event) => {
   if (action === "hp-math-close") {
     hpMathSession = null;
     hpMathViewingSaved = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-start") {
+    const delprov = actionEl.dataset.delprov as HpDelprov;
+    hpTwinSession = {
+      delprov,
+      items: buildHpTwinPass(delprov),
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      correct: 0,
+      wrong: 0,
+      questionStartedAt: Date.now(),
+      missedItems: [],
+      errorTagCounts: {},
+      currentTag: null
+    };
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-answer") {
+    if (!hpTwinSession || hpTwinSession.showFeedback) return;
+    const index = Number(actionEl.dataset.index);
+    const item = hpTwinSession.items[hpTwinSession.currentIndex];
+    const isCorrect = index === item.correct;
+    if (isCorrect) {
+      hpTwinSession.correct++;
+      removeHpTwinRepeatItem(hpTwinSession.delprov, item.id);
+    } else {
+      hpTwinSession.wrong++;
+      hpTwinSession.missedItems.push(item);
+      addHpTwinRepeatItem(hpTwinSession.delprov, item.id);
+    }
+    hpTwinSession.userAnswer = index;
+    hpTwinSession.showFeedback = true;
+    hpTwinSession.currentTag = null;
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-tag") {
+    if (!hpTwinSession || !hpTwinSession.showFeedback) return;
+    const tag = actionEl.dataset.tag as HpTwinErrorTag;
+    hpTwinSession.currentTag = hpTwinSession.currentTag === tag ? null : tag;
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-next") {
+    if (!hpTwinSession) return;
+    hpTwinAdvanceQuestion();
+    return;
+  }
+
+  if (action === "hp-twin-close") {
+    hpTwinSession = null;
     render();
     return;
   }
