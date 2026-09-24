@@ -4,6 +4,10 @@
 - `docs/DESIGN.md` — design system, palette, grid, component rules
 - `docs/UX-CHANGES.md` — UX change log (for Martin's portfolio)
 
+## HP-prep (högskoleprovet 18 okt 2026)
+Gemensam plan + todo (privat Claude Doc, läs med docs-verktygen): https://claude.ai/code/artifact/7e845e17-541d-463e-9676-080866e83f3c
+Ta en rad i Byggplanen, sätt Status + Vem innan du börjar.
+
 ## Mandatory rules
 
 ### After every UX or visual change
