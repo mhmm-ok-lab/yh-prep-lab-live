@@ -1784,6 +1784,7 @@ function renderHpHome(): string {
       ${hasWords
         ? `<button class="hp-cta-btn" data-action="hp-start-pass">Starta dagens pass</button>`
         : `<p class="hp-empty-note">Ordlistan fylls på just nu — kom tillbaka strax.</p>`}
+      <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
     </div>
   `;
 }

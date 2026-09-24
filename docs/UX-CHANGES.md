@@ -317,3 +317,9 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 4. **3 fontstorlekar** — XS/SM/MD, display enbart för hierarki-toppen
 5. **Enhetlig pill-höjd** — **28px för alla pill-knappar** (nav och action, inga undantag)
 6. **Tonal djup** — bakgrundsskiften skapar hierarki, inte skuggor
+
+## 2026-09-24 — Länk till gamla högskoleprov på HP-startskärmen
+- **Vad:** textlänk "Gamla högskoleprov med facit (studera.nu)" under "Starta dagens pass".
+- **Varför:** Martin vill kunna bläddra i riktiga prov för att se formatet. Vi länkar till UHR i stället för att lägga upp kopior (upphovsrätt, alltid senaste proven).
+- **Före/efter:** före fanns ingen väg till riktiga prov från appen; efter nås de med ett tryck, ovanför vecket i 375 × 812, tryckyta 44 px.
+- **Stitch-princip:** sekundär handling som text, inte en andra knapp — en tydlig primär handling per skärm.

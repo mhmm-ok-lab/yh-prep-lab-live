@@ -2776,6 +2776,16 @@ details:not(.mini-menu)[open] {
   box-shadow: var(--shadow);
 }
 
+.hp-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  font-size: var(--text-sm);
+  color: var(--accent);
+  text-decoration: none;
+}
+
 .hp-empty-note {
   font-size: var(--text-sm);
   color: var(--text-muted);
