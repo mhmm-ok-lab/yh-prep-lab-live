@@ -129,3 +129,11 @@ Vi lånar inte: hpappens statistik-tunga "9 miljoner svar"-ramverk (för tungt f
 3. Felkategorisering (slarv/kunskap/missförstånd): ska detta taggas automatiskt (heuristik, t.ex. baserat på svarstid) eller manuellt av dig efter varje missat ord? Automatiskt är snabbare men mindre träffsäkert.
 4. Ska HP bli en egen toppnivå-flik i huvudnavet (jämte Hem/Träna/Prov), eller ett underspår under befintliga "Träna"? Det påverkar hur mycket av nuvarande nav som behöver omstruktureras.
 5. Var kommer ORD-ordlistan (innehållet, inte UI:t) ifrån — finns den redan någonstans i repot, eller behöver den byggas/importeras som ett separat steg innan skärmen kan fyllas med riktiga ord?
+
+## Beslut (Martin, 2026-09-24)
+
+1. **Rätt svar → auto-nästa efter ~1 s.** Fel svar stannar alltid tills man trycker vidare.
+2. **Tempomätaren (20 s/ord) syns direkt från första frågan.**
+3. **Ingen felkategorisering i ORD** — bara i matte-delproven (XYZ/KVA/NOG/DTK).
+4. **HP är en egen toppnivå-flik.**
+5. **Ordlistan:** målorden hämtas från gamla högskoleprov (studera.nu, UHR) så att typ och nivå blir rätt. Enskilda ord är fria att använda; svarsalternativ, förklaringar och exempelmeningar skriver vi själva — UHR:s uppgifter och HP-appens ordlista kopieras inte.
