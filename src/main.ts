@@ -1,5 +1,7 @@
 import "./styles.css";
 import { GLOSSARY, LS_ITEMS, MOCK_EXAMS, QUESTIONS, RESEARCH_EVIDENCE, TRACKS, VR_ITEMS } from "./data";
+import { HP_MATH_AREAS, HP_MATH_QUESTIONS } from "./hp-math";
+import type { HpMathArea, HpMathQuestion } from "./hp-math";
 import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
 import { createDailyPlan, getNextMockExam } from "./planner";
@@ -10,15 +12,18 @@ import {
   exportStudyDataSnapshot,
   importStudyDataSnapshot,
   loadActiveSession,
+  loadHpMathResult,
   loadHpProgress,
   loadHpRepeatQueue,
   loadStudySessions,
   recordHpPassCompleted,
   removeHpRepeatWord,
   saveActiveSession,
+  saveHpMathResult,
   saveStudySession,
   setStorageNamespace
 } from "./storage";
+import type { HpMathAreaResult, HpMathLevel } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning" | "hp";
@@ -110,6 +115,16 @@ interface HpWordSession {
   questionStartedAt: number;
   tempoSeconds: number[];
   missedItems: HpWord[];
+}
+
+/** HP Mattediagnos. Ett svar per fråga, "Vet inte" räknas som fel (userAnswer = -1). */
+interface HpMathSession {
+  items: HpMathQuestion[];
+  currentIndex: number;
+  userAnswer: number | null;
+  showFeedback: boolean;
+  questionStartedAt: number;
+  answers: { area: HpMathArea; correct: boolean; seconds: number }[];
 }
 
 interface AdaptiveSuggestion {
@@ -379,6 +394,9 @@ let lsSession: LSSession | null = null;
 let hpSession: HpWordSession | null = null;
 let hpAutoAdvanceTimer: number | null = null;
 let hpTempoIntervalRef: number | null = null;
+let hpMathSession: HpMathSession | null = null;
+let hpMathTempoIntervalRef: number | null = null;
+let hpMathViewingSaved = false;
 let navOpen = false;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
@@ -562,6 +580,105 @@ function hpAdvanceQuestion(): void {
     hpSession.userAnswer = null;
     hpSession.showFeedback = false;
     hpSession.questionStartedAt = Date.now();
+  }
+  render();
+}
+
+const HP_MATH_TEMPO_TARGET_SECONDS = 90;
+
+/** Blandar svarsalternativen för en fråga så att rätt svar inte alltid hamnar på samma plats. */
+function shuffleMathQuestionOptions(q: HpMathQuestion): HpMathQuestion {
+  const indices = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+  const options = indices.map((i) => q.options[i]) as HpMathQuestion["options"];
+  const correct = indices.indexOf(q.correct);
+  return { ...q, options, correct };
+}
+
+/** Bygger mattediagnosen: 2 frågor per område, områdesordningen blandas varje gång.
+ *  Svarsalternativen blandas per fråga så rätt svar inte alltid hamnar på A. */
+function buildHpMathPass(): HpMathQuestion[] {
+  const byArea = new Map<HpMathArea, HpMathQuestion[]>();
+  for (const q of HP_MATH_QUESTIONS) {
+    const list = byArea.get(q.area) ?? [];
+    list.push(q);
+    byArea.set(q.area, list);
+  }
+  const areaOrder = HP_MATH_AREAS.map((a) => a.id).sort(() => Math.random() - 0.5);
+  return areaOrder.flatMap((areaId) => byArea.get(areaId) ?? []).map(shuffleMathQuestionOptions);
+}
+
+function hpMathAreaLabel(area: HpMathArea): string {
+  return HP_MATH_AREAS.find((a) => a.id === area)?.label ?? area;
+}
+
+function hpMathAreaLearnUrl(area: HpMathArea): string {
+  return HP_MATH_AREAS.find((a) => a.id === area)?.learnUrl ?? "https://www.matteboken.se/";
+}
+
+/** Slår ihop per-frågesvar till resultat per område enligt Kan/Repetera/Lär om-tröskeln. */
+function computeHpMathAreaResults(answers: HpMathSession["answers"]): HpMathAreaResult[] {
+  const byArea = new Map<HpMathArea, { correct: number; total: number; seconds: number[] }>();
+  for (const a of answers) {
+    const entry = byArea.get(a.area) ?? { correct: 0, total: 0, seconds: [] };
+    entry.total++;
+    if (a.correct) entry.correct++;
+    entry.seconds.push(a.seconds);
+    byArea.set(a.area, entry);
+  }
+  const results: HpMathAreaResult[] = [];
+  for (const areaInfo of HP_MATH_AREAS) {
+    const entry = byArea.get(areaInfo.id);
+    if (!entry) continue;
+    const avgSeconds = entry.seconds.length > 0 ? Math.round(entry.seconds.reduce((a, b) => a + b, 0) / entry.seconds.length) : 0;
+    let level: HpMathLevel;
+    if (entry.correct === 0) {
+      level = "lar-om";
+    } else if (entry.correct === entry.total && avgSeconds <= HP_MATH_TEMPO_TARGET_SECONDS) {
+      level = "kan";
+    } else {
+      level = "repetera";
+    }
+    results.push({ area: areaInfo.id, level, correct: entry.correct, total: entry.total, avgSeconds });
+  }
+  const levelOrder: Record<HpMathLevel, number> = { "lar-om": 0, repetera: 1, kan: 2 };
+  return results.sort((a, b) => levelOrder[a.level] - levelOrder[b.level]);
+}
+
+function stopHpMathTempoInterval(): void {
+  if (hpMathTempoIntervalRef) {
+    window.clearInterval(hpMathTempoIntervalRef);
+    hpMathTempoIntervalRef = null;
+  }
+}
+
+function updateHpMathTempoUI(): void {
+  if (!hpMathSession || hpMathSession.showFeedback) {
+    return;
+  }
+  const el = app.querySelector<HTMLElement>("[data-hp-math-tempo]");
+  if (!el) {
+    return;
+  }
+  const elapsed = Math.round((Date.now() - hpMathSession.questionStartedAt) / 1000);
+  el.textContent = `${elapsed}s / ${HP_MATH_TEMPO_TARGET_SECONDS}s mål`;
+  el.classList.toggle("hp-tempo-over", elapsed > HP_MATH_TEMPO_TARGET_SECONDS);
+}
+
+function startHpMathTempoInterval(): void {
+  stopHpMathTempoInterval();
+  updateHpMathTempoUI();
+  hpMathTempoIntervalRef = window.setInterval(updateHpMathTempoUI, 500);
+}
+
+function hpMathAdvanceQuestion(): void {
+  if (!hpMathSession) {
+    return;
+  }
+  hpMathSession.currentIndex++;
+  if (hpMathSession.currentIndex < hpMathSession.items.length) {
+    hpMathSession.userAnswer = null;
+    hpMathSession.showFeedback = false;
+    hpMathSession.questionStartedAt = Date.now();
   }
   render();
 }
@@ -1406,6 +1523,15 @@ function renderOverview(): string {
         </div>
       </div>
 
+      <!-- ── HP TEASER ── -->
+      <div class="hp-teaser-card span-12">
+        <div class="hp-teaser-text">
+          <span class="hp-teaser-label">Högskoleprovet — ${hpDaysLeft()} dagar kvar</span>
+          <span class="hp-teaser-days">18 okt 2026</span>
+        </div>
+        <button class="hp-teaser-btn" data-action="nav-goto" data-view="hp">Öppna HP →</button>
+      </div>
+
       <!-- ── HUVUDKORT: context-aware CTA ── -->
       ${hasHistory ? `
       <section class="card critical-card span-12">
@@ -1456,6 +1582,11 @@ function renderOverview(): string {
       <section class="card span-12">
         <h3 class="section-label">Alla sidor</h3>
         <div class="site-index-grid">
+
+          <div class="site-index-group">
+            <p class="site-index-group-label">Högskoleprovet</p>
+            <button class="site-index-item" data-action="nav-goto" data-view="hp">🎓 HP — hem</button>
+          </div>
 
           <div class="site-index-group">
             <p class="site-index-group-label">Kursinnehåll</p>
@@ -1755,6 +1886,14 @@ function renderHpHome(): string {
   const progress = loadHpProgress();
   const repeatCount = loadHpRepeatQueue().length;
   const hasWords = HP_WORDS.length > 0;
+  const lastMathResult = loadHpMathResult();
+
+  const lastMathHtml = lastMathResult
+    ? `<button class="hp-math-last-result" data-action="hp-math-view-last">
+        <span class="hp-math-last-result-label">Senaste mattediagnos</span>
+        <span class="hp-math-last-result-value">${lastMathResult.correct}/${lastMathResult.total} rätt · ${lastMathResult.areas.filter((a) => a.level === "lar-om").length} område(n) att lära om</span>
+      </button>`
+    : "";
 
   return `
     <div class="hp-home">
@@ -1784,6 +1923,8 @@ function renderHpHome(): string {
       ${hasWords
         ? `<button class="hp-cta-btn" data-action="hp-start-pass">Starta dagens pass</button>`
         : `<p class="hp-empty-note">Ordlistan fylls på just nu — kom tillbaka strax.</p>`}
+      <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
+      ${lastMathHtml}
       <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
     </div>
   `;
@@ -1874,7 +2015,130 @@ function renderHpSummary(): string {
   `;
 }
 
+function renderHpMathQuestion(): string {
+  if (!hpMathSession) {
+    return "";
+  }
+  const { items, currentIndex, userAnswer, showFeedback } = hpMathSession;
+  const total = items.length;
+  const item = items[currentIndex];
+  const isCorrect = showFeedback && userAnswer === item.correct;
+  const dontKnow = showFeedback && userAnswer === -1;
+
+  const optionsHtml = item.options
+    .map((opt, i) => {
+      let cls = "hp-option-btn";
+      if (showFeedback) {
+        if (i === item.correct) cls += " hp-option-correct";
+        else if (i === userAnswer) cls += " hp-option-wrong";
+        else cls += " hp-option-neutral";
+      }
+      return `<button class="${cls}" data-action="hp-math-answer" data-index="${i}" ${showFeedback ? "disabled" : ""}>${String.fromCharCode(65 + i)}. ${opt}</button>`;
+    })
+    .join("");
+
+  const feedbackHtml = showFeedback
+    ? `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
+        <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : dontKnow ? "Vet inte — här är lösningen" : "Fel svar"}</p>
+        <div class="hp-math-solution">
+          ${item.solutionSteps.map((step) => `<p class="hp-math-solution-step">${step}</p>`).join("")}
+          <p class="hp-math-formula">📐 ${item.formula}</p>
+        </div>
+        <button class="hp-next-btn" data-action="hp-math-next">Nästa</button>
+      </div>`
+    : "";
+
+  return `
+    <div class="hp-drill">
+      <div class="hp-drill-top">
+        <span class="hp-drill-progress">Fråga ${currentIndex + 1}/${total}</span>
+        <span class="hp-tempo" data-hp-math-tempo>0s / ${HP_MATH_TEMPO_TARGET_SECONDS}s mål</span>
+      </div>
+      <p class="hp-math-area-label">${hpMathAreaLabel(item.area)}</p>
+      <p class="hp-word hp-math-prompt">${item.prompt}</p>
+      <div class="hp-options">${optionsHtml}</div>
+      ${!showFeedback ? `<button class="hp-math-dontknow-btn" data-action="hp-math-dontknow">Vet inte</button>` : ""}
+      ${feedbackHtml}
+    </div>
+  `;
+}
+
+const HP_MATH_LEVEL_LABEL: Record<HpMathLevel, string> = {
+  "lar-om": "Lär om",
+  repetera: "Repetera",
+  kan: "Kan"
+};
+
+function renderHpMathAreaCard(result: HpMathAreaResult): string {
+  return `
+    <div class="hp-math-area-card">
+      <div class="hp-math-area-card-top">
+        <span class="hp-math-level-badge hp-math-level-${result.level}">${HP_MATH_LEVEL_LABEL[result.level]}</span>
+        <span class="hp-math-area-card-score">${result.correct}/${result.total} rätt</span>
+      </div>
+      <p class="hp-math-area-card-name">${hpMathAreaLabel(result.area)}</p>
+      <a class="hp-math-learn-link" href="${hpMathAreaLearnUrl(result.area)}" target="_blank" rel="noopener">Lär dig ↗</a>
+    </div>
+  `;
+}
+
+function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[]): string {
+  const lärOm = areas.filter((a) => a.level === "lar-om");
+  const rest = areas.filter((a) => a.level !== "lar-om");
+
+  return `
+    <div class="hp-summary">
+      <p class="hp-summary-heading">Mattediagnos klar</p>
+      <div class="hp-progress-row">
+        <div class="stat-widget">
+          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-value">${correct}<span class="stat-widget-unit">/${total}</span></span>
+        </div>
+        <div class="stat-widget">
+          <span class="stat-widget-label">Lär om</span>
+          <span class="stat-widget-value">${lärOm.length}<span class="stat-widget-unit">område(n)</span></span>
+        </div>
+      </div>
+      ${lärOm.length > 0
+        ? `<div class="hp-math-priority-list">
+            <p class="hp-missed-heading">Börja här</p>
+            ${lärOm.map(renderHpMathAreaCard).join("")}
+          </div>`
+        : `<p class="hp-summary-clean">Inget område behöver läras om — starkt jobbat!</p>`}
+      <button class="hp-cta-btn" data-action="hp-math-close">Klart</button>
+      <div class="hp-math-result-scroll">
+        <p class="hp-missed-heading">Övriga områden</p>
+        ${rest.map(renderHpMathAreaCard).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderHpMathResult(): string {
+  if (!hpMathSession) {
+    return "";
+  }
+  const areas = computeHpMathAreaResults(hpMathSession.answers);
+  const correct = hpMathSession.answers.filter((a) => a.correct).length;
+  const total = hpMathSession.answers.length;
+  return renderHpMathResultFromData(correct, total, areas);
+}
+
+function renderHpMathSavedResult(): string {
+  const result = loadHpMathResult();
+  if (!result) {
+    return renderHpHome();
+  }
+  return renderHpMathResultFromData(result.correct, result.total, result.areas);
+}
+
 function renderHp(): string {
+  if (hpMathSession) {
+    return hpMathSession.currentIndex >= hpMathSession.items.length ? renderHpMathResult() : renderHpMathQuestion();
+  }
+  if (hpMathViewingSaved) {
+    return renderHpMathSavedResult();
+  }
   if (hpSession) {
     return hpSession.currentIndex >= hpSession.items.length ? renderHpSummary() : renderHpQuestion();
   }
@@ -2891,6 +3155,12 @@ function render(): void {
   } else {
     stopHpTempoInterval();
   }
+
+  if (page === "hp" && hpMathSession && hpMathSession.currentIndex < hpMathSession.items.length && !hpMathSession.showFeedback) {
+    startHpMathTempoInterval();
+  } else {
+    stopHpMathTempoInterval();
+  }
 }
 
 app.addEventListener("click", (event) => {
@@ -3409,6 +3679,69 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-close") {
     hpSession = null;
+    render();
+    return;
+  }
+
+  if (action === "hp-math-start") {
+    hpMathViewingSaved = false;
+    hpMathSession = {
+      items: buildHpMathPass(),
+      currentIndex: 0,
+      userAnswer: null,
+      showFeedback: false,
+      questionStartedAt: Date.now(),
+      answers: []
+    };
+    render();
+    return;
+  }
+
+  if (action === "hp-math-view-last") {
+    hpMathViewingSaved = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-math-answer") {
+    if (!hpMathSession || hpMathSession.showFeedback) return;
+    const index = Number(actionEl.dataset.index);
+    const item = hpMathSession.items[hpMathSession.currentIndex];
+    const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
+    const isCorrect = index === item.correct;
+    hpMathSession.answers.push({ area: item.area, correct: isCorrect, seconds: elapsedSeconds });
+    hpMathSession.userAnswer = index;
+    hpMathSession.showFeedback = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-math-dontknow") {
+    if (!hpMathSession || hpMathSession.showFeedback) return;
+    const item = hpMathSession.items[hpMathSession.currentIndex];
+    const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
+    hpMathSession.answers.push({ area: item.area, correct: false, seconds: elapsedSeconds });
+    hpMathSession.userAnswer = -1;
+    hpMathSession.showFeedback = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-math-next") {
+    if (!hpMathSession) return;
+    hpMathAdvanceQuestion();
+    if (hpMathSession && hpMathSession.currentIndex >= hpMathSession.items.length) {
+      const areas = computeHpMathAreaResults(hpMathSession.answers);
+      const correct = hpMathSession.answers.filter((a) => a.correct).length;
+      const total = hpMathSession.answers.length;
+      saveHpMathResult({ completedAt: new Date().toISOString(), correct, total, areas });
+    }
+    return;
+  }
+
+  if (action === "hp-math-close") {
+    hpMathSession = null;
+    hpMathViewingSaved = false;
     render();
     return;
   }

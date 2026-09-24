@@ -3,6 +3,36 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-09-24 — Mattediagnos i HP-fliken
+
+**Vad:** Ny datafil `src/hp-math.ts` med 22 egna XYZ-frågor (4 svarsalternativ A–D) i högskoleprovets stil, 2 per område över 11 områden (aritmetik & prioriteringsregler, bråk, procent, potenser, algebra/förenkling, ekvationer, räta linjens ekvation, geometri, sannolikhet, statistik, hastighet/sträcka/tid). Varje fråga har egen lösning i steg och en formel att komma ihåg. Nytt sekundärt ingångsläge på HP-hem: "Mattediagnos (ca 15 min)" under den primära "Starta dagens pass"-knappen, i ghost/pill-stil (samma höjd, lägre visuell vikt) — inte en andra lika stark primärknapp. Diagnosen kör en fråga per skärm utan scroll, helbreddsknappar ≥44 px i tumzonen, en uppräknande tempo-mätare mot ett 90 s-mål, och en "Vet inte"-knapp som räknas som fel utan att straffas visuellt. Efter varje svar visas rätt/fel-feedback (samma mönster som ORD-drillen) plus lösning och formel, med en explicit "Nästa" — ingen auto-advance här, eftersom lösningstexten ska hinna läsas. Resultatet grupperas per område i tre nivåer: "Kan" (2/2 rätt inom tidsmålet), "Repetera" (1/2, eller 2/2 men långsamt) och "Lär om" (0/2), sorterat med "Lär om" först. Varje område har en verifierad "Lär dig"-länk till en lektionssida på matteboken.se (Matte 1/2, gymnasiet). Resultatet sparas i `localStorage` via `saveHpMathResult`/`loadHpMathResult` (`src/storage.ts`, samma try/catch-mönster som övrig HP-progress) och visas som en kompakt rad på HP-hem efteråt, klickbar för att se hela resultatet igen.
+
+**Före:** HP-fliken hade bara ORD-drillen (ordförståelse). Ingen diagnos av var Martins matematikkunskaper står inför XYZ/KVA/NOG-delarna.
+
+**Efter:** HP-hem har nu två ingångar: primär "Starta dagens pass" (ORD) och sekundär "Mattediagnos". Sessionsstate (`HpMathSession`) följer samma tillstånds-mönster som `HpWordSession`/`VRSession`/`LSSession` — inget nytt arkitekturkoncept.
+
+**Mobile first — verifierat i 375×812:** Hela flödet testat: HP-hem → mattediagnos → 22 frågor (rätt svar, fel svar och "Vet inte" alla testade) → resultatskärm → tillbaka till HP-hem med sparat resultat synligt → öppna sparat resultat igen. Ingen scroll krävs för fråge-skärmarna. På resultatskärmen syns sammanfattning ("Rätt X/22", antal "Lär om"-områden) + prioriterade "Lär om"-kort ovanför vecket; "Övriga områden" (Repetera/Kan) ligger under och kräver scroll, enligt kravet i `docs/HP-UX-SPEC.md`. Desktop kontrollerat efteråt — samma centrerade layout (max-width 560px), inga ändringar behövda.
+
+**Avvikelse från spec/uppgift:** Ingen känd avvikelse. En designrisk upptäcktes och åtgärdades under byggandet: samtliga 22 frågor hade av misstag rätt svar kodat som alternativ A. Det hade gjort mönstret gissningsbart. Löst genom att blanda svarsalternativens ordning (och därmed vilket index som är rätt) varje gång ett pass byggs, i `buildHpMathPass`/`shuffleMathQuestionOptions`.
+
+**Stitch-princip:** Återanvänder `.hp-drill`/`.hp-summary`/`.hp-feedback`/`.hp-option-btn` rakt av från ORD-drillen. Nya klasser (`.hp-math-*`) håller sig strikt till designsystemets tre fontstorlekar och paletten — nivåbadgarna ("Kan"/"Repetera"/"Lär om") återanvänder `--ok`/`--honey`/`--danger` i stället för nya färger, och badge-höjden 28 px matchar den definierade nav-pill-storleken (No new pill height). Inga borders som avdelare (No-Line rule) — kort skiljs med `--card` + ambient shadow.
+
+---
+
+## 2026-09-24 — HP synlig på startsidan
+
+**Vad:** HP är nu nåbar från startsidan (Hem) på två sätt: (1) ett nytt teaser-kort högt upp — "Högskoleprovet — X dagar kvar" + knappen "Öppna HP →" — placerat direkt under stat-widget-raden, före det befintliga "Fortsätt där du slutade"-kortet, så det syns ovanför vecket i 375×812; (2) en ny grupp "Högskoleprovet" överst i "Alla sidor"-listan med länken "🎓 HP — hem". Båda leder direkt till HP-fliken med ett enda tryck.
+
+**Före:** HP-fliken nåddes bara via `.app-nav-ctx`-menyn → `[data-view="hp"]`. Ingen synlighet på startsidan trots att provet är Martins mest tidskritiska mål just nu.
+
+**Efter:** Startsidan kommunicerar nedräkningen direkt (samma "dagar kvar"-logik som HP-hem, `hpDaysLeft()`) och gör HP till ett förstahandsval, inte en gömd menypost.
+
+**Mobile first — verifierat i 375×812:** Teaser-kortet syns direkt vid sidladdning utan scroll, knappen är i tumzonen och minst 36 px hög (action-pill). Ett tryck ("Öppna HP →") tar direkt till HP-hem. "Alla sidor"-länken testad separat. Desktop kontrollerat efteråt — kortet spänner full bredd (`span-12`) och skalar utan problem.
+
+**Stitch-princip:** Samma gradient-mönster som `.hp-countdown-card` (No-Line rule, ambient shadow, `--accent`→`--accent-container`) återanvänds för `.hp-teaser-card` i stället för att uppfinna ett nytt kortmönster. Knappen använder den definierade 36 px action-pill-höjden och `--text-md`, ingen ny fontstorlek.
+
+---
+
 ## 2026-09-24 — HP-flik byggd: ORD-drillen (första skärmen från HP-UX-SPEC.md)
 
 **Vad:** Ny toppnivå-flik "HP" i navet (`src/main.ts`, `pageLabels`/`renderNavDropdown`), byggd enligt `docs/HP-UX-SPEC.md`. HP-hem visar dagar kvar till högskoleprovet (18 okt 2026), dagens progress (ord tränade, pass klara) och en primärknapp "Starta dagens pass" — allt ovanför vecket i 375×812. ORD-drillen kör 10 ord/pass från `HP_WORDS` (`src/hp-words.ts`), med en tempomätare som räknar uppåt mot 20 s synlig från fråga 1. Rätt svar: valt alternativ grönt + "ord = betydelse" i ~2 s, sedan auto-nästa (tryck var som helst för att gå direkt). Fel svar: ditt rött, rätt grönt, förklaring, stannar till "Nästa". Missade ord läggs i en repetitionskö (localStorage, try/catch) och prioriteras i nästa pass; rätträttade ord plockas ur kön. Sammanfattning efter passet visar rätt/fel, snitt-tempo mot 20 s-målet och lista över missade ord.

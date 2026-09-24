@@ -1,9 +1,11 @@
+import type { HpMathArea } from "./hp-math";
 import type { SessionDraft, StudySession } from "./types";
 
 const STUDY_SESSIONS_KEY = "yh.study-sessions";
 const ACTIVE_SESSION_KEY = "yh.active-session";
 const HP_REPEAT_QUEUE_KEY = "yh.hp-repeat-queue";
 const HP_PROGRESS_KEY = "yh.hp-progress";
+const HP_MATH_RESULT_KEY = "yh.hp-math-result";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
 
@@ -11,6 +13,23 @@ export interface HpProgress {
   date: string;
   wordsCompleted: number;
   passesCompleted: number;
+}
+
+export type HpMathLevel = "kan" | "repetera" | "lar-om";
+
+export interface HpMathAreaResult {
+  area: HpMathArea;
+  level: HpMathLevel;
+  correct: number;
+  total: number;
+  avgSeconds: number;
+}
+
+export interface HpMathResult {
+  completedAt: string;
+  correct: number;
+  total: number;
+  areas: HpMathAreaResult[];
 }
 
 export interface StudyDataSnapshot {
@@ -126,6 +145,18 @@ export function recordHpPassCompleted(wordsInPass: number): HpProgress {
     // tyst fallback — progress visas ändå för denna session, sparas bara inte
   }
   return next;
+}
+
+export function loadHpMathResult(): HpMathResult | null {
+  return safeParse<HpMathResult | null>(localStorage.getItem(namespacedKey(HP_MATH_RESULT_KEY)), null);
+}
+
+export function saveHpMathResult(result: HpMathResult): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_MATH_RESULT_KEY), JSON.stringify(result));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
 }
 
 export function exportStudyDataSnapshot(): StudyDataSnapshot {
