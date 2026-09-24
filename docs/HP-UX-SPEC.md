@@ -137,3 +137,14 @@ Vi lånar inte: hpappens statistik-tunga "9 miljoner svar"-ramverk (för tungt f
 3. **Ingen felkategorisering i ORD** — bara i matte-delproven (XYZ/KVA/NOG/DTK).
 4. **HP är en egen toppnivå-flik.**
 5. **Ordlistan:** målorden hämtas från gamla högskoleprov (studera.nu, UHR) så att typ och nivå blir rätt. Enskilda ord är fria att använda; svarsalternativ, förklaringar och exempelmeningar skriver vi själva — UHR:s uppgifter och HP-appens ordlista kopieras inte.
+
+## Mobile first (krav, 2026-09-24)
+
+Martin tränar mest på mobilen. All HP-design utgår från 375 px bredd och skalas upp — inte tvärtom.
+
+- **Tumzon:** svarsalternativ och "Nästa" i nedre halvan av skärmen, inom tummens räckvidd (Fitts lag). Inga viktiga knappar i övre hörnen.
+- **Tryckytor minst 44 × 44 px.** Svarsalternativ som helbreddsknappar staplade vertikalt, 8 px mellanrum så man inte trycker fel.
+- **En fråga per skärm, ingen scroll** under drillen. Ordet stort överst, tempomätaren liten under.
+- **Ingen hover-beroende info** — allt som visas vid hover på desktop måste synas eller nås med tryck.
+- **Tryck var som helst** för att gå vidare efter rätt svar (se beslut 1).
+- **Testas i 375 × 812** (mobil-preset) innan något räknas som klart; desktop kontrolleras efteråt.
