@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curated Scholar Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#80d5cb",
+                        "on-primary": "#003733",
+                        "primary-container": "#00504a",
+                        "on-primary-container": "#9cf2e8",
+                        "secondary": "#76d7c5",
+                        "on-secondary": "#003730",
+                        "secondary-container": "#005046",
+                        "on-secondary-container": "#93f4e0",
+                        "tertiary": "#dac496",
+                        "on-tertiary": "#3c2f0c",
+                        "tertiary-container": "#544521",
+                        "on-tertiary-container": "#f7e0b0",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "background": "#0e1514",
+                        "on-background": "#dde4e2",
+                        "surface": "#0e1514",
+                        "on-surface": "#dde4e2",
+                        "surface-variant": "#3f4947",
+                        "on-surface-variant": "#bfc9c6",
+                        "outline": "#899391",
+                        "outline-variant": "#3f4947",
+                        "inverse-surface": "#dde4e2",
+                        "inverse-on-surface": "#2b3131",
+                        "inverse-primary": "#006a63",
+                        "surface-dim": "#0e1514",
+                        "surface-bright": "#343a3a",
+                        "surface-container-lowest": "#090f0f",
+                        "surface-container-low": "#171d1d",
+                        "surface-container": "#1b2121",
+                        "surface-container-high": "#252b2b",
+                        "surface-container-highest": "#303635"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Public Sans', sans-serif; background-color: #0e1514; }
+        .academic-gradient { background: linear-gradient(135deg, #006a63 0%, #0f766e 100%); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="text-on-surface antialiased pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface-container/80 backdrop-blur-md shadow-sm border-b border-outline-variant/10">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary hover:bg-surface-container-high rounded-full transition-all p-2 active:scale-95 duration-200 ease-in-out cursor-pointer" data-icon="psychology">psychology</span>
+</div>
+<button class="font-public-sans tracking-widest text-xs font-bold uppercase text-primary-container bg-primary-container/20 px-4 py-1.5 rounded-full active:scale-95 transition-all">
+            DASHBOARD
+        </button>
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20 shadow-sm">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional student wearing glasses in a brightly lit academic library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDird4HObdI7UNR-Nu44BgFKX3zZs1qTT6LI4Fg6n_WpDFFa9T4VLjA7zuRr4JEGbqlfEio48OX0tMY_qld2r5DknEcGDapCh-D6Y-cBE3KOUud8SEUu4hTwEpE4CukA3N--ZvmZZd4VM7u4jD0T3TpsTBrDlEYt-Dj98NgEefwrIZhC3k3sTH5-bQmiLmaMocdm0sLocfn5a7ekWO-tPixmLqErw5Rk_L5Ke3gHRgIhGkR5ggH8CK_DJF7R2Kl7JJyjlrCYKf7Kuz_"/>
+</div>
+</div>
+</header>
+<main class="pt-20 px-4 space-y-6 max-w-lg mx-auto">
+<!-- Progression Section -->
+<section class="grid grid-cols-2 gap-4">
+<!-- Weekly Streak -->
+<div class="bg-surface-container-low p-4 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">Weekly Streak</span>
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div class="flex items-end space-x-1">
+<span class="text-3xl font-extrabold leading-none text-primary">12</span>
+<span class="text-xs font-medium text-on-surface-variant mb-1">DAYS</span>
+</div>
+<div class="mt-3 flex gap-1">
+<div class="h-1 flex-1 rounded-full bg-secondary"></div>
+<div class="h-1 flex-1 rounded-full bg-secondary"></div>
+<div class="h-1 flex-1 rounded-full bg-secondary"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-container-highest"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-container-highest"></div>
+</div>
+</div>
+<!-- Global Progress -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">Avg Score</span>
+<span class="material-symbols-outlined text-primary text-lg" data-icon="query_stats">query_stats</span>
+</div>
+<div class="flex items-end space-x-1">
+<span class="text-3xl font-extrabold leading-none text-on-surface">88</span>
+<span class="text-xs font-medium text-on-surface-variant mb-1">%</span>
+</div>
+<div class="mt-3 h-1 w-full rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-tertiary w-[88%]"></div>
+</div>
+</div>
+</section>
+<!-- Subjects: Compact Bento Grid -->
+<section class="space-y-3">
+<div class="flex items-baseline justify-between px-1">
+<h2 class="text-sm font-bold tracking-tight text-on-surface uppercase">Active Subjects</h2>
+<span class="text-[10px] font-medium text-primary">VIEW SCHEDULE</span>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Subject Card 1 -->
+<div class="bg-surface-container rounded-xl p-4 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-8 -mt-8"></div>
+<div class="relative flex flex-col space-y-3">
+<div class="flex justify-between items-start">
+<div class="space-y-0.5">
+<span class="text-[9px] font-bold text-secondary uppercase tracking-[0.08em]">Nackademin</span>
+<h3 class="text-lg font-extrabold text-on-surface leading-tight">UX Design Foundations</h3>
+</div>
+<span class="text-[10px] font-bold bg-secondary-container px-2 py-0.5 rounded text-on-secondary-container">LEVEL 2</span>
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex-1 space-y-1">
+<div class="flex justify-between text-[10px] font-medium text-on-surface-variant">
+<span>Curriculum Progress</span>
+<span>65%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 pt-1">
+<button class="flex-1 flex items-center justify-center space-x-1 bg-surface-container-highest text-on-surface py-2 rounded-lg text-[11px] font-bold uppercase transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="book">book</span>
+<span>Library</span>
+</button>
+<button class="flex-1 flex items-center justify-center space-x-1 academic-gradient text-on-primary py-2 rounded-lg text-[11px] font-bold uppercase shadow-md active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span>Resume</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Subject Card 2 & 3: Half-Width Bento Pattern -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Subject 2 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between h-44 border border-outline-variant/10">
+<div class="space-y-1">
+<span class="text-[8px] font-bold text-on-surface-variant uppercase tracking-widest">IT-Högskolan</span>
+<h3 class="text-sm font-bold text-on-surface leading-snug">IT-säkerhet Advanced</h3>
+</div>
+<div class="space-y-3">
+<div class="h-1 w-full bg-surface-container-highest rounded-full">
+<div class="h-full bg-tertiary w-1/3"></div>
+</div>
+<button class="w-full bg-surface-container text-on-surface-variant border border-outline-variant/30 py-2 rounded-lg text-[10px] font-bold uppercase flex items-center justify-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="edit_note">edit_note</span>
+<span>Quiz</span>
+</button>
+</div>
+</div>
+<!-- Subject 3 -->
+<div class="bg-tertiary-container rounded-xl p-3 flex flex-col justify-between h-44">
+<div class="space-y-1">
+<span class="text-[8px] font-bold text-on-tertiary-container uppercase tracking-widest">A-Prövning</span>
+<h3 class="text-sm font-bold text-on-tertiary-container leading-snug">Programmering 1</h3>
+</div>
+<div class="space-y-3 text-on-tertiary-container">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-medium italic">Exam in 4d</span>
+</div>
+<button class="w-full bg-on-tertiary-container text-tertiary-container py-2 rounded-lg text-[10px] font-bold uppercase flex items-center justify-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="menu_book">menu_book</span>
+<span>Review</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Insights -->
+<section class="bg-surface-container-highest rounded-2xl p-4 overflow-hidden relative">
+<div class="absolute right-0 top-0 opacity-20 rotate-12 -mr-4 -mt-4">
+<span class="material-symbols-outlined text-8xl text-primary" data-icon="lightbulb">lightbulb</span>
+</div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Academic Insight</h4>
+<p class="text-sm font-medium text-on-surface leading-relaxed max-w-[80%]">
+                You perform <span class="text-primary font-bold">22% better</span> on logic tasks during morning sessions. Consider shifting IT-Security study blocks to 08:00.
+            </p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-4">
+<div class="bg-surface-container-high/70 backdrop-blur-xl shadow-2xl pill-shaped mx-auto mb-6 w-auto max-w-fit rounded-full px-2 py-2 flex items-center space-x-1 border border-outline-variant/20">
+<a class="bg-primary/20 text-primary rounded-full p-3 flex items-center justify-center transition-all scale-110 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+</a>
+<a class="text-on-surface-variant p-3 flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+</a>
+<a class="text-on-surface-variant p-3 flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+</a>
+<a class="text-on-surface-variant p-3 flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</a>
+</div>
+</nav>
+</body></html>

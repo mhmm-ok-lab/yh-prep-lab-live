@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curated Scholar Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2b3139",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#ecf1fc",
+                        "background": "#f8f9ff",
+                        "on-tertiary-container": "#4c3e1a",
+                        "tertiary-fixed": "#f7e0b0",
+                        "secondary": "#006b5d",
+                        "on-secondary-fixed": "#00201b",
+                        "on-tertiary-fixed-variant": "#544521",
+                        "on-background": "#161c24",
+                        "on-surface": "#161c24",
+                        "on-primary-fixed": "#00201d",
+                        "on-primary-container": "#a3faef",
+                        "on-tertiary-fixed": "#251a00",
+                        "surface-container-low": "#eff4ff",
+                        "surface-dim": "#d5dae5",
+                        "surface-container": "#e9eef9",
+                        "secondary-fixed-dim": "#76d7c5",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e3e8f4",
+                        "surface-variant": "#dee2ee",
+                        "tertiary-container": "#bda97c",
+                        "surface-container-highest": "#dee2ee",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#90f1de",
+                        "tertiary": "#6d5d36",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#00504a",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#bdc9c6",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005046",
+                        "surface-bright": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "surface-tint": "#006a63",
+                        "inverse-primary": "#80d5cb",
+                        "primary": "#005c55",
+                        "tertiary-fixed-dim": "#dac496",
+                        "outline": "#6e7977",
+                        "on-surface-variant": "#3e4947",
+                        "on-secondary-container": "#006f61",
+                        "primary-container": "#0f766e",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#93f4e0",
+                        "primary-fixed-dim": "#80d5cb",
+                        "primary-fixed": "#9cf2e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Public Sans', sans-serif; background-color: #f8f9ff; }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        .academic-gradient { background: linear-gradient(135deg, #005c55 0%, #0f766e 100%); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm shadow-slate-200/50 dark:shadow-none">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-teal-700 dark:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all p-2 active:scale-95 duration-200 ease-in-out cursor-pointer" data-icon="psychology">psychology</span>
+</div>
+<button class="font-public-sans tracking-widest text-xs font-bold uppercase text-teal-900 dark:text-teal-200 bg-slate-50 dark:bg-slate-800/50 px-4 py-1.5 rounded-full active:scale-95 transition-all">
+            DASHBOARD
+        </button>
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20 shadow-sm">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional student wearing glasses in a brightly lit academic library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDird4HObdI7UNR-Nu44BgFKX3zZs1qTT6LI4Fg6n_WpDFFa9T4VLjA7zuRr4JEGbqlfEio48OX0tMY_qld2r5DknEcGDapCh-D6Y-cBE3KOUud8SEUu4hTwEpE4CukA3N--ZvmZZd4VM7u4jD0T3TpsTBrDlEYt-Dj98NgEefwrIZhC3k3sTH5-bQmiLmaMocdm0sLocfn5a7ekWO-tPixmLqErw5Rk_L5Ke3gHRgIhGkR5ggH8CK_DJF7R2Kl7JJyjlrCYKf7Kuz_"/>
+</div>
+</div>
+</header>
+<main class="pt-20 px-4 space-y-6 max-w-lg mx-auto">
+<!-- Progression Section: High Density -->
+<section class="grid grid-cols-2 gap-4">
+<!-- Weekly Streak -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">Weekly Streak</span>
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div class="flex items-end space-x-1">
+<span class="text-3xl font-extrabold leading-none text-primary">12</span>
+<span class="text-xs font-medium text-on-surface-variant mb-1">DAYS</span>
+</div>
+<div class="mt-3 flex gap-1">
+<div class="h-1 flex-1 rounded-full bg-secondary-fixed"></div>
+<div class="h-1 flex-1 rounded-full bg-secondary-fixed"></div>
+<div class="h-1 flex-1 rounded-full bg-secondary-fixed"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-container"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-container"></div>
+</div>
+</div>
+<!-- Global Progress -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold tracking-widest uppercase text-on-surface-variant">Avg Score</span>
+<span class="material-symbols-outlined text-primary text-lg" data-icon="query_stats">query_stats</span>
+</div>
+<div class="flex items-end space-x-1">
+<span class="text-3xl font-extrabold leading-none text-on-surface">88</span>
+<span class="text-xs font-medium text-on-surface-variant mb-1">%</span>
+</div>
+<div class="mt-3 h-1 w-full rounded-full bg-surface-variant overflow-hidden">
+<div class="h-full bg-tertiary-fixed w-[88%]"></div>
+</div>
+</div>
+</section>
+<!-- Subjects: Compact Bento Grid -->
+<section class="space-y-3">
+<div class="flex items-baseline justify-between px-1">
+<h2 class="text-sm font-bold tracking-tight text-on-surface uppercase">Active Subjects</h2>
+<span class="text-[10px] font-medium text-primary">VIEW SCHEDULE</span>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Subject Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-secondary-fixed/10 rounded-full -mr-8 -mt-8"></div>
+<div class="relative flex flex-col space-y-3">
+<div class="flex justify-between items-start">
+<div class="space-y-0.5">
+<span class="text-[9px] font-bold text-secondary uppercase tracking-[0.08em]">Nackademin</span>
+<h3 class="text-lg font-extrabold text-on-surface leading-tight">UX Design Foundations</h3>
+</div>
+<span class="text-[10px] font-bold bg-secondary-container px-2 py-0.5 rounded text-on-secondary-container">LEVEL 2</span>
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex-1 space-y-1">
+<div class="flex justify-between text-[10px] font-medium text-on-surface-variant">
+<span>Curriculum Progress</span>
+<span>65%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 pt-1">
+<button class="flex-1 flex items-center justify-center space-x-1 bg-surface-container-highest text-on-surface py-2 rounded-lg text-[11px] font-bold uppercase transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="book">book</span>
+<span>Library</span>
+</button>
+<button class="flex-1 flex items-center justify-center space-x-1 academic-gradient text-on-primary py-2 rounded-lg text-[11px] font-bold uppercase shadow-md shadow-primary/20 active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span>Resume</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Subject Card 2 & 3: Half-Width Bento Pattern -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Subject 2 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between h-44">
+<div class="space-y-1">
+<span class="text-[8px] font-bold text-on-surface-variant uppercase tracking-widest">IT-Högskolan</span>
+<h3 class="text-sm font-bold text-on-surface leading-snug">IT-säkerhet Advanced</h3>
+</div>
+<div class="space-y-3">
+<div class="h-1 w-full bg-surface-variant rounded-full">
+<div class="h-full bg-tertiary w-1/3"></div>
+</div>
+<button class="w-full bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30 py-2 rounded-lg text-[10px] font-bold uppercase flex items-center justify-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="edit_note">edit_note</span>
+<span>Quiz</span>
+</button>
+</div>
+</div>
+<!-- Subject 3 -->
+<div class="bg-tertiary-fixed rounded-xl p-3 flex flex-col justify-between h-44">
+<div class="space-y-1">
+<span class="text-[8px] font-bold text-on-tertiary-fixed-variant uppercase tracking-widest">A-Prövning</span>
+<h3 class="text-sm font-bold text-on-tertiary-fixed leading-snug">Programmering 1</h3>
+</div>
+<div class="space-y-3 text-on-tertiary-fixed">
+<div class="flex items-center space-x-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-medium italic">Exam in 4d</span>
+</div>
+<button class="w-full bg-on-tertiary-fixed text-tertiary-fixed py-2 rounded-lg text-[10px] font-bold uppercase flex items-center justify-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="menu_book">menu_book</span>
+<span>Review</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Insights -->
+<section class="bg-surface-container-highest rounded-2xl p-4 overflow-hidden relative">
+<div class="absolute right-0 top-0 opacity-10 rotate-12 -mr-4 -mt-4">
+<span class="material-symbols-outlined text-8xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Academic Insight</h4>
+<p class="text-sm font-medium text-on-surface leading-relaxed max-w-[80%]">
+                You perform <span class="text-primary font-bold">22% better</span> on logic tasks during morning sessions. Consider shifting IT-Security study blocks to 08:00.
+            </p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-4">
+<div class="bg-slate-100/70 dark:bg-slate-800/70 backdrop-blur-xl shadow-2xl shadow-slate-900/10 dark:shadow-black/40 pill-shaped mx-auto mb-6 w-auto max-w-fit rounded-full px-2 py-2 flex items-center space-x-1">
+<a class="bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200 rounded-full p-3 flex items-center justify-center transition-all scale-110 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 p-3 flex items-center justify-center hover:text-teal-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 p-3 flex items-center justify-center hover:text-teal-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+</a>
+<a class="text-slate-600 dark:text-slate-400 p-3 flex items-center justify-center hover:text-teal-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</a>
+</div>
+</nav>
+</body></html>
