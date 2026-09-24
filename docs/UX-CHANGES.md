@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-09-24 — HP-flik UX-spec skapad
+
+**Vad:** Ny fil `docs/HP-UX-SPEC.md` — UX-spec (ingen kod) för en ny HP-flik (Högskoleprovet, 18 okt 2026). Beskriver mål/principer, informationsarkitektur, ORD-drillen i detalj (start/fråga/rätt/fel/sammanfattning/repetition) samt kortfattat övriga planerade skärmar (nedräkning+dagens pass, formeldrill, NOG-tränare, KVA/DTK, provpass-logg, felanalys, 55-min timer).
+
+**Varför:** Nuvarande design är lappad snarare än ritad från grunden. HP-fliken ska byggas med en ren struktur inom befintligt designsystem, med ORD-drillen som första skärm och testmiljö för HP:s designspråk. Specen är research-driven: tidsbrist är HP:s huvudproblem (tempo ska synas, ~20 s/ORD-uppgift), felanalys ger mest lärandeeffekt, ingen minuspoäng (uppmuntra gissning), kort daglig drill slår långa pass, och ADHD-anpassning kräver en tydlig nästa-handling åt gången med låg friktion.
+
+**Stitch-princip:** Återanvänder befintliga komponenter (nav-pill, action-pill 36px, stat-widget, progress-pips, kort utan border) i stället för att uppfinna nya mönster där systemet redan har svaret — nya komponenter (tempo-indikator, felkategori-tagg, NOG-svarslogik) hålls till ett minimum och motiveras var för sig.
+
+---
+
 ## 2026-05-14 — Regelverksatlas: Extern referenssida tillgänglig via nav
 
 **Vad:** En fristående HTML-sida ("Regelverksatlas — NIS2 & AI Act") lagts till som `public/regelverksatlas.html` och länkats in under "Referens" i navigationsmenyn. En `← YH Prep Lab`-länk lades till i sidans header så att användaren kan navigera tillbaka till appen.
