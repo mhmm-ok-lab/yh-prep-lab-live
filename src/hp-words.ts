@@ -1626,7 +1626,7 @@ export const HP_WORDS: HpWord[] = [
   {
     id: "frivol",
     word: "frivol",
-    options: ["strängt allvarlig", "lättsinnigt lekfull", "djupt religiös", "sträng och sträng", "återhållsam"],
+    options: ["strängt allvarlig", "lättsinnigt lekfull", "djupt religiös", "överdrivet formell", "återhållsam"],
     correct: 1,
     explanation: "Frivol betyder lekfullt oanständig eller ytligt underhållande.",
     source: "egen (HP-typ)",
