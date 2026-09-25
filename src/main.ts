@@ -421,6 +421,9 @@ let hpMathTempoIntervalRef: number | null = null;
 let hpMathViewingSaved = false;
 let hpTwinSession: HpTwinSession | null = null;
 let hpTwinTempoIntervalRef: number | null = null;
+/** True när man nått HP via nav/startsidans HP-kort medan ett pass pågår —
+ *  visar HP-hem med "Fortsätt pass" i stället för att hoppa rakt in i övningen. */
+let hpForceHome = false;
 let navOpen = false;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
@@ -1999,6 +2002,46 @@ function renderAppNav(): string {
   `;
 }
 
+/** Om ett ORD-/matte-/tvillingpass pågår i bakgrunden: visa ett "Fortsätt pass"-kort
+ *  i stället för start-knapparna, så man inte råkar skriva över pågående framsteg. */
+function renderHpActiveResume(): string {
+  if (hpSession) {
+    const total = hpSession.items.length;
+    const at = Math.min(hpSession.currentIndex + 1, total);
+    return `
+      <div class="hp-resume-card">
+        <p class="hp-resume-label">Pågående pass</p>
+        <p class="hp-resume-desc">Ord-drillen — fråga ${at}/${total}</p>
+        <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
+      </div>
+    `;
+  }
+  if (hpMathSession) {
+    const total = hpMathSession.items.length;
+    const at = Math.min(hpMathSession.currentIndex + 1, total);
+    return `
+      <div class="hp-resume-card">
+        <p class="hp-resume-label">Pågående pass</p>
+        <p class="hp-resume-desc">Mattediagnos — fråga ${at}/${total}</p>
+        <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
+      </div>
+    `;
+  }
+  if (hpTwinSession) {
+    const total = hpTwinSession.items.length;
+    const at = Math.min(hpTwinSession.currentIndex + 1, total);
+    const info = HP_TWIN_DELPROV_INFO[hpTwinSession.delprov];
+    return `
+      <div class="hp-resume-card">
+        <p class="hp-resume-label">Pågående pass</p>
+        <p class="hp-resume-desc">${info.label} — uppgift ${at}/${total}</p>
+        <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
+      </div>
+    `;
+  }
+  return "";
+}
+
 function renderHpHome(): string {
   const daysLeft = hpDaysLeft();
   const progress = loadHpProgress();
@@ -2012,6 +2055,8 @@ function renderHpHome(): string {
         <span class="hp-math-last-result-value">${lastMathResult.correct}/${lastMathResult.total} rätt · ${lastMathResult.areas.filter((a) => a.level === "lar-om").length} område(n) att lära om</span>
       </button>`
     : "";
+
+  const activeResumeHtml = renderHpActiveResume();
 
   return `
     <div class="hp-home">
@@ -2038,13 +2083,17 @@ function renderHpHome(): string {
           <span class="stat-widget-sub">${repeatCount > 0 ? "väntande ord från tidigare pass" : "inga just nu"}</span>
         </div>
       </div>
-      ${hasWords
-        ? `<button class="hp-cta-btn" data-action="hp-start-pass">Starta dagens pass</button>`
-        : `<p class="hp-empty-note">Ordlistan fylls på just nu — kom tillbaka strax.</p>`}
-      <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
-      ${lastMathHtml}
-      <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
-      ${renderHpTwinHomeSection()}
+      ${activeResumeHtml
+        ? activeResumeHtml
+        : `
+          ${hasWords
+            ? `<button class="hp-cta-btn" data-action="hp-start-pass">Starta dagens pass</button>`
+            : `<p class="hp-empty-note">Ordlistan fylls på just nu — kom tillbaka strax.</p>`}
+          <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
+          ${lastMathHtml}
+          <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
+          ${renderHpTwinHomeSection()}
+        `}
     </div>
   `;
 }
@@ -2132,6 +2181,7 @@ function renderHpQuestion(): string {
     ? isCorrect
       ? `<div class="hp-feedback hp-feedback-ok">
           <p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
+          <p class="hp-feedback-hint">Tryck för att fortsätta</p>
         </div>`
       : `<div class="hp-feedback hp-feedback-wrong">
           <p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
@@ -2143,6 +2193,7 @@ function renderHpQuestion(): string {
   return `
     <div class="hp-drill" ${showFeedback && isCorrect ? 'data-action="hp-tap-advance"' : ""}>
       <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-cancel">Avbryt</button>
         <span class="hp-drill-progress">Ord ${currentIndex + 1}/${total}</span>
         <span class="hp-tempo" data-hp-tempo>0s / ${HP_TEMPO_TARGET_SECONDS}s mål</span>
       </div>
@@ -2224,6 +2275,7 @@ function renderHpMathQuestion(): string {
   return `
     <div class="hp-drill">
       <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-math-cancel">Avbryt</button>
         <span class="hp-drill-progress">Fråga ${currentIndex + 1}/${total}</span>
         <span class="hp-tempo" data-hp-math-tempo>0s / ${HP_MATH_TEMPO_TARGET_SECONDS}s mål</span>
       </div>
@@ -2357,6 +2409,7 @@ function renderHpTwinQuestion(): string {
   return `
     <div class="hp-drill">
       <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-twin-cancel">Avbryt</button>
         <span class="hp-drill-progress">${delprov} ${currentIndex + 1}/${total}</span>
         <span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>
       </div>
@@ -2409,6 +2462,9 @@ function renderHpTwinSummary(): string {
 }
 
 function renderHp(): string {
+  if (hpForceHome) {
+    return renderHpHome();
+  }
   if (hpMathSession) {
     return hpMathSession.currentIndex >= hpMathSession.items.length ? renderHpMathResult() : renderHpMathQuestion();
   }
@@ -3466,6 +3522,11 @@ app.addEventListener("click", (event) => {
     }
     page = targetView;
     navOpen = false;
+    if (targetView === "hp") {
+      // Nav-länken och startsidans HP-kort ska alltid gå till HP-hem —
+      // ett pågående pass visas som "Fortsätt pass" i stället för att hoppa rakt in i.
+      hpForceHome = true;
+    }
     render();
     return;
   }
@@ -3864,6 +3925,11 @@ app.addEventListener("click", (event) => {
       history.replaceState(null, "", `?view=${targetView}`);
       page = targetView;
       navOpen = false;
+      if (targetView === "hp") {
+        // Nav-länken och startsidans HP-kort ska alltid gå till HP-hem —
+        // ett pågående pass visas som "Fortsätt pass" i stället för att hoppas rakt in i.
+        hpForceHome = true;
+      }
       render();
     }
     return;
@@ -3905,7 +3971,14 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "hp-resume") {
+    hpForceHome = false;
+    render();
+    return;
+  }
+
   if (action === "hp-start-pass") {
+    hpForceHome = false;
     hpSession = {
       items: buildHpPass(),
       currentIndex: 0,
@@ -3962,6 +4035,13 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "hp-cancel") {
+    hpSession = null;
+    hpForceHome = false;
+    render();
+    return;
+  }
+
   if (action === "hp-close") {
     hpSession = null;
     render();
@@ -3969,6 +4049,7 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "hp-math-start") {
+    hpForceHome = false;
     hpMathViewingSaved = false;
     hpMathSession = {
       items: buildHpMathPass(),
@@ -4024,6 +4105,14 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "hp-math-cancel") {
+    hpMathSession = null;
+    hpMathViewingSaved = false;
+    hpForceHome = false;
+    render();
+    return;
+  }
+
   if (action === "hp-math-close") {
     hpMathSession = null;
     hpMathViewingSaved = false;
@@ -4032,6 +4121,7 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "hp-twin-start") {
+    hpForceHome = false;
     const delprov = actionEl.dataset.delprov as HpDelprov;
     hpTwinSession = {
       delprov,
@@ -4081,6 +4171,13 @@ app.addEventListener("click", (event) => {
   if (action === "hp-twin-next") {
     if (!hpTwinSession) return;
     hpTwinAdvanceQuestion();
+    return;
+  }
+
+  if (action === "hp-twin-cancel") {
+    hpTwinSession = null;
+    hpForceHome = false;
+    render();
     return;
   }
 
