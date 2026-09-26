@@ -3,6 +3,24 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-09-26 — HP-guiden: flashcards + lång översiktssida
+
+**Vad:** Guiderna i `docs/HP-GUIDE.md` och `docs/HP-LAS-SPEC.md` (avsnittet "Guide: bli bättre på LÄS") strukturerade som data i ny fil `src/hp-guide.ts` — 53 korta kort (`{ id, kategori, rubrik, gorSaHar, varfor, kalla? }`) fördelade på 13 kategorier (Viktigast, Plan, LÄS, ORD, MEK, ELF, XYZ, KVA, NOG, DTK, ADHD, Provdagen, Misstag). Enligt Martins beslut byggs innehållet på **båda** sätten han bad om:
+1. **Flashcards** (`renderHpGuideFlashcards`) — ett kort per skärm, ingen scroll. Framsidan visar kategori (utskriven med full förklaring, t.ex. "ORD (ordförståelse)" — förklarar förkortningen varje gång kortet visas, inte bara första gången) + rubrik; tryck på kortet vänder till baksidan (gör så här + varför + ev. källa). Filter-chips (28px pill, `.hp-guide-chip`, samma mönster som `.hp-twin-tag-btn`) filtrerar per kategori. Föregående/Nästa som helbreddsknappar i nedre halvan (synlig 36px pill, ≥44px träffyta via samma `::after`-teknik som `.hp-cta-btn`), plus enkel horisontell svep-navigering som komplement. "Avbryt" går tillbaka till HP-hem.
+2. **Lång sida "Guide — översikt"** (`renderHpGuidePage`) — "De 7 viktigaste råden" öppna överst, övriga 12 kategorier som ihopfällbara `<details>/<summary>`-sektioner (samma mönster som `.course-research-summary`), stängda som standard så det viktigaste syns först utan scroll.
+
+På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs hela guiden") längst ner, under tvillingträningen — stör inte "Starta dagens pass" ovanför vecket.
+
+**Före:** Guiderna fanns bara som lång löptext i två md-filer i repot, osynliga för Martin i själva appen på mobilen.
+
+**Efter:** Guiderna nåbara direkt i HP-fliken på två sätt: snabb repetition (flashcards) och överblick (lång sida). Inga nya färger, fontstorlekar eller pill-höjder — enbart återanvända designsystem-tokens och komponentmönster.
+
+**Verifiering (375×812):** HP-hem → Flashcards (vänd kort, bläddra Nästa/Föregående, filtrera på LÄS → 8/8 kort, Avbryt tillbaka till HP-hem) → Läs hela guiden (öppna/stänga en sektion, "De 7 viktigaste råden" öppen från start) — allt testat och fungerar. `document.documentElement.scrollWidth === clientWidth` (375) genom hela flödet — ingen sidled-scroll. Nästa/Föregående-knapparna ligger i nedre halvan av skärmen på flashcards-vyn. `node node_modules/.bin/tsc --noEmit` grönt. Desktop kontrollerat efteråt — samma centrerade layout, inga regressioner.
+
+**Stitch-princip:** Progressiv avslöjning (ihopfällbara sektioner så det viktigaste syns först, ingen väggtext), konsekvent no-line/palett-regel (bara existerande tokens och pill-höjder återanvänds), en tydlig nästa-handling åt gången (flashcards: vänd → nästa, inga parallella vägval).
+
+---
+
 ## 2026-09-25 — Mobil UX-granskning i 375×812: sex fixar i HP-delen
 
 **Vad:** En mobil UX-granskning (375×812) av ORD-drillen, tvillingträningen och mattediagnosen hittade sex problem, alla åtgärdade:

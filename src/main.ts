@@ -6,6 +6,8 @@ import { HP_TWINS } from "./hp-twins";
 import type { HpDelprov, HpTwin } from "./hp-twins";
 import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
+import { HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
+import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
 import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
@@ -424,6 +426,11 @@ let hpTwinTempoIntervalRef: number | null = null;
 /** True när man nått HP via nav/startsidans HP-kort medan ett pass pågår —
  *  visar HP-hem med "Fortsätt pass" i stället för att hoppa rakt in i övningen. */
 let hpForceHome = false;
+/** HP-guiden: null = ingen guide öppen, annars vilket läge som visas. */
+let hpGuideMode: "flashcards" | "page" | null = null;
+let hpGuideFilter: HpGuideCategoryId | "alla" = "alla";
+let hpGuideIndex = 0;
+let hpGuideFlipped = false;
 let navOpen = false;
 let glossaryFilter: "all" | "general" | "python" | "network" | "ux" = "all";
 let glossarySearch = "";
@@ -2093,7 +2100,20 @@ function renderHpHome(): string {
           ${lastMathHtml}
           <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
           ${renderHpTwinHomeSection()}
+          ${renderHpGuideHomeSection()}
         `}
+    </div>
+  `;
+}
+
+function renderHpGuideHomeSection(): string {
+  return `
+    <div class="hp-guide-home-row">
+      <p class="hp-guide-home-heading">Guide</p>
+      <div class="hp-guide-home-btns">
+        <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-flashcards">Flashcards</button>
+        <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-page">Läs hela guiden</button>
+      </div>
     </div>
   `;
 }
@@ -2461,9 +2481,116 @@ function renderHpTwinSummary(): string {
   `;
 }
 
+/** HP-guiden: flashcards-läge, ett kort per skärm, tryck för att vända. */
+function renderHpGuideFlashcards(): string {
+  let items = hpGuideCardsForCategory(hpGuideFilter);
+  if (items.length === 0) {
+    hpGuideFilter = "alla";
+    items = hpGuideCardsForCategory(hpGuideFilter);
+  }
+  const total = items.length;
+  if (hpGuideIndex >= total) hpGuideIndex = total - 1;
+  if (hpGuideIndex < 0) hpGuideIndex = 0;
+  const card = items[hpGuideIndex];
+  const categoryInfo = HP_GUIDE_CATEGORIES.find((c) => c.id === card.kategori)!;
+
+  const chips = [{ id: "alla" as const, shortLabel: "Alla" }, ...HP_GUIDE_CATEGORIES]
+    .map((c) => {
+      const active = hpGuideFilter === c.id;
+      return `<button class="hp-guide-chip ${active ? "hp-guide-chip-active" : ""}" data-action="hp-guide-filter" data-category="${c.id}">${c.shortLabel}</button>`;
+    })
+    .join("");
+
+  const faceHtml = hpGuideFlipped
+    ? `
+      <p class="hp-guide-card-gorsahar">${card.gorSaHar}</p>
+      <p class="hp-guide-card-varfor">${card.varfor}</p>
+      ${card.kalla ? `<p class="hp-guide-card-kalla">Källa: ${card.kalla}</p>` : ""}
+      <p class="hp-guide-card-hint">Tryck för att vända tillbaka</p>
+    `
+    : `
+      <p class="hp-guide-card-kategori">${categoryInfo.label}</p>
+      <p class="hp-guide-card-rubrik">${card.rubrik}</p>
+      <p class="hp-guide-card-hint">Tryck för att vända</p>
+    `;
+
+  return `
+    <div class="hp-guide-flash">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-guide-cancel">Avbryt</button>
+        <span class="hp-drill-progress">${hpGuideIndex + 1}/${total}</span>
+      </div>
+      <div class="hp-guide-chip-row">${chips}</div>
+      <div class="hp-guide-card ${hpGuideFlipped ? "hp-guide-card-back" : ""}" data-action="hp-guide-flip">
+        ${faceHtml}
+      </div>
+      <div class="hp-guide-nav-row">
+        <button class="hp-guide-nav-btn" data-action="hp-guide-prev" ${hpGuideIndex === 0 ? "disabled" : ""}>‹ Föregående</button>
+        <button class="hp-guide-nav-btn" data-action="hp-guide-next" ${hpGuideIndex === total - 1 ? "disabled" : ""}>Nästa ›</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderHpGuidePageCard(card: HpGuideCard): string {
+  return `
+    <div class="hp-guide-page-card">
+      <p class="hp-guide-page-card-rubrik">${card.rubrik}</p>
+      <p class="hp-guide-page-card-gorsahar">${card.gorSaHar}</p>
+      <p class="hp-guide-page-card-varfor">${card.varfor}</p>
+      ${card.kalla ? `<p class="hp-guide-page-card-kalla">Källa: ${card.kalla}</p>` : ""}
+    </div>
+  `;
+}
+
+/** HP-guiden: lång översiktssida, ihopfällbara sektioner. "Viktigast" öppen från start. */
+function renderHpGuidePage(): string {
+  const topCards = hpGuideCardsForCategory("viktigast");
+  const otherCategories = HP_GUIDE_CATEGORIES.filter((c) => c.id !== "viktigast");
+
+  const topHtml = `
+    <div class="hp-guide-page-top">
+      <p class="hp-guide-page-top-heading">De 7 viktigaste råden</p>
+      ${topCards.map((c) => renderHpGuidePageCard(c)).join("")}
+    </div>
+  `;
+
+  const sectionsHtml = otherCategories
+    .map((cat) => {
+      const cards = hpGuideCardsForCategory(cat.id);
+      if (cards.length === 0) return "";
+      return `
+        <details class="hp-guide-section">
+          <summary class="hp-guide-section-summary">${cat.label} <span class="hp-guide-section-count">${cards.length}</span></summary>
+          <div class="hp-guide-section-body">
+            ${cards.map((c) => renderHpGuidePageCard(c)).join("")}
+          </div>
+        </details>
+      `;
+    })
+    .join("");
+
+  return `
+    <div class="hp-guide-page">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-guide-cancel">Avbryt</button>
+        <span class="hp-drill-progress">Guide — översikt</span>
+      </div>
+      ${topHtml}
+      ${sectionsHtml}
+    </div>
+  `;
+}
+
 function renderHp(): string {
   if (hpForceHome) {
     return renderHpHome();
+  }
+  if (hpGuideMode === "flashcards") {
+    return renderHpGuideFlashcards();
+  }
+  if (hpGuideMode === "page") {
+    return renderHpGuidePage();
   }
   if (hpMathSession) {
     return hpMathSession.currentIndex >= hpMathSession.items.length ? renderHpMathResult() : renderHpMathQuestion();
@@ -4187,6 +4314,63 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "hp-guide-flashcards") {
+    hpForceHome = false;
+    hpGuideMode = "flashcards";
+    hpGuideFilter = "alla";
+    hpGuideIndex = 0;
+    hpGuideFlipped = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-guide-page") {
+    hpForceHome = false;
+    hpGuideMode = "page";
+    render();
+    return;
+  }
+
+  if (action === "hp-guide-cancel") {
+    hpGuideMode = null;
+    hpForceHome = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-guide-flip") {
+    hpGuideFlipped = !hpGuideFlipped;
+    render();
+    return;
+  }
+
+  if (action === "hp-guide-filter") {
+    hpGuideFilter = (actionEl.dataset.category as HpGuideCategoryId | "alla") ?? "alla";
+    hpGuideIndex = 0;
+    hpGuideFlipped = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-guide-prev") {
+    if (hpGuideIndex > 0) {
+      hpGuideIndex--;
+      hpGuideFlipped = false;
+      render();
+    }
+    return;
+  }
+
+  if (action === "hp-guide-next") {
+    const total = hpGuideCardsForCategory(hpGuideFilter).length;
+    if (hpGuideIndex < total - 1) {
+      hpGuideIndex++;
+      hpGuideFlipped = false;
+      render();
+    }
+    return;
+  }
+
   if (action === "start-aptitude-drill") {
     const rawIds = actionEl.dataset.questionIds ?? "";
     const ids = rawIds.split(",").map((s) => s.trim()).filter(Boolean);
@@ -4305,6 +4489,55 @@ app.addEventListener("click", (event) => {
     render();
   }
 });
+
+// HP-guiden: enkel horisontell svep-navigering på flashcards, som komplement
+// till Föregående/Nästa-knapparna.
+let hpGuideSwipeStartX: number | null = null;
+let hpGuideSwipeStartY: number | null = null;
+app.addEventListener(
+  "touchstart",
+  (event) => {
+    if (hpGuideMode !== "flashcards" || event.touches.length !== 1) {
+      hpGuideSwipeStartX = null;
+      return;
+    }
+    const target = event.target as HTMLElement;
+    if (!target.closest(".hp-guide-card")) {
+      hpGuideSwipeStartX = null;
+      return;
+    }
+    hpGuideSwipeStartX = event.touches[0].clientX;
+    hpGuideSwipeStartY = event.touches[0].clientY;
+  },
+  { passive: true }
+);
+
+app.addEventListener(
+  "touchend",
+  (event) => {
+    if (hpGuideSwipeStartX === null || hpGuideSwipeStartY === null) return;
+    const startX = hpGuideSwipeStartX;
+    const startY = hpGuideSwipeStartY;
+    hpGuideSwipeStartX = null;
+    hpGuideSwipeStartY = null;
+    const touch = event.changedTouches[0];
+    if (!touch) return;
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY) * 1.5) return;
+    const total = hpGuideCardsForCategory(hpGuideFilter).length;
+    if (deltaX < 0 && hpGuideIndex < total - 1) {
+      hpGuideIndex++;
+      hpGuideFlipped = false;
+      render();
+    } else if (deltaX > 0 && hpGuideIndex > 0) {
+      hpGuideIndex--;
+      hpGuideFlipped = false;
+      render();
+    }
+  },
+  { passive: true }
+);
 
 app.addEventListener("input", (event) => {
   const target = event.target as HTMLElement;
