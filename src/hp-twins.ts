@@ -1,3 +1,8 @@
+import { HP_TWINS_XYZ } from "./hp-twins-xyz";
+import { HP_TWINS_KVA } from "./hp-twins-kva";
+import { HP_TWINS_NOG } from "./hp-twins-nog";
+import { HP_TWINS_DTK } from "./hp-twins-dtk";
+
 // HP "tvillinguppgifter": egna uppgifter i högskoleprovets kvantitativa stil,
 // inspirerade av riktiga uppgifter ur UHR:s provhäften (studera.nu). Samma
 // uppgiftstyp, matematiska idé, upplägg och ungefärliga svårighetsgrad som
@@ -56,7 +61,7 @@ const VAREN_2025_URL =
 const HOSTEN_2025_URL =
   "https://www.studera.nu/hogskoleprov/fpn/provfragor-facit-och-normering-hosten-2025/";
 
-export const HP_TWINS: HpTwin[] = [
+const HP_TWINS_BASE: HpTwin[] = [
   // ===================== XYZ — Matematisk problemlösning (12) =====================
   {
     id: "xyz-01",
@@ -540,4 +545,12 @@ export const HP_TWINS: HpTwin[] = [
     solution: "365:240:60, delat med 60, ger ungefär 6:4:1.",
     twinOf: { prov: "2024-04-13", provpass: 2, uppgift: 32, url: VAREN_2024_URL }
   }
+];
+
+export const HP_TWINS: HpTwin[] = [
+  ...HP_TWINS_BASE,
+  ...HP_TWINS_XYZ,
+  ...HP_TWINS_KVA,
+  ...HP_TWINS_NOG,
+  ...HP_TWINS_DTK,
 ];
