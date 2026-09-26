@@ -744,16 +744,31 @@ function shuffleTwinOptions(t: HpTwin): HpTwin {
   return { ...t, options, correct };
 }
 
+/** Antal uppgifter per pass = antal i ett provpass på riktiga provet. */
+const HP_TWIN_PASS_SIZE: Record<HpDelprov, number> = { XYZ: 12, KVA: 10, NOG: 6, DTK: 12 };
+
 /** Bygger dagens pass för ett delprov: missade uppgifter (repetitionskö) prioriteras först,
- *  sedan resten av banken i slumpad ordning. Svarsordningen blandas endast för XYZ/DTK. */
+ *  sedan slumpade nya uppgifter tills passet har provets storlek. DTK-frågor som delar tabell
+ *  hålls ihop. Svarsordningen blandas endast för XYZ/DTK. */
 function buildHpTwinPass(delprov: HpDelprov): HpTwin[] {
   const bank = hpTwinBank(delprov);
+  const size = HP_TWIN_PASS_SIZE[delprov];
   const byId = new Map(bank.map((t) => [t.id, t]));
   const repeatIds = loadHpTwinRepeatQueue(delprov);
-  const repeatItems = repeatIds.map((id) => byId.get(id)).filter((t): t is HpTwin => Boolean(t));
+  const repeatItems = repeatIds
+    .map((id) => byId.get(id))
+    .filter((t): t is HpTwin => Boolean(t))
+    .slice(0, size);
   const usedIds = new Set(repeatItems.map((t) => t.id));
-  const freshItems = bank.filter((t) => !usedIds.has(t.id)).sort(() => Math.random() - 0.5);
-  const ordered = [...repeatItems, ...freshItems];
+  // Gruppera per tabell så att DTK-frågor om samma tabell kommer i följd.
+  const groups = new Map<string, HpTwin[]>();
+  for (const t of bank) {
+    if (usedIds.has(t.id)) continue;
+    const key = t.table ?? t.id;
+    groups.set(key, [...(groups.get(key) ?? []), t]);
+  }
+  const freshItems = [...groups.values()].sort(() => Math.random() - 0.5).flat();
+  const ordered = [...repeatItems, ...freshItems].slice(0, size);
   return hpTwinShufflesOptions(delprov) ? ordered.map(shuffleTwinOptions) : ordered;
 }
 
