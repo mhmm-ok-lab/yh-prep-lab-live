@@ -2,6 +2,7 @@ import { HP_TWINS_XYZ } from "./hp-twins-xyz";
 import { HP_TWINS_KVA } from "./hp-twins-kva";
 import { HP_TWINS_NOG } from "./hp-twins-nog";
 import { HP_TWINS_DTK } from "./hp-twins-dtk";
+import { HP_TWINS_FIG } from "./hp-twins-fig";
 
 // HP "tvillinguppgifter": egna uppgifter i högskoleprovets kvantitativa stil,
 // inspirerade av riktiga uppgifter ur UHR:s provhäften (studera.nu). Samma
@@ -20,6 +21,8 @@ export interface HpTwin {
   area: string;
   prompt: string;
   table?: string;
+  /** Inline-SVG-figur (diagram, geometrisk figur). Ritas ovanför frågan i full bredd. */
+  figure?: string;
   options: string[];
   correct: number;
   solution: string;
@@ -595,4 +598,5 @@ export const HP_TWINS: HpTwin[] = [
   ...HP_TWINS_KVA,
   ...HP_TWINS_NOG,
   ...HP_TWINS_DTK,
+  ...HP_TWINS_FIG,
 ];
