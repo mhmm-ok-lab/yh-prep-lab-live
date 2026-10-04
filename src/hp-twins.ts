@@ -23,6 +23,8 @@ export interface HpTwin {
   options: string[];
   correct: number;
   solution: string;
+  /** Ledtråd som visas via ?-knappen FÖRE svar: metod/första steg, aldrig svaret. */
+  hint?: string;
   twinOf: {
     prov: string;
     provpass: number;

@@ -2918,12 +2918,8 @@ details:not(.mini-menu)[open] {
   padding-top: 0.75rem;
 }
 
-/* Frågan och svaren hålls ihop som en grupp (närhetsprincipen) och hela gruppen
-   förankras nedtill i tumzonen — blicken ska inte behöva hoppa över skärmen. */
-.hp-drill > .hp-word,
-.hp-drill > .hp-twin-prompt {
-  margin-top: auto;
-}
+/* Frågan och svaren hålls ihop som en grupp (närhetsprincipen) direkt under topraden —
+   allt man behöver syns högst upp i första vyn (Martins beslut 2026-10-04). */
 
 .hp-option-btn {
   min-height: 44px;

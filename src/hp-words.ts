@@ -12,6 +12,8 @@ export interface HpWord {
   explanation: string;
   /** Vilket prov ordet förekom på, t.ex. "HT2025". */
   source: string;
+  /** Ledtråd via ?-knappen FÖRE svar: ordled, besläktat ord eller sammanhang, aldrig svaret. */
+  hint?: string;
 }
 
 export const HP_WORDS: HpWord[] = [

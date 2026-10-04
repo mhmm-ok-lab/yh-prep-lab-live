@@ -92,6 +92,8 @@ export interface HpMathQuestion {
   solutionSteps: string[];
   /** Formel eller regel att komma ihåg. */
   formula: string;
+  /** Ledtråd som visas via ?-knappen FÖRE svar: metod/första steg, aldrig svaret. */
+  hint?: string;
 }
 
 export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
