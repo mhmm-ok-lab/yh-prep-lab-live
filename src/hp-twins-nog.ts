@@ -32,6 +32,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2024-10-20, provpass 1 =====================
   {
     id: "nog2-01",
+    hint: "Pröva (1) ensamt, sedan (2) ensamt, och först om ingen räcker båda tillsammans. Fråga dig om (2) verkligen säger något nytt om antalet.",
     delprov: "NOG",
     area: "procent",
     prompt:
@@ -44,6 +45,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-02",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda tillsammans. Fråga dig vad du kan räkna ut om hela mängden i (2) och vad (1) säger om delmängden.",
     delprov: "NOG",
     area: "bråk",
     prompt:
@@ -56,6 +58,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-03",
+    hint: "Tre steg. Medelvärde gånger antal ger totalsumman. Fråga dig om (1) respektive (2) räcker för att få ut flickans längd.",
     delprov: "NOG",
     area: "medelvärde",
     prompt:
@@ -68,6 +71,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-04",
+    hint: "Tre steg. För varje påstående, lista vilka placeringar som blir kvar för den röda lådan. Är det bara en kvar?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -80,6 +84,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-05",
+    hint: "Tre steg. Lista vilka tal som uppfyller (1), sedan (2), och till sist båda. Är det exakt ett tal kvar?",
     delprov: "NOG",
     area: "talteori",
     prompt:
@@ -94,6 +99,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2024-10-20, provpass 4 =====================
   {
     id: "nog2-06",
+    hint: "Tre steg. Rangordna bollarna efter storlek enligt (1) och sedan enligt (2). Fråga dig om ordningen blir entydig varje gång.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -106,6 +112,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-07",
+    hint: "Tre steg. Fråga dig om du får en lösbar ekvation med exakt en okänd i (1) och i (2). Räkna okända mot samband.",
     delprov: "NOG",
     area: "procent",
     prompt:
@@ -118,6 +125,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-08",
+    hint: "Tre steg. Sätt upp vad du vet om fördelningen för korten. Fråga dig om (1) respektive (2) handlar om fotbollskort i pärm.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -130,6 +138,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-09",
+    hint: "Tre steg. Skriv upp vad du vet om sträcka, tid och hastighet för varje person. Fråga dig om (1) och (2) var för sig ger ett tal.",
     delprov: "NOG",
     area: "hastighet",
     prompt:
@@ -142,6 +151,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-10",
+    hint: "Tre steg. Fundera på hur tre olika jämna tal inom ett spann på 4 kan se ut. Räcker (1) eller (2) för att fastställa alla tre?",
     delprov: "NOG",
     area: "talteori",
     prompt:
@@ -154,6 +164,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-11",
+    hint: "Tre steg. Utgå från vad som ska gälla för varje låda. För (1) och (2) var för sig, fråga dig hur många lådor nyckeln kan ligga i.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -168,6 +179,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2022-10-23, provpass 1 =====================
   {
     id: "nog2-12",
+    hint: "Tre steg. Rita våningarna och ställ upp vad (1) och (2) tillåter. Räcker det att placera en familj, eller måste du kombinera?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -180,6 +192,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-13",
+    hint: "Tre steg. Försök bygga raden för (1), sedan för (2). Fråga dig om det finns mer än en ordning som fungerar.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -194,6 +207,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2022-10-23, provpass 4 =====================
   {
     id: "nog2-14",
+    hint: "Tre steg. Vad behöver du för att räkna ut en rektangels area? Se vad (1) och (2) var för sig ger, och sedan tillsammans.",
     delprov: "NOG",
     area: "geometri",
     prompt: "Vilken area har rektangeln Q?\n\n(1) En sida i Q är 7 cm.\n(2) Q har omkretsen 20 cm.",
@@ -205,6 +219,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-15",
+    hint: "Tre steg. Placera skotrarna efter (1), sedan efter (2). Är det alltid samma skoter som hamnar längst till höger?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -217,6 +232,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-16",
+    hint: "Tre steg. Fråga dig om (1) berättar något du inte redan visste, och vad du kan räkna ut om glasens volym i (2).",
     delprov: "NOG",
     area: "procent",
     prompt:
@@ -229,6 +245,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-17",
+    hint: "Tre steg. Ge elektronikaffären en bokstav och uttryck de andra med den. Fråga dig om (1) respektive (2) ger en ekvation eller en olikhet.",
     delprov: "NOG",
     area: "ekvationer",
     prompt:
@@ -243,6 +260,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2023-03-25, provpass 2 =====================
   {
     id: "nog2-18",
+    hint: "Tre steg. Fråga dig vilken del av uttrycket du får veta i (1) och i (2), och vilka okända som återstår när du ska få ut c.",
     delprov: "NOG",
     area: "algebra",
     prompt: "För talen a, b och c gäller att (a + b)(a + c) = 13. Vilket värde har c?\n\n(1) a + b = 1\n(2) b = -3",
@@ -254,6 +272,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-19",
+    hint: "Tre steg. Skriv upp vad du vet om antalet av varje sorts föremål för (1) och (2). Hur många tal blir kvar efter varje steg?",
     delprov: "NOG",
     area: "talteori",
     prompt:
@@ -266,6 +285,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-20",
+    hint: "Tre steg. Lista vilka platser som går att tilldela enligt (1), sedan (2). Är Heddas plats alltid densamma?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -278,6 +298,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-21",
+    hint: "Tre steg. Rita bordet och placera personerna enligt (1) och sedan (2). Fråga dig om hattbäraren blir entydig.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -290,6 +311,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-22",
+    hint: "Tre steg. Fråga dig först vad uppgiften redan avslöjar om tank D. Därefter, räcker (1) respektive (2) för att få fram C?",
     delprov: "NOG",
     area: "procent",
     prompt:
@@ -302,6 +324,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-23",
+    hint: "Tre steg. Pröva att placera pärmarna på rad enligt (1) och sedan (2). Finns det mer än ett sätt?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -316,6 +339,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2023-03-25, provpass 4 =====================
   {
     id: "nog2-24",
+    hint: "Tre steg. Skriv varje påstående som ett samband mellan antal. Fråga dig om de säger samma sak, eller om ett är nytt.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -328,6 +352,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-25",
+    hint: "Tre steg. Skriv upp vad du vet om Toms hylla. Fråga dig om (1) och (2) var för sig handlar om just den hyllan.",
     delprov: "NOG",
     area: "ekvationer",
     prompt:
@@ -340,6 +365,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-26",
+    hint: "Tre steg. Lista alla tal i intervallet som passar (1), sedan (2). Vad händer när du jämför listorna?",
     delprov: "NOG",
     area: "talteori",
     prompt:
@@ -352,6 +378,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-27",
+    hint: "Tre steg. Gör en liten tabell över burkarna. Vad blir kvar för varje burk enligt (1) respektive (2)?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -364,6 +391,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-28",
+    hint: "Tre steg. Skriv en ekvation för varje påstående. Fråga dig om du får en enda möjlig lösning eller bara ett förhållande.",
     delprov: "NOG",
     area: "ekvationer",
     prompt:
@@ -376,6 +404,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-29",
+    hint: "Tre steg. Förenkla (1) till ett samband mellan p och q, och gör samma med (2). Fråga dig om du kan få p + q direkt.",
     delprov: "NOG",
     area: "medelvärde",
     prompt:
@@ -388,6 +417,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-30",
+    hint: "Tre steg. Låt V vara volymen och ställ upp en ekvation för varje påstående. Hur många lösningar får V?",
     delprov: "NOG",
     area: "procent",
     prompt: "En tank innehåller endast vatten. Tanken är fylld till 3/5 av sin volym. Hur stor volym har tanken?\n\n(1) För att tanken ska bli helt full måste man fylla på ytterligare 400 liter vatten.\n(2) Om man tömmer ut 100 liter vatten ur tanken så kommer den att vara fylld till hälften.",
@@ -401,6 +431,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2024-04-13, provpass 5 =====================
   {
     id: "nog2-31",
+    hint: "Tre steg. Ge Elin och Fanny varsin bokstav och ställ upp en ekvation för varje påstående. Hur många okända har du i varje?",
     delprov: "NOG",
     area: "ekvationer",
     prompt:
@@ -415,6 +446,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2023-10-22, provpass 2 =====================
   {
     id: "nog2-32",
+    hint: "Tre steg. Rita en tabell med rund/kantig mot blå/vit. Fråga dig om (1) och (2) fyller ut den helt.",
     delprov: "NOG",
     area: "talteori",
     prompt:
@@ -427,6 +459,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-33",
+    hint: "Tre steg. Lista möjliga siffror för (1), skär bort med (2), och kontrollera om exakt ett tal återstår.",
     delprov: "NOG",
     area: "talteori",
     prompt:
@@ -439,6 +472,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-34",
+    hint: "Tre steg. Rita sträckorna på en linje och uttryck allt med PQ. Räcker ett känt mått i (1) respektive (2)?",
     delprov: "NOG",
     area: "geometri",
     prompt:
@@ -451,6 +485,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-35",
+    hint: "Tre steg. Fyll i en tabell över filmer och salonger för (1), sedan (2). Hur många kombinationer återstår?",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -465,6 +500,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   // ===================== Källa: 2023-10-22, provpass 4 =====================
   {
     id: "nog2-36",
+    hint: "Tre steg. Rita en mängddiagram över franska och tyska. Fråga dig om du vet hur många som läser inget eller bara ett av språken.",
     delprov: "NOG",
     area: "logik",
     prompt:
@@ -477,6 +513,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-37",
+    hint: "Tre steg. Fråga dig hur många linjer som kan gå genom en enda punkt, och vad som händer med två punkter.",
     delprov: "NOG",
     area: "geometri",
     prompt: "Går linjen L genom punkten (3, 3)?\n\n(1) Linjen L går genom punkten (1, 5).\n(2) Linjen L går genom punkten (5, 1).",
@@ -488,6 +525,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-38",
+    hint: "Tre steg. Fråga dig om talet 4 går att ta ut ur tal som är delbara med 20 respektive 28. Svara är det ja eller nej, varje gång?",
     delprov: "NOG",
     area: "talteori",
     prompt: "Erik tänker på ett heltal. Är talet jämnt delbart med 4?\n\n(1) Talet är jämnt delbart med 20.\n(2) Talet är jämnt delbart med 28.",
@@ -499,6 +537,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-39",
+    hint: "Tre steg. Rangordna träden för varje påstående. Är det alltid samma träd som blir högst?",
     delprov: "NOG",
     area: "logik",
     prompt: "En ek, en lind och en asp växer intill varandra. Vilket av träden är högst?\n\n(1) Eken är högre än linden. Aspen är inte högst.\n(2) Både eken och linden är högre än aspen.",
@@ -510,6 +549,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-40",
+    hint: "Tre steg. Lista vilka poster som är möjliga för varje person under (1) och (2). Är sekreteraren entydig?",
     delprov: "NOG",
     area: "logik",
     prompt:

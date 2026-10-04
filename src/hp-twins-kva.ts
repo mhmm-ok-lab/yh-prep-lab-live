@@ -26,6 +26,7 @@ const VAREN_2022_URL =
 export const HP_TWINS_KVA: HpTwin[] = [
   {
     id: "kva2-01",
+    hint: "Procent av olika veckopengar går inte att jämföra rakt av. Fråga dig om det som ges verkligen styr vem som lägger mest, och testa två olika veckopengar som passar.",
     delprov: "KVA",
     area: "procent",
     prompt:
@@ -38,6 +39,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-02",
+    hint: "Ett heltal kan vara positivt, noll eller negativt. Pröva k = 0, k = 1 och ett större k och se om utfallet ändras.",
     delprov: "KVA",
     area: "algebra",
     prompt: "n är ett positivt heltal.\nk är ett heltal.\n\nKvantitet I: n\nKvantitet II: nk",
@@ -49,6 +51,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-03",
+    hint: "Sätt bara in värdena i funktionen en i taget och jämför talen. Ta hand om minustecknen noga.",
     delprov: "KVA",
     area: "funktioner",
     prompt: "g(x) = x² − 4x + 1\n\nKvantitet I: g(0)\nKvantitet II: g(3)",
@@ -60,6 +63,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-04",
+    hint: "Rita parallellogrammen. Vilka vinklar är lika, och vilka ska tillsammans bli 180°? Lista alla möjliga hörnvinklar innan du jämför.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -72,6 +76,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-05",
+    hint: "Tänk på hur tio på varandra följande heltal ser ut: det minsta talet plus 0 till 9. Hitta först det minsta talet via medelvärdet.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -84,6 +89,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-06",
+    hint: "Skriv ut vilka tal och vilka primtal som ingår innan du räknar. Kom ihåg att 1 inte är ett primtal och att gränserna är strikta.",
     delprov: "KVA",
     area: "talteori",
     prompt:
@@ -96,6 +102,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-07",
+    hint: "Rita punkterna i ett koordinatsystem. Du behöver inte räkna ut avstånden exakt, bara se vilket avstånd som är längre.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -108,6 +115,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-08",
+    hint: "Sortera talen i storleksordning först. Med udda antal tal är medianen mitten, med jämnt antal tar du medelvärdet av de två mittersta.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -120,6 +128,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-09",
+    hint: "Skriv ut de första potenserna och leta efter ett mönster i entalssiffran. Fråga dig om n spelar roll för mönstret.",
     delprov: "KVA",
     area: "potenser",
     prompt: "n är ett positivt heltal.\n\nKvantitet I: Entalssiffran i talet 9ⁿ\nKvantitet II: 5",
@@ -131,6 +140,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-10",
+    hint: "Du får inte veta hur stora talen är. Testa ett par där a är litet och ett par där a är stort, och glöm inte att kvadrater av negativa tal blir positiva.",
     delprov: "KVA",
     area: "algebra",
     prompt: "a > b\nb < 0\n\nKvantitet I: a²\nKvantitet II: b²",
@@ -142,6 +152,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-11",
+    hint: "Räkna ut hur mycket EN kran hinner med på EN minut. Då kan du skala upp till valfritt antal kranar och volym.",
     delprov: "KVA",
     area: "hastighet",
     prompt:
@@ -154,6 +165,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-12",
+    hint: "Addera bråken med gemensam nämnare och jämför med talet 1. Slarva inte med att läsa vilka bråk det gäller.",
     delprov: "KVA",
     area: "bråk",
     prompt: "Kvantitet I: 3/8 + 5/8\nKvantitet II: 1",
@@ -164,6 +176,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-13",
+    hint: "Lista de utfall som ger exakt det önskade. Räkna sedan hur många sätt de kan ordnas på, eftersom tärningarna är olika.",
     delprov: "KVA",
     area: "sannolikhet",
     prompt:
@@ -176,6 +189,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-14",
+    hint: "Gör om allt till samma enhet, till exempel den minsta (nypor), innan du jämför.",
     delprov: "KVA",
     area: "bråk",
     prompt:
@@ -188,6 +202,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-15",
+    hint: "Testa konkreta tal som uppfyller p < q < r. Flytta q närmare p och sedan närmare r och se om svaret ändras.",
     delprov: "KVA",
     area: "algebra",
     prompt: "p < q < r\n\nKvantitet I: (p + r)/2\nKvantitet II: (p + q + r)/3",
@@ -199,6 +214,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-16",
+    hint: "Börja med formeln för omkrets och lös ut radien. Jämför sedan med 8 utan att behöva räkna med en miniräknare.",
     delprov: "KVA",
     area: "geometri",
     prompt: "Omkretsen av en cirkel är 18π cm.\n\nKvantitet I: Cirkelns radie\nKvantitet II: 8 cm",
@@ -209,6 +225,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-17",
+    hint: "Ett bråk i exponenten betyder en rot. Fråga dig vilket tal som multiplicerat med sig själv tre gånger ger basen.",
     delprov: "KVA",
     area: "potenser",
     prompt: "Kvantitet I: 64^(1/3)\nKvantitet II: 4",
@@ -219,6 +236,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-18",
+    hint: "Du behöver inte veta x. Jämför de två uppgifterna med varandra och se hur y och z förhåller sig till varandra.",
     delprov: "KVA",
     area: "procent",
     prompt:
@@ -231,6 +249,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-19",
+    hint: "Skriv båda kvantiteterna med sidorna a, b och c. Förenkla och se om de blir samma uttryck.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -243,6 +262,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-20",
+    hint: "Division med ett bråk är multiplikation med det inverterade bråket. Förenkla båda och uppskatta storleken, är de nära 1, över eller under?",
     delprov: "KVA",
     area: "bråk",
     prompt: "Kvantitet I: (2/9) delat med (9/2)\nKvantitet II: (9/2) delat med (2/9)",
@@ -254,6 +274,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-21",
+    hint: "Översätt meningen till en formel med Erik och Filip som bokstäver. Testa sedan en mycket ung och en mycket gammal Filip.",
     delprov: "KVA",
     area: "algebra",
     prompt:
@@ -266,6 +287,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-22",
+    hint: "Ytan som överlappar är densamma för båda kvadraterna. Skriv den som procent av K1 och som procent av K2 och sätt dem lika.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -278,6 +300,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-23",
+    hint: "Utnyttja villkoret: uttryck y med x. Förenkla båda kvantiteterna och fråga dig om något av dem alltid är noll eller positivt.",
     delprov: "KVA",
     area: "algebra",
     prompt: "x + y = 0, där x ≠ 0.\n\nKvantitet I: x² + y²\nKvantitet II: x² + 2xy + y²",
@@ -289,6 +312,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-24",
+    hint: "En rät linje genom origo har formen f(x) = kx. Fråga dig om du vet något om k, och testa en positiv och en negativ lutning.",
     delprov: "KVA",
     area: "funktioner",
     prompt:
@@ -301,6 +325,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-25",
+    hint: "Medelvärde gånger antal är summan. Räkna ut vilken summa p och q måste ha tillsammans och jämför sedan med talet.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -313,6 +338,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-26",
+    hint: "Medelvärde gånger antal är summan av alla tre. Dra bort det du redan vet och se vad som blir kvar till x.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -324,6 +350,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-27",
+    hint: "Rutan med villkor säger bara tecknen, inte storlekarna. Kvadrater blir positiva, så testa små och stora tal i båda leden.",
     delprov: "KVA",
     area: "algebra",
     prompt: "a > 0\nb < 0\nc > 0\nd < 0\n\nKvantitet I: a² + b²\nKvantitet II: c² + d²",
@@ -335,6 +362,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-28",
+    hint: "Räkna ut de två areorna med respektive formel. Kom ihåg att triangelns area är bas gånger höjd delat med 2.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -346,6 +374,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-29",
+    hint: "Räkna ut procenten, eller skriv om den som decimaltal, och jämför med det andra talet.",
     delprov: "KVA",
     area: "procent",
     prompt: "Kvantitet I: 65 procent av 120\nKvantitet II: 78",
@@ -356,6 +385,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-30",
+    hint: "Skriv ut vilka tal som ingår i summan för F respektive G. Glöm inte att dela G med 2 innan du jämför.",
     delprov: "KVA",
     area: "talteori",
     prompt:
@@ -368,6 +398,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-31",
+    hint: "Det här är kvoter som alltid blir samma tal för alla cirklar respektive kvadrater. Kom ihåg vad dessa tal är och jämför dem.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -380,6 +411,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-32",
+    hint: "Tänk först på hur stor del av kvinnorna som är vänsterhänta. Använd det för att få fram antalet kvinnor, sedan männen.",
     delprov: "KVA",
     area: "procent",
     prompt:
@@ -392,6 +424,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-33",
+    hint: "Byt ut x mot 6y i kvantitet II och förenkla. Jämför sedan med kvantitet I.",
     delprov: "KVA",
     area: "bråk",
     prompt: "y > 0\nx = 6y\n\nKvantitet I: y\nKvantitet II: En sjättedel av x",
@@ -402,6 +435,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-34",
+    hint: "I skärningspunkten är y lika för båda linjerna. Sätt uttrycken lika med varandra och lös ut x.",
     delprov: "KVA",
     area: "räta linjen",
     prompt:
@@ -413,6 +447,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-35",
+    hint: "Skriv y som x + 1 och använd konjugatregeln för y² − x². Då blir det en enkel ekvation.",
     delprov: "KVA",
     area: "talteori",
     prompt:
@@ -425,6 +460,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-36",
+    hint: "Ge linjalerna en bokstav och uttryck de andra sakerna med den. Pennorna kan uttryckas på två sätt, sätt dem lika.",
     delprov: "KVA",
     area: "algebra",
     prompt:
@@ -437,6 +473,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-37",
+    hint: "Med tolv värden är medianen medelvärdet av de två mittersta. Fundera på vad som händer med mitten när du tar bort det minsta, och testa olika serier.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -449,6 +486,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-38",
+    hint: "Räkna ut båda värdena var för sig och jämför. Förenkla procent och bråk till vanliga tal.",
     delprov: "KVA",
     area: "procent",
     prompt: "Kvantitet I: 5 procent av 240\nKvantitet II: En tredjedel av 36",
@@ -459,6 +497,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-39",
+    hint: "Du behöver inte räkna med hela funktionen. Fundera på hur mycket h ändras när x ändras en viss mängd, och jämför stegen i x.",
     delprov: "KVA",
     area: "funktioner",
     prompt: "h(x) = 5x − 2\n\nKvantitet I: h(2) − h(6)\nKvantitet II: h(−1) − h(3)",
@@ -470,6 +509,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-40",
+    hint: "Gör om bråken till gemensam nämnare, till exempel tolftedelar, och addera. Jämför sedan med 1/2.",
     delprov: "KVA",
     area: "bråk",
     prompt: "Kvantitet I: 1/4 + 1/12 + 1/6\nKvantitet II: 1/2",
@@ -480,6 +520,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-41",
+    hint: "Fundera på tecknet på m² och på vad som händer när du multiplicerar med n. Testa n positivt, noll och negativt.",
     delprov: "KVA",
     area: "algebra",
     prompt: "m < 0\nn < 1\n\nKvantitet I: m²\nKvantitet II: m² · n",
@@ -491,6 +532,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-42",
+    hint: "Ge de röda kulorna en bokstav och uttryck gröna och totalt med den. Sannolikhet är röda delat med alla.",
     delprov: "KVA",
     area: "sannolikhet",
     prompt:
@@ -503,6 +545,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-43",
+    hint: "Lista alla heltal mellan gränserna och stryk dem som inte uppfyller villkoren för x respektive y. Jämför antalet.",
     delprov: "KVA",
     area: "talteori",
     prompt:
@@ -515,6 +558,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-44",
+    hint: "Gör om till samma enhet. Kom ihåg hur många cm det är i en meter och hur många meter i en kilometer.",
     delprov: "KVA",
     area: "aritmetik",
     prompt: "Kvantitet I: 500 000 cm\nKvantitet II: 5 km",
@@ -525,6 +569,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-45",
+    hint: "Gör om till gemensam nämnare och subtrahera. Är resultatet positivt, noll eller negativt?",
     delprov: "KVA",
     area: "bråk",
     prompt: "Kvantitet I: 1/4 − 1/6\nKvantitet II: 0",
@@ -535,6 +580,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-46",
+    hint: "Sortera de kända talen och fundera på var b kan hamna. Testa ett litet och ett stort b och se hur medianen påverkas.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -547,6 +593,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-47",
+    hint: "Använd triangelolikheten: varje sida måste vara kortare än summan av de två andra. Testa olika sätt att dela upp de 21 cm.",
     delprov: "KVA",
     area: "geometri",
     prompt: "Summan av två sidor i en triangel är 21 cm.\n\nKvantitet I: Längden av den tredje sidan\nKvantitet II: 19 cm",
@@ -558,6 +605,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-48",
+    hint: "Titta på skillnaden mellan kvantiteterna i stället för på dem var för sig. Testa sedan positivt och negativt q.",
     delprov: "KVA",
     area: "algebra",
     prompt: "p < q\n\nKvantitet I: p + q\nKvantitet II: p − q",
@@ -569,6 +617,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-49",
+    hint: "Cirklars areor växer med kvadraten på radien. Jämför r² och strunta i π, det är med i båda kvantiteterna.",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -581,6 +630,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-50",
+    hint: "Primtalsfaktorisera båda talen och addera de olika faktorerna. Börja med att dela med 2, 3 och 5.",
     delprov: "KVA",
     area: "talteori",
     prompt:
