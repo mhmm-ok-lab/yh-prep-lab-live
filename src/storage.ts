@@ -9,6 +9,8 @@ const HP_PROGRESS_KEY = "yh.hp-progress";
 const HP_MATH_RESULT_KEY = "yh.hp-math-result";
 const HP_TWIN_REPEAT_KEY = "yh.hp-twin-repeat";
 const HP_TWIN_RESULT_KEY = "yh.hp-twin-result";
+const HP_LAS_RESULT_KEY = "yh.hp-las-result";
+const HP_LAS_REPEAT_KEY = "yh.hp-las-repeat";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
 
@@ -228,6 +230,83 @@ export function saveHpTwinResult(result: HpTwinResult): void {
     localStorage.setItem(namespacedKey(HP_TWIN_RESULT_KEY), JSON.stringify(map));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+export type HpLasErrorTag = "missad-detalj" | "feltolkat" | "tidsbrist";
+
+/** Senaste resultatet för en LÄS-text (en text = ett pass). */
+export interface HpLasResult {
+  completedAt: string;
+  textId: string;
+  correct: number;
+  /** Besvarade frågor (obesvarade, via "Avsluta utan svar", räknas inte). */
+  total: number;
+  seconds: number;
+  budgetSeconds: number;
+  errorTags: Partial<Record<HpLasErrorTag, number>>;
+  /** Frågetyper (huvudtanke, detalj, …) som blev fel, antal per typ. */
+  missedTypes: Record<string, number>;
+}
+
+type HpLasResultMap = Record<string, HpLasResult>;
+
+function loadHpLasResultMap(): HpLasResultMap {
+  try {
+    return safeParse<HpLasResultMap>(localStorage.getItem(namespacedKey(HP_LAS_RESULT_KEY)), {});
+  } catch {
+    return {};
+  }
+}
+
+/** Alla sparade LÄS-resultat (nyckel = text-id). */
+export function loadHpLasResults(): HpLasResultMap {
+  return loadHpLasResultMap();
+}
+
+export function loadHpLasResult(textId: string): HpLasResult | null {
+  return loadHpLasResultMap()[textId] ?? null;
+}
+
+export function saveHpLasResult(result: HpLasResult): void {
+  try {
+    const map = loadHpLasResultMap();
+    map[result.textId] = result;
+    localStorage.setItem(namespacedKey(HP_LAS_RESULT_KEY), JSON.stringify(map));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+/** Repetitionskö för LÄS: id på texter där minst en fråga blev fel (äldst först). */
+export function loadHpLasRepeatQueue(): string[] {
+  try {
+    return safeParse<string[]>(localStorage.getItem(namespacedKey(HP_LAS_REPEAT_KEY)), []);
+  } catch {
+    return [];
+  }
+}
+
+function saveHpLasRepeatQueue(queue: string[]): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_LAS_REPEAT_KEY), JSON.stringify(queue));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+export function addHpLasRepeatText(textId: string): void {
+  const queue = loadHpLasRepeatQueue();
+  if (!queue.includes(textId)) {
+    saveHpLasRepeatQueue([...queue, textId]);
+  }
+}
+
+export function removeHpLasRepeatText(textId: string): void {
+  const queue = loadHpLasRepeatQueue();
+  const next = queue.filter((id) => id !== textId);
+  if (next.length !== queue.length) {
+    saveHpLasRepeatQueue(next);
   }
 }
 

@@ -3,6 +3,22 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-05 — LÄS-träning: frågan först, texten på knapptryck
+
+**Vad:** Ny övning "LÄS – läsförståelse" i HP: ett pass = en text med 3–4 frågor (10 egna texter, 37 frågor). (1) Frågan och fyra alternativ visas först; texten nås med "Visa texten", stycke för stycke med synligt styckenummer. (2) Tempomätare "1:12 / 6:00" (frågor × 2 min) syns hela tiden. (3) Efter svar visas varför för det alternativ du valde och för rätt alternativ, "Se alla alternativ" visar varför för alla fyra, och "Svaret finns i stycke N" öppnar texten med stycket markerat. (4) Vid fel frågas "Varför blev det fel?" med Missade detalj / Feltolkade / Tidsbrist. (5) Sammanfattning med tid mot budget, felanalys och frågetyper du missade. (6) Repetitionskö per text. (7) LÄS-kort på HP-hem och i "Rekommenderat nu".
+
+**Varför:** LÄS är Martins svåraste delprov: han tar för lång tid och vill förstå varför han väljer fel. Metoden "frågan före texten" tvingas fram av gränssnittet, och att se varför varje alternativ är fel gör felet till lärdom, inte bara ett rött kryss.
+
+**Val: växlare, inte delad panel.** Jag jämförde (a) en panel med scrollbar text under frågan och (b) en växlare Fråga ⇄ Text. På 375 × 812 tar frågan med alternativ ~300 px, så en text i panelen får ~250 px och blir en scroll i scrollen. Växlaren (b) ger hela skärmen åt det man gör och kostar ett tryck. Raden överst (topprad, växlare, i textläget frågans text på en rad) är sticky, så tempot och vägen tillbaka alltid syns. Varje vy minns scrollpositionen, så att man hamnar där man var. Textläget: ett kort per stycke, 14 px, radavstånd 1,65, ca 36–40 tecken per rad.
+
+**Före/efter:** före fanns ingen LÄS-övning, bara sju tips i guiden. Efter: frågans överkant ligger på 194 px i 375 × 812 (under 200, beslut 6), ingen sidledsscroll (scrollWidth 375), feedbacken ligger under alternativen och knuffar inte ner dem. Markerat stycke läggs direkt under den sticky raden.
+
+**Rekommendation:** otränat LÄS rekommenderas direkt efter otränade mattedelprov (prioriterat), och därefter en text om dagen.
+
+**Stitch-princip:** progressiv avslöjning (texten visas först när man bett om den, alla förklaringar bakom en länk), en tydlig primär handling per skärm, No-Line (tonala kort, `--honey` för markerat stycke), 3 fontstorlekar, pill 28 px (växlare, felknappar) och 36 px (Öppna stycke, Nästa) med 44 px träffyta via `::after`. Teori: Desirable difficulties och generation effect (försök först, förklaring sen), cognitive load (en sak åt gången, ingen scroll-i-scroll), Fitts lag och användarkontroll (Föregående, Hoppa över, fritt växla vy).
+
+---
+
 ## 2026-10-05 — ?-hjälp: metod före svar, ledtråd efter svar
 
 **Vad:** (1) ?-knappen visar nu bara den allmänna metoden för delprovet (ur HP_GUIDE), aldrig frågans `hint`. (2) Efter svar visas frågespecifik ledtråd: i matte (diagnos + XYZ/KVA/NOG/DTK) under "Så skulle du ha tänkt", i ORD som "Så minns du det: …" (ursprung/ordled) tillsammans med "ord = betydelse" och förklaringen, både vid rätt och fel. (3) ORD auto-nästa vid rätt svar förlängt från 2 till 3 s eftersom mer text ska hinna läsas; "Tryck för att fortsätta" kvar. (4) Mattediagnosen fick "Varför blev det fel?" (Slarv / Kunde inte / Missförstod, samma som matteträningen, räknas i en "Felanalys" i slutsammanfattningen). Knappen "Missförstod frågan" förkortad till "Missförstod" så tre knappar ryms på en rad i 375 px.

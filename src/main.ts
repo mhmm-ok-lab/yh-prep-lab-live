@@ -6,17 +6,22 @@ import { HP_TWINS } from "./hp-twins";
 import type { HpDelprov, HpTwin } from "./hp-twins";
 import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
+import { HP_LAS_TEXTS } from "./hp-las";
+import type { HpLasQuestion, HpLasQuestionType, HpLasText } from "./hp-las";
 import { HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
 import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
 import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
+  addHpLasRepeatText,
   addHpRepeatWord,
   addHpTwinRepeatItem,
   clearActiveSession,
   exportStudyDataSnapshot,
   importStudyDataSnapshot,
   loadActiveSession,
+  loadHpLasRepeatQueue,
+  loadHpLasResults,
   loadHpMathResult,
   loadHpProgress,
   loadHpRepeatQueue,
@@ -24,15 +29,17 @@ import {
   loadHpTwinResult,
   loadStudySessions,
   recordHpPassCompleted,
+  removeHpLasRepeatText,
   removeHpRepeatWord,
   removeHpTwinRepeatItem,
   saveActiveSession,
+  saveHpLasResult,
   saveHpMathResult,
   saveHpTwinResult,
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import type { HpMathAreaResult, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
+import type { HpLasErrorTag, HpMathAreaResult, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning" | "hp";
@@ -172,6 +179,27 @@ interface HpTwinSession extends HpNavFields {
   missedItems: HpTwin[];
   errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
   currentTag: HpTwinErrorTag | null;
+  helpedIds: string[];
+}
+
+/** HP LÄS-träning: ett pass = en text med dess frågor. Tempomätaren går per text (frågor × 2 min). */
+interface HpLasSession extends HpNavFields {
+  text: HpLasText;
+  items: HpLasQuestion[];
+  currentIndex: number;
+  userAnswer: number | null;
+  showFeedback: boolean;
+  correct: number;
+  wrong: number;
+  questionStartedAt: number;
+  startedAt: number;
+  /** Sätts när sista frågan är klar, så att sammanfattningens tid står still. */
+  finishedAt: number | null;
+  missedItems: HpLasQuestion[];
+  errorTagCounts: Partial<Record<HpLasErrorTag, number>>;
+  currentTag: HpLasErrorTag | null;
+  /** Felkategori per besvarad fråga (position), för granskningsläget. */
+  lasTagLog: (HpLasErrorTag | null)[];
   helpedIds: string[];
 }
 
@@ -447,6 +475,14 @@ let hpMathTempoIntervalRef: number | null = null;
 let hpMathViewingSaved = false;
 let hpTwinSession: HpTwinSession | null = null;
 let hpTwinTempoIntervalRef: number | null = null;
+let hpLasSession: HpLasSession | null = null;
+let hpLasTempoIntervalRef: number | null = null;
+/** LÄS: vilken vy som visas (fråga eller text), markerat stycke, vilken fråga som visar alla alternativ,
+ *  och scrollposition per vy så att man hamnar rätt när man växlar. */
+let hpLasView: "fraga" | "text" = "fraga";
+let hpLasHighlight: number | null = null;
+let hpLasShowAllFor: string | null = null;
+const hpLasScroll = { fraga: 0, text: 0 };
 /** True när man nått HP via nav/startsidans HP-kort medan ett pass pågår —
  *  visar HP-hem med "Fortsätt pass" i stället för att hoppa rakt in i övningen. */
 let hpForceHome = false;
@@ -789,7 +825,7 @@ const HP_DELPROV_NAMES: Record<HpDelprov, string> = {
 
 /** Vad ska Martin göra nu? 1) mattedelprov han aldrig provat, 2) dagens ord om de inte är gjorda,
  *  3) mattedelprovet med lägst andel rätt. */
-function recommendHpNext(wordsToday: number): { label: string; reason: string; delprov?: HpDelprov } {
+function recommendHpNext(wordsToday: number): { label: string; reason: string; delprov?: HpDelprov; las?: HpLasText } {
   const order: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
   const untried = order.find((d) => !loadHpTwinResult(d));
   if (untried) {
@@ -799,8 +835,27 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
       reason: `Du har inte provat ${untried} än · ${HP_TWIN_PASS_SIZE[untried]} uppgifter`
     };
   }
+  // LÄS är prioriterat (Martins svåraste del): direkt efter otränade mattedelprov, och sedan en text om dagen.
+  const lasResults = Object.values(loadHpLasResults());
+  const lasText = pickHpLasText();
+  if (lasText && lasResults.length === 0) {
+    return {
+      las: lasText,
+      label: `LÄS – ${lasText.title}`,
+      reason: `Du har inte tränat LÄS än · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
+    };
+  }
   if (wordsToday === 0 && HP_WORDS.length > 0) {
     return { label: "Dagens 10 ord", reason: "Du har inte kört ord i dag" };
+  }
+  const today = new Date().toDateString();
+  if (lasText && !lasResults.some((r) => new Date(r.completedAt).toDateString() === today)) {
+    const isRepeat = loadHpLasRepeatQueue().includes(lasText.id);
+    return {
+      las: lasText,
+      label: `LÄS – ${lasText.title}`,
+      reason: `${isRepeat ? "Du hade fel här sist, dags att repetera" : "Ingen LÄS i dag än"} · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
+    };
   }
   const weakest = suggestNextHpTwinDelprov();
   const r = loadHpTwinResult(weakest)!;
@@ -809,6 +864,175 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
     label: `Matte ${weakest} – ${HP_DELPROV_NAMES[weakest]}`,
     reason: `Ditt svagaste just nu (senast ${r.correct}/${r.total}) · ${HP_TWIN_PASS_SIZE[weakest]} uppgifter`
   };
+}
+
+const HP_LAS_SECONDS_PER_QUESTION = 120;
+
+function hpLasBudgetSeconds(text: HpLasText): number {
+  return text.questions.length * HP_LAS_SECONDS_PER_QUESTION;
+}
+
+function formatMinSec(totalSeconds: number): string {
+  const s = Math.max(0, Math.round(totalSeconds));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+/** Väljer nästa LÄS-text. Aldrig samma text två gånger i rad. Repetitionskön (texter med fel) först,
+ *  sedan texter som inte gjorts, sedan den som gjordes för längst tid sedan. */
+function pickHpLasText(): HpLasText | undefined {
+  if (HP_LAS_TEXTS.length === 0) {
+    return undefined;
+  }
+  const results = loadHpLasResults();
+  const lastId = Object.values(results).sort((a, b) => b.completedAt.localeCompare(a.completedAt))[0]?.textId;
+  const byId = new Map(HP_LAS_TEXTS.map((t) => [t.id, t]));
+  const queued = loadHpLasRepeatQueue()
+    .map((id) => byId.get(id))
+    .filter((t): t is HpLasText => Boolean(t) && t!.id !== lastId);
+  if (queued.length > 0) {
+    return queued[0];
+  }
+  const fresh = HP_LAS_TEXTS.filter((t) => !results[t.id] && t.id !== lastId);
+  if (fresh.length > 0) {
+    return fresh[0];
+  }
+  const oldest = HP_LAS_TEXTS.filter((t) => t.id !== lastId).sort((a, b) =>
+    (results[a.id]?.completedAt ?? "").localeCompare(results[b.id]?.completedAt ?? "")
+  );
+  return oldest[0] ?? HP_LAS_TEXTS[0];
+}
+
+function hpLasElapsedSeconds(): number {
+  if (!hpLasSession) {
+    return 0;
+  }
+  return Math.round(((hpLasSession.finishedAt ?? Date.now()) - hpLasSession.startedAt) / 1000);
+}
+
+function stopHpLasTempoInterval(): void {
+  if (hpLasTempoIntervalRef) {
+    window.clearInterval(hpLasTempoIntervalRef);
+    hpLasTempoIntervalRef = null;
+  }
+}
+
+function hpLasTempoText(): string {
+  return hpLasSession ? `${formatMinSec(hpLasElapsedSeconds())} / ${formatMinSec(hpLasBudgetSeconds(hpLasSession.text))}` : "";
+}
+
+function updateHpLasTempoUI(): void {
+  if (!hpLasSession) {
+    return;
+  }
+  const el = app.querySelector<HTMLElement>("[data-hp-las-tempo]");
+  if (!el) {
+    return;
+  }
+  el.textContent = hpLasTempoText();
+  el.classList.toggle("hp-tempo-over", hpLasElapsedSeconds() > hpLasBudgetSeconds(hpLasSession.text));
+}
+
+function startHpLasTempoInterval(): void {
+  stopHpLasTempoInterval();
+  updateHpLasTempoUI();
+  hpLasTempoIntervalRef = window.setInterval(updateHpLasTempoUI, 500);
+}
+
+function hpLasResetView(): void {
+  hpLasView = "fraga";
+  hpLasHighlight = null;
+  hpLasShowAllFor = null;
+  hpLasScroll.fraga = 0;
+  window.scrollTo(0, 0);
+}
+
+function hpLasStart(text: HpLasText): void {
+  hpForceHome = false;
+  hpHelpOpenFor = null;
+  hpLasScroll.text = 0;
+  hpLasSession = {
+    text,
+    items: text.questions.map((q) => ({ ...q })),
+    currentIndex: 0,
+    userAnswer: null,
+    showFeedback: false,
+    correct: 0,
+    wrong: 0,
+    questionStartedAt: Date.now(),
+    startedAt: Date.now(),
+    finishedAt: null,
+    missedItems: [],
+    errorTagCounts: {},
+    currentTag: null,
+    lasTagLog: [],
+    helpedIds: [],
+    ...hpNavInit()
+  };
+  hpLasResetView();
+  render();
+}
+
+function hpLasAdvanceQuestion(): void {
+  if (!hpLasSession) {
+    return;
+  }
+  if (hpLasSession.currentTag) {
+    const tag = hpLasSession.currentTag;
+    hpLasSession.errorTagCounts[tag] = (hpLasSession.errorTagCounts[tag] ?? 0) + 1;
+  }
+  hpLasSession.lasTagLog[hpLasSession.currentIndex] = hpLasSession.currentTag;
+  hpLasSession.currentIndex++;
+  if (hpLasSession.currentIndex < hpLasSession.items.length) {
+    hpLasSession.userAnswer = null;
+    hpLasSession.showFeedback = false;
+    hpLasSession.currentTag = null;
+    hpLasSession.questionStartedAt = Date.now();
+  } else {
+    hpLasSaveResult();
+  }
+  hpLasResetView();
+  render();
+}
+
+function hpLasSaveResult(): void {
+  if (!hpLasSession) {
+    return;
+  }
+  const s = hpLasSession;
+  s.finishedAt = Date.now();
+  const missedTypes: Record<string, number> = {};
+  for (const q of s.missedItems) {
+    missedTypes[q.type] = (missedTypes[q.type] ?? 0) + 1;
+  }
+  saveHpLasResult({
+    completedAt: new Date().toISOString(),
+    textId: s.text.id,
+    correct: s.correct,
+    total: s.items.length - s.unanswered,
+    seconds: hpLasElapsedSeconds(),
+    budgetSeconds: hpLasBudgetSeconds(s.text),
+    errorTags: s.errorTagCounts,
+    missedTypes
+  });
+  // Texten ligger kvar i repetitionskön tills den görs utan fel.
+  if (s.wrong > 0 || s.unanswered > 0) {
+    addHpLasRepeatText(s.text.id);
+  } else {
+    removeHpLasRepeatText(s.text.id);
+  }
+}
+
+/** Växlar mellan fråga och text och minns var man var i respektive vy. */
+function hpLasSwitchView(next: "fraga" | "text", highlight: number | null): void {
+  hpLasScroll[hpLasView] = window.scrollY;
+  hpLasView = next;
+  hpLasHighlight = highlight;
+  render();
+  if (next === "text" && highlight !== null) {
+    document.getElementById(`hp-las-p-${highlight}`)?.scrollIntoView({ block: "start" });
+  } else {
+    window.scrollTo(0, hpLasScroll[next]);
+  }
 }
 
 /** Föreslår nästa mattedelprov: först ett som aldrig tränats, annars det med lägst andel rätt. */
@@ -2197,6 +2421,17 @@ function renderHpActiveResume(): string {
       </div>
     `;
   }
+  if (hpLasSession) {
+    const total = hpLasSession.items.length;
+    const at = Math.min(hpLasSession.currentIndex + 1, total);
+    return `
+      <div class="hp-resume-card">
+        <p class="hp-resume-label">Pågående pass</p>
+        <p class="hp-resume-desc">LÄS – ${hpLasSession.text.title} — fråga ${at}/${total}</p>
+        <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
+      </div>
+    `;
+  }
   if (hpTwinSession) {
     const total = hpTwinSession.items.length;
     const at = Math.min(hpTwinSession.currentIndex + 1, total);
@@ -2258,10 +2493,12 @@ function renderHpHome(): string {
         : `
           ${(() => {
             const rec = recommendHpNext(progress.wordsCompleted);
-            const recBtn = rec.delprov
-              ? `<button class="hp-cta-btn" data-action="hp-twin-start" data-delprov="${rec.delprov}">${rec.label}</button>`
-              : `<button class="hp-cta-btn" data-action="hp-start-pass">${rec.label}</button>`;
-            const ordBtn = rec.delprov && hasWords
+            const recBtn = rec.las
+              ? `<button class="hp-cta-btn" data-action="hp-las-start" data-text-id="${rec.las.id}">${rec.label}</button>`
+              : rec.delprov
+                ? `<button class="hp-cta-btn" data-action="hp-twin-start" data-delprov="${rec.delprov}">${rec.label}</button>`
+                : `<button class="hp-cta-btn" data-action="hp-start-pass">${rec.label}</button>`;
+            const ordBtn = (rec.delprov || rec.las) && hasWords
               ? `<button class="hp-secondary-btn" data-action="hp-start-pass">Dagens 10 ord</button>`
               : "";
             return `
@@ -2270,6 +2507,7 @@ function renderHpHome(): string {
               <p class="hp-rec-reason">${rec.reason}</p>
               ${ordBtn}`;
           })()}
+          ${renderHpLasHomeCard()}
           <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
           ${lastMathHtml}
           <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
@@ -2277,6 +2515,24 @@ function renderHpHome(): string {
           ${renderHpGuideHomeSection()}
         `}
     </div>
+  `;
+}
+
+function renderHpLasHomeCard(): string {
+  if (HP_LAS_TEXTS.length === 0) {
+    return "";
+  }
+  const results = loadHpLasResults();
+  const done = HP_LAS_TEXTS.filter((t) => results[t.id]).length;
+  const repeat = loadHpLasRepeatQueue().filter((id) => HP_LAS_TEXTS.some((t) => t.id === id)).length;
+  const questions = HP_LAS_TEXTS.reduce((sum, t) => sum + t.questions.length, 0);
+  const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_LAS_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
+  return `
+    <button class="hp-las-card" data-action="hp-las-start">
+      <span class="hp-las-card-name">LÄS – läsförståelse</span>
+      <span class="hp-las-card-desc">Frågan först, sedan texten · ca 2 min per fråga</span>
+      <span class="hp-las-card-count">${HP_LAS_TEXTS.length} texter · ${questions} frågor · ${status}</span>
+    </button>
   `;
 }
 
@@ -2352,9 +2608,10 @@ function renderHpHelpButton(open: boolean): string {
 }
 
 /** Kompakt hjälplager: bara den allmänna metoden för delprovet (ur HP_GUIDE). Frågespecifik ledtråd visas först efter svar. */
-function renderHpHelpPanel(categoryId: "ord" | "xyz" | "kva" | "nog" | "dtk"): string {
+function renderHpHelpPanel(categoryId: "ord" | "las" | "xyz" | "kva" | "nog" | "dtk"): string {
   const info = HP_GUIDE_CATEGORIES.find((c) => c.id === categoryId)!;
-  const cards = hpGuideCardsForCategory(categoryId).slice(0, 3);
+  // LÄS har sju korta tips, övriga visar de tre första.
+  const cards = hpGuideCardsForCategory(categoryId).slice(0, categoryId === "las" ? 7 : 3);
   const steps = cards
     .map((c) => `<li><strong>${c.rubrik}.</strong> ${c.gorSaHar}</li>`)
     .join("");
@@ -2775,6 +3032,222 @@ function renderHpTwinSummary(): string {
   `;
 }
 
+const HP_LAS_TAG_LABEL: Record<HpLasErrorTag, string> = {
+  "missad-detalj": "Missade detalj",
+  feltolkat: "Feltolkade",
+  tidsbrist: "Tidsbrist"
+};
+
+const HP_LAS_TAG_COACH: Record<HpLasErrorTag, string> = {
+  "missad-detalj": "Svaret fanns i texten men du hittade det inte. Prova sökläsning härnäst: leta bara efter det frågan frågar om.",
+  feltolkat: "Du läste rätt ställe men drog fel slutsats. Läs meningen före och efter en gång till innan du väljer.",
+  tidsbrist: "Du gissade för att tiden rann iväg. Öva på att skumma snabbare i första läsningen."
+};
+
+const HP_LAS_TYPE_LABEL: Record<HpLasQuestionType, string> = {
+  huvudtanke: "Huvudtanke",
+  detalj: "Detalj",
+  slutsats: "Slutsats",
+  syfte: "Författarens syfte",
+  ordbetydelse: "Ord i sammanhang"
+};
+
+const HP_LAS_LETTERS = ["A", "B", "C", "D"];
+
+function renderHpLasTagRow(current: HpLasErrorTag | null): string {
+  return `<p class="hp-feedback-why">Varför blev det fel?</p>
+      <div class="hp-twin-tag-row">
+        ${(Object.keys(HP_LAS_TAG_LABEL) as HpLasErrorTag[])
+          .map(
+            (tag) =>
+              `<button class="hp-twin-tag-btn ${current === tag ? "hp-twin-tag-selected" : ""}" data-action="hp-las-tag" data-tag="${tag}">${HP_LAS_TAG_LABEL[tag]}</button>`
+          )
+          .join("")}
+      </div>`;
+}
+
+/** Sticky rad överst: topprad (Avbryt, progress, tempo mot textens budget, ?) och en växlare Fråga / Text.
+ *  Tempot syns hela tiden, även när man läser texten. */
+function renderHpLasBar(item: HpLasQuestion, idx: number): string {
+  const s = hpLasSession!;
+  const inReview = s.reviewIndex !== null;
+  const textView = hpLasView === "text";
+  const over = hpLasElapsedSeconds() > hpLasBudgetSeconds(s.text);
+  const segQ = textView
+    ? `<button class="hp-las-seg" data-action="hp-las-view" data-las-view="fraga">Till frågan</button>`
+    : `<button class="hp-las-seg hp-las-seg-on" aria-pressed="true" data-action="hp-las-view" data-las-view="fraga">Frågan</button>`;
+  const segT = textView
+    ? `<button class="hp-las-seg hp-las-seg-on" aria-pressed="true" data-action="hp-las-view" data-las-view="text">Texten</button>`
+    : `<button class="hp-las-seg" data-action="hp-las-view" data-las-view="text">Visa texten</button>`;
+  return `
+    <div class="hp-las-bar">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-las-cancel">Avbryt</button>
+        ${renderHpProgress(`Fråga ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
+        <span class="hp-tempo ${over ? "hp-tempo-over" : ""}" data-hp-las-tempo>${hpLasTempoText()}</span>
+        ${inReview ? "" : renderHpHelpButton(hpHelpOpenFor === item.id)}
+      </div>
+      ${textView ? "" : renderHpDrillTitle(`LÄS – ${s.text.title}`)}
+      <div class="hp-las-switch" role="group" aria-label="Växla mellan fråga och text">${segQ}${segT}</div>
+      ${textView ? `<p class="hp-las-reminder"><strong>Fråga ${idx + 1}:</strong> ${item.prompt}</p>` : ""}
+    </div>
+  `;
+}
+
+function renderHpLasText(): string {
+  const s = hpLasSession!;
+  const paras = s.text.paragraphs
+    .map(
+      (p, i) => `
+        <div class="hp-las-para ${hpLasHighlight === i ? "hp-las-para-hl" : ""}" id="hp-las-p-${i}">
+          <span class="hp-las-pnum" aria-label="Stycke ${i + 1}">${i + 1}</span>
+          <p>${p}</p>
+        </div>`
+    )
+    .join("");
+  return `
+    <p class="hp-las-text-title">${s.text.title}<span class="hp-las-topic">${s.text.topic}</span></p>
+    <div class="hp-las-paras">${paras}</div>
+    <button class="hp-secondary-btn" data-action="hp-las-view" data-las-view="fraga">Till frågan</button>
+  `;
+}
+
+function renderHpLasFeedback(item: HpLasQuestion, userAnswer: number, inReview: boolean): string {
+  const s = hpLasSession!;
+  const isCorrect = userAnswer === item.correct;
+  const idx = s.reviewIndex ?? s.currentIndex;
+  const shownTag = inReview ? s.lasTagLog[idx] ?? null : s.currentTag;
+  const showAll = hpLasShowAllFor === item.id;
+  const L = (i: number) => HP_LAS_LETTERS[i];
+  let whyHtml: string;
+  if (showAll) {
+    whyHtml = `<div class="hp-las-all">${item.options
+      .map((opt, i) => {
+        const cls = i === item.correct ? "hp-las-all-ok" : i === userAnswer ? "hp-las-all-wrong" : "";
+        const mark = i === item.correct ? "Rätt" : i === userAnswer ? "Du valde" : "";
+        return `<div class="hp-las-all-item ${cls}"><p class="hp-las-all-head"><strong>${L(i)}.</strong> ${opt.text}${mark ? `<span class="hp-las-all-mark">${mark}</span>` : ""}</p><p class="hp-las-why">${opt.why}</p></div>`;
+      })
+      .join("")}</div>`;
+  } else {
+    whyHtml = `${isCorrect ? "" : `<p class="hp-las-why"><strong>Du valde ${L(userAnswer)}:</strong> ${item.options[userAnswer].why}</p>`}
+        <p class="hp-las-why"><strong>Rätt svar ${L(item.correct)}:</strong> ${item.options[item.correct].why}</p>`;
+  }
+  const n = item.paragraph + 1;
+  const tagHtml = !isCorrect ? (inReview ? (shownTag ? `<p class="hp-feedback-why">Du valde: ${HP_LAS_TAG_LABEL[shownTag]}</p>` : "") : renderHpLasTagRow(shownTag)) : "";
+  const last = s.currentIndex >= s.items.length - 1;
+  return `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
+      <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : "Fel svar"}</p>
+      ${whyHtml}
+      <button class="hp-las-linkbtn" data-action="hp-las-all">${showAll ? "Dölj alla alternativ" : "Se alla alternativ"}</button>
+      <div class="hp-las-where">
+        <span class="hp-feedback-why">Svaret finns i stycke ${n}</span>
+        <button class="hp-las-open" data-action="hp-las-para" data-para="${item.paragraph}">Öppna stycke ${n}</button>
+      </div>
+      ${tagHtml}
+      ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-las-next">${last ? "Se sammanfattning" : "Nästa"}</button>`}
+    </div>`;
+}
+
+function renderHpLasQuestion(): string {
+  if (!hpLasSession) {
+    return "";
+  }
+  const s = hpLasSession;
+  const inReview = s.reviewIndex !== null;
+  const idx = s.reviewIndex ?? s.currentIndex;
+  const item = s.items[idx];
+  const userAnswer = inReview ? s.answerLog[idx] : s.userAnswer;
+  const answered = inReview || s.showFeedback;
+  const helpHtml = !inReview && hpHelpOpenFor === item.id ? renderHpHelpPanel("las") : "";
+
+  if (hpLasView === "text") {
+    return `
+      <div class="hp-drill hp-las">
+        ${renderHpLasBar(item, idx)}
+        ${helpHtml}
+        ${renderHpLasText()}
+      </div>
+    `;
+  }
+
+  const optionsHtml = item.options
+    .map((opt, i) => {
+      let cls = "hp-option-btn hp-las-opt";
+      if (answered) {
+        if (i === item.correct) cls += " hp-option-correct";
+        else if (i === userAnswer) cls += " hp-option-wrong";
+        else cls += " hp-option-neutral";
+      }
+      return `<button class="${cls}" data-action="hp-las-answer" data-index="${i}" ${answered ? "disabled" : ""}><span class="hp-las-letter">${HP_LAS_LETTERS[i]}</span><span>${opt.text}</span></button>`;
+    })
+    .join("");
+
+  return `
+    <div class="hp-drill hp-las">
+      ${renderHpLasBar(item, idx)}
+      <p class="hp-las-prompt">${item.prompt}</p>
+      <div class="hp-options">${optionsHtml}</div>
+      ${renderHpNavRow("hp-las", s)}
+      ${helpHtml}
+      ${answered ? renderHpLasFeedback(item, userAnswer as number, inReview) : ""}
+    </div>
+  `;
+}
+
+function renderHpLasSummary(): string {
+  if (!hpLasSession) {
+    return "";
+  }
+  const s = hpLasSession;
+  const answeredTotal = s.items.length - s.unanswered;
+  const seconds = hpLasElapsedSeconds();
+  const budget = hpLasBudgetSeconds(s.text);
+  const withinBudget = seconds <= budget;
+  const tagEntries = (Object.keys(HP_LAS_TAG_LABEL) as HpLasErrorTag[])
+    .map((tag) => ({ tag, count: s.errorTagCounts[tag] ?? 0 }))
+    .filter((e) => e.count > 0)
+    .sort((a, b) => b.count - a.count);
+  const missedTypes = new Map<HpLasQuestionType, number>();
+  for (const q of s.missedItems) {
+    missedTypes.set(q.type, (missedTypes.get(q.type) ?? 0) + 1);
+  }
+  const next = pickHpLasText();
+  return `
+    <div class="hp-summary">
+      <p class="hp-summary-heading">LÄS – ${s.text.title} — klart</p>
+      <div class="hp-progress-row">
+        <div class="stat-widget">
+          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-value">${s.correct}<span class="stat-widget-unit">/${answeredTotal}</span></span>
+        </div>
+        <div class="stat-widget">
+          <span class="stat-widget-label">Tid</span>
+          <span class="stat-widget-value">${formatMinSec(seconds)}</span>
+          <span class="stat-widget-sub">${withinBudget ? `inom budget ${formatMinSec(budget)} ✓` : `${formatMinSec(seconds - budget)} över budget ${formatMinSec(budget)}`}</span>
+        </div>
+      </div>
+      ${helpedSummary(s.helpedIds.length)}
+      ${unansweredSummary(s.unanswered)}
+      ${tagEntries.length > 0
+        ? `<div class="hp-twin-tag-summary">
+            <p class="hp-missed-heading">Felanalys</p>
+            ${tagEntries.map((e) => `<div class="hp-twin-tag-summary-row"><span>${HP_LAS_TAG_LABEL[e.tag]}</span><span>${e.count}</span></div>`).join("")}
+            <p class="hp-las-coach">${HP_LAS_TAG_COACH[tagEntries[0].tag]}</p>
+          </div>`
+        : ""}
+      ${missedTypes.size > 0
+        ? `<div class="hp-twin-tag-summary">
+            <p class="hp-missed-heading">Frågetyper du missade</p>
+            ${[...missedTypes.entries()].map(([type, count]) => `<div class="hp-twin-tag-summary-row"><span>${HP_LAS_TYPE_LABEL[type]}</span><span>${count}</span></div>`).join("")}
+            <p class="hp-las-coach">Texten kommer tillbaka i ett senare pass.</p>
+          </div>`
+        : `<p class="hp-summary-clean">Inga missade frågor — starkt jobbat!</p>`}
+      ${next ? `<button class="hp-cta-btn" data-action="hp-las-start" data-text-id="${next.id}">Nästa text: ${next.title}</button>` : ""}
+      <button class="hp-drill-cancel" data-action="hp-las-close">Klart för idag</button>
+    </div>
+  `;
+}
+
 /** HP-guiden: flashcards-läge, ett kort per skärm, tryck för att vända. */
 function renderHpGuideFlashcards(): string {
   let items = hpGuideCardsForCategory(hpGuideFilter);
@@ -2891,6 +3364,9 @@ function renderHp(): string {
   }
   if (hpMathViewingSaved) {
     return renderHpMathSavedResult();
+  }
+  if (hpLasSession) {
+    return hpLasSession.currentIndex >= hpLasSession.items.length ? renderHpLasSummary() : renderHpLasQuestion();
   }
   if (hpTwinSession) {
     return hpTwinSession.currentIndex >= hpTwinSession.items.length ? renderHpTwinSummary() : renderHpTwinQuestion();
@@ -3918,6 +4394,12 @@ function render(): void {
     stopHpMathTempoInterval();
   }
 
+  if (page === "hp" && hpLasSession && hpLasSession.currentIndex < hpLasSession.items.length) {
+    startHpLasTempoInterval();
+  } else {
+    stopHpLasTempoInterval();
+  }
+
   if (page === "hp" && hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length && !hpTwinSession.showFeedback && hpTwinSession.reviewIndex === null) {
     startHpTwinTempoInterval();
   } else {
@@ -4399,7 +4881,9 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "hp-help") {
-    const cur = hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length
+    const cur = hpLasSession && hpLasSession.currentIndex < hpLasSession.items.length
+      ? { id: hpLasSession.items[hpLasSession.currentIndex].id, answered: hpLasSession.showFeedback, helped: hpLasSession.helpedIds }
+      : hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length
       ? { id: hpTwinSession.items[hpTwinSession.currentIndex].id, answered: hpTwinSession.showFeedback, helped: hpTwinSession.helpedIds }
       : hpMathSession && hpMathSession.currentIndex < hpMathSession.items.length
         ? { id: hpMathSession.items[hpMathSession.currentIndex].id, answered: hpMathSession.showFeedback, helped: hpMathSession.helpedIds }
@@ -4616,6 +5100,109 @@ app.addEventListener("click", (event) => {
   if (action === "hp-math-close") {
     hpMathSession = null;
     hpMathViewingSaved = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-las-start") {
+    const wanted = actionEl.dataset.textId ? HP_LAS_TEXTS.find((t) => t.id === actionEl.dataset.textId) : undefined;
+    const text = wanted ?? pickHpLasText();
+    if (text) hpLasStart(text);
+    return;
+  }
+
+  if (action === "hp-las-view") {
+    if (!hpLasSession) return;
+    const next = actionEl.dataset.lasView === "text" ? "text" : "fraga";
+    if (next !== hpLasView) hpLasSwitchView(next, null);
+    return;
+  }
+
+  if (action === "hp-las-para") {
+    if (!hpLasSession) return;
+    hpLasSwitchView("text", Number(actionEl.dataset.para));
+    return;
+  }
+
+  if (action === "hp-las-all") {
+    if (!hpLasSession) return;
+    const cur = hpLasSession.items[hpLasSession.reviewIndex ?? hpLasSession.currentIndex];
+    hpLasShowAllFor = hpLasShowAllFor === cur.id ? null : cur.id;
+    render();
+    return;
+  }
+
+  if (action === "hp-las-answer") {
+    if (!hpLasSession || hpLasSession.showFeedback) return;
+    const index = Number(actionEl.dataset.index);
+    const item = hpLasSession.items[hpLasSession.currentIndex];
+    if (index === item.correct) {
+      hpLasSession.correct++;
+    } else {
+      hpLasSession.wrong++;
+      hpLasSession.missedItems.push(item);
+    }
+    hpLasSession.userAnswer = index;
+    hpLasSession.answerLog[hpLasSession.currentIndex] = index;
+    hpLasSession.showFeedback = true;
+    hpLasSession.currentTag = null;
+    hpLasShowAllFor = null;
+    render();
+    return;
+  }
+
+  if (action === "hp-las-tag") {
+    if (!hpLasSession || !hpLasSession.showFeedback) return;
+    const tag = actionEl.dataset.tag as HpLasErrorTag;
+    hpLasSession.currentTag = hpLasSession.currentTag === tag ? null : tag;
+    render();
+    return;
+  }
+
+  if (action === "hp-las-next") {
+    if (hpLasSession) hpLasAdvanceQuestion();
+    return;
+  }
+
+  if (action === "hp-las-prev") {
+    if (hpLasSession) {
+      hpLasView = "fraga";
+      hpLasShowAllFor = null;
+      hpNavPrev(hpLasSession);
+    }
+    return;
+  }
+
+  if (action === "hp-las-review-back") {
+    if (hpLasSession) {
+      hpLasView = "fraga";
+      hpLasShowAllFor = null;
+      hpNavBack(hpLasSession);
+    }
+    return;
+  }
+
+  if (action === "hp-las-skip") {
+    if (!hpLasSession) return;
+    if (hpNavSkip(hpLasSession)) {
+      hpLasSaveResult();
+    }
+    hpLasResetView();
+    render();
+    return;
+  }
+
+  if (action === "hp-las-cancel") {
+    hpLasSession = null;
+    hpForceHome = false;
+    hpLasResetView();
+    render();
+    return;
+  }
+
+  if (action === "hp-las-close") {
+    hpLasSession = null;
+    hpLasResetView();
     render();
     return;
   }
