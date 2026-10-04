@@ -8,6 +8,8 @@ import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
 import { HP_LAS_TEXTS } from "./hp-las";
 import type { HpLasQuestion, HpLasQuestionType, HpLasText } from "./hp-las";
+import { HP_CARDS, findHpCard } from "./hp-cards";
+import type { HpCard } from "./hp-cards";
 import { HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
 import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
 import { createDailyPlan, getNextMockExam } from "./planner";
@@ -502,7 +504,13 @@ let hpForceHome = false;
 /** Id på frågan vars ?-hjälplager är öppet (null = stängt). Byter fråga => stängs av sig självt. */
 let hpHelpOpenFor: string | null = null;
 /** HP-guiden: null = ingen guide öppen, annars vilket läge som visas. */
-let hpGuideMode: "flashcards" | "page" | null = null;
+let hpGuideMode: "flashcards" | "page" | "cards" | null = null;
+/** Påminnelsekort (beslut 2026-10-05 (6)): id på öppet kort (null = stängt). Passets och granskningens tillstånd
+ *  ligger kvar orört i sina egna variabler, så "Tillbaka" återskapar exakt samma vy. */
+let hpCardOpen: string | null = null;
+let hpCardReturnScroll = 0;
+/** Vilka områden i diagnosgranskningen som var öppna när kortet öppnades (så de är öppna igen efter Tillbaka). */
+let hpAreaOpenMemo: string[] | null = null;
 let hpGuideFilter: HpGuideCategoryId | "alla" = "alla";
 let hpGuideIndex = 0;
 let hpGuideFlipped = false;
@@ -2675,6 +2683,7 @@ function renderHpGuideHomeSection(): string {
       <div class="hp-guide-home-btns">
         <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-flashcards">Flashcards</button>
         <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-page">Läs hela guiden</button>
+        <button class="hp-secondary-btn hp-guide-home-btn hp-guide-home-btn-wide" data-action="hp-guide-cards">Påminnelsekort</button>
       </div>
     </div>
   `;
@@ -2963,6 +2972,7 @@ function renderHpMathQuestion(): string {
           <p class="hp-math-formula">📐 ${item.formula}</p>
         </div>
         ${renderHpThinkBlock(item.hint)}
+        ${renderHpCardLinks([item.area])}
         ${outcome === "shown" ? (inReview ? renderHpTagReadOnly(shownTag) : renderHpTagRow(hpMathSession.currentTag)) : ""}
         ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-math-next">Nästa</button>`}
       </div>`
@@ -3033,12 +3043,14 @@ function renderHpMathReviewQuestion(q: HpMathQuestionResult): string {
 /** Område som expanderbar details; är det enda Lär om-området öppet från start; annars syns alla som kompakta rader (44 px) så listan ryms utan scroll. */
 function renderHpMathAreaCard(result: HpMathAreaResult, questions: HpMathQuestionResult[] | null, open = false): string {
   const own = questions ? questions.filter((q) => q.area === result.area) : [];
-  const learn = `<a class="hp-math-learn-link" href="${hpMathAreaLearnUrl(result.area)}" target="_blank" rel="noopener">Lär dig ↗</a>`;
+  const areaCard = findHpCard(result.area);
+  const learn = `<div class="hp-math-learn-row"><a class="hp-math-learn-link" href="${hpMathAreaLearnUrl(result.area)}" target="_blank" rel="noopener">Lär dig ↗</a>${areaCard ? `<button class="hp-card-link" data-action="hp-card-open" data-card="${areaCard.id}">Påminn mig: ${areaCard.title}</button>` : ""}</div>`;
+  const isOpen = hpAreaOpenMemo ? hpAreaOpenMemo.includes(result.area) : open;
   const body = questions === null
     ? learn
     : `${own.map(renderHpMathReviewQuestion).join("")}${learn}`;
   return `
-    <details class="hp-guide-section hp-math-area-card" ${open ? "open" : ""}>
+    <details class="hp-guide-section hp-math-area-card" data-area="${result.area}" ${isOpen ? "open" : ""}>
       <summary class="hp-guide-section-summary">
         <span class="hp-math-level-badge hp-math-level-${result.level}">${HP_MATH_LEVEL_LABEL[result.level]}</span>
         <span class="hp-math-area-card-name">${hpMathAreaLabel(result.area)}</span>
@@ -3118,6 +3130,68 @@ const HP_TWIN_TAG_LABEL: Record<HpTwinErrorTag, string> = {
 };
 
 /** "Så skulle du ha tänkt": frågespecifik ledtråd, visas först efter svar. */
+/** Max 2 påminnelsekort för en fråga: områdets kort först, sedan delprovets strategikort (KVA/NOG/DTK). */
+function hpCardsFor(keys: string[]): HpCard[] {
+  const found: HpCard[] = [];
+  for (const k of keys) {
+    const c = findHpCard(k);
+    if (c && !found.includes(c)) found.push(c);
+  }
+  return found.slice(0, 2);
+}
+
+/** Länkar "Påminn mig: [titel]" i feedbacken. Visas bara efter svar (beslut 2026-10-05 (6)). */
+function renderHpCardLinks(keys: string[]): string {
+  const cards = hpCardsFor(keys);
+  if (cards.length === 0) return "";
+  return `<div class="hp-card-links">${cards
+    .map((c) => `<button class="hp-card-link" data-action="hp-card-open" data-card="${c.id}">Påminn mig: ${c.title}</button>`)
+    .join("")}</div>`;
+}
+
+function renderHpCard(card: HpCard): string {
+  return `
+    <div class="hp-card">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-card-back">← Tillbaka</button>
+        <span class="hp-drill-progress">Påminnelsekort</span>
+      </div>
+      <h2 class="hp-card-title">${card.title}</h2>
+      ${card.formula ? `<p class="hp-card-formula">${card.formula}</p>` : ""}
+      ${card.svg ? `<div class="hp-card-figure">${card.svg}</div>` : ""}
+      <div class="hp-card-block">
+        <p class="hp-card-label">Varför</p>
+        <p class="hp-card-text">${card.why}</p>
+      </div>
+      <div class="hp-card-block">
+        <p class="hp-card-label">Exempel</p>
+        <p class="hp-card-text hp-card-prompt">${card.example.prompt}</p>
+        <ol class="hp-card-steps">${card.example.steps.map((st) => `<li>${st}</li>`).join("")}</ol>
+      </div>
+      <div class="hp-card-block hp-card-trap">
+        <p class="hp-card-label">Fällan på provet</p>
+        <p class="hp-card-text">${card.trap}</p>
+      </div>
+      <a class="hp-card-extlink" href="${card.link.url}" target="_blank" rel="noopener">${card.link.label} ↗</a>
+    </div>
+  `;
+}
+
+/** Guidens lista med alla påminnelsekort. */
+function renderHpCardList(): string {
+  return `
+    <div class="hp-guide-page">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-guide-cancel">Avbryt</button>
+        <span class="hp-drill-progress">Påminnelsekort · ${HP_CARDS.length}</span>
+      </div>
+      <div class="hp-card-list">
+        ${HP_CARDS.map((c) => `<button class="hp-card-list-item" data-action="hp-card-open" data-card="${c.id}"><span>${c.title}</span><span class="hp-card-list-go" aria-hidden="true">›</span></button>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function renderHpThinkBlock(hint: string | undefined): string {
   return hint ? `<p class="hp-feedback-think"><strong>Så skulle du ha tänkt:</strong> ${hint}</p>` : "";
 }
@@ -3170,6 +3244,7 @@ function renderHpTwinQuestion(): string {
         <p class="hp-feedback-meaning">${hpOutcomeTitle(outcome, userAnswer ?? -1)}</p>
         <p class="hp-feedback-explanation">${item.solution}</p>
         ${renderHpThinkBlock(item.hint)}
+        ${renderHpCardLinks([item.area, item.delprov])}
         ${tagRowHtml}
         <a class="hp-twin-original-link" href="${item.twinOf.url}" target="_blank" rel="noopener">Se originaluppgiften (${item.twinOf.prov}, provpass ${item.twinOf.provpass}, uppgift ${item.twinOf.uppgift}) ↗</a>
         ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-twin-next">Nästa</button>`}
@@ -3556,7 +3631,15 @@ function renderHpGuidePage(): string {
 
 function renderHp(): string {
   if (hpForceHome) {
+    hpCardOpen = null;
     return renderHpHome();
+  }
+  const openCard = hpCardOpen ? HP_CARDS.find((c) => c.id === hpCardOpen) : undefined;
+  if (openCard) {
+    return renderHpCard(openCard);
+  }
+  if (hpGuideMode === "cards") {
+    return renderHpCardList();
   }
   if (hpGuideMode === "flashcards") {
     return renderHpGuideFlashcards();
@@ -5527,6 +5610,30 @@ app.addEventListener("click", (event) => {
     hpGuideFilter = "alla";
     hpGuideIndex = 0;
     hpGuideFlipped = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-card-open") {
+    hpCardReturnScroll = window.scrollY;
+    hpAreaOpenMemo = Array.from(app.querySelectorAll<HTMLElement>("details.hp-math-area-card[open]")).map((d) => d.dataset.area ?? "");
+    hpCardOpen = actionEl.dataset.card ?? null;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-card-back") {
+    hpCardOpen = null;
+    render();
+    hpAreaOpenMemo = null;
+    window.scrollTo(0, hpCardReturnScroll);
+    return;
+  }
+
+  if (action === "hp-guide-cards") {
+    hpForceHome = false;
+    hpGuideMode = "cards";
     render();
     return;
   }

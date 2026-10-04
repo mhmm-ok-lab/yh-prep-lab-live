@@ -5073,3 +5073,174 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   font-weight: 700;
   color: var(--ink);
 }
+
+/* ── Påminnelsekort (beslut 2026-10-05 (6)) ── */
+
+.hp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.hp-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hp-card-formula {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.hp-card-figure {
+  color: var(--ink);
+  background: var(--card);
+  border-radius: var(--radius-btn);
+  padding: 0.4rem;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.hp-card-figure svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 200px;
+  height: auto;
+}
+
+.hp-card-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.hp-card-label {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hp-card-text {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.hp-card-prompt {
+  font-weight: 700;
+}
+
+.hp-card-steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.hp-card-trap {
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-btn);
+  background: var(--honey);
+}
+
+.hp-card-trap .hp-card-label,
+.hp-card-trap .hp-card-text {
+  color: var(--honey-ink);
+}
+
+.hp-card-extlink {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.hp-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.5rem 0;
+}
+
+.hp-card-link {
+  position: relative;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 0.7rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hp-card-link::after {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
+
+.hp-math-learn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.hp-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hp-card-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: none;
+  border-radius: var(--radius-btn);
+  background: var(--surface-container);
+  color: var(--ink);
+  font-size: var(--text-md);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hp-card-list-go {
+  color: var(--text-muted);
+}
+
+.hp-guide-home-btn-wide {
+  grid-column: 1 / -1;
+}
