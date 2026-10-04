@@ -3,6 +3,7 @@ import { HP_TWINS_KVA } from "./hp-twins-kva";
 import { HP_TWINS_NOG } from "./hp-twins-nog";
 import { HP_TWINS_DTK } from "./hp-twins-dtk";
 import { HP_TWINS_FIG } from "./hp-twins-fig";
+import { HP_TWINS_GEO } from "./hp-twins-geo";
 
 // HP "tvillinguppgifter": egna uppgifter i högskoleprovets kvantitativa stil,
 // inspirerade av riktiga uppgifter ur UHR:s provhäften (studera.nu). Samma
@@ -599,4 +600,5 @@ export const HP_TWINS: HpTwin[] = [
   ...HP_TWINS_NOG,
   ...HP_TWINS_DTK,
   ...HP_TWINS_FIG,
+  ...HP_TWINS_GEO,
 ];
