@@ -747,6 +747,37 @@ function shuffleTwinOptions(t: HpTwin): HpTwin {
 /** Antal uppgifter per pass = antal i ett provpass på riktiga provet. */
 const HP_TWIN_PASS_SIZE: Record<HpDelprov, number> = { XYZ: 12, KVA: 10, NOG: 6, DTK: 12 };
 
+const HP_DELPROV_NAMES: Record<HpDelprov, string> = {
+  XYZ: "problemlösning",
+  KVA: "jämför två värden",
+  NOG: "räcker informationen?",
+  DTK: "tabeller"
+};
+
+/** Vad ska Martin göra nu? 1) mattedelprov han aldrig provat, 2) dagens ord om de inte är gjorda,
+ *  3) mattedelprovet med lägst andel rätt. */
+function recommendHpNext(wordsToday: number): { label: string; reason: string; delprov?: HpDelprov } {
+  const order: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
+  const untried = order.find((d) => !loadHpTwinResult(d));
+  if (untried) {
+    return {
+      delprov: untried,
+      label: `Matte ${untried} – ${HP_DELPROV_NAMES[untried]}`,
+      reason: `Du har inte provat ${untried} än · ${HP_TWIN_PASS_SIZE[untried]} uppgifter`
+    };
+  }
+  if (wordsToday === 0 && HP_WORDS.length > 0) {
+    return { label: "Dagens 10 ord", reason: "Du har inte kört ord i dag" };
+  }
+  const weakest = suggestNextHpTwinDelprov();
+  const r = loadHpTwinResult(weakest)!;
+  return {
+    delprov: weakest,
+    label: `Matte ${weakest} – ${HP_DELPROV_NAMES[weakest]}`,
+    reason: `Ditt svagaste just nu (senast ${r.correct}/${r.total}) · ${HP_TWIN_PASS_SIZE[weakest]} uppgifter`
+  };
+}
+
 /** Föreslår nästa mattedelprov: först ett som aldrig tränats, annars det med lägst andel rätt. */
 function suggestNextHpTwinDelprov(): HpDelprov {
   const order: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
@@ -2120,9 +2151,20 @@ function renderHpHome(): string {
       ${activeResumeHtml
         ? activeResumeHtml
         : `
-          ${hasWords
-            ? `<button class="hp-cta-btn" data-action="hp-start-pass">Starta dagens pass</button>`
-            : `<p class="hp-empty-note">Ordlistan fylls på just nu — kom tillbaka strax.</p>`}
+          ${(() => {
+            const rec = recommendHpNext(progress.wordsCompleted);
+            const recBtn = rec.delprov
+              ? `<button class="hp-cta-btn" data-action="hp-twin-start" data-delprov="${rec.delprov}">${rec.label}</button>`
+              : `<button class="hp-cta-btn" data-action="hp-start-pass">${rec.label}</button>`;
+            const ordBtn = rec.delprov && hasWords
+              ? `<button class="hp-secondary-btn" data-action="hp-start-pass">Dagens 10 ord</button>`
+              : "";
+            return `
+              <p class="hp-rec-label">Rekommenderat nu</p>
+              ${recBtn}
+              <p class="hp-rec-reason">${rec.reason}</p>
+              ${ordBtn}`;
+          })()}
           <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
           ${lastMathHtml}
           <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>

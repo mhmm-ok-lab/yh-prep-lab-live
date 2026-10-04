@@ -414,3 +414,9 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Varför:** Martins första egna test. Ordet satt överst och svaren nederst, så blicken fick hoppa över hela skärmen (dålig scannability). Han hittade inte heller matteträningen efter ORD-passet, och ordet "tvillingträning" sa honom ingenting.
 - **Före/efter:** före var det ~250 px tomrum mellan ordet och svaren, efter 16 px. Före tog sammanfattningen bara slut, efter har den en tydlig nästa handling.
 - **Princip:** närhetsprincipen (Gestalt) tillsammans med Fitts lag. Gruppen ankras i tumzonen i stället för att dela upp den. En nästa handling per skärm.
+
+## 2026-10-04 — "Rekommenderat nu" på HP-hem
+- **Vad:** HP-hem har en primärknapp som väljer nästa övning åt dig, med en rad om varför. Ordningen är: först ett mattedelprov du inte har provat, sedan dagens ord om de inte är gjorda, sedan det mattedelprov där du har lägst andel rätt. "Dagens 10 ord" ligger kvar som sekundär knapp.
+- **Varför:** Martin ville öva på det han har mest problem med, eller på det han inte har provat än, utan att själv behöva välja. Det tar bort ett beslut från en ADHD-hjärna.
+- **Före/efter:** före var den enda primärknappen "Starta dagens pass" (ORD), och matten låg under vecket. Efter står "Rekommenderat nu: Matte XYZ – problemlösning · Du har inte provat XYZ än" överst, och mattekorten syns utan scroll i 375 × 812.
+- **Princip:** en tydlig nästa handling, med synlig motivering (förklarbarhet). Systemet bär beslutet.
