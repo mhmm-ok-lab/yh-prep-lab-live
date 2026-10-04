@@ -3,6 +3,20 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-05 — Mörkt läge (hela appen, HP först)
+
+**Vad:** Appen har ett mörkt läge. Standard är Automatiskt (följer telefonens `prefers-color-scheme`). Avatarmenyn (runda bokstaven uppe till höger) har raden "Utseende" med Ljust, Mörkt, Automatiskt; valet sparas på enheten. Bakgrund `#14171a`, kort `#1c2024`, text `#e6e6e6`, dämpad text `#a0a4a8`, accent dämpad teal. Statusfältet på mobilen blir mörkt (`theme-color`, `color-scheme`).
+
+**Varför:** Martin tränar på mobilen i sängen på kvällen utan att väcka sambon. En ljus skärm lyser upp rummet och trötta ögon. Inte ren svart och inte ren vit: vit text på svart ger halation (texten lyser ut och flimrar) och är jobbigare att läsa länge, särskilt LÄS-texterna. Fyllda ytor (knappar, countdown, aktiv flik) är dämpad mörk teal med ljus text i stället för starkt mint, så att stora ytor inte lyser.
+
+**Före/efter:** Före: bara ljust, ca 340 hårdkodade färger i CSS som inte följde teman. Efter: samma tokennamn med mörka värden, ca 340 hårdkodade hex/rgba ersatta med tokens (nya: `--on-fill`, `--fill-start/end`, `--ok/bad/warn/info-bg/line/ink`, `--text-soft`). Alla text/bakgrund-par i paletten ≥ 4,5:1 (UI-kanter ≥ 3:1), kontrollerat med `scripts/check-dark-contrast.mjs` (62 par) och på riktiga element i HP-vyerna (inget under 4,5:1). Ljust läge ser i princip likadant ut (statustoner har enhetliga värden, lite lägre opacity-dämpning på små texter för bättre kontrast).
+
+**Småfixar på vägen:** Mattediagnosens resultat och ordlistan gav sidledsscroll vid 375 px (grid utan `min-width: 0`); select-pilen var en mörk data-URI som försvann i mörkt läge; texter med opacity 0,5–0,75 höjdes till minst 0,85 där de är läsbar text.
+
+**Stitch-princip:** Tonal adjacency (djup via ytans nyans, inte linjer), No-Line, ambient skuggor; palettens tokens även i mörkt läge. Teori: se HP-UX-SPEC beslut 26 (halation, WCAG 1.4.3/1.4.11, Material dark theme).
+
+---
+
 ## 2026-10-05 — HP: sidan "Externa resurser"
 
 **Vad:** Den lösa länken "Gamla högskoleprov med facit (studera.nu) ↗" på HP-hem är ersatt av en sekundär knapp "Externa resurser". Sidan har Tillbaka till HP-hem, rubriken "Externa resurser" och raden "Kontrollerade 5 okt 2026". Därunder fyra grupper efter vad man vill göra: Gör gamla prov, Lär dig matten, Strategi och tips, Om provet (18 länkar, varje länk öppnad och kontrollerad; döda och svaga slängdes). Varje länk är en rad: titel som länk med ↗, en rad förklaring i dämpad färg och en liten kostnadsetikett (gratis, gratis med konto, delvis betalt). Data ligger i `src/hp-resources.ts`.

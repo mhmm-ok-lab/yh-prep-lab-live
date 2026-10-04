@@ -367,3 +367,28 @@ export function importStudyDataSnapshot(snapshot: Partial<StudyDataSnapshot>): {
     restoredActiveSession: hasActive
   };
 }
+
+// ── Färgläge (ljust / mörkt / automatiskt) ──
+// Enhetsinställning, inte per användare: nyckeln är medvetet utan namnrymd.
+export type ColorMode = "auto" | "light" | "dark";
+export const COLOR_MODE_KEY = "yh.color-mode";
+
+export function loadColorMode(): ColorMode {
+  try {
+    const stored = localStorage.getItem(COLOR_MODE_KEY);
+    if (stored === "light" || stored === "dark" || stored === "auto") {
+      return stored;
+    }
+  } catch {
+    // Privat läge eller blockerad lagring: falla tillbaka på automatiskt.
+  }
+  return "auto";
+}
+
+export function saveColorMode(mode: ColorMode): void {
+  try {
+    localStorage.setItem(COLOR_MODE_KEY, mode);
+  } catch {
+    // Ignorera: valet gäller då bara tills sidan laddas om.
+  }
+}

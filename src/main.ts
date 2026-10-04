@@ -42,6 +42,8 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
+import { loadColorMode, saveColorMode } from "./storage";
+import type { ColorMode } from "./storage";
 import type { HpLasErrorTag, HpMathAreaResult, HpMathQuestionResult, HpMathOutcome, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
@@ -472,6 +474,28 @@ function applyTheme(themeId: ThemeId): void {
   document.body.dataset.theme = themeId;
   localStorage.setItem(THEME_KEY, themeId);
 }
+
+// ── Färgläge: Automatiskt (följer systemet) / Ljust / Mörkt ──
+const COLOR_MODE_LABELS: Record<ColorMode, string> = { auto: "Automatiskt", light: "Ljust", dark: "Mörkt" };
+const THEME_COLOR_LIGHT = "#0f766e";
+const THEME_COLOR_DARK = "#14171a";
+const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+let colorMode: ColorMode = loadColorMode();
+
+function applyColorMode(mode: ColorMode): void {
+  const dark = mode === "dark" || (mode === "auto" && darkQuery.matches);
+  document.documentElement.dataset.scheme = dark ? "dark" : "light";
+  // meta color-scheme gör att webbläsarens egna kontroller och scrollbars följer valet.
+  const schemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+  if (schemeMeta) schemeMeta.content = mode === "auto" ? "light dark" : mode;
+  // theme-color färgar mobilens statusfält/adressfält.
+  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.content = dark ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+}
+applyColorMode(colorMode);
+darkQuery.addEventListener("change", () => {
+  if (colorMode === "auto") applyColorMode("auto");
+});
 
 let page: Page = "overview";
 let filters: QuestionFilters = {
@@ -2513,6 +2537,14 @@ function renderAppNav(): string {
               .join("")}
           </div>
           <hr class="profile-divider">
+          <p class="profile-q-label">Utseende</p>
+          <div class="profile-pill-row" role="group" aria-label="Färgläge">
+            ${(["light", "dark", "auto"] as ColorMode[]).map(mode => `
+              <button class="profile-pill-btn ${colorMode === mode ? "profile-pill-btn--active" : ""}"
+                data-action="set-color-mode" data-mode="${mode}" aria-pressed="${colorMode === mode}">
+                ${COLOR_MODE_LABELS[mode]}
+              </button>`).join("")}
+          </div>
           <p class="profile-q-label">Hur länge tränar du?</p>
           <div class="profile-pill-row">
             ${["30", "45", "60"].map(min => `
@@ -5801,6 +5833,21 @@ app.addEventListener("click", (event) => {
     const exists = knownUserIds.includes(normalized);
     switchToUser(normalized);
     setStorageNotice(exists ? `Bytte till befintlig användare: ${normalized}` : `Ny användare skapad: ${normalized}`);
+    return;
+  }
+
+  if (action === "set-color-mode") {
+    const nextMode = actionEl.dataset.mode as ColorMode;
+    if (nextMode !== "auto" && nextMode !== "light" && nextMode !== "dark") {
+      return;
+    }
+    colorMode = nextMode;
+    saveColorMode(colorMode);
+    applyColorMode(colorMode);
+    render();
+    // Håll avatar-menyn öppen så man ser valet slå igenom
+    const userMenu = document.querySelector<HTMLDetailsElement>(".app-nav-user-menu");
+    if (userMenu) userMenu.open = true;
     return;
   }
 

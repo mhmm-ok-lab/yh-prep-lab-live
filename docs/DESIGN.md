@@ -148,3 +148,54 @@ card-gap: 0.75rem (gap-3)
 - Inga hårda drop shadows (ser ut som 2010)
 - Ingen ren svart text — alltid `var(--ink)` (#161c24)
 - Ingen blandad typsnittsstorlek för liknande element
+
+---
+
+## 7. Mörkt läge
+
+Gäller alla teman. `<html data-scheme="dark">` sätts av JS (val: Ljust / Mörkt / Automatiskt i avatarmenyn, standard Automatiskt = `prefers-color-scheme`). Samma tokennamn som ljust läge, nya värden. Källan är blocket `html[data-scheme="dark"]` i `src/styles.css`; kontrollen `node scripts/check-dark-contrast.mjs` läser det. Inte `#000`, inte `#fff` på text.
+
+### Mörkt läge — ytor och text
+| Token | Hex | Kontrast / användning |
+|---|---|---|
+| `--bg` / `--surface` / `--bg-top` / `--bg-bottom` | `#14171a` | Text 14,4:1 |
+| `--surface-low` | `#1a1e22` | |
+| `--surface-container` | `#1f2428` | |
+| `--card` / `--surface-2` | `#1c2024` | Kort, något ljusare än bakgrunden |
+| `--card-bg` | `#23282d` | Fält, pill |
+| `--field-bg` | `#171a1e` | |
+| `--hover-bg` | `#292e34` | |
+| `--surface-high` / `--surface-highest` | `#262b30` / `#2d3338` | |
+| `--ink` / `--text-primary` | `#e6e6e6` | 13,1:1 |
+| `--text-muted` | `#a0a4a8` | 6,5:1 |
+| `--text-soft` | `#9aa0a6` | 6,2:1 |
+| `--outline-variant` | `#4c5459` | Dekorativ kant |
+| `--border` | `rgba(160,164,168,.22)` | Dekorativ kant |
+| `--control-border` | `#6b7379` | 3,4:1 (fält, sekundärknappar; krav 3:1) |
+
+### Mörkt läge — accent, honey, status
+| Token | Hex | Användning |
+|---|---|---|
+| `--accent` | `#5dc4b8` | Text/länk/ikon (7,9:1 mot kort) |
+| `--accent-container` | `#3a9d92` | Progress-slut |
+| `--accent-soft` / `--secondary-fixed` / `--secondary-container` | `#1d4743` | Aktiv/rekommenderad yta |
+| `--accent-soft-border` / `--secondary-fixed-dim` | `#2d6a63` | |
+| `--accent-soft-ink` | `#a6ebe2` | Text på mint (7,7:1) |
+| `--secondary` | `#6dd5c6` | |
+| `--fill-start` / `--fill-end` | `#1b6f66` / `#15564f` | Fyllda knappar, countdown, aktiv flik |
+| `--on-fill` | `#f2f2f2` | Text på fylld yta (5,3:1 / 7,6:1) |
+| `--warm` | `#d6bd84` | Varm text |
+| `--honey` / `--honey-dim` | `#40371d` / `#54471f` | Markerat LÄS-stycke, UX-pill |
+| `--honey-ink` | `#f0dca8` | Text på honey (8,7:1) |
+| `--danger` / `--ok` | `#f0847c` / `#6fcf8e` | Fel/rätt som text |
+| `--danger-fill` / `--ok-fill` | `#a8332f` / `#2a7544` | Fyllda svarsalternativ (text `--on-fill` 5,9:1 / 5,0:1) |
+| `--ok-bg/line/ink` | `#17301f` / `#2c5a3b` / `#8fe0aa` | Rätt-feedback |
+| `--bad-bg/line/ink` | `#3a1d1d` / `#6b3434` / `#f4a5a0` | Fel-feedback |
+| `--warn-bg/line/ink` | `#3a301a` / `#6a5a2c` / `#f0cf85` | Ledtråd, varning |
+| `--info-bg/line/ink` | `#22274a` / `#3d4580` / `#b6bdfb` | Info |
+| `--shadow` | svart 30–40 % | Skuggor syns knappt mot mörk yta; djup bärs av tonen |
+
+Statustokens (`--ok-*`, `--bad-*`, `--warn-*`, `--info-*`, `--ok-bright`, `--bad-bright`, `--text-soft`, `--on-fill`, `--fill-*`) finns även i ljust läge (`:root`) och ersätter tidigare hårdkodade hex i komponenterna.
+
+**Regler för nya komponenter:** inga hex/rgb i komponent-CSS, bara tokens. Vit text på fylld yta heter `var(--on-fill)`. Data-URI:er kan inte läsa tokens: ge dem en egen mörk variant under `html[data-scheme="dark"]`. Opacity på text sänker kontrasten, håll ≥ 0,85 på text.
+
