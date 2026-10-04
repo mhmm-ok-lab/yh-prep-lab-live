@@ -165,3 +165,11 @@ Martin tränar mest på mobilen. All HP-design utgår från 375 px bredd och ska
    - **ORD:** "?" visar bara metoden. Efter svar (rätt och fel) visas "ord = betydelse", förklaringen och **"Så minns du det: …"** (ordets `hint`, ursprung/ordled). Auto-nästa vid rätt svar förlängs till ~3 s eftersom mer text visas; "Tryck för att fortsätta" står kvar.
    - **Matte (diagnos + träning):** feedbacken visar lösningen + "Så skulle du ha tänkt". Vid fel frågas **"Varför blev det fel?"** (Slarv / Kunde inte / Missförstod) i både matteträning och mattediagnos.
    - "?" efter svar visar metoden igen. Beslut 6 gäller: fråga och svar ligger kvar tätt högst upp, feedbacken skjuter inte iväg frågan.
+
+## Beslut 2026-10-05 (2)
+
+9. **Rubrik i varje övning.** En rad (text-sm, centrerad) direkt under topraden: "ORD – ordförståelse", "Mattediagnos" och "Matteträning · NOG – räcker informationen?" (delprovsnamn ur `HP_DELPROV_NAMES`). Motiv: Martin såg inte vad övningen hette. Frågans överkant ligger kvar under 200 px i 375 × 812.
+10. **Föregående och Hoppa över i alla tre övningarna** (ORD, mattediagnos, matteträning). En rad direkt under svarsalternativen (efter "Vet inte" i diagnosen): "← Föregående" till vänster, "Hoppa över →" till höger. Synlig pill 28 px, träffyta 44 px via `::after`. Raden ligger högt upp (beslut 6) och är inte svarsgruppens tumzon, så man inte råkar hoppa över när man ska svara.
+    - **Föregående** visar föregående besvarade fråga i låst granskningsläge: ditt svar, rätt svar och feedbacken (inga knappar för att svara, ändra felkategori eller gå vidare). Man kan gå flera steg bakåt. Från granskning finns "Tillbaka till aktuell fråga". Inaktiv på fråga 1. Tempomätaren visas inte i granskning och nollställs när man kommer tillbaka.
+    - **Hoppa över** flyttar den obesvarade frågan sist i passet, som på riktiga HP. Det räknas inte som fel. När den kommer tillbaka visas "(överhoppad)" i progress. Är frågan redan sist byter knappen text till "Avsluta utan svar →" och avslutar passet; frågan räknas som obesvarad och sammanfattningen visar "Obesvarade: X".
+    - Efter svar finns bara "← Föregående"; framåt är den befintliga "Nästa" (eller tryck vid rätt svar i ORD). Tempomätaren nollställs per fråga som förut.
