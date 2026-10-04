@@ -525,7 +525,7 @@ export const HP_TWINS_NOG: HpTwin[] = [
   },
   {
     id: "nog2-38",
-    hint: "Tre steg. Fråga dig om talet 4 går att ta ut ur tal som är delbara med 20 respektive 28. Svara är det ja eller nej, varje gång?",
+    hint: "Tre steg. Fråga dig om talet 4 går att ta ut ur tal som är delbara med 20 respektive 28. Blir svaret ja eller nej varje gång?",
     delprov: "NOG",
     area: "talteori",
     prompt: "Erik tänker på ett heltal. Är talet jämnt delbart med 4?\n\n(1) Talet är jämnt delbart med 20.\n(2) Talet är jämnt delbart med 28.",

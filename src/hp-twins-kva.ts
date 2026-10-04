@@ -350,7 +350,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
   },
   {
     id: "kva2-27",
-    hint: "Rutan med villkor säger bara tecknen, inte storlekarna. Kvadrater blir positiva, så testa små och stora tal i båda leden.",
+    hint: "Villkoren säger bara tecknen, inte storlekarna. Kvadrater blir positiva, så testa små och stora tal i båda leden.",
     delprov: "KVA",
     area: "algebra",
     prompt: "a > 0\nb < 0\nc > 0\nd < 0\n\nKvantitet I: a² + b²\nKvantitet II: c² + d²",
