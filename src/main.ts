@@ -132,10 +132,19 @@ interface HpNavFields {
   skippedIds: string[];
   /** Antal frågor som lämnades obesvarade när passet avslutades via "Hoppa över" på sista frågan. */
   unanswered: number;
+  /** Hjälptrappa (beslut 20): utfall per besvarad fråga (position), alla val per fråga,
+   *  felaktiga val på aktuell fråga och om ledtråden visats på aktuell fråga. */
+  outcomes: HpOutcome[];
+  triesLog: number[][];
+  curPicks: number[];
+  hintShown: boolean;
 }
 
+/** Ärligt utfall per fråga: rätt utan hjälp, rätt efter ledtråd/andra försöket, eller svaret visades (fel). */
+type HpOutcome = "clean" | "hint" | "shown";
+
 function hpNavInit(): HpNavFields {
-  return { reviewIndex: null, answerLog: [], tagLog: [], skippedIds: [], unanswered: 0 };
+  return { reviewIndex: null, answerLog: [], tagLog: [], skippedIds: [], unanswered: 0, outcomes: [], triesLog: [], curPicks: [], hintShown: false };
 }
 
 /** HP ORD-drillen. Följer samma tillstånds-mönster som VRSession/LSSession. */
@@ -153,14 +162,14 @@ interface HpWordSession extends HpNavFields {
   helpedIds: string[];
 }
 
-/** HP Mattediagnos. Ett svar per fråga, "Vet inte" räknas som fel (userAnswer = -1). */
+/** HP Mattediagnos. Hjälptrappa: Ledtråd, ett nytt försök och Visa svar (userAnswer = -1 om svaret visades utan val). */
 interface HpMathSession extends HpNavFields {
   items: HpMathQuestion[];
   currentIndex: number;
   userAnswer: number | null;
   showFeedback: boolean;
   questionStartedAt: number;
-  answers: { area: HpMathArea; correct: boolean; seconds: number }[];
+  answers: { area: HpMathArea; correct: boolean; withHint: boolean; seconds: number }[];
   helpedIds: string[];
   currentTag: HpTwinErrorTag | null;
   errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
@@ -174,6 +183,9 @@ interface HpTwinSession extends HpNavFields {
   userAnswer: number | null;
   showFeedback: boolean;
   correct: number;
+  /** Rätt efter ledtråd eller andra försöket. */
+  withHint: number;
+  /** Svaret visades (fel). */
   wrong: number;
   questionStartedAt: number;
   missedItems: HpTwin[];
@@ -190,6 +202,7 @@ interface HpLasSession extends HpNavFields {
   userAnswer: number | null;
   showFeedback: boolean;
   correct: number;
+  withHint: number;
   wrong: number;
   questionStartedAt: number;
   startedAt: number;
@@ -751,6 +764,7 @@ function updateHpMathTempoUI(): void {
   if (!hpMathSession || hpMathSession.showFeedback) {
     return;
   }
+  hpLadderTick(hpMathSession);
   const el = app.querySelector<HTMLElement>("[data-hp-math-tempo]");
   if (!el) {
     return;
@@ -781,6 +795,7 @@ function hpMathAdvanceQuestion(): void {
   if (hpMathSession.currentIndex < hpMathSession.items.length) {
     hpMathSession.userAnswer = null;
     hpMathSession.showFeedback = false;
+    hpLadderReset(hpMathSession);
     hpMathSession.questionStartedAt = Date.now();
   }
   render();
@@ -924,6 +939,7 @@ function updateHpLasTempoUI(): void {
   if (!hpLasSession) {
     return;
   }
+  hpLadderTick(hpLasSession);
   const el = app.querySelector<HTMLElement>("[data-hp-las-tempo]");
   if (!el) {
     return;
@@ -957,6 +973,7 @@ function hpLasStart(text: HpLasText): void {
     userAnswer: null,
     showFeedback: false,
     correct: 0,
+    withHint: 0,
     wrong: 0,
     questionStartedAt: Date.now(),
     startedAt: Date.now(),
@@ -986,6 +1003,7 @@ function hpLasAdvanceQuestion(): void {
     hpLasSession.userAnswer = null;
     hpLasSession.showFeedback = false;
     hpLasSession.currentTag = null;
+    hpLadderReset(hpLasSession);
     hpLasSession.questionStartedAt = Date.now();
   } else {
     hpLasSaveResult();
@@ -1008,18 +1026,35 @@ function hpLasSaveResult(): void {
     completedAt: new Date().toISOString(),
     textId: s.text.id,
     correct: s.correct,
+    withHint: s.withHint,
     total: s.items.length - s.unanswered,
     seconds: hpLasElapsedSeconds(),
     budgetSeconds: hpLasBudgetSeconds(s.text),
     errorTags: s.errorTagCounts,
     missedTypes
   });
-  // Texten ligger kvar i repetitionskön tills den görs utan fel.
-  if (s.wrong > 0 || s.unanswered > 0) {
+  // Texten ligger kvar i repetitionskön tills alla frågor klaras utan hjälp.
+  if (s.wrong > 0 || s.withHint > 0 || s.unanswered > 0) {
     addHpLasRepeatText(s.text.id);
   } else {
     removeHpLasRepeatText(s.text.id);
   }
+}
+
+/** Räknar utfallet för en LÄS-fråga: clean = rätt utan hjälp, hint = rätt efter ledtråd, shown = svaret visades. */
+function hpLasRecordOutcome(outcome: HpOutcome, item: HpLasQuestion): void {
+  const s = hpLasSession!;
+  if (outcome === "clean") {
+    s.correct++;
+  } else if (outcome === "hint") {
+    s.withHint++;
+    s.missedItems.push(item);
+  } else {
+    s.wrong++;
+    s.missedItems.push(item);
+  }
+  s.currentTag = null;
+  hpLasShowAllFor = null;
 }
 
 /** Växlar mellan fråga och text och minns var man var i respektive vy. */
@@ -1083,6 +1118,7 @@ function updateHpTwinTempoUI(): void {
   if (!hpTwinSession || hpTwinSession.showFeedback) {
     return;
   }
+  hpLadderTick(hpTwinSession);
   const el = app.querySelector<HTMLElement>("[data-hp-twin-tempo]");
   if (!el) {
     return;
@@ -1113,11 +1149,27 @@ function hpTwinAdvanceQuestion(): void {
     hpTwinSession.userAnswer = null;
     hpTwinSession.showFeedback = false;
     hpTwinSession.currentTag = null;
+    hpLadderReset(hpTwinSession);
     hpTwinSession.questionStartedAt = Date.now();
   } else {
     hpTwinSaveResult();
   }
   render();
+}
+
+/** Räknar utfallet och uppdaterar repetitionskön: bara "utan hjälp" tar bort uppgiften ur kön. */
+function hpTwinRecordOutcome(outcome: HpOutcome, item: HpTwin): void {
+  const s = hpTwinSession!;
+  if (outcome === "clean") {
+    s.correct++;
+    removeHpTwinRepeatItem(s.delprov, item.id);
+  } else {
+    if (outcome === "hint") s.withHint++;
+    else s.wrong++;
+    s.missedItems.push(item);
+    addHpTwinRepeatItem(s.delprov, item.id);
+  }
+  s.currentTag = null;
 }
 
 function hpTwinSaveResult(): void {
@@ -1128,6 +1180,7 @@ function hpTwinSaveResult(): void {
     completedAt: new Date().toISOString(),
     delprov: hpTwinSession.delprov,
     correct: hpTwinSession.correct,
+    withHint: hpTwinSession.withHint,
     total: hpTwinSession.items.length - hpTwinSession.unanswered,
     errorTags: hpTwinSession.errorTagCounts
   };
@@ -1140,7 +1193,8 @@ function hpMathSaveResult(): void {
   }
   const areas = computeHpMathAreaResults(hpMathSession.answers);
   const correct = hpMathSession.answers.filter((a) => a.correct).length;
-  saveHpMathResult({ completedAt: new Date().toISOString(), correct, total: hpMathSession.answers.length, areas });
+  const withHint = hpMathSession.answers.filter((a) => a.withHint).length;
+  saveHpMathResult({ completedAt: new Date().toISOString(), correct, withHint, total: hpMathSession.answers.length, areas });
 }
 
 /** Gemensam navigering för ORD, mattediagnos och matteträning: föregående (granskning), tillbaka, hoppa över. */
@@ -1194,8 +1248,77 @@ function hpNavSkip(s: HpNavSession): boolean {
     s.skippedIds.push(item.id);
   }
   s.userAnswer = null;
+  hpLadderReset(s);
   s.questionStartedAt = Date.now();
   return false;
+}
+
+/** ── Hjälptrappa (beslut 20) ── Strategi (alltid) → Ledtråd (efter fel eller 30 s) → nytt försök → Visa svar. */
+const HP_HINT_UNLOCK_SECONDS = 30;
+
+function hpLadderReset(s: HpNavFields): void {
+  s.curPicks = [];
+  s.hintShown = false;
+}
+
+function hpHintUnlocked(s: HpNavSession): boolean {
+  return s.hintShown || s.curPicks.length > 0 || (Date.now() - s.questionStartedAt) / 1000 >= HP_HINT_UNLOCK_SECONDS;
+}
+
+function hpLadderFinish(s: HpNavSession, userAnswer: number, outcome: HpOutcome, picks: number[]): void {
+  const pos = s.currentIndex;
+  s.userAnswer = userAnswer;
+  s.answerLog[pos] = userAnswer;
+  s.triesLog[pos] = picks;
+  s.outcomes[pos] = outcome;
+  s.showFeedback = true;
+}
+
+/** Hanterar ett val. Första felet visar inte rätt svar: valet markeras som fel, ledtråden visas och man får försöka igen ("retry").
+ *  Rätt (första försöket utan ledtråd = clean, annars hint) eller andra felet (shown) avslutar frågan. */
+function hpLadderAnswer(s: HpNavSession, index: number, correct: number): "retry" | HpOutcome {
+  if (index === correct) {
+    const outcome: HpOutcome = s.curPicks.length === 0 && !s.hintShown ? "clean" : "hint";
+    hpLadderFinish(s, index, outcome, [...s.curPicks, index]);
+    return outcome;
+  }
+  s.curPicks.push(index);
+  if (s.curPicks.length === 1) {
+    s.hintShown = true;
+    return "retry";
+  }
+  hpLadderFinish(s, index, "shown", [...s.curPicks]);
+  return "shown";
+}
+
+/** "Visa svar": räknas som visade svar. Utan tidigare val blir userAnswer -1. */
+function hpLadderShow(s: HpNavSession): void {
+  hpLadderFinish(s, s.curPicks.length > 0 ? s.curPicks[s.curPicks.length - 1] : -1, "shown", [...s.curPicks]);
+}
+
+/** Låser upp Ledtråd-knappen utan omritning när 30 s har gått (så att frågan inte flyttar sig). */
+function hpLadderTick(s: HpNavSession | null): void {
+  if (!s || s.showFeedback || s.hintShown) {
+    return;
+  }
+  const btn = app.querySelector<HTMLButtonElement>("[data-hp-hint-btn]");
+  if (btn && btn.disabled && hpHintUnlocked(s)) {
+    btn.disabled = false;
+    btn.classList.remove("hp-ladder-locked");
+    app.querySelector("[data-hp-hint-note]")?.remove();
+  }
+}
+
+function hpOptionClass(base: string, i: number, correct: number, answered: boolean, picks: number[]): string {
+  let cls = base;
+  if (answered) {
+    if (i === correct) cls += " hp-option-correct";
+    else if (picks.includes(i)) cls += " hp-option-wrong";
+    else cls += " hp-option-neutral";
+  } else if (picks.includes(i)) {
+    cls += " hp-option-wrong";
+  }
+  return cls;
 }
 
 function getLogicQuestions(): Question[] {
@@ -2602,9 +2725,43 @@ function renderHpTwinTable(markdown: string): string {
   `;
 }
 
-/** ?-knapp i topraden (28 px pill, 44 px träffyta). */
+/** Strategi-knapp i topraden (28 px pill, 44 px träffyta). Allmän metod för delprovet, alltid tillgänglig (beslut 20). */
 function renderHpHelpButton(open: boolean): string {
-  return `<button class="hp-help-btn ${open ? "hp-help-btn-open" : ""}" data-action="hp-help" aria-label="Hjälp" aria-expanded="${open}">?</button>`;
+  return `<button class="hp-help-btn ${open ? "hp-help-btn-open" : ""}" data-action="hp-help" aria-label="Strategi" aria-expanded="${open}">Strategi</button>`;
+}
+
+/** Ledtrådsraden under svarsalternativen: Ledtråd (låst tills ett fel eller 30 s) och därefter Visa svar.
+ *  Raden har fast höjd så att inget hoppar när knappen låses upp. Ledtråden visas i en ruta under raden. */
+function renderHpLadder(prefix: string, s: HpNavSession, hintHtml: string, extra = ""): string {
+  const unlocked = hpHintUnlocked(s);
+  const btn = s.hintShown
+    ? `<button class="hp-ladder-btn hp-ladder-show" data-action="${prefix}-show">Visa svar</button>`
+    : `<button class="hp-ladder-btn hp-ladder-hint ${unlocked ? "" : "hp-ladder-locked"}" data-action="${prefix}-hint" data-hp-hint-btn ${unlocked ? "" : "disabled"}>Ledtråd</button>${unlocked ? "" : `<span class="hp-ladder-note" data-hp-hint-note>efter ett fel eller ${HP_HINT_UNLOCK_SECONDS} s</span>`}`;
+  const box = s.hintShown
+    ? `<div class="hp-hint-box" role="status">
+        ${s.curPicks.length > 0 ? `<p class="hp-hint-lead">Inte riktigt. Prova igen, eller tryck Visa svar.</p>` : ""}
+        <p class="hp-hint-text"><strong>Ledtråd:</strong> ${hintHtml}</p>
+        ${extra}
+      </div>`
+    : "";
+  return `<div class="hp-ladder-row">${btn}</div>${box}`;
+}
+
+const HP_NO_HINT = "Den här frågan har ingen särskild ledtråd. Öppna Strategi för metoden, eller tryck Visa svar.";
+
+/** Rubrik i feedbacken utifrån utfallet. */
+function hpOutcomeTitle(outcome: HpOutcome, userAnswer: number): string {
+  if (outcome === "clean") return "Rätt!";
+  if (outcome === "hint") return "Rätt, med ledtråd";
+  return userAnswer < 0 ? "Här är svaret" : "Fel svar";
+}
+
+/** Ärlig räkning, t.ex. "8 utan hjälp · 2 med ledtråd · 1 visade svar". */
+function ladderSummary(clean: number, hint: number, shown: number): string {
+  const parts = [`${clean} utan hjälp`];
+  if (hint > 0) parts.push(`${hint} med ledtråd`);
+  if (shown > 0) parts.push(`${shown} visade svar`);
+  return `<p class="hp-summary-ladder">${parts.join(" · ")}</p>`;
 }
 
 /** Kompakt hjälplager: bara den allmänna metoden för delprovet (ur HP_GUIDE). Frågespecifik ledtråd visas först efter svar. */
@@ -2719,7 +2876,7 @@ function renderHpQuestion(): string {
 }
 
 function helpedSummary(count: number): string {
-  return count > 0 ? `<p class="hp-summary-helped">${count} med hjälp</p>` : "";
+  return count > 0 ? `<p class="hp-summary-helped">Strategi öppnad på ${count} ${count === 1 ? "fråga" : "frågor"}</p>` : "";
 }
 
 function unansweredSummary(count: number): string {
@@ -2778,31 +2935,26 @@ function renderHpMathQuestion(): string {
   const item = items[idx];
   const userAnswer = inReview ? hpMathSession.answerLog[idx] : hpMathSession.userAnswer;
   const answered = inReview || showFeedback;
-  const isCorrect = answered && userAnswer === item.correct;
-  const dontKnow = answered && userAnswer === -1;
+  const outcome: HpOutcome = answered ? hpMathSession.outcomes[idx] ?? "shown" : "clean";
+  const picks = answered ? hpMathSession.triesLog[idx] ?? [] : hpMathSession.curPicks;
   const shownTag = inReview ? hpMathSession.tagLog[idx] ?? null : hpMathSession.currentTag;
 
   const optionsHtml = item.options
     .map((opt, i) => {
-      let cls = "hp-option-btn";
-      if (answered) {
-        if (i === item.correct) cls += " hp-option-correct";
-        else if (i === userAnswer) cls += " hp-option-wrong";
-        else cls += " hp-option-neutral";
-      }
-      return `<button class="${cls}" data-action="hp-math-answer" data-index="${i}" ${answered ? "disabled" : ""}>${String.fromCharCode(65 + i)}. ${opt}</button>`;
+      const cls = hpOptionClass("hp-option-btn", i, item.correct, answered, picks);
+      return `<button class="${cls}" data-action="hp-math-answer" data-index="${i}" ${answered || picks.includes(i) ? "disabled" : ""}>${String.fromCharCode(65 + i)}. ${opt}</button>`;
     })
     .join("");
 
   const feedbackHtml = answered
-    ? `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
-        <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : dontKnow ? "Vet inte — här är lösningen" : "Fel svar"}</p>
+    ? `<div class="hp-feedback ${outcome === "shown" ? "hp-feedback-wrong" : "hp-feedback-ok"}">
+        <p class="hp-feedback-meaning">${hpOutcomeTitle(outcome, userAnswer ?? -1)}</p>
         <div class="hp-math-solution">
           ${item.solutionSteps.map((step) => `<p class="hp-math-solution-step">${step}</p>`).join("")}
           <p class="hp-math-formula">📐 ${item.formula}</p>
         </div>
         ${renderHpThinkBlock(item.hint)}
-        ${!isCorrect ? (inReview ? renderHpTagReadOnly(shownTag) : renderHpTagRow(hpMathSession.currentTag)) : ""}
+        ${outcome === "shown" ? (inReview ? renderHpTagReadOnly(shownTag) : renderHpTagRow(hpMathSession.currentTag)) : ""}
         ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-math-next">Nästa</button>`}
       </div>`
     : "";
@@ -2818,7 +2970,7 @@ function renderHpMathQuestion(): string {
       <p class="hp-math-area-label">${hpMathAreaLabel(item.area)}</p>
       <p class="hp-word hp-math-prompt">${item.prompt}</p>
       <div class="hp-options">${optionsHtml}</div>
-      ${!answered ? `<button class="hp-math-dontknow-btn" data-action="hp-math-dontknow">Vet inte</button>` : ""}
+      ${!answered ? renderHpLadder("hp-math", hpMathSession, item.hint ?? HP_NO_HINT) : ""}
       ${renderHpNavRow("hp-math", hpMathSession)}
       ${!inReview && hpHelpOpenFor === item.id ? renderHpHelpPanel("xyz") : ""}
       ${feedbackHtml}
@@ -2845,7 +2997,7 @@ function renderHpMathAreaCard(result: HpMathAreaResult): string {
   `;
 }
 
-function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], helpedCount = 0, tagCounts: Partial<Record<HpTwinErrorTag, number>> = {}, unanswered = 0): string {
+function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], withHint: number | null, helpedCount = 0, tagCounts: Partial<Record<HpTwinErrorTag, number>> = {}, unanswered = 0): string {
   const lärOm = areas.filter((a) => a.level === "lar-om");
   const rest = areas.filter((a) => a.level !== "lar-om");
 
@@ -2854,7 +3006,7 @@ function renderHpMathResultFromData(correct: number, total: number, areas: HpMat
       <p class="hp-summary-heading">Mattediagnos klar</p>
       <div class="hp-progress-row">
         <div class="stat-widget">
-          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-label">Utan hjälp</span>
           <span class="stat-widget-value">${correct}<span class="stat-widget-unit">/${total}</span></span>
         </div>
         <div class="stat-widget">
@@ -2862,6 +3014,7 @@ function renderHpMathResultFromData(correct: number, total: number, areas: HpMat
           <span class="stat-widget-value">${lärOm.length}<span class="stat-widget-unit">område(n)</span></span>
         </div>
       </div>
+      ${withHint === null ? "" : ladderSummary(correct, withHint, total - correct - withHint)}
       ${helpedSummary(helpedCount)}
       ${unansweredSummary(unanswered)}
       ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[]).some((t) => (tagCounts[t] ?? 0) > 0)
@@ -2892,7 +3045,8 @@ function renderHpMathResult(): string {
   const areas = computeHpMathAreaResults(hpMathSession.answers);
   const correct = hpMathSession.answers.filter((a) => a.correct).length;
   const total = hpMathSession.answers.length;
-  return renderHpMathResultFromData(correct, total, areas, hpMathSession.helpedIds.length, hpMathSession.errorTagCounts, hpMathSession.unanswered);
+  const withHint = hpMathSession.answers.filter((a) => a.withHint).length;
+  return renderHpMathResultFromData(correct, total, areas, withHint, hpMathSession.helpedIds.length, hpMathSession.errorTagCounts, hpMathSession.unanswered);
 }
 
 function renderHpMathSavedResult(): string {
@@ -2900,7 +3054,7 @@ function renderHpMathSavedResult(): string {
   if (!result) {
     return renderHpHome();
   }
-  return renderHpMathResultFromData(result.correct, result.total, result.areas);
+  return renderHpMathResultFromData(result.correct, result.total, result.areas, result.withHint ?? null);
 }
 
 const HP_TWIN_TAG_LABEL: Record<HpTwinErrorTag, string> = {
@@ -2943,27 +3097,23 @@ function renderHpTwinQuestion(): string {
   const item = items[idx];
   const userAnswer = inReview ? hpTwinSession.answerLog[idx] : hpTwinSession.userAnswer;
   const answered = inReview || showFeedback;
-  const isCorrect = answered && userAnswer === item.correct;
+  const outcome: HpOutcome = answered ? hpTwinSession.outcomes[idx] ?? "shown" : "clean";
+  const picks = answered ? hpTwinSession.triesLog[idx] ?? [] : hpTwinSession.curPicks;
   const target = hpTwinTempoTarget(delprov);
   const shownTag = inReview ? hpTwinSession.tagLog[idx] ?? null : hpTwinSession.currentTag;
 
   const optionsHtml = item.options
     .map((opt, i) => {
-      let cls = "hp-option-btn";
-      if (answered) {
-        if (i === item.correct) cls += " hp-option-correct";
-        else if (i === userAnswer) cls += " hp-option-wrong";
-        else cls += " hp-option-neutral";
-      }
-      return `<button class="${cls}" data-action="hp-twin-answer" data-index="${i}" ${answered ? "disabled" : ""}>${opt}</button>`;
+      const cls = hpOptionClass("hp-option-btn", i, item.correct, answered, picks);
+      return `<button class="${cls}" data-action="hp-twin-answer" data-index="${i}" ${answered || picks.includes(i) ? "disabled" : ""}>${opt}</button>`;
     })
     .join("");
 
-  const tagRowHtml = answered && !isCorrect ? (inReview ? renderHpTagReadOnly(shownTag) : renderHpTagRow(shownTag, "hp-twin-tag")) : "";
+  const tagRowHtml = answered && outcome === "shown" ? (inReview ? renderHpTagReadOnly(shownTag) : renderHpTagRow(shownTag, "hp-twin-tag")) : "";
 
   const feedbackHtml = answered
-    ? `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
-        <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : "Fel svar"}</p>
+    ? `<div class="hp-feedback ${outcome === "shown" ? "hp-feedback-wrong" : "hp-feedback-ok"}">
+        <p class="hp-feedback-meaning">${hpOutcomeTitle(outcome, userAnswer ?? -1)}</p>
         <p class="hp-feedback-explanation">${item.solution}</p>
         ${renderHpThinkBlock(item.hint)}
         ${tagRowHtml}
@@ -2983,6 +3133,7 @@ function renderHpTwinQuestion(): string {
       <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
       <div class="hp-options">${optionsHtml}</div>
+      ${!answered ? renderHpLadder("hp-twin", hpTwinSession, item.hint ?? HP_NO_HINT) : ""}
       ${renderHpNavRow("hp-twin", hpTwinSession)}
       ${!inReview && hpHelpOpenFor === item.id ? renderHpHelpPanel(delprov.toLowerCase() as "xyz" | "kva" | "nog" | "dtk") : ""}
       ${feedbackHtml}
@@ -3005,14 +3156,15 @@ function renderHpTwinSummary(): string {
       <p class="hp-summary-heading">${delprov} — passet klart</p>
       <div class="hp-progress-row">
         <div class="stat-widget">
-          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-label">Utan hjälp</span>
           <span class="stat-widget-value">${correct}<span class="stat-widget-unit">/${total}</span></span>
         </div>
         <div class="stat-widget">
-          <span class="stat-widget-label">Fel</span>
+          <span class="stat-widget-label">Visade svar</span>
           <span class="stat-widget-value">${hpTwinSession.wrong}</span>
         </div>
       </div>
+      ${ladderSummary(correct, hpTwinSession.withHint, hpTwinSession.wrong)}
       ${helpedSummary(hpTwinSession.helpedIds.length)}
       ${unansweredSummary(hpTwinSession.unanswered)}
       ${tagEntries.length > 0
@@ -3023,10 +3175,10 @@ function renderHpTwinSummary(): string {
         : ""}
       ${missedItems.length > 0
         ? `<div class="hp-missed-list">
-            <p class="hp-missed-heading">Missade uppgifter — kommer tillbaka i nästa pass</p>
+            <p class="hp-missed-heading">Behövde hjälp — kommer tillbaka i nästa pass</p>
             ${missedItems.map((t) => `<p class="hp-missed-item">${t.area}</p>`).join("")}
           </div>`
-        : `<p class="hp-summary-clean">Inga missade uppgifter — starkt jobbat!</p>`}
+        : `<p class="hp-summary-clean">Alla utan hjälp — starkt jobbat!</p>`}
       <button class="hp-cta-btn" data-action="hp-twin-close">Klart</button>
     </div>
   `;
@@ -3114,8 +3266,9 @@ function renderHpLasText(): string {
 
 function renderHpLasFeedback(item: HpLasQuestion, userAnswer: number, inReview: boolean): string {
   const s = hpLasSession!;
-  const isCorrect = userAnswer === item.correct;
   const idx = s.reviewIndex ?? s.currentIndex;
+  const outcome: HpOutcome = s.outcomes[idx] ?? "shown";
+  const picked = userAnswer >= 0;
   const shownTag = inReview ? s.lasTagLog[idx] ?? null : s.currentTag;
   const showAll = hpLasShowAllFor === item.id;
   const L = (i: number) => HP_LAS_LETTERS[i];
@@ -3129,14 +3282,14 @@ function renderHpLasFeedback(item: HpLasQuestion, userAnswer: number, inReview: 
       })
       .join("")}</div>`;
   } else {
-    whyHtml = `${isCorrect ? "" : `<p class="hp-las-why"><strong>Du valde ${L(userAnswer)}:</strong> ${item.options[userAnswer].why}</p>`}
+    whyHtml = `${outcome !== "shown" || !picked ? "" : `<p class="hp-las-why"><strong>Du valde ${L(userAnswer)}:</strong> ${item.options[userAnswer].why}</p>`}
         <p class="hp-las-why"><strong>Rätt svar ${L(item.correct)}:</strong> ${item.options[item.correct].why}</p>`;
   }
   const n = item.paragraph + 1;
-  const tagHtml = !isCorrect ? (inReview ? (shownTag ? `<p class="hp-feedback-why">Du valde: ${HP_LAS_TAG_LABEL[shownTag]}</p>` : "") : renderHpLasTagRow(shownTag)) : "";
+  const tagHtml = outcome === "shown" ? (inReview ? (shownTag ? `<p class="hp-feedback-why">Du valde: ${HP_LAS_TAG_LABEL[shownTag]}</p>` : "") : renderHpLasTagRow(shownTag)) : "";
   const last = s.currentIndex >= s.items.length - 1;
-  return `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
-      <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : "Fel svar"}</p>
+  return `<div class="hp-feedback ${outcome === "shown" ? "hp-feedback-wrong" : "hp-feedback-ok"}">
+      <p class="hp-feedback-meaning">${hpOutcomeTitle(outcome, userAnswer)}</p>
       ${whyHtml}
       <button class="hp-las-linkbtn" data-action="hp-las-all">${showAll ? "Dölj alla alternativ" : "Se alla alternativ"}</button>
       <div class="hp-las-where">
@@ -3170,15 +3323,11 @@ function renderHpLasQuestion(): string {
     `;
   }
 
+  const picks = answered ? s.triesLog[idx] ?? [] : s.curPicks;
   const optionsHtml = item.options
     .map((opt, i) => {
-      let cls = "hp-option-btn hp-las-opt";
-      if (answered) {
-        if (i === item.correct) cls += " hp-option-correct";
-        else if (i === userAnswer) cls += " hp-option-wrong";
-        else cls += " hp-option-neutral";
-      }
-      return `<button class="${cls}" data-action="hp-las-answer" data-index="${i}" ${answered ? "disabled" : ""}><span class="hp-las-letter">${HP_LAS_LETTERS[i]}</span><span>${opt.text}</span></button>`;
+      const cls = hpOptionClass("hp-option-btn hp-las-opt", i, item.correct, answered, picks);
+      return `<button class="${cls}" data-action="hp-las-answer" data-index="${i}" ${answered || picks.includes(i) ? "disabled" : ""}><span class="hp-las-letter">${HP_LAS_LETTERS[i]}</span><span>${opt.text}</span></button>`;
     })
     .join("");
 
@@ -3187,6 +3336,7 @@ function renderHpLasQuestion(): string {
       ${renderHpLasBar(item, idx)}
       <p class="hp-las-prompt">${item.prompt}</p>
       <div class="hp-options">${optionsHtml}</div>
+      ${!answered ? renderHpLadder("hp-las", s, `Titta i stycke ${item.paragraph + 1}.`, `<button class="hp-las-open" data-action="hp-las-para" data-para="${item.paragraph}">Öppna stycke ${item.paragraph + 1}</button>`) : ""}
       ${renderHpNavRow("hp-las", s)}
       ${helpHtml}
       ${answered ? renderHpLasFeedback(item, userAnswer as number, inReview) : ""}
@@ -3217,7 +3367,7 @@ function renderHpLasSummary(): string {
       <p class="hp-summary-heading">LÄS – ${s.text.title} — klart</p>
       <div class="hp-progress-row">
         <div class="stat-widget">
-          <span class="stat-widget-label">Rätt</span>
+          <span class="stat-widget-label">Utan hjälp</span>
           <span class="stat-widget-value">${s.correct}<span class="stat-widget-unit">/${answeredTotal}</span></span>
         </div>
         <div class="stat-widget">
@@ -3226,6 +3376,7 @@ function renderHpLasSummary(): string {
           <span class="stat-widget-sub">${withinBudget ? `inom budget ${formatMinSec(budget)} ✓` : `${formatMinSec(seconds - budget)} över budget ${formatMinSec(budget)}`}</span>
         </div>
       </div>
+      ${ladderSummary(s.correct, s.withHint, s.wrong)}
       ${helpedSummary(s.helpedIds.length)}
       ${unansweredSummary(s.unanswered)}
       ${tagEntries.length > 0
@@ -3237,11 +3388,11 @@ function renderHpLasSummary(): string {
         : ""}
       ${missedTypes.size > 0
         ? `<div class="hp-twin-tag-summary">
-            <p class="hp-missed-heading">Frågetyper du missade</p>
+            <p class="hp-missed-heading">Frågetyper du behövde hjälp med</p>
             ${[...missedTypes.entries()].map(([type, count]) => `<div class="hp-twin-tag-summary-row"><span>${HP_LAS_TYPE_LABEL[type]}</span><span>${count}</span></div>`).join("")}
             <p class="hp-las-coach">Texten kommer tillbaka i ett senare pass.</p>
           </div>`
-        : `<p class="hp-summary-clean">Inga missade frågor — starkt jobbat!</p>`}
+        : `<p class="hp-summary-clean">Alla utan hjälp — starkt jobbat!</p>`}
       ${next ? `<button class="hp-cta-btn" data-action="hp-las-start" data-text-id="${next.id}">Nästa text: ${next.title}</button>` : ""}
       <button class="hp-drill-cancel" data-action="hp-las-close">Klart för idag</button>
     </div>
@@ -5030,25 +5181,29 @@ app.addEventListener("click", (event) => {
     const index = Number(actionEl.dataset.index);
     const item = hpMathSession.items[hpMathSession.currentIndex];
     const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
-    const isCorrect = index === item.correct;
-    hpMathSession.answers.push({ area: item.area, correct: isCorrect, seconds: elapsedSeconds });
-    hpMathSession.userAnswer = index;
-    hpMathSession.answerLog[hpMathSession.currentIndex] = index;
-    hpMathSession.currentTag = null;
-    hpMathSession.showFeedback = true;
+    const res = hpLadderAnswer(hpMathSession, index, item.correct);
+    if (res !== "retry") {
+      hpMathSession.answers.push({ area: item.area, correct: res === "clean", withHint: res === "hint", seconds: elapsedSeconds });
+      hpMathSession.currentTag = null;
+    }
     render();
     return;
   }
 
-  if (action === "hp-math-dontknow") {
-    if (!hpMathSession || hpMathSession.showFeedback) return;
+  if (action === "hp-math-hint") {
+    if (!hpMathSession || hpMathSession.showFeedback || !hpHintUnlocked(hpMathSession)) return;
+    hpMathSession.hintShown = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-math-show") {
+    if (!hpMathSession || hpMathSession.showFeedback || !hpMathSession.hintShown) return;
     const item = hpMathSession.items[hpMathSession.currentIndex];
     const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
-    hpMathSession.answers.push({ area: item.area, correct: false, seconds: elapsedSeconds });
-    hpMathSession.userAnswer = -1;
-    hpMathSession.answerLog[hpMathSession.currentIndex] = -1;
+    hpLadderShow(hpMathSession);
+    hpMathSession.answers.push({ area: item.area, correct: false, withHint: false, seconds: elapsedSeconds });
     hpMathSession.currentTag = null;
-    hpMathSession.showFeedback = true;
     render();
     return;
   }
@@ -5136,17 +5291,25 @@ app.addEventListener("click", (event) => {
     if (!hpLasSession || hpLasSession.showFeedback) return;
     const index = Number(actionEl.dataset.index);
     const item = hpLasSession.items[hpLasSession.currentIndex];
-    if (index === item.correct) {
-      hpLasSession.correct++;
-    } else {
-      hpLasSession.wrong++;
-      hpLasSession.missedItems.push(item);
+    const res = hpLadderAnswer(hpLasSession, index, item.correct);
+    if (res !== "retry") {
+      hpLasRecordOutcome(res, item);
     }
-    hpLasSession.userAnswer = index;
-    hpLasSession.answerLog[hpLasSession.currentIndex] = index;
-    hpLasSession.showFeedback = true;
-    hpLasSession.currentTag = null;
-    hpLasShowAllFor = null;
+    render();
+    return;
+  }
+
+  if (action === "hp-las-hint") {
+    if (!hpLasSession || hpLasSession.showFeedback || !hpHintUnlocked(hpLasSession)) return;
+    hpLasSession.hintShown = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-las-show") {
+    if (!hpLasSession || hpLasSession.showFeedback || !hpLasSession.hintShown) return;
+    hpLadderShow(hpLasSession);
+    hpLasRecordOutcome("shown", hpLasSession.items[hpLasSession.currentIndex]);
     render();
     return;
   }
@@ -5218,6 +5381,7 @@ app.addEventListener("click", (event) => {
       userAnswer: null,
       showFeedback: false,
       correct: 0,
+      withHint: 0,
       wrong: 0,
       questionStartedAt: Date.now(),
       missedItems: [],
@@ -5234,19 +5398,25 @@ app.addEventListener("click", (event) => {
     if (!hpTwinSession || hpTwinSession.showFeedback) return;
     const index = Number(actionEl.dataset.index);
     const item = hpTwinSession.items[hpTwinSession.currentIndex];
-    const isCorrect = index === item.correct;
-    if (isCorrect) {
-      hpTwinSession.correct++;
-      removeHpTwinRepeatItem(hpTwinSession.delprov, item.id);
-    } else {
-      hpTwinSession.wrong++;
-      hpTwinSession.missedItems.push(item);
-      addHpTwinRepeatItem(hpTwinSession.delprov, item.id);
+    const res = hpLadderAnswer(hpTwinSession, index, item.correct);
+    if (res !== "retry") {
+      hpTwinRecordOutcome(res, item);
     }
-    hpTwinSession.userAnswer = index;
-    hpTwinSession.answerLog[hpTwinSession.currentIndex] = index;
-    hpTwinSession.showFeedback = true;
-    hpTwinSession.currentTag = null;
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-hint") {
+    if (!hpTwinSession || hpTwinSession.showFeedback || !hpHintUnlocked(hpTwinSession)) return;
+    hpTwinSession.hintShown = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-show") {
+    if (!hpTwinSession || hpTwinSession.showFeedback || !hpTwinSession.hintShown) return;
+    hpLadderShow(hpTwinSession);
+    hpTwinRecordOutcome("shown", hpTwinSession.items[hpTwinSession.currentIndex]);
     render();
     return;
   }

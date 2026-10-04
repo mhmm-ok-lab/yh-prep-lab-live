@@ -32,7 +32,10 @@ export interface HpMathAreaResult {
 
 export interface HpMathResult {
   completedAt: string;
+  /** Rätt utan hjälp (rätt efter ledtråd räknas inte hit, så statistiken blir ärlig). */
   correct: number;
+  /** Rätt efter ledtråd eller andra försöket. */
+  withHint?: number;
   total: number;
   areas: HpMathAreaResult[];
 }
@@ -169,7 +172,10 @@ export type HpTwinErrorTag = "slarv" | "kunde-inte" | "missforstod";
 export interface HpTwinResult {
   completedAt: string;
   delprov: HpDelprov;
+  /** Rätt utan hjälp. */
   correct: number;
+  /** Rätt efter ledtråd eller andra försöket. */
+  withHint?: number;
   total: number;
   errorTags: Partial<Record<HpTwinErrorTag, number>>;
 }
@@ -239,7 +245,10 @@ export type HpLasErrorTag = "missad-detalj" | "feltolkat" | "tidsbrist";
 export interface HpLasResult {
   completedAt: string;
   textId: string;
+  /** Rätt utan hjälp. */
   correct: number;
+  /** Rätt efter ledtråd eller andra försöket. */
+  withHint?: number;
   /** Besvarade frågor (obesvarade, via "Avsluta utan svar", räknas inte). */
   total: number;
   seconds: number;
