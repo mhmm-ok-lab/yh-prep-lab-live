@@ -13,6 +13,21 @@ import { HP_RESOURCE_GROUPS, HP_RESOURCES_CHECKED_LABEL, hpResourcesForGroup } f
 import type { HpCard } from "./hp-cards";
 import { HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
 import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
+import {
+  buildPlanOverview,
+  buildTodayPlan,
+  addDays,
+  formatPlanDate,
+  formatPlanWeekday,
+  HP_PLAN_DAYS,
+  HP_PLAN_EXAM,
+  HP_PLAN_STEPS,
+  HP_PLAN_START,
+  localDateKey,
+  type HpPlanData,
+  type HpPlanItem,
+  type HpPlanState
+} from "./hp-plan";
 import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
@@ -26,6 +41,7 @@ import {
   loadHpLasRepeatQueue,
   loadHpLasResults,
   loadHpMathResult,
+  loadHpPlanState,
   loadHpProgress,
   loadHpRepeatQueue,
   loadHpTwinRepeatQueue,
@@ -38,6 +54,7 @@ import {
   saveActiveSession,
   saveHpLasResult,
   saveHpMathResult,
+  saveHpPlanState,
   saveHpTwinResult,
   saveStudySession,
   setStorageNamespace
@@ -534,6 +551,17 @@ let hpGuideMode: "flashcards" | "page" | "cards" | null = null;
  *  ligger kvar orört i sina egna variabler, så "Tillbaka" återskapar exakt samma vy. */
 let hpCardOpen: string | null = null;
 let hpResourcesOpen = false;
+/** "Din plan" (beslut 2026-10-05 (9)): hela planen öppen, vilka "Varför?" som är öppna, och delprovet som
+ *  startas från ett Lär om-kort som öppnades via planen. */
+let hpPlanAllOpen = false;
+const hpPlanWhyOpen = new Set<string>();
+let hpPlanCardDelprov: HpDelprov | null = null;
+/** Dev-parameter ?plandate=YYYY-MM-DD simulerar ett annat datum. Sparar inget i localStorage. */
+const HP_PLAN_DEV_DATE = (() => {
+  const v = urlParams.get("plandate");
+  return v && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+})();
+let hpPlanMemState: HpPlanState = { checks: {}, snapshots: {} };
 let hpCardReturnScroll = 0;
 /** Vilka områden i diagnosgranskningen som var öppna när kortet öppnades (så de är öppna igen efter Tillbaka). */
 let hpAreaOpenMemo: string[] | null = null;
@@ -1176,6 +1204,30 @@ function startHpTwinTempoInterval(): void {
   stopHpTwinTempoInterval();
   updateHpTwinTempoUI();
   hpTwinTempoIntervalRef = window.setInterval(updateHpTwinTempoUI, 500);
+}
+
+function hpTwinStart(delprov: HpDelprov): void {
+  hpForceHome = false;
+  hpCardOpen = null;
+  hpPlanCardDelprov = null;
+  hpHelpOpenFor = null;
+  hpTwinSession = {
+    delprov,
+    items: buildHpTwinPass(delprov),
+    currentIndex: 0,
+    userAnswer: null,
+    showFeedback: false,
+    correct: 0,
+    withHint: 0,
+    wrong: 0,
+    questionStartedAt: Date.now(),
+    missedItems: [],
+    errorTagCounts: {},
+    currentTag: null,
+    helpedIds: [],
+    ...hpNavInit()
+  };
+  render();
 }
 
 function hpTwinAdvanceQuestion(): void {
@@ -2621,6 +2673,203 @@ function renderHpActiveResume(): string {
   return "";
 }
 
+// ── Din plan (beslut 2026-10-05 (9)) ──
+
+function hpPlanTodayKey(): string {
+  return HP_PLAN_DEV_DATE ?? localDateKey(new Date());
+}
+
+function hpPlanData(): HpPlanData {
+  const diag = loadHpMathResult();
+  const delprover: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
+  const twin: HpPlanData["twin"] = {};
+  for (const d of delprover) {
+    const r = loadHpTwinResult(d);
+    if (r) twin[d] = { completedAt: r.completedAt, correct: r.correct, total: r.total };
+  }
+  return {
+    wordsToday: HP_PLAN_DEV_DATE ? 0 : loadHpProgress().wordsCompleted,
+    twin,
+    lasCompletedAt: Object.values(loadHpLasResults()).map((r) => r.completedAt),
+    diagnosis: diag
+      ? {
+          completedAt: diag.completedAt,
+          hasQuestions: Array.isArray(diag.questions) && diag.questions.length > 0,
+          areas: diag.areas.map((a) => ({ area: a.area, level: a.level, correct: a.correct, total: a.total, avgSeconds: a.avgSeconds }))
+        }
+      : null
+  };
+}
+
+/** Räknar dagens plan och sparar det som ska sparas: dagens frusna lista och automatiska avbockningar. */
+function hpPlanCompute() {
+  const todayKey = hpPlanTodayKey();
+  const data = hpPlanData();
+  const state: HpPlanState = HP_PLAN_DEV_DATE ? hpPlanMemState : loadHpPlanState();
+  const plan = buildTodayPlan(todayKey, data, state);
+  let changed = false;
+  if (plan.phase === "plan" && !state.snapshots[todayKey]) {
+    state.snapshots[todayKey] = plan.todayTasks;
+    changed = true;
+  }
+  const fresh = Array.from(new Set(plan.newlyAutoDone));
+  if (fresh.length > 0) {
+    state.checks[todayKey] = Array.from(new Set([...(state.checks[todayKey] ?? []), ...fresh]));
+    changed = true;
+  }
+  if (changed) {
+    if (HP_PLAN_DEV_DATE) hpPlanMemState = state;
+    else saveHpPlanState(state);
+  }
+  return { plan, state, data, todayKey };
+}
+
+function hpPlanToggleCheck(taskId: string): void {
+  const { plan, state, todayKey } = hpPlanCompute();
+  const item = plan.items.find((i) => i.task.id === taskId);
+  if (!item || item.autoDone) return;
+  if (item.done) {
+    // Ta bort manuell avbockning från utdelningsdagen och framåt.
+    for (const k of Object.keys(state.checks)) {
+      if (k >= item.origin && k <= todayKey) state.checks[k] = state.checks[k].filter((id) => id !== taskId);
+    }
+  } else {
+    state.checks[todayKey] = Array.from(new Set([...(state.checks[todayKey] ?? []), taskId]));
+  }
+  if (HP_PLAN_DEV_DATE) hpPlanMemState = state;
+  else saveHpPlanState(state);
+}
+
+const HP_PLAN_CHECK_SVG =
+  '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function hpPlanGoButton(item: HpPlanItem): string {
+  const a = item.task.action;
+  const label = item.task.buttonLabel;
+  const cls = "hp-plan-go";
+  switch (a.type) {
+    case "ord":
+      return `<button class="${cls}" data-action="hp-start-pass">${label}</button>`;
+    case "las":
+      return `<button class="${cls}" data-action="hp-las-start">${label}</button>`;
+    case "diagnos":
+      return `<button class="${cls}" data-action="hp-math-start">${label}</button>`;
+    case "train":
+      return `<button class="${cls}" data-action="hp-twin-start" data-delprov="${a.delprov}">${label}</button>`;
+    case "lar-om":
+      return `<button class="${cls}" data-action="hp-plan-card" data-task="${item.task.id}">${label}</button>`;
+    case "resources":
+      return `<button class="${cls}" data-action="hp-resources-open">${label}</button>`;
+    case "flashcards":
+      return `<button class="${cls}" data-action="hp-guide-flashcards">${label}</button>`;
+    default:
+      return "";
+  }
+}
+
+function renderHpPlanRow(item: HpPlanItem): string {
+  const { task } = item;
+  const whyOpen = hpPlanWhyOpen.has(task.id);
+  const go = item.done ? "" : hpPlanGoButton(item);
+  const checkLabel = item.done ? `Klar: ${task.title}` : `Bocka av: ${task.title}`;
+  const check = `<button class="hp-plan-check" data-action="hp-plan-check" data-task="${task.id}" aria-pressed="${item.done}" aria-label="${checkLabel}" ${item.autoDone ? "disabled" : ""}><span class="hp-plan-check-box">${item.done ? HP_PLAN_CHECK_SVG : ""}</span></button>`;
+  return `
+    <li class="hp-plan-row ${item.done ? "hp-plan-row-done" : ""}">
+      ${check}
+      <div class="hp-plan-text">
+        ${item.carried ? `<span class="hp-plan-tag">${item.carriedLabel}</span>` : ""}
+        <span class="hp-plan-title">${task.title}</span>
+        ${task.sub ? `<span class="hp-plan-sub">${task.sub}</span>` : ""}
+        <button class="hp-plan-why-btn" data-action="hp-plan-why" data-task="${task.id}" aria-expanded="${whyOpen}">Varför?</button>
+      </div>
+      ${go}
+      ${whyOpen ? `<p class="hp-plan-why">${task.why}</p>` : ""}
+    </li>`;
+}
+
+/** Rekommenderad knapp (används som extra efter dagens plan och efter provdagen). */
+function renderHpRecButton(rec: ReturnType<typeof recommendHpNext>, cls: string): string {
+  if (rec.las) return `<button class="${cls}" data-action="hp-las-start" data-text-id="${rec.las.id}">${rec.label}</button>`;
+  if (rec.delprov) return `<button class="${cls}" data-action="hp-twin-start" data-delprov="${rec.delprov}">${rec.label}</button>`;
+  return `<button class="${cls}" data-action="hp-start-pass">${rec.label}</button>`;
+}
+
+function renderHpRecommended(wordsToday: number, hasWords: boolean): string {
+  const rec = recommendHpNext(wordsToday);
+  const ordBtn = (rec.delprov || rec.las) && hasWords ? `<button class="hp-secondary-btn" data-action="hp-start-pass">Dagens 10 ord</button>` : "";
+  return `
+    <p class="hp-rec-label">Rekommenderat nu</p>
+    ${renderHpRecButton(rec, "hp-cta-btn")}
+    <p class="hp-rec-reason">${rec.reason}</p>
+    ${ordBtn}`;
+}
+
+function renderHpPlanSection(progress: { wordsCompleted: number }, hasWords: boolean): string {
+  const { plan } = hpPlanCompute();
+  if (plan.phase === "exam") {
+    return `<section class="hp-plan"><p class="hp-plan-kicker">Provdag</p><p class="hp-plan-done">Lycka till i dag.</p></section>`;
+  }
+  if (plan.phase === "after") {
+    return `<section class="hp-plan"><p class="hp-plan-kicker">Provdag klar</p></section>${renderHpRecommended(progress.wordsCompleted, hasWords)}`;
+  }
+  const rows = plan.items.map(renderHpPlanRow).join("");
+  const kicker = `I dag · dag ${plan.day} av ${HP_PLAN_DAYS} · ${plan.stepName}`;
+  let footer = "";
+  if (plan.allDone) {
+    const rec = recommendHpNext(progress.wordsCompleted);
+    footer = `<p class="hp-plan-done">Klart för i dag ✓</p>
+      ${renderHpRecButton({ ...rec, label: `Extra: ${rec.label}` }, "hp-secondary-btn hp-plan-extra")}`;
+  }
+  return `
+    <section class="hp-plan" aria-label="Din plan">
+      <p class="hp-plan-kicker">${kicker}</p>
+      <ul class="hp-plan-list">${rows}</ul>
+      ${footer}
+      <button class="hp-plan-all-btn" data-action="hp-plan-all">Se hela planen</button>
+    </section>`;
+}
+
+function renderHpPlanAll(): string {
+  const { state, data, todayKey } = hpPlanCompute();
+  const rows = buildPlanOverview(todayKey, data, state);
+  const groups = HP_PLAN_STEPS.map((step, idx) => {
+    const days = rows.filter((r) => r.stepId === step.id);
+    if (days.length === 0) return "";
+    const startKey = addDays(HP_PLAN_START, step.span[0] - 1);
+    const endKey = addDays(HP_PLAN_START, step.span[1] - 1);
+    const range = step.span[0] === step.span[1] ? formatPlanDate(startKey) : `${Number(startKey.split("-")[2])}–${formatPlanDate(endKey)}`;
+    const items = days
+      .map((r) => {
+        const cls = ["hp-plan-day", r.isToday ? "hp-plan-day-today" : "", r.complete ? "hp-plan-day-done" : ""].join(" ");
+        const mark = r.complete ? `<span class="hp-plan-day-mark" role="img" aria-label="Klar">${HP_PLAN_CHECK_SVG}</span>` : `<span class="hp-plan-day-mark ${r.isPast || r.isToday ? "" : "hp-plan-day-mark-future"}" aria-hidden="true"></span>`;
+        return `
+          <li class="${cls}" ${r.isToday ? 'aria-current="date"' : ""}>
+            ${mark}
+            <div class="hp-plan-day-body">
+              <span class="hp-plan-day-date">Dag ${r.day} · ${formatPlanWeekday(r.dateKey)} ${formatPlanDate(r.dateKey)}${r.isToday ? ' <span class="hp-plan-day-now">I dag</span>' : ""}</span>
+              <span class="hp-plan-day-labels">${r.labels.join(" · ")}</span>
+            </div>
+          </li>`;
+      })
+      .join("");
+    return `
+      <section class="hp-res-group">
+        <h3 class="hp-res-heading">Steg ${idx + 1} · ${step.name} · ${range}</h3>
+        <ul class="hp-plan-days">${items}</ul>
+      </section>`;
+  }).join("");
+  return `
+    <div class="hp-guide-page">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-plan-back">‹ Tillbaka till HP-hem</button>
+      </div>
+      <h2 class="hp-res-title">Din plan</h2>
+      <p class="hp-res-checked">${HP_PLAN_DAYS} dagar · ${formatPlanDate(HP_PLAN_START)}–${formatPlanDate(rows[rows.length - 1].dateKey)} · provet ${formatPlanDate(HP_PLAN_EXAM)}</p>
+      ${groups}
+    </div>
+  `;
+}
+
 function renderHpHome(): string {
   const daysLeft = hpDaysLeft();
   const progress = loadHpProgress();
@@ -2644,6 +2893,8 @@ function renderHpHome(): string {
         <p class="hp-countdown-value">${daysLeft}</p>
         <p class="hp-countdown-sub">18 okt 2026</p>
       </div>
+      ${activeResumeHtml ? "" : renderHpPlanSection(progress, hasWords)}
+      ${activeResumeHtml}
       <div class="hp-progress-row">
         <div class="stat-widget">
           <div class="stat-widget-top">
@@ -2663,24 +2914,8 @@ function renderHpHome(): string {
         </div>
       </div>
       ${activeResumeHtml
-        ? activeResumeHtml
+        ? ""
         : `
-          ${(() => {
-            const rec = recommendHpNext(progress.wordsCompleted);
-            const recBtn = rec.las
-              ? `<button class="hp-cta-btn" data-action="hp-las-start" data-text-id="${rec.las.id}">${rec.label}</button>`
-              : rec.delprov
-                ? `<button class="hp-cta-btn" data-action="hp-twin-start" data-delprov="${rec.delprov}">${rec.label}</button>`
-                : `<button class="hp-cta-btn" data-action="hp-start-pass">${rec.label}</button>`;
-            const ordBtn = (rec.delprov || rec.las) && hasWords
-              ? `<button class="hp-secondary-btn" data-action="hp-start-pass">Dagens 10 ord</button>`
-              : "";
-            return `
-              <p class="hp-rec-label">Rekommenderat nu</p>
-              ${recBtn}
-              <p class="hp-rec-reason">${rec.reason}</p>
-              ${ordBtn}`;
-          })()}
           ${renderHpLasHomeCard()}
           <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
           ${lastMathHtml}
@@ -3207,6 +3442,7 @@ function renderHpCard(card: HpCard): string {
         <p class="hp-card-text">${card.trap}</p>
       </div>
       <a class="hp-card-extlink" href="${card.link.url}" target="_blank" rel="noopener">${card.link.label} ↗</a>
+      ${hpPlanCardDelprov ? `<button class="hp-cta-btn hp-plan-card-cta" data-action="hp-twin-start" data-delprov="${hpPlanCardDelprov}">Nu ett pass i ${hpPlanCardDelprov}</button>` : ""}
     </div>
   `;
 }
@@ -3698,7 +3934,12 @@ function renderHp(): string {
   if (hpForceHome) {
     hpCardOpen = null;
     hpResourcesOpen = false;
+    hpPlanAllOpen = false;
+    hpPlanCardDelprov = null;
     return renderHpHome();
+  }
+  if (hpPlanAllOpen) {
+    return renderHpPlanAll();
   }
   if (hpResourcesOpen) {
     return renderHpResources();
@@ -5577,26 +5818,7 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "hp-twin-start") {
-    hpForceHome = false;
-    hpHelpOpenFor = null;
-    const delprov = actionEl.dataset.delprov as HpDelprov;
-    hpTwinSession = {
-      delprov,
-      items: buildHpTwinPass(delprov),
-      currentIndex: 0,
-      userAnswer: null,
-      showFeedback: false,
-      correct: 0,
-      withHint: 0,
-      wrong: 0,
-      questionStartedAt: Date.now(),
-      missedItems: [],
-      errorTagCounts: {},
-      currentTag: null,
-      helpedIds: [],
-      ...hpNavInit()
-    };
-    render();
+    hpTwinStart(actionEl.dataset.delprov as HpDelprov);
     return;
   }
 
@@ -5684,6 +5906,7 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "hp-card-open") {
+    hpPlanCardDelprov = null;
     hpCardReturnScroll = window.scrollY;
     hpAreaOpenMemo = Array.from(app.querySelectorAll<HTMLElement>("details.hp-math-area-card[open]")).map((d) => d.dataset.area ?? "");
     hpCardOpen = actionEl.dataset.card ?? null;
@@ -5694,9 +5917,60 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-card-back") {
     hpCardOpen = null;
+    hpPlanCardDelprov = null;
     render();
     hpAreaOpenMemo = null;
     window.scrollTo(0, hpCardReturnScroll);
+    return;
+  }
+
+  if (action === "hp-plan-check") {
+    hpPlanToggleCheck(actionEl.dataset.task ?? "");
+    const y = window.scrollY;
+    render();
+    window.scrollTo(0, y);
+    return;
+  }
+
+  if (action === "hp-plan-why") {
+    const id = actionEl.dataset.task ?? "";
+    if (hpPlanWhyOpen.has(id)) hpPlanWhyOpen.delete(id);
+    else hpPlanWhyOpen.add(id);
+    const y = window.scrollY;
+    render();
+    window.scrollTo(0, y);
+    return;
+  }
+
+  if (action === "hp-plan-card") {
+    const item = hpPlanCompute().plan.items.find((i) => i.task.id === actionEl.dataset.task);
+    if (!item || item.task.action.type !== "lar-om") return;
+    const card = findHpCard(item.task.action.area);
+    hpForceHome = false;
+    hpCardReturnScroll = window.scrollY;
+    hpAreaOpenMemo = null;
+    if (card) {
+      hpPlanCardDelprov = item.task.action.delprov;
+      hpCardOpen = card.id;
+      render();
+      window.scrollTo(0, 0);
+    } else {
+      hpTwinStart(item.task.action.delprov);
+    }
+    return;
+  }
+
+  if (action === "hp-plan-all") {
+    hpPlanAllOpen = true;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-plan-back") {
+    hpPlanAllOpen = false;
+    render();
+    window.scrollTo(0, 0);
     return;
   }
 

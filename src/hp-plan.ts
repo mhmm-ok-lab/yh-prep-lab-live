@@ -1,0 +1,482 @@
+// "Din plan": datumstyrt 13-dagarsprogram inför högskoleprovet 18 okt 2026 (beslut 2026-10-05 (9)).
+// Rena funktioner: tar in sparade resultat och ett datum (injicerbart) och ger dagens uppgifter.
+// Ingen localStorage eller DOM här, så allt går att testa.
+import { HP_MATH_AREAS } from "./hp-math";
+import type { HpMathArea } from "./hp-math";
+import type { HpDelprov } from "./hp-twins";
+
+export const HP_PLAN_START = "2026-10-05";
+export const HP_PLAN_EXAM = "2026-10-18";
+export const HP_PLAN_DAYS = 13;
+/** Dagliga ord och LÄS gäller t.o.m. 16 okt (dag 12). */
+const HP_PLAN_DAILY_UNTIL_DAY = 12;
+const HP_PLAN_MAX_CARRIED = 2;
+/** Uppgifter flyttas fram i högst så här många dagar; äldre släpps tyst (ingen skuldlista). */
+const HP_PLAN_CARRY_DAYS = 2;
+const HP_PLAN_WORDS_GOAL = 10;
+const DELPROV_ORDER: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
+
+export type HpPlanStepId = "mat" | "lar-om" | "generalrep" | "laga" | "landa";
+
+/** days = dagarna steget äger i listan. span = dagarna steget gäller enligt programmet (Lär om pågår från dag 1, så fort diagnosen finns). */
+export const HP_PLAN_STEPS: { id: HpPlanStepId; name: string; days: [number, number]; span: [number, number] }[] = [
+  { id: "mat", name: "Mät", days: [1, 2], span: [1, 2] },
+  { id: "lar-om", name: "Lär om", days: [3, 6], span: [1, 6] },
+  { id: "generalrep", name: "Generalrepetition", days: [7, 7], span: [7, 7] },
+  { id: "laga", name: "Laga", days: [8, 10], span: [8, 10] },
+  { id: "landa", name: "Landa", days: [11, 13], span: [11, 13] }
+];
+
+// ── Datum ──
+
+/** Lokalt datum som YYYY-MM-DD. */
+export function localDateKey(d: Date): string {
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
+function keyToUtc(key: string): number {
+  const [y, m, d] = key.split("-").map(Number);
+  return Date.UTC(y, m - 1, d);
+}
+
+/** Antal dagar från a till b (b - a). */
+export function dayDiff(a: string, b: string): number {
+  return Math.round((keyToUtc(b) - keyToUtc(a)) / 86_400_000);
+}
+
+export function addDays(key: string, n: number): string {
+  const d = new Date(keyToUtc(key) + n * 86_400_000);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+
+const MONTHS = ["jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+const WEEKDAYS = ["sön", "mån", "tis", "ons", "tors", "fre", "lör"];
+
+export function formatPlanDate(key: string): string {
+  const [, m, d] = key.split("-").map(Number);
+  return `${d} ${MONTHS[m - 1]}`;
+}
+
+export function formatPlanWeekday(key: string): string {
+  return WEEKDAYS[new Date(keyToUtc(key)).getUTCDay()];
+}
+
+export type HpPlanPhase = "plan" | "exam" | "after";
+
+export interface HpPlanPosition {
+  phase: HpPlanPhase;
+  /** 1–13. Före start = 1. Efter planen = 13. */
+  day: number;
+  step: HpPlanStepId | null;
+  stepName: string;
+}
+
+export function planStepForDay(day: number): { id: HpPlanStepId; name: string } {
+  return HP_PLAN_STEPS.find((s) => day >= s.days[0] && day <= s.days[1]) ?? HP_PLAN_STEPS[HP_PLAN_STEPS.length - 1];
+}
+
+export function planPosition(key: string): HpPlanPosition {
+  if (dayDiff(HP_PLAN_EXAM, key) > 0) {
+    return { phase: "after", day: HP_PLAN_DAYS, step: null, stepName: "Provdag klar" };
+  }
+  if (key === HP_PLAN_EXAM) {
+    return { phase: "exam", day: HP_PLAN_DAYS, step: null, stepName: "Provdag" };
+  }
+  const day = Math.min(HP_PLAN_DAYS, Math.max(1, dayDiff(HP_PLAN_START, key) + 1));
+  const step = planStepForDay(day);
+  return { phase: "plan", day, step: step.id, stepName: step.name };
+}
+
+// ── Indata (strukturella typer, så storage.ts inte behövs här) ──
+
+export interface HpPlanDiagnosisArea {
+  area: HpMathArea;
+  level: "kan" | "repetera" | "lar-om";
+  correct: number;
+  total: number;
+  avgSeconds: number;
+}
+
+export interface HpPlanData {
+  /** Antal ord klara i dag. Bara relevant för dagens datum. */
+  wordsToday: number;
+  /** completedAt (ISO) för varje sparat LÄS-resultat. */
+  lasCompletedAt: string[];
+  /** Senaste mattediagnos. */
+  diagnosis: { completedAt: string; hasQuestions: boolean; areas: HpPlanDiagnosisArea[] } | null;
+  /** Senaste matteträning per delprov. */
+  twin: Partial<Record<HpDelprov, { completedAt: string; correct: number; total: number }>>;
+}
+
+export type HpPlanAction =
+  | { type: "ord" }
+  | { type: "las" }
+  | { type: "diagnos" }
+  | { type: "train"; delprov: HpDelprov }
+  | { type: "lar-om"; area: HpMathArea; delprov: HpDelprov }
+  | { type: "resources" }
+  | { type: "flashcards" }
+  | { type: "none" };
+
+export type HpPlanAuto = { kind: "ord" } | { kind: "las" } | { kind: "diagnos" } | { kind: "train"; delprov: HpDelprov };
+
+export interface HpPlanTask {
+  id: string;
+  title: string;
+  /** Kort etikett för "Se hela planen". */
+  short: string;
+  /** Rad under titeln (valfri). */
+  sub?: string;
+  why: string;
+  action: HpPlanAction;
+  buttonLabel: string;
+  /** Hur uppgiften bockas av automatiskt (saknas = bara manuellt). */
+  auto?: HpPlanAuto;
+  /** Flyttas fram till nästa dag om den inte blev gjord. Dagliga ord/LÄS gör det inte. */
+  carry: boolean;
+}
+
+export interface HpPlanState {
+  /** Avbockade uppgifts-id per datum. */
+  checks: Record<string, string[]>;
+  /** Frysta uppgifter per datum, så att listan inte ändras när resultaten ändras. */
+  snapshots: Record<string, HpPlanTask[]>;
+}
+
+export const EMPTY_HP_PLAN_STATE: HpPlanState = { checks: {}, snapshots: {} };
+
+// ── Urval ──
+
+function ratio(a: { correct: number; total: number }): number {
+  return a.total > 0 ? a.correct / a.total : 0;
+}
+
+/** Lär om-områden (svagast först), sedan Repetera-områden (svagast först). Tom om ingen diagnos med frågedata finns. */
+export function larOmAreas(data: HpPlanData): HpPlanDiagnosisArea[] {
+  const diag = data.diagnosis;
+  if (!diag || !diag.hasQuestions) return [];
+  const weakestFirst = (a: HpPlanDiagnosisArea, b: HpPlanDiagnosisArea) =>
+    ratio(a) - ratio(b) || b.avgSeconds - a.avgSeconds;
+  const larOm = diag.areas.filter((a) => a.level === "lar-om").sort(weakestFirst);
+  const repetera = diag.areas.filter((a) => a.level === "repetera").sort(weakestFirst);
+  return [...larOm, ...repetera];
+}
+
+/** Delprov att träna: ett otränat först (i ordning), annars det med lägst andel rätt. */
+export function weakestOrUntriedDelprov(data: HpPlanData): HpDelprov {
+  const untried = DELPROV_ORDER.find((d) => !data.twin[d]);
+  if (untried) return untried;
+  return [...DELPROV_ORDER].sort((a, b) => ratio(data.twin[a]!) - ratio(data.twin[b]!))[0];
+}
+
+export function hpMathAreaLabel(area: HpMathArea): string {
+  // Förklaringen i parentes (t.ex. "Geometri (area/omkrets/…)") hör inte hemma i en radrubrik.
+  return (HP_MATH_AREAS.find((a) => a.id === area)?.label ?? area).replace(/\s*\(.*\)\s*$/, "");
+}
+
+// ── Uppgifter ──
+
+const WHY_ORD = "Tio ord om dagen är kort nog att alltid hinnas med, och orden fastnar bättre när de upprepas dag efter dag än när de pluggas i bulk.";
+const WHY_LAS = "LÄS är din svåraste del. En text om dagen bygger tempo och vana, och felanalysen visar vilken sorts fråga du missar.";
+
+function taskOrd(): HpPlanTask {
+  return { id: "ord", title: "Dagens 10 ord", short: "Ord", why: WHY_ORD, action: { type: "ord" }, buttonLabel: "Starta", auto: { kind: "ord" }, carry: false };
+}
+
+function taskLas(): HpPlanTask {
+  return { id: "las", title: "En LÄS-text", short: "LÄS", why: WHY_LAS, action: { type: "las" }, buttonLabel: "Starta", auto: { kind: "las" }, carry: false };
+}
+
+function taskDiagnos(): HpPlanTask {
+  return {
+    id: "diagnos",
+    title: "Gör mattediagnosen",
+    short: "Mattediagnos",
+    sub: "ca 15 min",
+    why: "Först mäter vi vad du kan. Då lägger du tiden på det som är svagt i stället för på det du redan kan.",
+    action: { type: "diagnos" },
+    buttonLabel: "Starta",
+    auto: { kind: "diagnos" },
+    carry: true
+  };
+}
+
+function taskLarOm(area: HpMathArea): HpPlanTask {
+  const label = hpMathAreaLabel(area);
+  return {
+    id: `lar-om:${area}`,
+    title: `Lär om: ${label}`,
+    short: `Lär om: ${label}`,
+    sub: "Påminnelsekort och ett pass i XYZ",
+    why: "Kortet visar metoden och passet låter dig använda den direkt. Det är så den fastnar, en sak i taget.",
+    action: { type: "lar-om", area, delprov: "XYZ" },
+    buttonLabel: "Starta",
+    auto: { kind: "train", delprov: "XYZ" },
+    carry: true
+  };
+}
+
+function taskTrainFallback(delprov: HpDelprov): HpPlanTask {
+  return {
+    id: `lar-om-train:${delprov}`,
+    title: `Lär om: matteträning i ${delprov}`,
+    short: `Lär om: träning ${delprov}`,
+    why: "Utan diagnos börjar vi där du har tränat minst eller har lägst andel rätt. Då ser du direkt vad som behöver arbetas upp.",
+    action: { type: "train", delprov },
+    buttonLabel: "Starta",
+    auto: { kind: "train", delprov },
+    carry: true
+  };
+}
+
+function taskGeneralrep(): HpPlanTask {
+  return {
+    id: "generalrep",
+    title: "Helt gammalt prov på papper, 4 pass à 55 min",
+    short: "Gammalt prov",
+    sub: "Bocka av när du är klar",
+    why: "Tränar uthållighet och tempo i provets eget format. Söndag, en vecka före provet, ger tid att laga det som gick dåligt.",
+    action: { type: "resources" },
+    buttonLabel: "Hitta prov",
+    carry: true
+  };
+}
+
+function taskLagaTrain(delprov: HpDelprov): HpPlanTask {
+  return {
+    id: "laga-train",
+    title: `Matteträning i ditt svagaste delprov (${delprov})`,
+    short: `Träning ${delprov}`,
+    why: "Efter generalrepetitionen vet du var du tappar poäng. Ett pass i det svagaste delprovet ger mest per minut.",
+    action: { type: "train", delprov },
+    buttonLabel: "Starta",
+    auto: { kind: "train", delprov },
+    carry: true
+  };
+}
+
+function taskLagaDiagnos(): HpPlanTask {
+  return {
+    id: "laga-diagnos",
+    title: "Gör om mattediagnosen",
+    short: "Ny diagnos",
+    sub: "ca 15 min",
+    why: "Jämför med första diagnosen. Du ser vad som har satt sig och vad som är kvar att laga de sista dagarna.",
+    action: { type: "diagnos" },
+    buttonLabel: "Starta",
+    auto: { kind: "diagnos" },
+    carry: true
+  };
+}
+
+function taskFlashcards(): HpPlanTask {
+  return {
+    id: "strategi-flashcards",
+    title: "Strategi-flashcards",
+    short: "Flashcards",
+    why: "De sista dagarna handlar om att komma ihåg strategierna, inte att lära nytt. Korta kort i lugnt tempo räcker.",
+    action: { type: "flashcards" },
+    buttonLabel: "Öppna",
+    carry: false
+  };
+}
+
+function taskVila(): HpPlanTask {
+  return {
+    id: "vila",
+    title: "Vila, packa och lägg dig tidigt",
+    short: "Vila och packa",
+    sub: "Legitimation, blyertspennor, suddgummi, klocka utan uppkoppling, mat",
+    why: "Utvilad hjärna och en packad väska dagen innan tar bort morgonens beslut. Då kan du lägga all energi på provet.",
+    action: { type: "none" },
+    buttonLabel: "",
+    carry: false
+  };
+}
+
+/** Uppgifterna för ett datum, beräknade från aktuella resultat (utan överförda). */
+export function buildDayTasks(key: string, data: HpPlanData): HpPlanTask[] {
+  const pos = planPosition(key);
+  if (pos.phase !== "plan") return [];
+  const day = pos.day;
+  const tasks: HpPlanTask[] = [];
+
+  const larOm = larOmAreas(data);
+  const larOmTask = (index: number): HpPlanTask => {
+    const area = larOm[index];
+    return area ? taskLarOm(area.area) : taskTrainFallback(weakestOrUntriedDelprov(data));
+  };
+
+  if (day <= 2) {
+    if (data.diagnosis?.hasQuestions) {
+      tasks.push(larOmTask(day - 1));
+    } else {
+      tasks.push(taskDiagnos());
+    }
+  } else if (day <= 6) {
+    tasks.push(larOmTask(day - 1));
+  } else if (day === 7) {
+    tasks.push(taskGeneralrep());
+  } else if (day <= 10) {
+    tasks.push(taskLagaTrain(weakestOrUntriedDelprov(data)));
+    if (day === 10) tasks.push(taskLagaDiagnos());
+  } else {
+    tasks.push(taskFlashcards());
+    if (day === 13) tasks.push(taskVila());
+  }
+
+  if (day <= HP_PLAN_DAILY_UNTIL_DAY) {
+    tasks.push(taskOrd(), taskLas());
+  }
+  return tasks;
+}
+
+// ── Avbockning ──
+
+function isoToKey(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? "" : localDateKey(d);
+}
+
+function inRange(key: string, from: string, to: string): boolean {
+  return key !== "" && key >= from && key <= to;
+}
+
+/** Är uppgiften gjord automatiskt, räknat från dagen den delades ut (origin) till i dag? */
+export function isAutoDone(task: HpPlanTask, origin: string, today: string, data: HpPlanData): boolean {
+  const auto = task.auto;
+  if (!auto) return false;
+  switch (auto.kind) {
+    case "ord":
+      return origin === today && data.wordsToday >= HP_PLAN_WORDS_GOAL;
+    case "las":
+      return data.lasCompletedAt.some((iso) => inRange(isoToKey(iso), origin, today));
+    case "diagnos":
+      return !!data.diagnosis?.hasQuestions && inRange(isoToKey(data.diagnosis.completedAt), origin, today);
+    case "train": {
+      const r = data.twin[auto.delprov];
+      return !!r && inRange(isoToKey(r.completedAt), origin, today);
+    }
+  }
+}
+
+/** Är id avbockat (manuellt eller sparat från automatik) någon gång mellan origin och i dag? */
+export function isChecked(id: string, origin: string, today: string, checks: Record<string, string[]>): boolean {
+  return Object.keys(checks).some((k) => inRange(k, origin, today) && checks[k].includes(id));
+}
+
+export interface HpPlanItem {
+  task: HpPlanTask;
+  /** Dagen uppgiften delades ut. */
+  origin: string;
+  carried: boolean;
+  /** "Från i går" eller "Från 8 okt". */
+  carriedLabel?: string;
+  done: boolean;
+  /** Gjord av automatiken (kan inte bockas av manuellt). */
+  autoDone: boolean;
+}
+
+export interface HpPlanToday {
+  phase: HpPlanPhase;
+  dateKey: string;
+  day: number;
+  totalDays: number;
+  stepName: string;
+  items: HpPlanItem[];
+  allDone: boolean;
+  /** Uppgifter som automatiken just nu räknar som gjorda men som inte är sparade för i dag. */
+  newlyAutoDone: string[];
+  /** Dagens egna uppgifter (utan överförda), att spara som ögonblicksbild. */
+  todayTasks: HpPlanTask[];
+}
+
+function tasksFor(key: string, data: HpPlanData, state: HpPlanState): HpPlanTask[] {
+  return state.snapshots[key] ?? buildDayTasks(key, data);
+}
+
+export function buildTodayPlan(todayKey: string, data: HpPlanData, state: HpPlanState = EMPTY_HP_PLAN_STATE): HpPlanToday {
+  const pos = planPosition(todayKey);
+  const base = { phase: pos.phase, dateKey: todayKey, day: pos.day, totalDays: HP_PLAN_DAYS, stepName: pos.stepName };
+  if (pos.phase !== "plan") {
+    return { ...base, items: [], allDone: false, newlyAutoDone: [], todayTasks: [] };
+  }
+
+  const todayTasks = tasksFor(todayKey, data, state);
+  const todayIds = new Set(todayTasks.map((t) => t.id));
+  const items: HpPlanItem[] = [];
+  const newlyAutoDone: string[] = [];
+
+  const evaluate = (task: HpPlanTask, origin: string) => {
+    const autoDone = isAutoDone(task, origin, todayKey, data);
+    const checked = isChecked(task.id, origin, todayKey, state.checks);
+    if (autoDone && !(state.checks[todayKey] ?? []).includes(task.id)) newlyAutoDone.push(task.id);
+    return { autoDone, done: autoDone || checked };
+  };
+
+  // Överförda: ej gjorda från tidigare dagar (utom dagliga), de två senaste.
+  const carried: HpPlanItem[] = [];
+  const seen = new Set(todayIds);
+  if (dayDiff(HP_PLAN_START, todayKey) >= 1) {
+    for (let n = 1; n <= HP_PLAN_CARRY_DAYS; n++) {
+      const k = addDays(todayKey, -n);
+      if (k < HP_PLAN_START) break;
+      for (const task of tasksFor(k, data, state)) {
+        if (!task.carry || seen.has(task.id)) continue;
+        const ev = evaluate(task, k);
+        if (ev.done) continue;
+        seen.add(task.id);
+        const yesterday = dayDiff(k, todayKey) === 1;
+        carried.push({ task, origin: k, carried: true, carriedLabel: yesterday ? "Från i går" : `Från ${formatPlanDate(k)}`, ...ev });
+      }
+    }
+  }
+  const carriedKept = carried.slice(0, HP_PLAN_MAX_CARRIED).reverse();
+
+  for (const task of todayTasks) {
+    items.push({ task, origin: todayKey, carried: false, ...evaluate(task, todayKey) });
+  }
+  items.push(...carriedKept);
+
+  return {
+    ...base,
+    items,
+    allDone: items.length > 0 && items.every((i) => i.done),
+    newlyAutoDone,
+    todayTasks
+  };
+}
+
+/** Dagstatus för "Se hela planen". */
+export interface HpPlanDayRow {
+  dateKey: string;
+  day: number;
+  stepId: HpPlanStepId;
+  stepName: string;
+  isToday: boolean;
+  isPast: boolean;
+  /** Alla dagens uppgifter är gjorda. */
+  complete: boolean;
+  labels: string[];
+}
+
+export function buildPlanOverview(todayKey: string, data: HpPlanData, state: HpPlanState = EMPTY_HP_PLAN_STATE): HpPlanDayRow[] {
+  const rows: HpPlanDayRow[] = [];
+  const todayPlan = buildTodayPlan(todayKey, data, state);
+  const todayDoneIds = new Set(todayPlan.items.filter((i) => i.done).map((i) => i.task.id));
+  for (let day = 1; day <= HP_PLAN_DAYS; day++) {
+    const key = addDays(HP_PLAN_START, day - 1);
+    const step = planStepForDay(day);
+    const tasks = tasksFor(key, data, state);
+    const isToday = key === todayKey;
+    const isPast = key < todayKey;
+    const complete =
+      (isPast || isToday) &&
+      tasks.length > 0 &&
+      tasks.every((t) => isChecked(t.id, key, todayKey, state.checks) || (isToday && todayDoneIds.has(t.id)));
+    rows.push({ dateKey: key, day, stepId: step.id, stepName: step.name, isToday, isPast, complete, labels: tasks.map((t) => t.short) });
+  }
+  return rows;
+}

@@ -3,6 +3,18 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-05 — HP: "Din plan" (dagens uppgifter överst på HP-hem)
+
+**Vad:** "Rekommenderat nu" är ersatt av "I dag · dag N av 13 · [steg]" direkt under nedräkningen, med 2–5 rader. Varje rad: avbockningsruta (44 px träffyta) · titel (och en rad om vad uppgiften är) · "Varför?" (en mening, öppnas på tryck) · en Starta-knapp (36 px) som startar övningen direkt (ORD, LÄS, mattediagnos, matteträning i rätt delprov, påminnelsekort + pass, Externa resurser, flashcards). Programmet är datumstyrt, 5–17 okt: Mät (diagnosen), Lär om (ett område per dag, svagast först, från senaste diagnosens Lär om och sedan Repetera), Generalrepetition (sön 11 okt, gammalt prov på papper, manuell avbockning), Laga (svagaste delprovet, ny diagnos 14 okt) och Landa (korta pass, flashcards, vila och packa 17 okt). Alla dagar t.o.m. 16 okt har dagens 10 ord och en LÄS-text. Uppgifter bockas av automatiskt när övningen är gjord i dag (≥ 10 ord, en LÄS-text, diagnos, matteträning i rätt delprov); papper och vila bockas manuellt. Ogjorda uppgifter (utom ord och LÄS) flyttas fram som "Från i går" (max 2, bara två dagar bakåt, äldre släpps tyst). När allt är klart står det "Klart för i dag ✓" och en valfri extra-knapp till den gamla rekommendationen. "Se hela planen" listar alla 13 dagar grupperade per steg, dagens markerad ("I dag") och avbockade dagar märkta. Efter 18 okt visas "Provdag klar" och den gamla rekommendationen. Datum, avbockningar och dagens frysta lista sparas i `yh.hp-plan` (try/catch). Logiken är rena funktioner i `src/hp-plan.ts` med tester; `?plandate=YYYY-MM-DD` simulerar ett datum (osynlig för användaren, sparar inget).
+
+**Varför:** Martin har ADHD och tidsblindhet; "vad ska jag göra nu?" är det som kostar mest. En färdig plan flyttar planeringen utanför hans huvud (extern struktur) och en konkret uppgift med knapp gör avsikten till en handling (implementation intentions, Gollwitzer: "om det är dag 3 gör jag Lär om: Algebra"). Inget dåligt samvete: missade uppgifter flyttas fram i stället för att bli röda, och dagliga pass räknas inte som skuld. "Varför?" ger skäl till uppgiften utan att fylla första vyn.
+
+**Före/efter:** Före: en rekommendation (en knapp + skäl) och en lång lista med övningar, ingen känsla av helhet eller dag. Efter: dagens lista och en knapp per rad ovanför vecket i 375 × 812 (5 rader inklusive 2 överförda slutar vid ca 750 px), mörkt och ljust läge, ingen sidledsscroll (scrollWidth 375). Avbockad rad blir fylld teal med bock och dämpad text, aldrig röd.
+
+**Stitch-princip:** No-Line (rader utan avdelarlinjer, luft), pill 36 px för knappar och 28 px-mönstret för etiketter, 3 fontstorlekar, bara palettens tokens (`--card`, `--accent-soft`, `--fill-*`, `--on-fill`, `--text-soft`). Teori: se HP-UX-SPEC beslut 27.
+
+---
+
 ## 2026-10-05 — Mörkt läge (hela appen, HP först)
 
 **Vad:** Appen har ett mörkt läge. Standard är Automatiskt (följer telefonens `prefers-color-scheme`). Avatarmenyn (runda bokstaven uppe till höger) har raden "Utseende" med Ljust, Mörkt, Automatiskt; valet sparas på enheten. Bakgrund `#14171a`, kort `#1c2024`, text `#e6e6e6`, dämpad text `#a0a4a8`, accent dämpad teal. Statusfältet på mobilen blir mörkt (`theme-color`, `color-scheme`).

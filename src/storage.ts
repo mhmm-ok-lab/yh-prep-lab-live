@@ -1,4 +1,5 @@
 import type { HpMathArea } from "./hp-math";
+import type { HpPlanState } from "./hp-plan";
 import type { HpDelprov } from "./hp-twins";
 import type { SessionDraft, StudySession } from "./types";
 
@@ -11,6 +12,7 @@ const HP_TWIN_REPEAT_KEY = "yh.hp-twin-repeat";
 const HP_TWIN_RESULT_KEY = "yh.hp-twin-result";
 const HP_LAS_RESULT_KEY = "yh.hp-las-result";
 const HP_LAS_REPEAT_KEY = "yh.hp-las-repeat";
+const HP_PLAN_KEY = "yh.hp-plan";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
 
@@ -184,6 +186,24 @@ export function saveHpMathResult(result: HpMathResult): void {
     localStorage.setItem(namespacedKey(HP_MATH_RESULT_KEY), JSON.stringify(result));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+/** "Din plan": avbockningar per datum och frusna dagslistor (beslut 2026-10-05 (9)). */
+export function loadHpPlanState(): HpPlanState {
+  try {
+    const stored = safeParse<Partial<HpPlanState> | null>(localStorage.getItem(namespacedKey(HP_PLAN_KEY)), null);
+    return { checks: stored?.checks ?? {}, snapshots: stored?.snapshots ?? {} };
+  } catch {
+    return { checks: {}, snapshots: {} };
+  }
+}
+
+export function saveHpPlanState(state: HpPlanState): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_PLAN_KEY), JSON.stringify(state));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — planen visas ändå för denna session
   }
 }
 
