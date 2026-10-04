@@ -100,6 +100,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Aritmetik & prioriteringsregler ──
   {
     id: "arit-1",
+    hint: "Räkneordning: vilken räkneoperation ska du göra först, plus eller gånger? Skriv ut mellanresultatet innan du går vidare från vänster till höger.",
     area: "aritmetik",
     prompt: "Beräkna: 12 − 3 × 2 + 4",
     options: ["10", "22", "8", "2"],
@@ -109,6 +110,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "arit-2",
+    hint: "Börja med parentesen, sedan division/multiplikation, och sist plus och minus. Räkna ut varje del för sig innan du slår ihop dem.",
     area: "aritmetik",
     prompt: "Beräkna: (8 + 4) ÷ 2 − 3 × 1",
     options: ["3", "9", "−3", "6"],
@@ -120,6 +122,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Bråk ──
   {
     id: "brak-1",
+    hint: "Du kan inte addera bråk med olika nämnare. Hitta först en gemensam nämnare och förläng det bråk som behöver det.",
     area: "brak",
     prompt: "Beräkna: 2/3 + 1/6",
     options: ["5/6", "3/9", "1/2", "5/9"],
@@ -129,6 +132,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "brak-2",
+    hint: "Vid multiplikation behövs ingen gemensam nämnare. Multiplicera täljarna för sig och nämnarna för sig, och förkorta sist.",
     area: "brak",
     prompt: "Beräkna: 3/4 × 2/5",
     options: ["3/10", "6/9", "5/9", "3/20"],
@@ -140,6 +144,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Procent ──
   {
     id: "procent-1",
+    hint: "Gör om procenttalet till decimalform (dela med 100) och multiplicera med det hela.",
     area: "procent",
     prompt: "Vad är 15 % av 240?",
     options: ["36", "24", "15", "40"],
@@ -149,6 +154,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "procent-2",
+    hint: "Räkna först ut själva förändringen i kronor. Jämför sedan den med det GAMLA priset, inte det nya.",
     area: "procent",
     prompt: "Ett pris höjs från 800 kr till 920 kr. Hur många procent höjdes priset?",
     options: ["15 %", "12 %", "20 %", "10 %"],
@@ -160,6 +166,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Potenser ──
   {
     id: "pot-1",
+    hint: "Titta på baserna: är de lika? Då finns en regel för vad som händer med exponenterna när du multiplicerar.",
     area: "potenser",
     prompt: "Beräkna: 2³ × 2²",
     options: ["32", "16", "64", "8"],
@@ -169,6 +176,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "pot-2",
+    hint: "Samma bas i täljare och nämnare. Vad händer med exponenterna vid division?",
     area: "potenser",
     prompt: "Förenkla: 3⁴ / 3²",
     options: ["9", "3", "27", "1"],
@@ -180,6 +188,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Algebra / förenkling ──
   {
     id: "alg-1",
+    hint: "Sortera termerna i två högar: de med x och de utan. Se upp med tecknet framför varje term, minustecknet hör till termen efter.",
     area: "algebra",
     prompt: "Förenkla: 3x + 5 − x + 2",
     options: ["2x + 7", "3x + 7", "2x + 3", "4x + 7"],
@@ -189,6 +198,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "alg-2",
+    hint: "Multiplicera in 2:an med BÅDA termerna i parentesen innan du räknar ihop med resten.",
     area: "algebra",
     prompt: "Förenkla: 2(x + 3) − 4",
     options: ["2x + 2", "2x + 6", "x + 2", "2x − 2"],
@@ -200,6 +210,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Ekvationer ──
   {
     id: "ekv-1",
+    hint: "Balansmetoden: få termen med x ensam först genom att ta bort konstanten, dela sedan med talet framför x. Gör samma sak på båda sidor.",
     area: "ekvationer",
     prompt: "Lös ekvationen: 3x − 5 = 10",
     options: ["x = 5", "x = 3", "x = 15", "x = −5"],
@@ -209,6 +220,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "ekv-2",
+    hint: "Börja med att flytta bort konstanten på vänster sida (gör samma sak på båda sidor), dela sedan med talet framför x.",
     area: "ekvationer",
     prompt: "Lös ekvationen: 4x + 3 = 19",
     options: ["x = 4", "x = 5", "x = 16", "x = 3,25"],
@@ -220,6 +232,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Räta linjens ekvation ──
   {
     id: "linje-1",
+    hint: "Jämför med grundformen y = kx + m. Vilket tal står framför x, och vad heter det?",
     area: "rata-linjen",
     prompt: "Vad är riktningskoefficienten (k) för linjen y = 3x − 2?",
     options: ["3", "−2", "2", "−3"],
@@ -229,6 +242,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "linje-2",
+    hint: "Använd formeln för lutning: skillnaden i y delat med skillnaden i x. Håll ordningen på punkterna konsekvent i täljare och nämnare.",
     area: "rata-linjen",
     prompt: "En linje går genom punkterna (0, 1) och (2, 5). Vad är k?",
     options: ["2", "4", "1", "0,5"],
@@ -240,6 +254,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Geometri ──
   {
     id: "geo-1",
+    hint: "Vilken formel gäller för en rektangels area? Kontrollera att du inte tar omkretsen.",
     area: "geometri",
     prompt: "En rektangel har basen 8 cm och höjden 5 cm. Vad är arean?",
     options: ["40 cm²", "26 cm²", "13 cm²", "45 cm²"],
@@ -249,6 +264,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "geo-2",
+    hint: "Rätvinklig triangel betyder Pythagoras. Katetrarna är de korta sidorna, och du söker den längsta.",
     area: "geometri",
     prompt: "En rätvinklig triangel har kateterna 3 cm och 4 cm. Hur lång är hypotenusan?",
     options: ["5 cm", "7 cm", "6 cm", "4,5 cm"],
@@ -260,6 +276,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Sannolikhet ──
   {
     id: "sann-1",
+    hint: "Sannolikhet = gynnsamma delat med möjliga. Hur många kort av varje färg finns det i en kortlek?",
     area: "sannolikhet",
     prompt: "Du drar ett kort ur en vanlig kortlek (52 kort). Vad är sannolikheten att dra en hjärter?",
     options: ["1/4", "1/13", "1/2", "1/52"],
@@ -269,6 +286,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "sann-2",
+    hint: "Är de två kasten beroende av varandra? Om inte: vad gör man med sannolikheterna för var och en?",
     area: "sannolikhet",
     prompt: "Du kastar en vanlig tärning två gånger. Vad är sannolikheten att båda kasten visar 6?",
     options: ["1/36", "1/6", "2/6", "1/12"],
@@ -280,6 +298,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Statistik ──
   {
     id: "stat-1",
+    hint: "Medelvärde = summan delat med antalet. Räkna först ut summan, sedan hur många tal det är.",
     area: "statistik",
     prompt: "Vad är medelvärdet av 4, 7, 9, 12, 18?",
     options: ["10", "9", "12", "8"],
@@ -289,6 +308,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "stat-2",
+    hint: "Det första du måste göra är att sortera talen i storleksordning. Titta sedan på mittenplatsen.",
     area: "statistik",
     prompt: "Vad är medianen av talen 3, 8, 5, 12, 7?",
     options: ["7", "5", "8", "6"],
@@ -300,6 +320,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   // ── Hastighet, sträcka, tid ──
   {
     id: "hast-1",
+    hint: "Vilken formel kopplar ihop hastighet, sträcka och tid? Kontrollera att enheterna stämmer (km och timmar).",
     area: "hastighet",
     prompt: "En bil kör 240 km på 3 timmar. Vad är medelhastigheten?",
     options: ["80 km/h", "60 km/h", "90 km/h", "100 km/h"],
@@ -309,6 +330,7 @@ export const HP_MATH_QUESTIONS: HpMathQuestion[] = [
   },
   {
     id: "hast-2",
+    hint: "Tiden är i minuter men hastigheten i km per timme. Gör om minuterna till timmar (bråk går bra) innan du använder s = v · t.",
     area: "hastighet",
     prompt: "Du cyklar med hastigheten 15 km/h i 40 minuter. Hur långt hinner du?",
     options: ["10 km", "15 km", "6 km", "12 km"],

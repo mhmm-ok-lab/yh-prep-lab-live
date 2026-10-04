@@ -67,6 +67,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   // ===================== XYZ — Matematisk problemlösning (12) =====================
   {
     id: "xyz-01",
+    hint: "Räkna ut den enkla parentesen först, och multiplicera sedan in talet med båda termerna i den andra parentesen.",
     delprov: "XYZ",
     area: "algebra",
     prompt: "Vilket svarsalternativ motsvarar uttrycket (7 - 4)(3x - 2y)?",
@@ -78,6 +79,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-02",
+    hint: "Samla alla x-termer på ena sidan och alla vanliga tal på den andra. Räkna noga med decimaler och minustecken.",
     delprov: "XYZ",
     area: "ekvationer",
     prompt: "0,5x + 0,3 = 0,7x + 2,3. Vilket värde har x?",
@@ -89,6 +91,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-03",
+    hint: "Räkna ut hur många svarta kulor som finns i varje burk, och hur många kulor det är totalt. Sannolikhet = svarta delat med alla.",
     delprov: "XYZ",
     area: "sannolikhet",
     prompt:
@@ -101,6 +104,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-04",
+    hint: "Inför en variabel för antalet efter henne och uttryck antalet före med den. Glöm inte att räkna med Nadia själv. Vilket mönster får totalen?",
     delprov: "XYZ",
     area: "aritmetik",
     prompt:
@@ -113,6 +117,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-05",
+    hint: "Använd kvadreringsreglerna för båda parenteserna och subtrahera. Sätt ut parenteser runt den andra när du drar ifrån, så att tecknen blir rätt.",
     delprov: "XYZ",
     area: "algebra",
     prompt: "Vilket svarsalternativ motsvarar uttrycket (x + 5)² - (x - 5)²?",
@@ -124,6 +129,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-06",
+    hint: "Ritar du upp figuren? Uttryck cirkelns area med radien för att hitta r, och se sedan hur många radier rektangelns sidor består av.",
     delprov: "XYZ",
     area: "geometri",
     prompt:
@@ -136,6 +142,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-07",
+    hint: "Negativ exponent betyder inverterat tal, och bråkexponent innehåller en rot. Förenkla steg för steg, och kvadrera sist.",
     delprov: "XYZ",
     area: "potenser",
     prompt: "x = 4^(-3/2). Vad är x²?",
@@ -147,6 +154,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-08",
+    hint: "Du behöver inte räkna roten exakt. Kvadrera gränsvärdena i alternativen och se vilka två som √50 hamnar mellan.",
     delprov: "XYZ",
     area: "potenser",
     prompt: "x = √50. I vilket intervall ligger x?",
@@ -158,6 +166,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-09",
+    hint: "Skriv två ekvationer, en för åldersskillnaden och en för summan. Lös ut en variabel och sätt in i den andra. Fråga efter produkten, inte åldern.",
     delprov: "XYZ",
     area: "ekvationer",
     prompt:
@@ -170,6 +179,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-10",
+    hint: "Gör om alla mått till samma enhet (cm är praktiskt) innan du multiplicerar. Hur många cm är en meter, en decimeter och en millimeter?",
     delprov: "XYZ",
     area: "aritmetik",
     prompt:
@@ -181,6 +191,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-11",
+    hint: "Det går snabbast att pröva några heltal för x och se vilka produkter du får. Testa även negativa heltal om inget passar.",
     delprov: "XYZ",
     area: "aritmetik",
     prompt: "x är ett heltal. Vilket svarsalternativ är ett möjligt värde på x(x + 2)?",
@@ -191,6 +202,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "xyz-12",
+    hint: "Medianen av sex tal är medelvärdet av de två mittersta. Gå igenom vad som händer när det nya talet hamnar före, mellan eller efter de nuvarande.",
     delprov: "XYZ",
     area: "statistik",
     prompt:
@@ -205,6 +217,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   // ===================== KVA — Kvantitativa jämförelser (10) =====================
   {
     id: "kva-01",
+    hint: "Förenkla bråket på högra sidan först. Lös sedan ut x och jämför med kvantitet II.",
     delprov: "KVA",
     area: "bråk",
     prompt: "x/12 = 9/18\n\nKvantitet I: x\nKvantitet II: 6",
@@ -215,6 +228,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-02",
+    hint: "Skriv om båda procentuttrycken som decimal gånger tal och räkna ut dem. Finns det en genväg, vad händer om man byter plats på talen?",
     delprov: "KVA",
     area: "procent",
     prompt: "Kvantitet I: 25 procent av 60\nKvantitet II: 60 procent av 25",
@@ -226,6 +240,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-03",
+    hint: "Räkna ut båda medelvärdena (summa delat med antal). Det går också att resonera om vad de extra talen gör med medelvärdet.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -238,6 +253,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-04",
+    hint: "Uttryck varje kvantitet med p och q. Prova sedan olika tal på p och q (inte bara samma) och se om jämförelsen alltid blir lika.",
     delprov: "KVA",
     area: "bråk",
     prompt:
@@ -250,6 +266,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-05",
+    hint: "Inför variabler för åldrarna och skriv upp sambandet. Testa några olika åldrar för Didrik och se om svaret ändras, eller om det alltid är samma.",
     delprov: "KVA",
     area: "algebra",
     prompt:
@@ -262,6 +279,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-06",
+    hint: "Subtrahera kvantiteterna från varandra och förenkla. Vad vet du om tecknet på resultatet utifrån villkoret?",
     delprov: "KVA",
     area: "algebra",
     prompt: "0 < a < b\n\nKvantitet I: a + 3b\nKvantitet II: 3a + b",
@@ -273,6 +291,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-07",
+    hint: "Rita rektangeln och markera sidorna och diagonalerna. Vilka sträckor i en rektangel är lika långa?",
     delprov: "KVA",
     area: "geometri",
     prompt:
@@ -285,6 +304,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-08",
+    hint: "Vad är det som kännetecknar en punkt på x-axeln respektive y-axeln? Sätt in det i ekvationen för varje kvantitet.",
     delprov: "KVA",
     area: "räta linjen",
     prompt:
@@ -297,6 +317,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-09",
+    hint: "Fundera på vilka värden de mittersta talen kan ha. Testa ett par olika tänkbara mätserier och se om jämförelsen ändras.",
     delprov: "KVA",
     area: "statistik",
     prompt:
@@ -309,6 +330,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "kva-10",
+    hint: "Testa först x = y = 1, och prova sedan helt andra tal som uppfyller xy = 1, till exempel ett stort x och ett litet y. Blir jämförelsen alltid densamma?",
     delprov: "KVA",
     area: "algebra",
     prompt: "xy = 1, där x > 0 och y > 0.\n\nKvantitet I: x + y\nKvantitet II: 2",
@@ -322,6 +344,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   // ===================== NOG — Kvantitativa resonemang (8) =====================
   {
     id: "nog-01",
+    hint: "Tre steg: vad ger (1) ensamt, vad ger (2) ensamt, och vad ger de tillsammans? Du ska inte räkna fram svaret om det inte behövs, bara avgöra om det går.",
     delprov: "NOG",
     area: "aritmetik",
     prompt:
@@ -334,6 +357,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-02",
+    hint: "Tre steg: testa (1) ensamt, sedan (2) ensamt, sist båda. Fråga dig om du får fram skillnaden eller bara en delmängd av informationen.",
     delprov: "NOG",
     area: "aritmetik",
     prompt:
@@ -346,6 +370,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-03",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Rita en tidslinje och fundera på vad som behövs för att hitta både starttid och takt.",
     delprov: "NOG",
     area: "hastighet",
     prompt:
@@ -358,6 +383,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-04",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Testa med konkreta tal som passar påståendena, både jämna och udda.",
     delprov: "NOG",
     area: "algebra",
     prompt: "Är p ett jämnt heltal?\n\n(1) q = 3p\n(2) q är ett heltal.",
@@ -369,6 +395,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-05",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Sträcka = hastighet · tid, så fundera på vilka två storheter du måste känna för att räkna ut sträckan.",
     delprov: "NOG",
     area: "hastighet",
     prompt:
@@ -381,6 +408,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-06",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Kolla om påståendet ger dig exakta antal för alla tre färgerna eller bara ett förhållande.",
     delprov: "NOG",
     area: "bråk",
     prompt:
@@ -393,6 +421,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-07",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Skriv om första uppgiften som x = något · y och sätt in i varje påstående, se om du får ett enda svar.",
     delprov: "NOG",
     area: "algebra",
     prompt:
@@ -405,6 +434,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "nog-08",
+    hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Inför en variabel för akrobaterna och uttryck jonglörerna med den, sätt sedan in varje påstående.",
     delprov: "NOG",
     area: "procent",
     prompt:
@@ -419,6 +449,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   // ===================== DTK — Diagram, tabeller och kartor (10) =====================
   {
     id: "dtk-01",
+    hint: "Ta fram kolumnerna Kvinnor och Totalt. Du ska jämföra andelar (kvinnor delat med totalt) och inte antal.",
     delprov: "DTK",
     area: "statistik",
     prompt: "Inom vilket yrke var andelen kvinnor bland de anställda störst?",
@@ -432,6 +463,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-02",
+    hint: "Titta bara på raderna för halvt och en fjärdedels uttag. Addera kvinnor för sig och män för sig, och ta sedan skillnaden.",
     delprov: "DTK",
     area: "statistik",
     prompt:
@@ -446,6 +478,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-03",
+    hint: "Hitta kolumnen Insats och raden för mindre kommuner. Dela med landets genomsnitt och gör om till procent. Se upp med enheten tkr.",
     delprov: "DTK",
     area: "procent",
     prompt:
@@ -459,6 +492,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-04",
+    hint: "Hitta raden Filmklubben och kolumnen 2023, samt Summa beviljat för samma år. Andel = del delat med helheten.",
     delprov: "DTK",
     area: "procent",
     prompt: "Hur stor andel av de beviljade bidragen 2023 gick till Filmklubben?",
@@ -471,6 +505,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-05",
+    hint: "Hitta Region C:s totalsumma och radens Riket totalt. Dela del med helhet, avrunda och välj närmaste alternativ.",
     delprov: "DTK",
     area: "statistik",
     prompt: "Hur stor andel av rikets totala kulturkostnader 2023 utgjorde Region Cs kostnader?",
@@ -483,6 +518,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-06",
+    hint: "Använd kolumnen 2022. Summera hela kolumnen för att få helheten, och dela sedan Spel- och vadhållning med den. Förkorta bråket.",
     delprov: "DTK",
     area: "procent",
     prompt:
@@ -497,6 +533,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-07",
+    hint: "Hitta raden för 2021 i kolumnerna Ansökningar och Verkställda. Ett förhållande a:b får du genom att dela så att ena talet blir 1.",
     delprov: "DTK",
     area: "procent",
     prompt: "Hur såg förhållandet ut 2021 mellan antalet ansökningar om avhysning och antalet verkställda avhysningar?",
@@ -509,6 +546,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-08",
+    hint: "Du behöver kolumnerna Djurägare och Djur, inte fäbodlag. Räkna ut kvoten för varje område och jämför.",
     delprov: "DTK",
     area: "aritmetik",
     prompt: "I vilket område var antalet djur per djurägare störst 2023?",
@@ -522,6 +560,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-09",
+    hint: "Titta bara i kolumnen Import. Hitta det största värdet och dela med totalen som anges i uppgiften. Jämför sedan med bråken i alternativen.",
     delprov: "DTK",
     area: "statistik",
     prompt:
@@ -536,6 +575,7 @@ const HP_TWINS_BASE: HpTwin[] = [
   },
   {
     id: "dtk-10",
+    hint: "Titta bara på kolumnen 2023. Dela alla tre med det minsta talet och avrunda till heltal för att få förhållandet.",
     delprov: "DTK",
     area: "statistik",
     prompt:
