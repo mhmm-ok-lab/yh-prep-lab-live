@@ -779,7 +779,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["som orsakar smärta", "som rör synen", "som beror på kosten", "som sker reflexmässigt", "som gäller hjärnan"],
     correct: 4,
     explanation: "Cerebral relaterar till hjärnan, ofta i betydelsen intellektuell.",
-    hint: "Latin cerebrum. Samma stam som 'cerebellum' (lillhjärnan). Tänk på ett ord som en läkare använder om skallens innehåll.",
+    hint: "Latin cerebrum. Samma stam som 'cerebellum' (en del av huvudets styrcentral). Tänk på en neurolog eller ett resonemang som sker mest i tanken.",
     source: "HT2023",
   },
   {
@@ -1832,7 +1832,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["strängt allvarlig", "lättsinnigt lekfull", "djupt religiös", "överdrivet formell", "återhållsam"],
     correct: 1,
     explanation: "Frivol betyder lekfullt oanständig eller ytligt underhållande.",
-    hint: "Latin frivolus, 'ihålig'. Tänk på lekfulla skämt om kärlek som man inte pratar om på en begravning.",
+    hint: "Latin frivolus, 'ihålig'. Tänk på ett skämtsamt, oseriöst sätt att prata om allvarliga saker.",
     source: "egen (HP-typ)",
   },
   {
@@ -2282,7 +2282,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avgörande", "obetydligt liten", "betydande", "central", "dominerande"],
     correct: 1,
     explanation: "Marginell betyder att ha liten påverkan eller betydelse.",
-    hint: "Latin margo, 'kant'. Tänk på en liten förändring i marginalen av en procent som knappt märks.",
+    hint: "Latin margo, 'kant'. Tänk på marginalen i en bok, eller en förändring på en tiondels procent som knappt syns.",
     source: "egen (HP-typ)",
   },
   {
