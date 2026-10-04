@@ -541,3 +541,9 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 **Varför:** Feedbacken sa vad som var rätt men inte hur metoden ser ut i sin helhet. Ett worked example med figur (Sweller; Mayer, split-attention) ger en kompakt repetition. Kortet visas aldrig före svar så att uppgiften inte blir lättare.
 **Före:** Efter fel eller "Visa svar" fanns bara lösningen och en länk till Matteboken. **Efter:** Ett tryck ger en hel skärm med formel och figur, ett tryck tillbaka.
 **Stitch-princip:** Tonal adjacency (formelruta i `--accent-soft`, fällan i `--honey`, figur på `--card`), No-Line (inga avdelare), tre fontstorlekar plus korttitel 1 rem. Pill 28 px med 44 px träffyta, listrader 44 px.
+
+## 2026-10-05: Figurer i matteträningen (DTK-diagram, geometri i XYZ/KVA)
+- **Vad:** tvillinguppgifter med figur ritas ovanför frågan i full bredd. Det gäller 24 DTK-uppgifter på 8 diagram/kartor och 12 XYZ/KVA-uppgifter med geometrisk figur. Tryck på figuren för att förstora den till dubbel bredd. Figuren scrollar då inne i sin egen ruta, och sidan scrollar aldrig i sidled. DTK-frågor som hör till samma figur kommer i följd, som på provet. DTK heter nu "diagram, tabeller, kartor" i rubriken.
+- **Varför:** granskningen mot UHR:s format visade att DTK i appen bara hade tabeller, medan de flesta riktiga DTK-uppgifter är diagram och kartor. Uppgifter med figur i XYZ/KVA saknades också. Martin ville inte bli överraskad på provdagen.
+- **Före/efter:** före fanns bara tabeller och textuppgifter. Efter finns linje-, stapel- och cirkeldiagram, kombinerade figurer, kartliknande figurer och geometrifigurer. Alla är ritade med currentColor och fungerar i ljust och mörkt läge.
+- **Princip:** figuren först, sedan frågan, eftersom frågan inte går att förstå utan figuren (närhet). En tydlig handling för att förstora.

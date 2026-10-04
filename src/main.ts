@@ -930,6 +930,9 @@ function shuffleTwinOptions(t: HpTwin): HpTwin {
   return { ...t, options, correct };
 }
 
+/** Förstorad figur i matteträningen (DTK-diagram, geometrifigurer). */
+let hpFigureZoom = false;
+
 /** Antal uppgifter per pass = antal i ett provpass på riktiga provet. */
 const HP_TWIN_PASS_SIZE: Record<HpDelprov, number> = { XYZ: 12, KVA: 10, NOG: 6, DTK: 12 };
 
@@ -937,7 +940,7 @@ const HP_DELPROV_NAMES: Record<HpDelprov, string> = {
   XYZ: "problemlösning",
   KVA: "jämför två värden",
   NOG: "räcker informationen?",
-  DTK: "tabeller"
+  DTK: "diagram, tabeller, kartor"
 };
 
 /** Vad ska Martin göra nu? 1) mattedelprov han aldrig provat, 2) dagens ord om de inte är gjorda,
@@ -1380,7 +1383,7 @@ function buildHpTwinPass(delprov: HpDelprov): HpTwin[] {
   const groups = new Map<string, HpTwin[]>();
   for (const t of bank) {
     if (usedIds.has(t.id)) continue;
-    const key = t.table ?? t.id;
+    const key = t.table ?? t.figure ?? t.id;
     groups.set(key, [...(groups.get(key) ?? []), t]);
   }
   const freshItems = [...groups.values()].sort(() => Math.random() - 0.5).flat();
@@ -3792,6 +3795,7 @@ function renderHpTwinQuestion(): string {
         ${inReview ? "" : `<span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
       ${renderHpDrillTitle(`Matteträning · ${delprov} – ${HP_DELPROV_NAMES[delprov]}`)}
+      ${item.figure ? `<div class="hp-twin-figure${hpFigureZoom ? " hp-twin-figure--zoom" : ""}" data-action="hp-figure-zoom" role="button" aria-label="${hpFigureZoom ? "Förminska figuren" : "Förstora figuren"}">${item.figure}</div><p class="hp-twin-figure-hint">${hpFigureZoom ? "Tryck på figuren för att förminska" : "Tryck på figuren för att förstora"}</p>` : ""}
       <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
       <div class="hp-options">${optionsHtml}</div>
@@ -6391,8 +6395,15 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "hp-figure-zoom") {
+    hpFigureZoom = !hpFigureZoom;
+    render();
+    return;
+  }
+
   if (action === "hp-twin-next") {
     if (!hpTwinSession) return;
+    hpFigureZoom = false;
     hpTwinAdvanceQuestion();
     return;
   }
