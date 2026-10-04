@@ -2285,7 +2285,8 @@ function renderHpSummary(): string {
         const next = suggestNextHpTwinDelprov();
         return `<button class="hp-cta-btn" data-action="hp-twin-start" data-delprov="${next}">Nästa: matte ${next} (${HP_TWIN_PASS_SIZE[next]} uppgifter)</button>`;
       })()}
-      <button class="hp-secondary-btn" data-action="hp-close">Klart för idag</button>
+      <button class="hp-secondary-btn" data-action="hp-start-pass">10 ord till</button>
+      <button class="hp-drill-cancel" data-action="hp-close">Klart för idag</button>
     </div>
   `;
 }
