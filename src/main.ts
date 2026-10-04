@@ -124,6 +124,8 @@ interface HpWordSession {
   questionStartedAt: number;
   tempoSeconds: number[];
   missedItems: HpWord[];
+  /** Id:n på frågor där ?-hjälpen öppnades före svar. */
+  helpedIds: string[];
 }
 
 /** HP Mattediagnos. Ett svar per fråga, "Vet inte" räknas som fel (userAnswer = -1). */
@@ -134,6 +136,7 @@ interface HpMathSession {
   showFeedback: boolean;
   questionStartedAt: number;
   answers: { area: HpMathArea; correct: boolean; seconds: number }[];
+  helpedIds: string[];
 }
 
 /** HP Tvillingträning (XYZ/KVA/NOG/DTK). Ett svar per uppgift, felkategori valfri per fel svar. */
@@ -149,6 +152,7 @@ interface HpTwinSession {
   missedItems: HpTwin[];
   errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
   currentTag: HpTwinErrorTag | null;
+  helpedIds: string[];
 }
 
 interface AdaptiveSuggestion {
@@ -426,6 +430,8 @@ let hpTwinTempoIntervalRef: number | null = null;
 /** True när man nått HP via nav/startsidans HP-kort medan ett pass pågår —
  *  visar HP-hem med "Fortsätt pass" i stället för att hoppa rakt in i övningen. */
 let hpForceHome = false;
+/** Id på frågan vars ?-hjälplager är öppet (null = stängt). Byter fråga => stängs av sig självt. */
+let hpHelpOpenFor: string | null = null;
 /** HP-guiden: null = ingen guide öppen, annars vilket läge som visas. */
 let hpGuideMode: "flashcards" | "page" | null = null;
 let hpGuideFilter: HpGuideCategoryId | "alla" = "alla";
@@ -2241,6 +2247,30 @@ function renderHpTwinTable(markdown: string): string {
   `;
 }
 
+/** ?-knapp i topraden (28 px pill, 44 px träffyta). */
+function renderHpHelpButton(open: boolean): string {
+  return `<button class="hp-help-btn ${open ? "hp-help-btn-open" : ""}" data-action="hp-help" aria-label="Hjälp" aria-expanded="${open}">?</button>`;
+}
+
+/** Kompakt hjälplager: metod för delprovet (ur HP_GUIDE) + ledtråd före svar. Aldrig svaret. */
+function renderHpHelpPanel(categoryId: "ord" | "xyz" | "kva" | "nog" | "dtk", hint: string | undefined, showFeedback: boolean): string {
+  const info = HP_GUIDE_CATEGORIES.find((c) => c.id === categoryId)!;
+  // Med ledtråd 2 metodpunkter, utan 3 — håller lagret kompakt så frågan förblir synlig.
+  const cards = hpGuideCardsForCategory(categoryId).slice(0, !showFeedback && hint ? 2 : 3);
+  const steps = cards
+    .map((c) => `<li><strong>${c.rubrik}.</strong> ${c.gorSaHar}</li>`)
+    .join("");
+  const hintHtml = !showFeedback && hint ? `<p class="hp-help-hint"><strong>Ledtråd:</strong> ${hint}</p>` : "";
+  return `
+    <div class="hp-help-panel" role="region" aria-label="Hjälp">
+      ${hintHtml}
+      <p class="hp-help-title">Så löser du ${info.label}</p>
+      <ul class="hp-help-list">${steps}</ul>
+      <button class="hp-help-close" data-action="hp-help">Stäng</button>
+    </div>
+  `;
+}
+
 function renderHpQuestion(): string {
   if (!hpSession) {
     return "";
@@ -2285,13 +2315,19 @@ function renderHpQuestion(): string {
         <button class="hp-drill-cancel" data-action="hp-cancel">Avbryt</button>
         <span class="hp-drill-progress">Ord ${currentIndex + 1}/${total}</span>
         <span class="hp-tempo" data-hp-tempo>0s / ${HP_TEMPO_TARGET_SECONDS}s mål</span>
+        ${renderHpHelpButton(hpHelpOpenFor === item.id)}
       </div>
       <div class="hp-pip-row">${pips}</div>
       <p class="hp-word">${item.word}</p>
       <div class="hp-options">${optionsHtml}</div>
+      ${hpHelpOpenFor === item.id ? renderHpHelpPanel("ord", item.hint, showFeedback) : ""}
       ${feedbackHtml}
     </div>
   `;
+}
+
+function helpedSummary(count: number): string {
+  return count > 0 ? `<p class="hp-summary-helped">${count} med hjälp</p>` : "";
 }
 
 function renderHpSummary(): string {
@@ -2317,6 +2353,7 @@ function renderHpSummary(): string {
           <span class="stat-widget-sub">${underTarget ? "under målet ✓" : `över ${HP_TEMPO_TARGET_SECONDS} s-målet`}</span>
         </div>
       </div>
+      ${helpedSummary(hpSession.helpedIds.length)}
       ${missedItems.length > 0
         ? `<div class="hp-missed-list">
             <p class="hp-missed-heading">Missade ord — kommer tillbaka i nästa pass</p>
@@ -2372,10 +2409,12 @@ function renderHpMathQuestion(): string {
         <button class="hp-drill-cancel" data-action="hp-math-cancel">Avbryt</button>
         <span class="hp-drill-progress">Fråga ${currentIndex + 1}/${total}</span>
         <span class="hp-tempo" data-hp-math-tempo>0s / ${HP_MATH_TEMPO_TARGET_SECONDS}s mål</span>
+        ${renderHpHelpButton(hpHelpOpenFor === item.id)}
       </div>
       <p class="hp-math-area-label">${hpMathAreaLabel(item.area)}</p>
       <p class="hp-word hp-math-prompt">${item.prompt}</p>
       <div class="hp-options">${optionsHtml}</div>
+      ${hpHelpOpenFor === item.id ? renderHpHelpPanel("xyz", item.hint, showFeedback) : ""}
       ${!showFeedback ? `<button class="hp-math-dontknow-btn" data-action="hp-math-dontknow">Vet inte</button>` : ""}
       ${feedbackHtml}
     </div>
@@ -2401,7 +2440,7 @@ function renderHpMathAreaCard(result: HpMathAreaResult): string {
   `;
 }
 
-function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[]): string {
+function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], helpedCount = 0): string {
   const lärOm = areas.filter((a) => a.level === "lar-om");
   const rest = areas.filter((a) => a.level !== "lar-om");
 
@@ -2418,6 +2457,7 @@ function renderHpMathResultFromData(correct: number, total: number, areas: HpMat
           <span class="stat-widget-value">${lärOm.length}<span class="stat-widget-unit">område(n)</span></span>
         </div>
       </div>
+      ${helpedSummary(helpedCount)}
       ${lärOm.length > 0
         ? `<div class="hp-math-priority-list">
             <p class="hp-missed-heading">Börja här</p>
@@ -2440,7 +2480,7 @@ function renderHpMathResult(): string {
   const areas = computeHpMathAreaResults(hpMathSession.answers);
   const correct = hpMathSession.answers.filter((a) => a.correct).length;
   const total = hpMathSession.answers.length;
-  return renderHpMathResultFromData(correct, total, areas);
+  return renderHpMathResultFromData(correct, total, areas, hpMathSession.helpedIds.length);
 }
 
 function renderHpMathSavedResult(): string {
@@ -2506,10 +2546,12 @@ function renderHpTwinQuestion(): string {
         <button class="hp-drill-cancel" data-action="hp-twin-cancel">Avbryt</button>
         <span class="hp-drill-progress">${delprov} ${currentIndex + 1}/${total}</span>
         <span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>
+        ${renderHpHelpButton(hpHelpOpenFor === item.id)}
       </div>
       <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
       <div class="hp-options">${optionsHtml}</div>
+      ${hpHelpOpenFor === item.id ? renderHpHelpPanel(delprov.toLowerCase() as "xyz" | "kva" | "nog" | "dtk", item.hint, showFeedback) : ""}
       ${feedbackHtml}
     </div>
   `;
@@ -2538,6 +2580,7 @@ function renderHpTwinSummary(): string {
           <span class="stat-widget-value">${total - correct}</span>
         </div>
       </div>
+      ${helpedSummary(hpTwinSession.helpedIds.length)}
       ${tagEntries.length > 0
         ? `<div class="hp-twin-tag-summary">
             <p class="hp-missed-heading">Felanalys</p>
@@ -4178,8 +4221,32 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "hp-help") {
+    const cur = hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length
+      ? { id: hpTwinSession.items[hpTwinSession.currentIndex].id, answered: hpTwinSession.showFeedback, helped: hpTwinSession.helpedIds }
+      : hpMathSession && hpMathSession.currentIndex < hpMathSession.items.length
+        ? { id: hpMathSession.items[hpMathSession.currentIndex].id, answered: hpMathSession.showFeedback, helped: hpMathSession.helpedIds }
+        : hpSession && hpSession.currentIndex < hpSession.items.length
+          ? { id: hpSession.items[hpSession.currentIndex].id, answered: hpSession.showFeedback, helped: hpSession.helpedIds }
+          : null;
+    if (!cur) return;
+    if (hpHelpOpenFor === cur.id) {
+      hpHelpOpenFor = null;
+    } else {
+      hpHelpOpenFor = cur.id;
+      // Hjälp före svar sparas per fråga; efter svar är det bara repetition av metoden.
+      if (!cur.answered && !cur.helped.includes(cur.id)) cur.helped.push(cur.id);
+    }
+    render();
+    if (hpHelpOpenFor) {
+      app.querySelector(".hp-help-panel")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+    return;
+  }
+
   if (action === "hp-start-pass") {
     hpForceHome = false;
+    hpHelpOpenFor = null;
     hpSession = {
       items: buildHpPass(),
       currentIndex: 0,
@@ -4189,7 +4256,8 @@ app.addEventListener("click", (event) => {
       wrong: 0,
       questionStartedAt: Date.now(),
       tempoSeconds: [],
-      missedItems: []
+      missedItems: [],
+      helpedIds: []
     };
     render();
     return;
@@ -4251,6 +4319,7 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-math-start") {
     hpForceHome = false;
+    hpHelpOpenFor = null;
     hpMathViewingSaved = false;
     hpMathSession = {
       items: buildHpMathPass(),
@@ -4258,7 +4327,8 @@ app.addEventListener("click", (event) => {
       userAnswer: null,
       showFeedback: false,
       questionStartedAt: Date.now(),
-      answers: []
+      answers: [],
+      helpedIds: []
     };
     render();
     return;
@@ -4323,6 +4393,7 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-twin-start") {
     hpForceHome = false;
+    hpHelpOpenFor = null;
     const delprov = actionEl.dataset.delprov as HpDelprov;
     hpTwinSession = {
       delprov,
@@ -4335,7 +4406,8 @@ app.addEventListener("click", (event) => {
       questionStartedAt: Date.now(),
       missedItems: [],
       errorTagCounts: {},
-      currentTag: null
+      currentTag: null,
+      helpedIds: []
     };
     render();
     return;
