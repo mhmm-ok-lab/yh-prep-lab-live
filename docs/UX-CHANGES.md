@@ -408,3 +408,9 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Varför:** Martin vill kunna bläddra i riktiga prov för att se formatet. Vi länkar till UHR i stället för att lägga upp kopior (upphovsrätt, alltid senaste proven).
 - **Före/efter:** före fanns ingen väg till riktiga prov från appen; efter nås de med ett tryck, ovanför vecket i 375 × 812, tryckyta 44 px.
 - **Stitch-princip:** sekundär handling som text, inte en andra knapp — en tydlig primär handling per skärm.
+
+## 2026-10-04 — Fråga och svar ihop + "Nästa: matte" efter ORD-passet (Martins test)
+- **Vad:** frågan/ordet och svarsalternativen hålls nu ihop som en grupp som ligger nedtill i tumzonen. ORD-sammanfattningen fick primärknappen "Nästa: matte XYZ/KVA/NOG/DTK", som föreslår ett otränat delprov och annars det med lägst andel rätt. "Klart för idag" blev sekundär. Rubriken "Träna matte som på provet" bytte namn till "Matteträning – uppgifter byggda på riktiga prov".
+- **Varför:** Martins första egna test. Ordet satt överst och svaren nederst, så blicken fick hoppa över hela skärmen (dålig scannability). Han hittade inte heller matteträningen efter ORD-passet, och ordet "tvillingträning" sa honom ingenting.
+- **Före/efter:** före var det ~250 px tomrum mellan ordet och svaren, efter 16 px. Före tog sammanfattningen bara slut, efter har den en tydlig nästa handling.
+- **Princip:** närhetsprincipen (Gestalt) tillsammans med Fitts lag. Gruppen ankras i tumzonen i stället för att dela upp den. En nästa handling per skärm.

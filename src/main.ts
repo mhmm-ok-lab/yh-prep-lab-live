@@ -747,6 +747,18 @@ function shuffleTwinOptions(t: HpTwin): HpTwin {
 /** Antal uppgifter per pass = antal i ett provpass på riktiga provet. */
 const HP_TWIN_PASS_SIZE: Record<HpDelprov, number> = { XYZ: 12, KVA: 10, NOG: 6, DTK: 12 };
 
+/** Föreslår nästa mattedelprov: först ett som aldrig tränats, annars det med lägst andel rätt. */
+function suggestNextHpTwinDelprov(): HpDelprov {
+  const order: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
+  const untried = order.find((d) => !loadHpTwinResult(d));
+  if (untried) return untried;
+  return order.reduce((worst, d) => {
+    const r = loadHpTwinResult(d)!;
+    const w = loadHpTwinResult(worst)!;
+    return r.correct / r.total < w.correct / w.total ? d : worst;
+  });
+}
+
 /** Bygger dagens pass för ett delprov: missade uppgifter (repetitionskö) prioriteras först,
  *  sedan slumpade nya uppgifter tills passet har provets storlek. DTK-frågor som delar tabell
  *  hålls ihop. Svarsordningen blandas endast för XYZ/DTK. */
@@ -2156,7 +2168,7 @@ function renderHpTwinHomeSection(): string {
 
   return `
     <div class="hp-twin-section">
-      <p class="hp-twin-section-heading">Träna matte som på provet</p>
+      <p class="hp-twin-section-heading">Matteträning – uppgifter byggda på riktiga prov</p>
       <div class="hp-twin-grid">${cards}</div>
     </div>
   `;
@@ -2269,7 +2281,11 @@ function renderHpSummary(): string {
             ${missedItems.map((w) => `<p class="hp-missed-item">${w.word} — ${w.options[w.correct]}</p>`).join("")}
           </div>`
         : `<p class="hp-summary-clean">Inga missade ord — starkt jobbat!</p>`}
-      <button class="hp-cta-btn" data-action="hp-close">Klart för idag</button>
+      ${(() => {
+        const next = suggestNextHpTwinDelprov();
+        return `<button class="hp-cta-btn" data-action="hp-twin-start" data-delprov="${next}">Nästa: matte ${next} (${HP_TWIN_PASS_SIZE[next]} uppgifter)</button>`;
+      })()}
+      <button class="hp-secondary-btn" data-action="hp-close">Klart för idag</button>
     </div>
   `;
 }
