@@ -14,6 +14,9 @@ const HP_PLAN_MAX_CARRIED = 2;
 /** Uppgifter flyttas fram i högst så här många dagar; äldre släpps tyst (ingen skuldlista). */
 const HP_PLAN_CARRY_DAYS = 2;
 const HP_PLAN_WORDS_GOAL = 10;
+/** MEK/ELF ligger i Lär om (dag 1–6) och Laga (dag 8–10). */
+const HP_PLAN_MEK_ELF_UNTIL_DAY = 10;
+const HP_PLAN_MAX_TASKS_PER_DAY = 4;
 const DELPROV_ORDER: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
 
 export type HpPlanStepId = "mat" | "lar-om" | "generalrep" | "laga" | "landa";
@@ -104,6 +107,10 @@ export interface HpPlanData {
   wordsToday: number;
   /** completedAt (ISO) för varje sparat LÄS-resultat. */
   lasCompletedAt: string[];
+  /** completedAt (ISO) för varje sparat MEK-pass. */
+  mekCompletedAt: string[];
+  /** completedAt (ISO) för varje sparad ELF-text. */
+  elfCompletedAt: string[];
   /** Senaste mattediagnos. */
   diagnosis: { completedAt: string; hasQuestions: boolean; areas: HpPlanDiagnosisArea[] } | null;
   /** Senaste matteträning per delprov. */
@@ -113,6 +120,8 @@ export interface HpPlanData {
 export type HpPlanAction =
   | { type: "ord" }
   | { type: "las" }
+  | { type: "mek" }
+  | { type: "elf" }
   | { type: "diagnos" }
   | { type: "train"; delprov: HpDelprov }
   | { type: "lar-om"; area: HpMathArea; delprov: HpDelprov }
@@ -120,7 +129,7 @@ export type HpPlanAction =
   | { type: "flashcards" }
   | { type: "none" };
 
-export type HpPlanAuto = { kind: "ord" } | { kind: "las" } | { kind: "diagnos" } | { kind: "train"; delprov: HpDelprov };
+export type HpPlanAuto = { kind: "ord" } | { kind: "las" } | { kind: "mek" } | { kind: "elf" } | { kind: "diagnos" } | { kind: "train"; delprov: HpDelprov };
 
 export interface HpPlanTask {
   id: string;
@@ -181,12 +190,43 @@ export function hpMathAreaLabel(area: HpMathArea): string {
 const WHY_ORD = "Tio ord om dagen är kort nog att alltid hinnas med, och orden fastnar bättre när de upprepas dag efter dag än när de pluggas i bulk.";
 const WHY_LAS = "LÄS är din svåraste del. En text om dagen bygger tempo och vana, och felanalysen visar vilken sorts fråga du missar.";
 
+const WHY_MEK = "MEK är det snabbaste verbala delprovet att förbättra: samma fem, sex samband återkommer hela tiden. Tio uppgifter om dagen tränar dig att läsa hela meningen innan du väljer.";
+const WHY_ELF = "ELF tränar engelskan på provets nivå. Varannan dag räcker för att hålla tempot uppe utan att dagen blir för lång, och förklaringarna visar varför varje alternativ är rätt eller fel.";
+
 function taskOrd(): HpPlanTask {
   return { id: "ord", title: "Dagens 10 ord", short: "Ord", why: WHY_ORD, action: { type: "ord" }, buttonLabel: "Starta", auto: { kind: "ord" }, carry: false };
 }
 
 function taskLas(): HpPlanTask {
   return { id: "las", title: "En LÄS-text", short: "LÄS", why: WHY_LAS, action: { type: "las" }, buttonLabel: "Starta", auto: { kind: "las" }, carry: false };
+}
+
+function taskMek(): HpPlanTask {
+  return {
+    id: "mek",
+    title: "10 MEK",
+    short: "MEK",
+    sub: "ca 8 min",
+    why: WHY_MEK,
+    action: { type: "mek" },
+    buttonLabel: "Starta",
+    auto: { kind: "mek" },
+    carry: false
+  };
+}
+
+function taskElf(): HpPlanTask {
+  return {
+    id: "elf",
+    title: "En ELF-text",
+    short: "ELF",
+    sub: "engelsk läsförståelse",
+    why: WHY_ELF,
+    action: { type: "elf" },
+    buttonLabel: "Starta",
+    auto: { kind: "elf" },
+    carry: false
+  };
 }
 
 function taskDiagnos(): HpPlanTask {
@@ -330,6 +370,11 @@ export function buildDayTasks(key: string, data: HpPlanData): HpPlanTask[] {
   if (day <= HP_PLAN_DAILY_UNTIL_DAY) {
     tasks.push(taskOrd(), taskLas());
   }
+  // MEK och ELF turas om under Lär om och Laga (max 4 uppgifter per dag): MEK udda dagar, ELF jämna.
+  // Generalrepetitionen (dag 7) och ny diagnos (dag 10) är redan stora, så de dagarna hoppar vi över.
+  if (day <= HP_PLAN_MEK_ELF_UNTIL_DAY && day !== 7 && day !== 10 && tasks.length < HP_PLAN_MAX_TASKS_PER_DAY) {
+    tasks.push(day % 2 === 1 ? taskMek() : taskElf());
+  }
   return tasks;
 }
 
@@ -353,6 +398,10 @@ export function isAutoDone(task: HpPlanTask, origin: string, today: string, data
       return origin === today && data.wordsToday >= HP_PLAN_WORDS_GOAL;
     case "las":
       return data.lasCompletedAt.some((iso) => inRange(isoToKey(iso), origin, today));
+    case "mek":
+      return data.mekCompletedAt.some((iso) => inRange(isoToKey(iso), origin, today));
+    case "elf":
+      return data.elfCompletedAt.some((iso) => inRange(isoToKey(iso), origin, today));
     case "diagnos":
       return !!data.diagnosis?.hasQuestions && inRange(isoToKey(data.diagnosis.completedAt), origin, today);
     case "train": {

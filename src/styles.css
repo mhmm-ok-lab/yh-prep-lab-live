@@ -5121,6 +5121,104 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   text-transform: uppercase;
 }
 
+/* ── ELF och MEK (beslut 2026-10-05 (10)) ──
+   HP-hem: MEK och ELF delar en rad under LÄS-kortet (verbala delen: ORD, LÄS, MEK, ELF). */
+.hp-verbal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.hp-verbal-card {
+  min-width: 0;
+}
+
+/* ELF-lucktext: stycket med luckan ligger tätt ovanför frågan, aktuell lucka markerad. */
+.hp-gap-context {
+  padding: 0.75rem;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.hp-gap-context p {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.hp-gap {
+  padding: 0 0.3rem;
+  border-radius: 0.3rem;
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-weight: 800;
+}
+
+.hp-gap-other {
+  color: var(--text-muted);
+}
+
+/* MEK: texten med luckorna överst, alternativen direkt under (beslut 6). */
+.hp-mek-text {
+  margin: 0;
+  padding: 0.85rem;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.hp-mek-gap {
+  display: inline-block;
+  min-width: 2.75rem;
+  height: 1.2em;
+  border-radius: 0.3rem;
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  line-height: 1.2em;
+  text-align: center;
+  vertical-align: text-bottom;
+}
+
+.hp-mek-fill {
+  padding: 0 0.3rem;
+  border-radius: 0.3rem;
+  font-weight: 800;
+}
+
+.hp-mek-fill-ok {
+  background: var(--ok-bg);
+  color: var(--ok-ink);
+}
+
+.hp-mek-fill-wrong {
+  background: var(--bad-bg);
+  color: var(--bad-ink);
+}
+
+.hp-mek-right {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-md);
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.hp-mek-right-label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 /* ── Hjälptrappa (beslut 20, 2026-10-05) ──
    Strategi (topprad) → Ledtråd → nytt försök → Visa svar. Raden ligger direkt under svaren,
    har fast höjd (36 px, träffyta 44 px) så att inget hoppar när Ledtråd låses upp. */

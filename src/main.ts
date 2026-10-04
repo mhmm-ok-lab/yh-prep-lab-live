@@ -7,6 +7,9 @@ import type { HpDelprov, HpTwin } from "./hp-twins";
 import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
 import { HP_LAS_TEXTS } from "./hp-las";
+import { HP_ELF_TEXTS } from "./hp-elf";
+import { HP_MEK_ITEMS } from "./hp-mek";
+import type { HpMekItem } from "./hp-mek";
 import type { HpLasQuestion, HpLasQuestionType, HpLasText } from "./hp-las";
 import { HP_CARDS, findHpCard } from "./hp-cards";
 import { HP_RESOURCE_GROUPS, HP_RESOURCES_CHECKED_LABEL, hpResourcesForGroup } from "./hp-resources";
@@ -32,6 +35,7 @@ import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
   addHpLasRepeatText,
+  addHpMekRepeatItem,
   addHpRepeatWord,
   addHpTwinRepeatItem,
   clearActiveSession,
@@ -39,6 +43,9 @@ import {
   importStudyDataSnapshot,
   loadActiveSession,
   loadHpLasRepeatQueue,
+  loadHpMekRepeatQueue,
+  loadHpMekResults,
+  loadHpMekSeen,
   loadHpLasResults,
   loadHpMathResult,
   loadHpPlanState,
@@ -49,10 +56,13 @@ import {
   loadStudySessions,
   recordHpPassCompleted,
   removeHpLasRepeatText,
+  removeHpMekRepeatItem,
   removeHpRepeatWord,
   removeHpTwinRepeatItem,
   saveActiveSession,
   saveHpLasResult,
+  saveHpMekResult,
+  saveHpMekSeen,
   saveHpMathResult,
   saveHpPlanState,
   saveHpTwinResult,
@@ -61,7 +71,7 @@ import {
 } from "./storage";
 import { loadColorMode, saveColorMode } from "./storage";
 import type { ColorMode } from "./storage";
-import type { HpLasErrorTag, HpMathAreaResult, HpMathQuestionResult, HpMathOutcome, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
+import type { HpLasErrorTag, HpLasSource, HpMathAreaResult, HpMathQuestionResult, HpMathOutcome, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning" | "hp";
@@ -218,6 +228,8 @@ interface HpTwinSession extends HpNavFields {
 
 /** HP LÄS-träning: ett pass = en text med dess frågor. Tempomätaren går per text (frågor × 2 min). */
 interface HpLasSession extends HpNavFields {
+  /** LÄS eller ELF: samma vy och datamodell, men egna resultat och egen repetitionskö. */
+  source: HpLasSource;
   text: HpLasText;
   items: HpLasQuestion[];
   currentIndex: number;
@@ -235,6 +247,22 @@ interface HpLasSession extends HpNavFields {
   currentTag: HpLasErrorTag | null;
   /** Felkategori per besvarad fråga (position), för granskningsläget. */
   lasTagLog: (HpLasErrorTag | null)[];
+  helpedIds: string[];
+}
+
+/** HP MEK-träning (meningskomplettering): ett pass = 10 uppgifter, en per skärm. */
+interface HpMekSession extends HpNavFields {
+  items: HpMekItem[];
+  currentIndex: number;
+  userAnswer: number | null;
+  showFeedback: boolean;
+  correct: number;
+  withHint: number;
+  wrong: number;
+  questionStartedAt: number;
+  startedAt: number;
+  finishedAt: number | null;
+  missedItems: HpMekItem[];
   helpedIds: string[];
 }
 
@@ -534,6 +562,9 @@ let hpTwinSession: HpTwinSession | null = null;
 let hpTwinTempoIntervalRef: number | null = null;
 let hpLasSession: HpLasSession | null = null;
 let hpLasTempoIntervalRef: number | null = null;
+let hpMekSession: HpMekSession | null = null;
+let hpMekTempoIntervalRef: number | null = null;
+let hpMekShowAllFor: string | null = null;
 /** LÄS: vilken vy som visas (fråga eller text), markerat stycke, vilken fråga som visar alla alternativ,
  *  och scrollposition per vy så att man hamnar rätt när man växlar. */
 let hpLasView: "fraga" | "text" = "fraga";
@@ -911,7 +942,7 @@ const HP_DELPROV_NAMES: Record<HpDelprov, string> = {
 
 /** Vad ska Martin göra nu? 1) mattedelprov han aldrig provat, 2) dagens ord om de inte är gjorda,
  *  3) mattedelprovet med lägst andel rätt. */
-function recommendHpNext(wordsToday: number): { label: string; reason: string; delprov?: HpDelprov; las?: HpLasText } {
+function recommendHpNext(wordsToday: number): { label: string; reason: string; delprov?: HpDelprov; las?: HpLasText; source?: HpLasSource; mek?: boolean } {
   const order: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
   const untried = order.find((d) => !loadHpTwinResult(d));
   if (untried) {
@@ -929,6 +960,19 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
       las: lasText,
       label: `LÄS – ${lasText.title}`,
       reason: `Du har inte tränat LÄS än · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
+    };
+  }
+  // Verbala delprov som aldrig tränats: MEK, sedan ELF.
+  if (HP_MEK_ITEMS.length > 0 && loadHpMekResults().length === 0) {
+    return { mek: true, label: "MEK – meningskomplettering", reason: `Du har inte tränat MEK än · ${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min` };
+  }
+  const elfText = pickHpLasText("elf");
+  if (elfText && Object.keys(loadHpLasResults("elf")).length === 0) {
+    return {
+      las: elfText,
+      source: "elf",
+      label: `ELF – ${elfText.title}`,
+      reason: `Du har inte tränat ELF än · ${elfText.questions.length} frågor, ca ${Math.round(hpLasBudgetSeconds(elfText) / 60)} min`
     };
   }
   if (wordsToday === 0 && HP_WORDS.length > 0) {
@@ -953,9 +997,24 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
 }
 
 const HP_LAS_SECONDS_PER_QUESTION = 120;
+/** ELF-lucktexter (titel "Gap-fill: …") har en lucka per fråga och går snabbare: 1 min per lucka. */
+const HP_GAPFILL_SECONDS_PER_QUESTION = 60;
+
+function hpIsGapFill(text: HpLasText): boolean {
+  return /^gap-fill/i.test(text.title);
+}
 
 function hpLasBudgetSeconds(text: HpLasText): number {
-  return text.questions.length * HP_LAS_SECONDS_PER_QUESTION;
+  return text.questions.length * (hpIsGapFill(text) ? HP_GAPFILL_SECONDS_PER_QUESTION : HP_LAS_SECONDS_PER_QUESTION);
+}
+
+function hpLasTexts(source: HpLasSource): HpLasText[] {
+  return source === "elf" ? HP_ELF_TEXTS : HP_LAS_TEXTS;
+}
+
+/** Rubrik i övningen: "LÄS – titel" eller "ELF – engelsk läsförståelse · titel". */
+function hpLasHeading(source: HpLasSource, text: HpLasText): string {
+  return source === "elf" ? `ELF – engelsk läsförståelse · ${text.title}` : `LÄS – ${text.title}`;
 }
 
 function formatMinSec(totalSeconds: number): string {
@@ -965,27 +1024,28 @@ function formatMinSec(totalSeconds: number): string {
 
 /** Väljer nästa LÄS-text. Aldrig samma text två gånger i rad. Repetitionskön (texter med fel) först,
  *  sedan texter som inte gjorts, sedan den som gjordes för längst tid sedan. */
-function pickHpLasText(): HpLasText | undefined {
-  if (HP_LAS_TEXTS.length === 0) {
+function pickHpLasText(source: HpLasSource = "las"): HpLasText | undefined {
+  const texts = hpLasTexts(source);
+  if (texts.length === 0) {
     return undefined;
   }
-  const results = loadHpLasResults();
+  const results = loadHpLasResults(source);
   const lastId = Object.values(results).sort((a, b) => b.completedAt.localeCompare(a.completedAt))[0]?.textId;
-  const byId = new Map(HP_LAS_TEXTS.map((t) => [t.id, t]));
-  const queued = loadHpLasRepeatQueue()
+  const byId = new Map(texts.map((t) => [t.id, t]));
+  const queued = loadHpLasRepeatQueue(source)
     .map((id) => byId.get(id))
     .filter((t): t is HpLasText => Boolean(t) && t!.id !== lastId);
   if (queued.length > 0) {
     return queued[0];
   }
-  const fresh = HP_LAS_TEXTS.filter((t) => !results[t.id] && t.id !== lastId);
+  const fresh = texts.filter((t) => !results[t.id] && t.id !== lastId);
   if (fresh.length > 0) {
     return fresh[0];
   }
-  const oldest = HP_LAS_TEXTS.filter((t) => t.id !== lastId).sort((a, b) =>
+  const oldest = texts.filter((t) => t.id !== lastId).sort((a, b) =>
     (results[a.id]?.completedAt ?? "").localeCompare(results[b.id]?.completedAt ?? "")
   );
-  return oldest[0] ?? HP_LAS_TEXTS[0];
+  return oldest[0] ?? texts[0];
 }
 
 function hpLasElapsedSeconds(): number {
@@ -1033,11 +1093,12 @@ function hpLasResetView(): void {
   window.scrollTo(0, 0);
 }
 
-function hpLasStart(text: HpLasText): void {
+function hpLasStart(text: HpLasText, source: HpLasSource = "las"): void {
   hpForceHome = false;
   hpHelpOpenFor = null;
   hpLasScroll.text = 0;
   hpLasSession = {
+    source,
     text,
     items: text.questions.map((q) => ({ ...q })),
     currentIndex: 0,
@@ -1103,12 +1164,12 @@ function hpLasSaveResult(): void {
     budgetSeconds: hpLasBudgetSeconds(s.text),
     errorTags: s.errorTagCounts,
     missedTypes
-  });
+  }, s.source);
   // Texten ligger kvar i repetitionskön tills alla frågor klaras utan hjälp.
   if (s.wrong > 0 || s.withHint > 0 || s.unanswered > 0) {
-    addHpLasRepeatText(s.text.id);
+    addHpLasRepeatText(s.text.id, s.source);
   } else {
-    removeHpLasRepeatText(s.text.id);
+    removeHpLasRepeatText(s.text.id, s.source);
   }
 }
 
@@ -1139,6 +1200,155 @@ function hpLasSwitchView(next: "fraga" | "text", highlight: number | null): void
   } else {
     window.scrollTo(0, hpLasScroll[next]);
   }
+}
+
+// ── MEK (meningskomplettering) ──
+
+/** Ett pass = 10 uppgifter; tempomål 50 s per uppgift (8 min för 10 enligt UHR). */
+const HP_MEK_PASS_SIZE = 10;
+const HP_MEK_TEMPO_TARGET_SECONDS = 50;
+
+function shuffled<T>(list: T[]): T[] {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+/** Blandar alternativen så att rätt svar inte alltid ligger på samma plats. */
+function shuffleMekOptions(item: HpMekItem): HpMekItem {
+  const order = shuffled([0, 1, 2, 3]);
+  const options = order.map((i) => item.options[i]) as HpMekItem["options"];
+  return { ...item, options, correct: order.indexOf(item.correct) };
+}
+
+/** Dagens MEK-pass: repetitionskön först (uppgifter som behövde hjälp), sedan uppgifter som inte setts,
+ *  tills alla setts (då börjar det om). Blandad ordning, så 1-, 2- och 3-luckors uppgifter varvas. */
+function buildHpMekPass(): HpMekItem[] {
+  const byId = new Map(HP_MEK_ITEMS.map((i) => [i.id, i]));
+  const repeat = loadHpMekRepeatQueue()
+    .map((id) => byId.get(id))
+    .filter((i): i is HpMekItem => Boolean(i))
+    .slice(0, Math.floor(HP_MEK_PASS_SIZE / 2));
+  const usedIds = new Set(repeat.map((i) => i.id));
+  const need = HP_MEK_PASS_SIZE - repeat.length;
+  let nextSeen = new Set(loadHpMekSeen().filter((id) => byId.has(id)));
+  let pool = shuffled(HP_MEK_ITEMS.filter((i) => !usedIds.has(i.id) && !nextSeen.has(i.id)));
+  if (pool.length < need) {
+    // Alla uppgifter har setts: en ny runda börjar, de som återstod först.
+    const rest = shuffled(HP_MEK_ITEMS.filter((i) => !usedIds.has(i.id) && !pool.includes(i)));
+    pool = [...pool, ...rest];
+    nextSeen = new Set();
+  }
+  const picked = [...repeat, ...pool.slice(0, need)];
+  picked.forEach((i) => nextSeen.add(i.id));
+  saveHpMekSeen([...nextSeen]);
+  return shuffled(picked).map(shuffleMekOptions);
+}
+
+function hpMekBudgetSeconds(): number {
+  return (hpMekSession?.items.length ?? HP_MEK_PASS_SIZE) * HP_MEK_TEMPO_TARGET_SECONDS;
+}
+
+function stopHpMekTempoInterval(): void {
+  if (hpMekTempoIntervalRef) {
+    window.clearInterval(hpMekTempoIntervalRef);
+    hpMekTempoIntervalRef = null;
+  }
+}
+
+function updateHpMekTempoUI(): void {
+  if (!hpMekSession || hpMekSession.showFeedback) {
+    return;
+  }
+  hpLadderTick(hpMekSession);
+  const el = app.querySelector<HTMLElement>("[data-hp-mek-tempo]");
+  if (!el) {
+    return;
+  }
+  const elapsed = Math.round((Date.now() - hpMekSession.questionStartedAt) / 1000);
+  el.textContent = `${elapsed}s / ${HP_MEK_TEMPO_TARGET_SECONDS}s mål`;
+  el.classList.toggle("hp-tempo-over", elapsed > HP_MEK_TEMPO_TARGET_SECONDS);
+}
+
+function startHpMekTempoInterval(): void {
+  stopHpMekTempoInterval();
+  updateHpMekTempoUI();
+  hpMekTempoIntervalRef = window.setInterval(updateHpMekTempoUI, 500);
+}
+
+function hpMekStart(): void {
+  hpForceHome = false;
+  hpHelpOpenFor = null;
+  hpMekShowAllFor = null;
+  hpMekSession = {
+    items: buildHpMekPass(),
+    currentIndex: 0,
+    userAnswer: null,
+    showFeedback: false,
+    correct: 0,
+    withHint: 0,
+    wrong: 0,
+    questionStartedAt: Date.now(),
+    startedAt: Date.now(),
+    finishedAt: null,
+    missedItems: [],
+    helpedIds: [],
+    ...hpNavInit()
+  };
+  window.scrollTo(0, 0);
+  render();
+}
+
+function hpMekSaveResult(): void {
+  if (!hpMekSession) {
+    return;
+  }
+  const s = hpMekSession;
+  s.finishedAt = Date.now();
+  saveHpMekResult({
+    completedAt: new Date().toISOString(),
+    correct: s.correct,
+    withHint: s.withHint,
+    total: s.items.length - s.unanswered,
+    seconds: Math.round((s.finishedAt - s.startedAt) / 1000),
+    budgetSeconds: hpMekBudgetSeconds()
+  });
+}
+
+function hpMekAdvanceQuestion(): void {
+  if (!hpMekSession) {
+    return;
+  }
+  hpMekSession.currentIndex++;
+  hpMekShowAllFor = null;
+  if (hpMekSession.currentIndex < hpMekSession.items.length) {
+    hpMekSession.userAnswer = null;
+    hpMekSession.showFeedback = false;
+    hpLadderReset(hpMekSession);
+    hpMekSession.questionStartedAt = Date.now();
+  } else {
+    hpMekSaveResult();
+  }
+  window.scrollTo(0, 0);
+  render();
+}
+
+/** Räknar utfallet. Bara "utan hjälp" tar uppgiften ur repetitionskön; annars läggs den dit. */
+function hpMekRecordOutcome(outcome: HpOutcome, item: HpMekItem): void {
+  const s = hpMekSession!;
+  if (outcome === "clean") {
+    s.correct++;
+    removeHpMekRepeatItem(item.id);
+  } else {
+    if (outcome === "hint") s.withHint++;
+    else s.wrong++;
+    s.missedItems.push(item);
+    addHpMekRepeatItem(item.id);
+  }
+  hpMekShowAllFor = null;
 }
 
 /** Föreslår nästa mattedelprov: först ett som aldrig tränats, annars det med lägst andel rätt. */
@@ -2653,7 +2863,18 @@ function renderHpActiveResume(): string {
     return `
       <div class="hp-resume-card">
         <p class="hp-resume-label">Pågående pass</p>
-        <p class="hp-resume-desc">LÄS – ${hpLasSession.text.title} — fråga ${at}/${total}</p>
+        <p class="hp-resume-desc">${hpLasHeading(hpLasSession.source, hpLasSession.text)} — fråga ${at}/${total}</p>
+        <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
+      </div>
+    `;
+  }
+  if (hpMekSession) {
+    const total = hpMekSession.items.length;
+    const at = Math.min(hpMekSession.currentIndex + 1, total);
+    return `
+      <div class="hp-resume-card">
+        <p class="hp-resume-label">Pågående pass</p>
+        <p class="hp-resume-desc">MEK – meningskomplettering — uppgift ${at}/${total}</p>
         <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
       </div>
     `;
@@ -2691,6 +2912,8 @@ function hpPlanData(): HpPlanData {
     wordsToday: HP_PLAN_DEV_DATE ? 0 : loadHpProgress().wordsCompleted,
     twin,
     lasCompletedAt: Object.values(loadHpLasResults()).map((r) => r.completedAt),
+    mekCompletedAt: loadHpMekResults().map((r) => r.completedAt),
+    elfCompletedAt: Object.values(loadHpLasResults("elf")).map((r) => r.completedAt),
     diagnosis: diag
       ? {
           completedAt: diag.completedAt,
@@ -2752,6 +2975,10 @@ function hpPlanGoButton(item: HpPlanItem): string {
       return `<button class="${cls}" data-action="hp-start-pass">${label}</button>`;
     case "las":
       return `<button class="${cls}" data-action="hp-las-start">${label}</button>`;
+    case "elf":
+      return `<button class="${cls}" data-action="hp-las-start" data-source="elf">${label}</button>`;
+    case "mek":
+      return `<button class="${cls}" data-action="hp-mek-start">${label}</button>`;
     case "diagnos":
       return `<button class="${cls}" data-action="hp-math-start">${label}</button>`;
     case "train":
@@ -2789,14 +3016,15 @@ function renderHpPlanRow(item: HpPlanItem): string {
 
 /** Rekommenderad knapp (används som extra efter dagens plan och efter provdagen). */
 function renderHpRecButton(rec: ReturnType<typeof recommendHpNext>, cls: string): string {
-  if (rec.las) return `<button class="${cls}" data-action="hp-las-start" data-text-id="${rec.las.id}">${rec.label}</button>`;
+  if (rec.las) return `<button class="${cls}" data-action="hp-las-start" data-source="${rec.source ?? "las"}" data-text-id="${rec.las.id}">${rec.label}</button>`;
+  if (rec.mek) return `<button class="${cls}" data-action="hp-mek-start">${rec.label}</button>`;
   if (rec.delprov) return `<button class="${cls}" data-action="hp-twin-start" data-delprov="${rec.delprov}">${rec.label}</button>`;
   return `<button class="${cls}" data-action="hp-start-pass">${rec.label}</button>`;
 }
 
 function renderHpRecommended(wordsToday: number, hasWords: boolean): string {
   const rec = recommendHpNext(wordsToday);
-  const ordBtn = (rec.delprov || rec.las) && hasWords ? `<button class="hp-secondary-btn" data-action="hp-start-pass">Dagens 10 ord</button>` : "";
+  const ordBtn = (rec.delprov || rec.las || rec.mek) && hasWords ? `<button class="hp-secondary-btn" data-action="hp-start-pass">Dagens 10 ord</button>` : "";
   return `
     <p class="hp-rec-label">Rekommenderat nu</p>
     ${renderHpRecButton(rec, "hp-cta-btn")}
@@ -2917,6 +3145,7 @@ function renderHpHome(): string {
         ? ""
         : `
           ${renderHpLasHomeCard()}
+          <div class="hp-verbal-row">${renderHpMekHomeCard()}${renderHpElfHomeCard()}</div>
           <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
           ${lastMathHtml}
           <button class="hp-secondary-btn" data-action="hp-resources-open">Externa resurser</button>
@@ -2924,6 +3153,40 @@ function renderHpHome(): string {
           ${renderHpGuideHomeSection()}
         `}
     </div>
+  `;
+}
+
+/** MEK-kortet: kompakt, bredvid ELF (verbala delen: ORD, LÄS, MEK, ELF). */
+function renderHpMekHomeCard(): string {
+  if (HP_MEK_ITEMS.length === 0) {
+    return "";
+  }
+  const passes = loadHpMekResults().length;
+  const repeat = loadHpMekRepeatQueue().filter((id) => HP_MEK_ITEMS.some((i) => i.id === id)).length;
+  const status = passes === 0 ? "inte påbörjad" : `${passes} pass${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
+  return `
+    <button class="hp-las-card hp-verbal-card" data-action="hp-mek-start">
+      <span class="hp-las-card-name">MEK</span>
+      <span class="hp-las-card-desc">Meningskomplettering · ${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min</span>
+      <span class="hp-las-card-count">${status}</span>
+    </button>
+  `;
+}
+
+function renderHpElfHomeCard(): string {
+  if (HP_ELF_TEXTS.length === 0) {
+    return "";
+  }
+  const results = loadHpLasResults("elf");
+  const done = HP_ELF_TEXTS.filter((t) => results[t.id]).length;
+  const repeat = loadHpLasRepeatQueue("elf").filter((id) => HP_ELF_TEXTS.some((t) => t.id === id)).length;
+  const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_ELF_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
+  return `
+    <button class="hp-las-card hp-verbal-card" data-action="hp-las-start" data-source="elf">
+      <span class="hp-las-card-name">ELF</span>
+      <span class="hp-las-card-desc">Engelsk läsförståelse · 1–2 min per fråga</span>
+      <span class="hp-las-card-count">${status}</span>
+    </button>
   `;
 }
 
@@ -3052,7 +3315,7 @@ function ladderSummary(clean: number, hint: number, shown: number): string {
 }
 
 /** Kompakt hjälplager: bara den allmänna metoden för delprovet (ur HP_GUIDE). Frågespecifik ledtråd visas först efter svar. */
-function renderHpHelpPanel(categoryId: "ord" | "las" | "xyz" | "kva" | "nog" | "dtk"): string {
+function renderHpHelpPanel(categoryId: "ord" | "las" | "mek" | "elf" | "xyz" | "kva" | "nog" | "dtk"): string {
   const info = HP_GUIDE_CATEGORIES.find((c) => c.id === categoryId)!;
   // LÄS har sju korta tips, övriga visar de tre första.
   const cards = hpGuideCardsForCategory(categoryId).slice(0, categoryId === "las" ? 7 : 3);
@@ -3583,6 +3846,147 @@ function renderHpTwinSummary(): string {
   `;
 }
 
+// ── MEK: rendering ──
+
+/** Texten med luckorna markerade. Med `fills` sätts orden in i luckorna (ok = rätt ord, wrong = ett val som inte stämde). */
+function renderHpMekText(item: HpMekItem, fills: string[] | null, tone: "ok" | "wrong" | null): string {
+  const multi = (item.text.match(/___/g) ?? []).length > 1;
+  let n = 0;
+  return item.text.replace(/___/g, () => {
+    const i = n++;
+    if (fills && fills[i] !== undefined) {
+      return `<span class="hp-mek-fill hp-mek-fill-${tone ?? "ok"}">${fills[i]}</span>`;
+    }
+    return `<span class="hp-mek-gap" role="img" aria-label="lucka ${i + 1}">${multi ? i + 1 : ""}</span>`;
+  });
+}
+
+function hpMekFills(item: HpMekItem, i: number): string {
+  return item.options[i].fills.join(" – ");
+}
+
+function renderHpMekFeedback(item: HpMekItem, userAnswer: number, inReview: boolean): string {
+  const s = hpMekSession!;
+  const idx = s.reviewIndex ?? s.currentIndex;
+  const outcome: HpOutcome = s.outcomes[idx] ?? "shown";
+  const picked = userAnswer >= 0;
+  const showAll = hpMekShowAllFor === item.id;
+  const L = (i: number) => HP_LAS_LETTERS[i];
+  let whyHtml: string;
+  if (showAll) {
+    whyHtml = `<div class="hp-las-all">${item.options
+      .map((opt, i) => {
+        const cls = i === item.correct ? "hp-las-all-ok" : i === userAnswer ? "hp-las-all-wrong" : "";
+        const mark = i === item.correct ? "Rätt" : i === userAnswer ? "Du valde" : "";
+        return `<div class="hp-las-all-item ${cls}"><p class="hp-las-all-head"><strong>${L(i)}.</strong> ${hpMekFills(item, i)}${mark ? `<span class="hp-las-all-mark">${mark}</span>` : ""}</p><p class="hp-las-why">${opt.why}</p></div>`;
+      })
+      .join("")}</div>`;
+  } else {
+    whyHtml = `${outcome !== "shown" || !picked ? "" : `<p class="hp-las-why"><strong>Du valde ${L(userAnswer)} (${hpMekFills(item, userAnswer)}):</strong> ${item.options[userAnswer].why}</p>`}
+        <p class="hp-las-why"><strong>Rätt svar ${L(item.correct)} (${hpMekFills(item, item.correct)}):</strong> ${item.options[item.correct].why}</p>`;
+  }
+  // Valde man fel visas hur meningen låter med rätt ord, så att rätt version hörs i huvudet.
+  const rightSentence = outcome === "shown" && picked
+    ? `<p class="hp-mek-right"><span class="hp-mek-right-label">Så här låter det rätt</span>${renderHpMekText(item, item.options[item.correct].fills, "ok")}</p>`
+    : "";
+  const last = s.currentIndex >= s.items.length - 1;
+  return `<div class="hp-feedback ${outcome === "shown" ? "hp-feedback-wrong" : "hp-feedback-ok"}">
+      <p class="hp-feedback-meaning">${hpOutcomeTitle(outcome, userAnswer)}</p>
+      ${rightSentence}
+      ${whyHtml}
+      <button class="hp-las-linkbtn" data-action="hp-mek-all">${showAll ? "Dölj alla alternativ" : "Se alla alternativ"}</button>
+      ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-mek-next">${last ? "Se sammanfattning" : "Nästa"}</button>`}
+    </div>`;
+}
+
+function renderHpMekQuestion(): string {
+  if (!hpMekSession) {
+    return "";
+  }
+  const s = hpMekSession;
+  const inReview = s.reviewIndex !== null;
+  const idx = s.reviewIndex ?? s.currentIndex;
+  const item = s.items[idx];
+  const userAnswer = inReview ? s.answerLog[idx] : s.userAnswer;
+  const answered = inReview || s.showFeedback;
+  const picks = answered ? s.triesLog[idx] ?? [] : s.curPicks;
+  const lastPick = answered ? (userAnswer !== null && userAnswer >= 0 ? userAnswer : -1) : picks.length > 0 ? picks[picks.length - 1] : -1;
+
+  // Efter ett val sätts de valda orden in i luckorna, så att man hör hur det låter.
+  let textHtml: string;
+  if (lastPick >= 0) {
+    const right = lastPick === item.correct;
+    textHtml = renderHpMekText(item, item.options[lastPick].fills, right ? "ok" : "wrong");
+  } else if (answered) {
+    textHtml = renderHpMekText(item, item.options[item.correct].fills, "ok");
+  } else {
+    textHtml = renderHpMekText(item, null, null);
+  }
+
+  const optionsHtml = item.options
+    .map((_, i) => {
+      const cls = hpOptionClass("hp-option-btn hp-las-opt", i, item.correct, answered, picks);
+      return `<button class="${cls}" data-action="hp-mek-answer" data-index="${i}" ${answered || picks.includes(i) ? "disabled" : ""}><span class="hp-las-letter">${HP_LAS_LETTERS[i]}</span><span>${hpMekFills(item, i)}</span></button>`;
+    })
+    .join("");
+
+  const helpHtml = !inReview && hpHelpOpenFor === item.id ? renderHpHelpPanel("mek") : "";
+  return `
+    <div class="hp-drill hp-mek">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-mek-cancel">Avbryt</button>
+        ${renderHpProgress(`Uppgift ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
+        ${inReview ? "" : `<span class="hp-tempo" data-hp-mek-tempo>0s / ${HP_MEK_TEMPO_TARGET_SECONDS}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
+      </div>
+      ${renderHpDrillTitle("MEK – meningskomplettering")}
+      <p class="hp-mek-text" aria-live="polite">${textHtml}</p>
+      <div class="hp-options">${optionsHtml}</div>
+      ${!answered ? renderHpLadder("hp-mek", s, item.hint) : ""}
+      ${renderHpNavRow("hp-mek", s)}
+      ${helpHtml}
+      ${answered ? renderHpMekFeedback(item, userAnswer as number, inReview) : ""}
+    </div>
+  `;
+}
+
+function renderHpMekSummary(): string {
+  if (!hpMekSession) {
+    return "";
+  }
+  const s = hpMekSession;
+  const answeredTotal = s.items.length - s.unanswered;
+  const seconds = Math.round(((s.finishedAt ?? Date.now()) - s.startedAt) / 1000);
+  const avg = answeredTotal > 0 ? Math.round(seconds / answeredTotal) : 0;
+  const underTarget = avg > 0 && avg <= HP_MEK_TEMPO_TARGET_SECONDS;
+  return `
+    <div class="hp-summary">
+      <p class="hp-summary-heading">MEK – meningskomplettering — klart</p>
+      <div class="hp-progress-row">
+        <div class="stat-widget">
+          <span class="stat-widget-label">Utan hjälp</span>
+          <span class="stat-widget-value">${s.correct}<span class="stat-widget-unit">/${answeredTotal}</span></span>
+        </div>
+        <div class="stat-widget">
+          <span class="stat-widget-label">Snitt-tempo</span>
+          <span class="stat-widget-value">${avg}<span class="stat-widget-unit">s/uppgift</span></span>
+          <span class="stat-widget-sub">${underTarget ? "under målet ✓" : `över ${HP_MEK_TEMPO_TARGET_SECONDS} s-målet`}</span>
+        </div>
+      </div>
+      ${ladderSummary(s.correct, s.withHint, s.wrong)}
+      ${helpedSummary(s.helpedIds.length)}
+      ${unansweredSummary(s.unanswered)}
+      ${s.missedItems.length > 0
+        ? `<div class="hp-missed-list">
+            <p class="hp-missed-heading">Behövde hjälp — kommer tillbaka i nästa pass</p>
+            ${s.missedItems.map((i) => `<p class="hp-missed-item">${renderHpMekText(i, i.options[i.correct].fills, "ok")}</p>`).join("")}
+          </div>`
+        : `<p class="hp-summary-clean">Alla utan hjälp — starkt jobbat!</p>`}
+      <button class="hp-cta-btn" data-action="hp-mek-start">10 till</button>
+      <button class="hp-drill-cancel" data-action="hp-mek-close">Klart för idag</button>
+    </div>
+  `;
+}
+
 const HP_LAS_TAG_LABEL: Record<HpLasErrorTag, string> = {
   "missad-detalj": "Missade detalj",
   feltolkat: "Feltolkade",
@@ -3638,21 +4042,40 @@ function renderHpLasBar(item: HpLasQuestion, idx: number): string {
         <span class="hp-tempo ${over ? "hp-tempo-over" : ""}" data-hp-las-tempo>${hpLasTempoText()}</span>
         ${inReview ? "" : renderHpHelpButton(hpHelpOpenFor === item.id)}
       </div>
-      ${textView ? "" : renderHpDrillTitle(`LÄS – ${s.text.title}`)}
+      ${textView ? "" : renderHpDrillTitle(hpLasHeading(s.source, s.text))}
       <div class="hp-las-switch" role="group" aria-label="Växla mellan fråga och text">${segQ}${segT}</div>
       ${textView ? `<p class="hp-las-reminder"><strong>Fråga ${idx + 1}:</strong> ${item.prompt}</p>` : ""}
     </div>
   `;
 }
 
-function renderHpLasText(): string {
+/** Luckans nummer ur frågan ("Which alternative best fits gap (3)?"). */
+function hpGapNumber(q: HpLasQuestion): number | null {
+  const m = /gap \((\d+)\)/i.exec(q.prompt);
+  return m ? Number(m[1]) : null;
+}
+
+/** Markerar luckorna i ett stycke: aktuell lucka tydligt, övriga dämpade. Med `fill` sätts rätt ord in i aktuell lucka. */
+function renderHpGapText(paragraph: string, current: number | null, fill: string | null): string {
+  return paragraph.replace(/\((\d+)\) ___/g, (_m, n: string) => {
+    if (Number(n) !== current) {
+      return `<span class="hp-gap-other">(${n}) ___</span>`;
+    }
+    return fill
+      ? `<mark class="hp-gap hp-gap-cur hp-gap-filled">(${n}) <strong>${fill}</strong></mark>`
+      : `<mark class="hp-gap hp-gap-cur">(${n}) ___</mark>`;
+  });
+}
+
+function renderHpLasText(item: HpLasQuestion): string {
   const s = hpLasSession!;
+  const gapNo = hpIsGapFill(s.text) ? hpGapNumber(item) : null;
   const paras = s.text.paragraphs
     .map(
       (p, i) => `
         <div class="hp-las-para ${hpLasHighlight === i ? "hp-las-para-hl" : ""}" id="hp-las-p-${i}">
           <span class="hp-las-pnum" aria-label="Stycke ${i + 1}">${i + 1}</span>
-          <p>${p}</p>
+          <p>${gapNo !== null ? renderHpGapText(p, gapNo, null) : p}</p>
         </div>`
     )
     .join("");
@@ -3685,16 +4108,19 @@ function renderHpLasFeedback(item: HpLasQuestion, userAnswer: number, inReview: 
         <p class="hp-las-why"><strong>Rätt svar ${L(item.correct)}:</strong> ${item.options[item.correct].why}</p>`;
   }
   const n = item.paragraph + 1;
+  const gapFill = hpIsGapFill(s.text);
   const tagHtml = outcome === "shown" ? (inReview ? (shownTag ? `<p class="hp-feedback-why">Du valde: ${HP_LAS_TAG_LABEL[shownTag]}</p>` : "") : renderHpLasTagRow(shownTag)) : "";
   const last = s.currentIndex >= s.items.length - 1;
   return `<div class="hp-feedback ${outcome === "shown" ? "hp-feedback-wrong" : "hp-feedback-ok"}">
       <p class="hp-feedback-meaning">${hpOutcomeTitle(outcome, userAnswer)}</p>
       ${whyHtml}
       <button class="hp-las-linkbtn" data-action="hp-las-all">${showAll ? "Dölj alla alternativ" : "Se alla alternativ"}</button>
-      <div class="hp-las-where">
+      ${gapFill
+        ? ""
+        : `<div class="hp-las-where">
         <span class="hp-feedback-why">Svaret finns i stycke ${n}</span>
         <button class="hp-las-open" data-action="hp-las-para" data-para="${item.paragraph}">Öppna stycke ${n}</button>
-      </div>
+      </div>`}
       ${tagHtml}
       ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-las-next">${last ? "Se sammanfattning" : "Nästa"}</button>`}
     </div>`;
@@ -3710,14 +4136,14 @@ function renderHpLasQuestion(): string {
   const item = s.items[idx];
   const userAnswer = inReview ? s.answerLog[idx] : s.userAnswer;
   const answered = inReview || s.showFeedback;
-  const helpHtml = !inReview && hpHelpOpenFor === item.id ? renderHpHelpPanel("las") : "";
+  const helpHtml = !inReview && hpHelpOpenFor === item.id ? renderHpHelpPanel(s.source) : "";
 
   if (hpLasView === "text") {
     return `
       <div class="hp-drill hp-las">
         ${renderHpLasBar(item, idx)}
         ${helpHtml}
-        ${renderHpLasText()}
+        ${renderHpLasText(item)}
       </div>
     `;
   }
@@ -3730,12 +4156,24 @@ function renderHpLasQuestion(): string {
     })
     .join("");
 
+  // Lucktext: stycket med luckan ligger tätt ovanför frågan, med aktuell lucka markerad (svaret beror på omgivningen).
+  const gapNo = hpIsGapFill(s.text) ? hpGapNumber(item) : null;
+  const gapContext = gapNo !== null
+    ? `<div class="hp-gap-context"><p>${renderHpGapText(s.text.paragraphs[item.paragraph] ?? "", gapNo, answered && item.correct >= 0 ? item.options[item.correct].text : null)}</p></div>`
+    : "";
+  const ladderHtml = answered
+    ? ""
+    : gapNo !== null
+      ? renderHpLadder("hp-las", s, `Läs meningen före och efter lucka (${gapNo}). Vilket ord styr formen eller sambandet?`)
+      : renderHpLadder("hp-las", s, `Titta i stycke ${item.paragraph + 1}.`, `<button class="hp-las-open" data-action="hp-las-para" data-para="${item.paragraph}">Öppna stycke ${item.paragraph + 1}</button>`);
+
   return `
     <div class="hp-drill hp-las">
       ${renderHpLasBar(item, idx)}
+      ${gapContext}
       <p class="hp-las-prompt">${item.prompt}</p>
       <div class="hp-options">${optionsHtml}</div>
-      ${!answered ? renderHpLadder("hp-las", s, `Titta i stycke ${item.paragraph + 1}.`, `<button class="hp-las-open" data-action="hp-las-para" data-para="${item.paragraph}">Öppna stycke ${item.paragraph + 1}</button>`) : ""}
+      ${ladderHtml}
       ${renderHpNavRow("hp-las", s)}
       ${helpHtml}
       ${answered ? renderHpLasFeedback(item, userAnswer as number, inReview) : ""}
@@ -3760,10 +4198,10 @@ function renderHpLasSummary(): string {
   for (const q of s.missedItems) {
     missedTypes.set(q.type, (missedTypes.get(q.type) ?? 0) + 1);
   }
-  const next = pickHpLasText();
+  const next = pickHpLasText(s.source);
   return `
     <div class="hp-summary">
-      <p class="hp-summary-heading">LÄS – ${s.text.title} — klart</p>
+      <p class="hp-summary-heading">${hpLasHeading(s.source, s.text)} — klart</p>
       <div class="hp-progress-row">
         <div class="stat-widget">
           <span class="stat-widget-label">Utan hjälp</span>
@@ -3792,7 +4230,7 @@ function renderHpLasSummary(): string {
             <p class="hp-las-coach">Texten kommer tillbaka i ett senare pass.</p>
           </div>`
         : `<p class="hp-summary-clean">Alla utan hjälp — starkt jobbat!</p>`}
-      ${next ? `<button class="hp-cta-btn" data-action="hp-las-start" data-text-id="${next.id}">Nästa text: ${next.title}</button>` : ""}
+      ${next ? `<button class="hp-cta-btn" data-action="hp-las-start" data-source="${s.source}" data-text-id="${next.id}">Nästa text: ${next.title}</button>` : ""}
       <button class="hp-drill-cancel" data-action="hp-las-close">Klart för idag</button>
     </div>
   `;
@@ -3965,6 +4403,9 @@ function renderHp(): string {
   }
   if (hpLasSession) {
     return hpLasSession.currentIndex >= hpLasSession.items.length ? renderHpLasSummary() : renderHpLasQuestion();
+  }
+  if (hpMekSession) {
+    return hpMekSession.currentIndex >= hpMekSession.items.length ? renderHpMekSummary() : renderHpMekQuestion();
   }
   if (hpTwinSession) {
     return hpTwinSession.currentIndex >= hpTwinSession.items.length ? renderHpTwinSummary() : renderHpTwinQuestion();
@@ -4998,6 +5439,12 @@ function render(): void {
     stopHpLasTempoInterval();
   }
 
+  if (page === "hp" && hpMekSession && hpMekSession.currentIndex < hpMekSession.items.length && !hpMekSession.showFeedback && hpMekSession.reviewIndex === null) {
+    startHpMekTempoInterval();
+  } else {
+    stopHpMekTempoInterval();
+  }
+
   if (page === "hp" && hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length && !hpTwinSession.showFeedback && hpTwinSession.reviewIndex === null) {
     startHpTwinTempoInterval();
   } else {
@@ -5481,6 +5928,8 @@ app.addEventListener("click", (event) => {
   if (action === "hp-help") {
     const cur = hpLasSession && hpLasSession.currentIndex < hpLasSession.items.length
       ? { id: hpLasSession.items[hpLasSession.currentIndex].id, answered: hpLasSession.showFeedback, helped: hpLasSession.helpedIds }
+      : hpMekSession && hpMekSession.currentIndex < hpMekSession.items.length
+      ? { id: hpMekSession.items[hpMekSession.currentIndex].id, answered: hpMekSession.showFeedback, helped: hpMekSession.helpedIds }
       : hpTwinSession && hpTwinSession.currentIndex < hpTwinSession.items.length
       ? { id: hpTwinSession.items[hpTwinSession.currentIndex].id, answered: hpTwinSession.showFeedback, helped: hpTwinSession.helpedIds }
       : hpMathSession && hpMathSession.currentIndex < hpMathSession.items.length
@@ -5707,9 +6156,10 @@ app.addEventListener("click", (event) => {
   }
 
   if (action === "hp-las-start") {
-    const wanted = actionEl.dataset.textId ? HP_LAS_TEXTS.find((t) => t.id === actionEl.dataset.textId) : undefined;
-    const text = wanted ?? pickHpLasText();
-    if (text) hpLasStart(text);
+    const source: HpLasSource = actionEl.dataset.source === "elf" ? "elf" : "las";
+    const wanted = actionEl.dataset.textId ? hpLasTexts(source).find((t) => t.id === actionEl.dataset.textId) : undefined;
+    const text = wanted ?? pickHpLasText(source);
+    if (text) hpLasStart(text, source);
     return;
   }
 
@@ -5813,6 +6263,90 @@ app.addEventListener("click", (event) => {
   if (action === "hp-las-close") {
     hpLasSession = null;
     hpLasResetView();
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-start") {
+    hpMekStart();
+    return;
+  }
+
+  if (action === "hp-mek-all") {
+    if (!hpMekSession) return;
+    const cur = hpMekSession.items[hpMekSession.reviewIndex ?? hpMekSession.currentIndex];
+    hpMekShowAllFor = hpMekShowAllFor === cur.id ? null : cur.id;
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-answer") {
+    if (!hpMekSession || hpMekSession.showFeedback) return;
+    const index = Number(actionEl.dataset.index);
+    const item = hpMekSession.items[hpMekSession.currentIndex];
+    const res = hpLadderAnswer(hpMekSession, index, item.correct);
+    if (res !== "retry") {
+      hpMekRecordOutcome(res, item);
+    }
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-hint") {
+    if (!hpMekSession || hpMekSession.showFeedback || !hpHintUnlocked(hpMekSession)) return;
+    hpMekSession.hintShown = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-show") {
+    if (!hpMekSession || hpMekSession.showFeedback || !hpMekSession.hintShown) return;
+    hpLadderShow(hpMekSession);
+    hpMekRecordOutcome("shown", hpMekSession.items[hpMekSession.currentIndex]);
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-next") {
+    if (hpMekSession) hpMekAdvanceQuestion();
+    return;
+  }
+
+  if (action === "hp-mek-prev") {
+    if (hpMekSession) {
+      hpMekShowAllFor = null;
+      hpNavPrev(hpMekSession);
+    }
+    return;
+  }
+
+  if (action === "hp-mek-review-back") {
+    if (hpMekSession) {
+      hpMekShowAllFor = null;
+      hpNavBack(hpMekSession);
+    }
+    return;
+  }
+
+  if (action === "hp-mek-skip") {
+    if (!hpMekSession) return;
+    if (hpNavSkip(hpMekSession)) {
+      hpMekSaveResult();
+    }
+    window.scrollTo(0, 0);
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-cancel") {
+    hpMekSession = null;
+    hpForceHome = false;
+    render();
+    return;
+  }
+
+  if (action === "hp-mek-close") {
+    hpMekSession = null;
     render();
     return;
   }

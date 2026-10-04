@@ -17,6 +17,8 @@ const iso = (key: string, time = "12:00:00") => new Date(`${key}T${time}`).toISO
 const emptyData = (over: Partial<HpPlanData> = {}): HpPlanData => ({
   wordsToday: 0,
   lasCompletedAt: [],
+  mekCompletedAt: [],
+  elfCompletedAt: [],
   diagnosis: null,
   twin: {},
   ...over
@@ -66,7 +68,7 @@ describe("hp-plan: Lär om-urval", () => {
   it("diagnos utan frågedata ger inget urval och planen ber om en ny diagnos", () => {
     const data = emptyData({ diagnosis: diagnosis("2026-10-01", false) });
     expect(larOmAreas(data)).toEqual([]);
-    expect(buildDayTasks("2026-10-05", data).map((t) => t.id)).toEqual(["diagnos", "ord", "las"]);
+    expect(buildDayTasks("2026-10-05", data).map((t) => t.id)).toEqual(["diagnos", "ord", "las", "mek"]);
   });
 
   it("dag 3 ger ett område per dag i ordning", () => {
@@ -116,6 +118,49 @@ describe("hp-plan: stegens uppgifter", () => {
     const tasks = buildDayTasks("2026-10-17", data);
     expect(tasks.map((t) => t.id)).toEqual(["strategi-flashcards", "vila"]);
     expect(tasks[1].sub).toMatch(/legitimation/i);
+  });
+});
+
+describe("hp-plan: MEK och ELF", () => {
+  const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
+  const ids = (key: string) => buildDayTasks(key, data).map((t) => t.id);
+
+  it("MEK på udda dagar och ELF på jämna dagar i Lär om och Laga", () => {
+    expect(ids("2026-10-05")).toContain("mek");
+    expect(ids("2026-10-06")).toContain("elf");
+    expect(ids("2026-10-07")).toContain("mek");
+    expect(ids("2026-10-10")).toContain("elf");
+    expect(ids("2026-10-12")).toContain("elf");
+    expect(ids("2026-10-13")).toContain("mek");
+  });
+
+  it("aldrig både MEK och ELF samma dag, och aldrig mer än 4 uppgifter per dag", () => {
+    for (let day = 1; day <= 13; day++) {
+      const list = ids(addDays("2026-10-05", day - 1));
+      expect(list.includes("mek") && list.includes("elf")).toBe(false);
+      expect(list.length).toBeLessThanOrEqual(4);
+    }
+  });
+
+  it("generalrepetitionen, ny diagnos och sista dagarna får inget extra", () => {
+    expect(ids("2026-10-11")).toEqual(["generalrep", "ord", "las"]);
+    expect(ids("2026-10-14")).toEqual(["laga-train", "laga-diagnos", "ord", "las"]);
+    expect(ids("2026-10-16")).toEqual(["strategi-flashcards", "ord", "las"]);
+  });
+
+  it("bockas av automatiskt när ett MEK-pass eller en ELF-text är klar i dag", () => {
+    const mek = buildTodayPlan("2026-10-07", { ...data, mekCompletedAt: [iso("2026-10-07", "08:00:00")] });
+    expect(mek.items.find((i) => i.task.id === "mek")!.done).toBe(true);
+    const old = buildTodayPlan("2026-10-07", { ...data, mekCompletedAt: [iso("2026-10-06")] });
+    expect(old.items.find((i) => i.task.id === "mek")!.done).toBe(false);
+    const elf = buildTodayPlan("2026-10-06", { ...data, elfCompletedAt: [iso("2026-10-06")] });
+    expect(elf.items.find((i) => i.task.id === "elf")!.done).toBe(true);
+    expect(elf.newlyAutoDone).toContain("elf");
+  });
+
+  it("MEK och ELF flyttas inte fram (dagliga, ingen skuld)", () => {
+    const plan = buildTodayPlan("2026-10-06", data);
+    expect(plan.items.some((i) => i.carried && (i.task.id === "mek" || i.task.id === "elf"))).toBe(false);
   });
 });
 
@@ -226,7 +271,7 @@ describe("hp-plan: hela planen", () => {
   it("13 dagar grupperade efter steg, dagens markerad och avbockade dagar märkta", () => {
     const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
     const s = state({
-      checks: { "2026-10-05": ["lar-om:procent", "ord", "las"] },
+      checks: { "2026-10-05": ["lar-om:procent", "ord", "las", "mek"] },
       snapshots: { "2026-10-05": buildDayTasks("2026-10-05", data) }
     });
     const rows = buildPlanOverview("2026-10-07", data, s);

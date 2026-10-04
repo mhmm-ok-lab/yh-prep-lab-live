@@ -12,6 +12,11 @@ const HP_TWIN_REPEAT_KEY = "yh.hp-twin-repeat";
 const HP_TWIN_RESULT_KEY = "yh.hp-twin-result";
 const HP_LAS_RESULT_KEY = "yh.hp-las-result";
 const HP_LAS_REPEAT_KEY = "yh.hp-las-repeat";
+const HP_ELF_RESULT_KEY = "yh.hp-elf-result";
+const HP_ELF_REPEAT_KEY = "yh.hp-elf-repeat";
+const HP_MEK_RESULT_KEY = "yh.hp-mek-result";
+const HP_MEK_REPEAT_KEY = "yh.hp-mek-repeat";
+const HP_MEK_SEEN_KEY = "yh.hp-mek-seen";
 const HP_PLAN_KEY = "yh.hp-plan";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
@@ -300,63 +305,146 @@ export interface HpLasResult {
 
 type HpLasResultMap = Record<string, HpLasResult>;
 
-function loadHpLasResultMap(): HpLasResultMap {
+/** LÄS och ELF delar träningsvy och datamodell men har egna resultat och egen repetitionskö. */
+export type HpLasSource = "las" | "elf";
+
+const HP_LAS_KEYS: Record<HpLasSource, { result: string; repeat: string }> = {
+  las: { result: HP_LAS_RESULT_KEY, repeat: HP_LAS_REPEAT_KEY },
+  elf: { result: HP_ELF_RESULT_KEY, repeat: HP_ELF_REPEAT_KEY }
+};
+
+function loadHpLasResultMap(source: HpLasSource): HpLasResultMap {
   try {
-    return safeParse<HpLasResultMap>(localStorage.getItem(namespacedKey(HP_LAS_RESULT_KEY)), {});
+    return safeParse<HpLasResultMap>(localStorage.getItem(namespacedKey(HP_LAS_KEYS[source].result)), {});
   } catch {
     return {};
   }
 }
 
-/** Alla sparade LÄS-resultat (nyckel = text-id). */
-export function loadHpLasResults(): HpLasResultMap {
-  return loadHpLasResultMap();
+/** Alla sparade LÄS- (eller ELF-) resultat (nyckel = text-id). */
+export function loadHpLasResults(source: HpLasSource = "las"): HpLasResultMap {
+  return loadHpLasResultMap(source);
 }
 
-export function loadHpLasResult(textId: string): HpLasResult | null {
-  return loadHpLasResultMap()[textId] ?? null;
+export function loadHpLasResult(textId: string, source: HpLasSource = "las"): HpLasResult | null {
+  return loadHpLasResultMap(source)[textId] ?? null;
 }
 
-export function saveHpLasResult(result: HpLasResult): void {
+export function saveHpLasResult(result: HpLasResult, source: HpLasSource = "las"): void {
   try {
-    const map = loadHpLasResultMap();
+    const map = loadHpLasResultMap(source);
     map[result.textId] = result;
-    localStorage.setItem(namespacedKey(HP_LAS_RESULT_KEY), JSON.stringify(map));
+    localStorage.setItem(namespacedKey(HP_LAS_KEYS[source].result), JSON.stringify(map));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
   }
 }
 
-/** Repetitionskö för LÄS: id på texter där minst en fråga blev fel (äldst först). */
-export function loadHpLasRepeatQueue(): string[] {
+/** Repetitionskö för LÄS/ELF: id på texter där minst en fråga blev fel (äldst först). */
+export function loadHpLasRepeatQueue(source: HpLasSource = "las"): string[] {
   try {
-    return safeParse<string[]>(localStorage.getItem(namespacedKey(HP_LAS_REPEAT_KEY)), []);
+    return safeParse<string[]>(localStorage.getItem(namespacedKey(HP_LAS_KEYS[source].repeat)), []);
   } catch {
     return [];
   }
 }
 
-function saveHpLasRepeatQueue(queue: string[]): void {
+function saveHpLasRepeatQueue(queue: string[], source: HpLasSource): void {
   try {
-    localStorage.setItem(namespacedKey(HP_LAS_REPEAT_KEY), JSON.stringify(queue));
+    localStorage.setItem(namespacedKey(HP_LAS_KEYS[source].repeat), JSON.stringify(queue));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
   }
 }
 
-export function addHpLasRepeatText(textId: string): void {
-  const queue = loadHpLasRepeatQueue();
+export function addHpLasRepeatText(textId: string, source: HpLasSource = "las"): void {
+  const queue = loadHpLasRepeatQueue(source);
   if (!queue.includes(textId)) {
-    saveHpLasRepeatQueue([...queue, textId]);
+    saveHpLasRepeatQueue([...queue, textId], source);
   }
 }
 
-export function removeHpLasRepeatText(textId: string): void {
-  const queue = loadHpLasRepeatQueue();
+export function removeHpLasRepeatText(textId: string, source: HpLasSource = "las"): void {
+  const queue = loadHpLasRepeatQueue(source);
   const next = queue.filter((id) => id !== textId);
   if (next.length !== queue.length) {
-    saveHpLasRepeatQueue(next);
+    saveHpLasRepeatQueue(next, source);
   }
+}
+
+// ── MEK (meningskomplettering) ──
+
+/** Ett avslutat MEK-pass (10 uppgifter). */
+export interface HpMekResult {
+  completedAt: string;
+  /** Rätt utan hjälp. */
+  correct: number;
+  /** Rätt efter ledtråd eller andra försöket. */
+  withHint: number;
+  total: number;
+  seconds: number;
+  budgetSeconds: number;
+}
+
+/** De senaste passen (nyast sist). Räcker för avbockning i planen och "senast". */
+export function loadHpMekResults(): HpMekResult[] {
+  try {
+    const list = safeParse<HpMekResult[]>(localStorage.getItem(namespacedKey(HP_MEK_RESULT_KEY)), []);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveHpMekResult(result: HpMekResult): void {
+  try {
+    const list = [...loadHpMekResults(), result].slice(-30);
+    localStorage.setItem(namespacedKey(HP_MEK_RESULT_KEY), JSON.stringify(list));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+function loadIdList(key: string): string[] {
+  try {
+    const list = safeParse<string[]>(localStorage.getItem(namespacedKey(key)), []);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveIdList(key: string, ids: string[]): void {
+  try {
+    localStorage.setItem(namespacedKey(key), JSON.stringify(ids));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+/** Repetitionskö för MEK: uppgifter som behövde hjälp, äldst först. Lämnar kön när de klaras utan hjälp. */
+export function loadHpMekRepeatQueue(): string[] {
+  return loadIdList(HP_MEK_REPEAT_KEY);
+}
+
+export function addHpMekRepeatItem(id: string): void {
+  const queue = loadHpMekRepeatQueue();
+  if (!queue.includes(id)) saveIdList(HP_MEK_REPEAT_KEY, [...queue, id]);
+}
+
+export function removeHpMekRepeatItem(id: string): void {
+  const queue = loadHpMekRepeatQueue();
+  const next = queue.filter((qid) => qid !== id);
+  if (next.length !== queue.length) saveIdList(HP_MEK_REPEAT_KEY, next);
+}
+
+/** Uppgifter som redan delats ut (så att nya pass tar nya uppgifter tills alla setts). */
+export function loadHpMekSeen(): string[] {
+  return loadIdList(HP_MEK_SEEN_KEY);
+}
+
+export function saveHpMekSeen(ids: string[]): void {
+  saveIdList(HP_MEK_SEEN_KEY, ids);
 }
 
 export function exportStudyDataSnapshot(): StudyDataSnapshot {
