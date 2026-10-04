@@ -137,6 +137,8 @@ interface HpMathSession {
   questionStartedAt: number;
   answers: { area: HpMathArea; correct: boolean; seconds: number }[];
   helpedIds: string[];
+  currentTag: HpTwinErrorTag | null;
+  errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
 }
 
 /** HP Tvillingträning (XYZ/KVA/NOG/DTK). Ett svar per uppgift, felkategori valfri per fel svar. */
@@ -713,6 +715,11 @@ function startHpMathTempoInterval(): void {
 function hpMathAdvanceQuestion(): void {
   if (!hpMathSession) {
     return;
+  }
+  if (hpMathSession.currentTag) {
+    const tag = hpMathSession.currentTag;
+    hpMathSession.errorTagCounts[tag] = (hpMathSession.errorTagCounts[tag] ?? 0) + 1;
+    hpMathSession.currentTag = null;
   }
   hpMathSession.currentIndex++;
   if (hpMathSession.currentIndex < hpMathSession.items.length) {
@@ -2252,18 +2259,15 @@ function renderHpHelpButton(open: boolean): string {
   return `<button class="hp-help-btn ${open ? "hp-help-btn-open" : ""}" data-action="hp-help" aria-label="Hjälp" aria-expanded="${open}">?</button>`;
 }
 
-/** Kompakt hjälplager: metod för delprovet (ur HP_GUIDE) + ledtråd före svar. Aldrig svaret. */
-function renderHpHelpPanel(categoryId: "ord" | "xyz" | "kva" | "nog" | "dtk", hint: string | undefined, showFeedback: boolean): string {
+/** Kompakt hjälplager: bara den allmänna metoden för delprovet (ur HP_GUIDE). Frågespecifik ledtråd visas först efter svar. */
+function renderHpHelpPanel(categoryId: "ord" | "xyz" | "kva" | "nog" | "dtk"): string {
   const info = HP_GUIDE_CATEGORIES.find((c) => c.id === categoryId)!;
-  // Med ledtråd 2 metodpunkter, utan 3 — håller lagret kompakt så frågan förblir synlig.
-  const cards = hpGuideCardsForCategory(categoryId).slice(0, !showFeedback && hint ? 2 : 3);
+  const cards = hpGuideCardsForCategory(categoryId).slice(0, 3);
   const steps = cards
     .map((c) => `<li><strong>${c.rubrik}.</strong> ${c.gorSaHar}</li>`)
     .join("");
-  const hintHtml = !showFeedback && hint ? `<p class="hp-help-hint"><strong>Ledtråd:</strong> ${hint}</p>` : "";
   return `
     <div class="hp-help-panel" role="region" aria-label="Hjälp">
-      ${hintHtml}
       <p class="hp-help-title">Så löser du ${info.label}</p>
       <ul class="hp-help-list">${steps}</ul>
       <button class="hp-help-close" data-action="hp-help">Stäng</button>
@@ -2296,15 +2300,19 @@ function renderHpQuestion(): string {
     })
     .join("");
 
+  const ordExplain = showFeedback
+    ? `<p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
+          <p class="hp-feedback-explanation">${item.explanation}</p>
+          ${item.hint ? `<p class="hp-feedback-think"><strong>Så minns du det:</strong> ${item.hint}</p>` : ""}`
+    : "";
   const feedbackHtml = showFeedback
     ? isCorrect
       ? `<div class="hp-feedback hp-feedback-ok">
-          <p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
+          ${ordExplain}
           <p class="hp-feedback-hint">Tryck för att fortsätta</p>
         </div>`
       : `<div class="hp-feedback hp-feedback-wrong">
-          <p class="hp-feedback-meaning">${item.word} = ${item.options[item.correct]}</p>
-          <p class="hp-feedback-explanation">${item.explanation}</p>
+          ${ordExplain}
           <button class="hp-next-btn" data-action="hp-next">Nästa</button>
         </div>`
     : "";
@@ -2320,7 +2328,7 @@ function renderHpQuestion(): string {
       <div class="hp-pip-row">${pips}</div>
       <p class="hp-word">${item.word}</p>
       <div class="hp-options">${optionsHtml}</div>
-      ${hpHelpOpenFor === item.id ? renderHpHelpPanel("ord", item.hint, showFeedback) : ""}
+      ${hpHelpOpenFor === item.id ? renderHpHelpPanel("ord") : ""}
       ${feedbackHtml}
     </div>
   `;
@@ -2399,6 +2407,8 @@ function renderHpMathQuestion(): string {
           ${item.solutionSteps.map((step) => `<p class="hp-math-solution-step">${step}</p>`).join("")}
           <p class="hp-math-formula">📐 ${item.formula}</p>
         </div>
+        ${renderHpThinkBlock(item.hint)}
+        ${!isCorrect ? renderHpTagRow(hpMathSession.currentTag) : ""}
         <button class="hp-next-btn" data-action="hp-math-next">Nästa</button>
       </div>`
     : "";
@@ -2414,7 +2424,7 @@ function renderHpMathQuestion(): string {
       <p class="hp-math-area-label">${hpMathAreaLabel(item.area)}</p>
       <p class="hp-word hp-math-prompt">${item.prompt}</p>
       <div class="hp-options">${optionsHtml}</div>
-      ${hpHelpOpenFor === item.id ? renderHpHelpPanel("xyz", item.hint, showFeedback) : ""}
+      ${hpHelpOpenFor === item.id ? renderHpHelpPanel("xyz") : ""}
       ${!showFeedback ? `<button class="hp-math-dontknow-btn" data-action="hp-math-dontknow">Vet inte</button>` : ""}
       ${feedbackHtml}
     </div>
@@ -2440,7 +2450,7 @@ function renderHpMathAreaCard(result: HpMathAreaResult): string {
   `;
 }
 
-function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], helpedCount = 0): string {
+function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], helpedCount = 0, tagCounts: Partial<Record<HpTwinErrorTag, number>> = {}): string {
   const lärOm = areas.filter((a) => a.level === "lar-om");
   const rest = areas.filter((a) => a.level !== "lar-om");
 
@@ -2458,6 +2468,12 @@ function renderHpMathResultFromData(correct: number, total: number, areas: HpMat
         </div>
       </div>
       ${helpedSummary(helpedCount)}
+      ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[]).some((t) => (tagCounts[t] ?? 0) > 0)
+        ? `<div class="hp-twin-tag-summary">
+            <p class="hp-missed-heading">Felanalys</p>
+            ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[]).filter((t) => (tagCounts[t] ?? 0) > 0).map((t) => `<div class="hp-twin-tag-summary-row"><span>${HP_TWIN_TAG_LABEL[t]}</span><span>${tagCounts[t]}</span></div>`).join("")}
+          </div>`
+        : ""}
       ${lärOm.length > 0
         ? `<div class="hp-math-priority-list">
             <p class="hp-missed-heading">Börja här</p>
@@ -2480,7 +2496,7 @@ function renderHpMathResult(): string {
   const areas = computeHpMathAreaResults(hpMathSession.answers);
   const correct = hpMathSession.answers.filter((a) => a.correct).length;
   const total = hpMathSession.answers.length;
-  return renderHpMathResultFromData(correct, total, areas, hpMathSession.helpedIds.length);
+  return renderHpMathResultFromData(correct, total, areas, hpMathSession.helpedIds.length, hpMathSession.errorTagCounts);
 }
 
 function renderHpMathSavedResult(): string {
@@ -2494,8 +2510,26 @@ function renderHpMathSavedResult(): string {
 const HP_TWIN_TAG_LABEL: Record<HpTwinErrorTag, string> = {
   slarv: "Slarv",
   "kunde-inte": "Kunde inte",
-  missforstod: "Missförstod frågan"
+  missforstod: "Missförstod"
 };
+
+/** "Så skulle du ha tänkt": frågespecifik ledtråd, visas först efter svar. */
+function renderHpThinkBlock(hint: string | undefined): string {
+  return hint ? `<p class="hp-feedback-think"><strong>Så skulle du ha tänkt:</strong> ${hint}</p>` : "";
+}
+
+/** "Varför blev det fel?" med Slarv / Kunde inte / Missförstod. */
+function renderHpTagRow(current: HpTwinErrorTag | null, action = "hp-math-tag"): string {
+  return `<p class="hp-feedback-why">Varför blev det fel?</p>
+      <div class="hp-twin-tag-row">
+        ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[])
+          .map(
+            (tag) =>
+              `<button class="hp-twin-tag-btn ${current === tag ? "hp-twin-tag-selected" : ""}" data-action="${action}" data-tag="${tag}">${HP_TWIN_TAG_LABEL[tag]}</button>`
+          )
+          .join("")}
+      </div>`;
+}
 
 function renderHpTwinQuestion(): string {
   if (!hpTwinSession) {
@@ -2519,21 +2553,13 @@ function renderHpTwinQuestion(): string {
     })
     .join("");
 
-  const tagRowHtml = showFeedback && !isCorrect
-    ? `<div class="hp-twin-tag-row">
-        ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[])
-          .map(
-            (tag) =>
-              `<button class="hp-twin-tag-btn ${currentTag === tag ? "hp-twin-tag-selected" : ""}" data-action="hp-twin-tag" data-tag="${tag}">${HP_TWIN_TAG_LABEL[tag]}</button>`
-          )
-          .join("")}
-      </div>`
-    : "";
+  const tagRowHtml = showFeedback && !isCorrect ? renderHpTagRow(currentTag, "hp-twin-tag") : "";
 
   const feedbackHtml = showFeedback
     ? `<div class="hp-feedback ${isCorrect ? "hp-feedback-ok" : "hp-feedback-wrong"}">
         <p class="hp-feedback-meaning">${isCorrect ? "Rätt!" : "Fel svar"}</p>
         <p class="hp-feedback-explanation">${item.solution}</p>
+        ${renderHpThinkBlock(item.hint)}
         ${tagRowHtml}
         <a class="hp-twin-original-link" href="${item.twinOf.url}" target="_blank" rel="noopener">Se originaluppgiften (${item.twinOf.prov}, provpass ${item.twinOf.provpass}, uppgift ${item.twinOf.uppgift}) ↗</a>
         <button class="hp-next-btn" data-action="hp-twin-next">Nästa</button>
@@ -2551,7 +2577,7 @@ function renderHpTwinQuestion(): string {
       <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
       <div class="hp-options">${optionsHtml}</div>
-      ${hpHelpOpenFor === item.id ? renderHpHelpPanel(delprov.toLowerCase() as "xyz" | "kva" | "nog" | "dtk", item.hint, showFeedback) : ""}
+      ${hpHelpOpenFor === item.id ? renderHpHelpPanel(delprov.toLowerCase() as "xyz" | "kva" | "nog" | "dtk") : ""}
       ${feedbackHtml}
     </div>
   `;
@@ -4276,7 +4302,7 @@ app.addEventListener("click", (event) => {
       hpAutoAdvanceTimer = window.setTimeout(() => {
         hpAutoAdvanceTimer = null;
         hpAdvanceQuestion();
-      }, 2000);
+      }, 3000);
     } else {
       hpSession.wrong++;
       hpSession.missedItems.push(item);
@@ -4328,7 +4354,9 @@ app.addEventListener("click", (event) => {
       showFeedback: false,
       questionStartedAt: Date.now(),
       answers: [],
-      helpedIds: []
+      helpedIds: [],
+      currentTag: null,
+      errorTagCounts: {}
     };
     render();
     return;
@@ -4348,6 +4376,7 @@ app.addEventListener("click", (event) => {
     const isCorrect = index === item.correct;
     hpMathSession.answers.push({ area: item.area, correct: isCorrect, seconds: elapsedSeconds });
     hpMathSession.userAnswer = index;
+    hpMathSession.currentTag = null;
     hpMathSession.showFeedback = true;
     render();
     return;
@@ -4359,7 +4388,16 @@ app.addEventListener("click", (event) => {
     const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
     hpMathSession.answers.push({ area: item.area, correct: false, seconds: elapsedSeconds });
     hpMathSession.userAnswer = -1;
+    hpMathSession.currentTag = null;
     hpMathSession.showFeedback = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-math-tag") {
+    if (!hpMathSession || !hpMathSession.showFeedback) return;
+    const tag = actionEl.dataset.tag as HpTwinErrorTag;
+    hpMathSession.currentTag = hpMathSession.currentTag === tag ? null : tag;
     render();
     return;
   }

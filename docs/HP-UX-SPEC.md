@@ -158,3 +158,10 @@ Martin tränar mest på mobilen. All HP-design utgår från 375 px bredd och ska
    - Den öppnas som ett kompakt lager som stängs med ett tryck, och frågan står kvar synlig.
    - Att hjälpen har använts sparas per fråga och visas i sammanfattningen ("3 med hjälp"). Det räknas inte som fel.
    - Efter svar finns lösningen redan i feedbacken, och "?" visar då metoden igen så att den går att lära till nästa gång.
+
+## Beslut 2026-10-05 (förtydligar beslut 7)
+
+8. **Före svar visas bara den allmänna metoden för delprovet** via "?" (aldrig frågans `hint`). Den frågespecifika ledtråden kommer först efter svar, under rubriken **"Så skulle du ha tänkt"** (matte). Motiv: ledtråden avslöjade för mycket innan man försökt själv; efter svar blir den lärande i stället för en genväg.
+   - **ORD:** "?" visar bara metoden. Efter svar (rätt och fel) visas "ord = betydelse", förklaringen och **"Så minns du det: …"** (ordets `hint`, ursprung/ordled). Auto-nästa vid rätt svar förlängs till ~3 s eftersom mer text visas; "Tryck för att fortsätta" står kvar.
+   - **Matte (diagnos + träning):** feedbacken visar lösningen + "Så skulle du ha tänkt". Vid fel frågas **"Varför blev det fel?"** (Slarv / Kunde inte / Missförstod) i både matteträning och mattediagnos.
+   - "?" efter svar visar metoden igen. Beslut 6 gäller: fråga och svar ligger kvar tätt högst upp, feedbacken skjuter inte iväg frågan.

@@ -3,6 +3,20 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-05 — ?-hjälp: metod före svar, ledtråd efter svar
+
+**Vad:** (1) ?-knappen visar nu bara den allmänna metoden för delprovet (ur HP_GUIDE), aldrig frågans `hint`. (2) Efter svar visas frågespecifik ledtråd: i matte (diagnos + XYZ/KVA/NOG/DTK) under "Så skulle du ha tänkt", i ORD som "Så minns du det: …" (ursprung/ordled) tillsammans med "ord = betydelse" och förklaringen, både vid rätt och fel. (3) ORD auto-nästa vid rätt svar förlängt från 2 till 3 s eftersom mer text ska hinna läsas; "Tryck för att fortsätta" kvar. (4) Mattediagnosen fick "Varför blev det fel?" (Slarv / Kunde inte / Missförstod, samma som matteträningen, räknas i en "Felanalys" i slutsammanfattningen). Knappen "Missförstod frågan" förkortad till "Missförstod" så tre knappar ryms på en rad i 375 px.
+
+**Före:** ?-lagret visade "Ledtråd:" med frågans tips innan man svarat — det tog bort hjärnjobbet. ORD-ledtråden (etymologin) syntes aldrig i feedbacken.
+
+**Efter:** Före svar får man verktyg (metod), efter svar får man förståelse (varför och hur man minns). Hint-text finns inte i DOM före svar (kontrollerat mot samtliga hints i hp-math/hp-twins). Frågan ligger kvar på samma y-position före och efter feedback (beslut 6). Inga nya fontstorlekar, pill-höjder eller färger; ledtråden använder `--honey` / `--honey-ink`.
+
+**Verifiering (375×812):** ORD rätt + fel, KVA, DTK, mattediagnos (rätt, fel, "Vet inte", Varför blev det fel + Felanalys i sammanfattning), ? före och efter svar. `scrollWidth === clientWidth` (375). tsc grönt.
+
+**Stitch-princip:** Progressiv avslöjning (generellt först, specifikt efter försök), önskvärda svårigheter (generation effect — försök först, få förklaring sen), spacing/tonal adjacency utan nya linjer.
+
+---
+
 ## 2026-09-26 — HP-guiden: flashcards + lång översiktssida
 
 **Vad:** Guiderna i `docs/HP-GUIDE.md` och `docs/HP-LAS-SPEC.md` (avsnittet "Guide: bli bättre på LÄS") strukturerade som data i ny fil `src/hp-guide.ts` — 53 korta kort (`{ id, kategori, rubrik, gorSaHar, varfor, kalla? }`) fördelade på 13 kategorier (Viktigast, Plan, LÄS, ORD, MEK, ELF, XYZ, KVA, NOG, DTK, ADHD, Provdagen, Misstag). Enligt Martins beslut byggs innehållet på **båda** sätten han bad om:

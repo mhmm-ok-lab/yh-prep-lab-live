@@ -2976,6 +2976,22 @@ details:not(.mini-menu)[open] {
   margin: 0 0 0.6rem;
 }
 
+.hp-feedback-think {
+  font-size: var(--text-sm);
+  color: var(--honey-ink);
+  background: var(--honey);
+  border-radius: var(--radius-btn);
+  padding: 0.4rem 0.6rem;
+  margin: 0 0 0.6rem;
+}
+
+.hp-feedback-why {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0.25rem 0 0;
+}
+
 .hp-feedback-hint {
   font-size: var(--text-xs);
   color: var(--text-muted);
@@ -4554,15 +4570,6 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-}
-
-.hp-help-hint {
-  margin: 0;
-  padding: 0.4rem 0.6rem;
-  border-radius: var(--radius-btn);
-  background: var(--honey);
-  color: var(--honey-ink);
-  font-size: var(--text-sm);
 }
 
 .hp-help-close {
