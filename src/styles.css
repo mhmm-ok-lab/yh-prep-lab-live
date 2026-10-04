@@ -5244,3 +5244,92 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
 .hp-guide-home-btn-wide {
   grid-column: 1 / -1;
 }
+
+/* ── HP Externa resurser: rubrik över, länkar under, en rad förklaring ── */
+.hp-res-title {
+  margin: 0;
+  font-size: var(--text-hero);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.hp-res-checked {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.hp-res-group {
+  margin-top: 0.75rem;
+}
+
+.hp-res-heading {
+  margin: 0 0 0.25rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hp-res-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hp-res-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-btn);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.hp-res-link {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+/* Hela raden är träffyta: länkens ::after täcker kortet */
+.hp-res-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.hp-res-desc {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.hp-res-cost {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-soft-ink);
+}
+
+.hp-res-cost-other {
+  color: var(--warm);
+}
+
+.hp-res-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

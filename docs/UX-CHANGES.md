@@ -3,6 +3,18 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-05 — HP: sidan "Externa resurser"
+
+**Vad:** Den lösa länken "Gamla högskoleprov med facit (studera.nu) ↗" på HP-hem är ersatt av en sekundär knapp "Externa resurser". Sidan har Tillbaka till HP-hem, rubriken "Externa resurser" och raden "Kontrollerade 5 okt 2026". Därunder fyra grupper efter vad man vill göra: Gör gamla prov, Lär dig matten, Strategi och tips, Om provet (18 länkar, varje länk öppnad och kontrollerad; döda och svaga slängdes). Varje länk är en rad: titel som länk med ↗, en rad förklaring i dämpad färg och en liten kostnadsetikett (gratis, gratis med konto, delvis betalt). Data ligger i `src/hp-resources.ts`.
+
+**Varför:** Martin vill ha en kort, kurerad lista, inte en länksamling, och inte stökigt. Rubrik över, länkar under med kort förklaring gör att man ser vad man får innan man trycker (information scent) och inte öppnar fliken i onödan. Kostnaden syns i förväg så "gratis med konto" och "delvis betalt" inte kommer som en överraskning.
+
+**Före/efter:** Före: en enda länk i HP-hem. Efter: knapp (36 px, träffyta 44 px) och en sida där raderna är 78 px höga kort med 8 px luft, ingen avdelarlinje, ingen tabell eller tvåkolumn. Hela kortet är träffyta (stretched link). Ingen sidledsscroll i 375 × 812, alla länkar target=_blank + rel=noopener, skärmläsare får "(öppnas i ny flik)".
+
+**Stitch-princip:** No-Line (tonala kort, luft i stället för linjer), 3 fontstorlekar (hero, md, sm, xs-etikett), palettens tokens. Teori: se HP-UX-SPEC beslut 25 (NN/g F-mönster, GOV.UK länkriktlinjer, WCAG 2.5.8).
+
+---
+
 ## 2026-10-05 — Mattediagnos: ärliga nivåer och granskning fråga för fråga
 
 **Vad:** (1) Ny nivåregel per område. Lär om: någon fråga slutade med visat svar (eller fel två gånger), eller ingen fråga klarades utan hjälp. Repetera: någon fråga krävde ledtråd eller blev fel en gång, eller snittiden är över målet (90 s). Kan: alla frågor utan hjälp inom tid. (2) Rubriken är nu en räkning, "Lär om: 2 områden · Repetera: 3 · Kan: 6", och texten "Inget område behöver läras om" kan inte längre visas när något område är Lär om eller Repetera. (3) Varje fråga sparas (id, område, utfall, valda svar, rätt svar, tid) och resultatet visar områdena som expanderbara rader (details/summary, samma mönster som guiden) med frågan, ditt svar, rätt svar, utfall, lösningen, "Så skulle du ha tänkt" och "Lär dig"-länken. (4) HP-hem: knappen heter "Se senaste diagnos" och öppnar samma vy i efterhand. Äldre sparade resultat saknar frågedata och visar "Gör om diagnosen för att se dina svar fråga för fråga".

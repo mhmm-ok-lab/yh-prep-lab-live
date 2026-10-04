@@ -9,6 +9,7 @@ import type { HpWord } from "./hp-words";
 import { HP_LAS_TEXTS } from "./hp-las";
 import type { HpLasQuestion, HpLasQuestionType, HpLasText } from "./hp-las";
 import { HP_CARDS, findHpCard } from "./hp-cards";
+import { HP_RESOURCE_GROUPS, HP_RESOURCES_CHECKED_LABEL, hpResourcesForGroup } from "./hp-resources";
 import type { HpCard } from "./hp-cards";
 import { HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
 import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
@@ -508,6 +509,7 @@ let hpGuideMode: "flashcards" | "page" | "cards" | null = null;
 /** Påminnelsekort (beslut 2026-10-05 (6)): id på öppet kort (null = stängt). Passets och granskningens tillstånd
  *  ligger kvar orört i sina egna variabler, så "Tillbaka" återskapar exakt samma vy. */
 let hpCardOpen: string | null = null;
+let hpResourcesOpen = false;
 let hpCardReturnScroll = 0;
 /** Vilka områden i diagnosgranskningen som var öppna när kortet öppnades (så de är öppna igen efter Tillbaka). */
 let hpAreaOpenMemo: string[] | null = null;
@@ -2650,7 +2652,7 @@ function renderHpHome(): string {
           ${renderHpLasHomeCard()}
           <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
           ${lastMathHtml}
-          <a class="hp-link" href="https://www.studera.nu/hogskoleprov/om/forbereda/tidigare/" target="_blank" rel="noopener">Gamla högskoleprov med facit (studera.nu) ↗</a>
+          <button class="hp-secondary-btn" data-action="hp-resources-open">Externa resurser</button>
           ${renderHpTwinHomeSection()}
           ${renderHpGuideHomeSection()}
         `}
@@ -3629,10 +3631,45 @@ function renderHpGuidePage(): string {
   `;
 }
 
+/** Externa resurser: rubrik, sedan länkar med en rad förklaring och kostnad under. */
+function renderHpResources(): string {
+  const groups = HP_RESOURCE_GROUPS.map((group) => {
+    const items = hpResourcesForGroup(group)
+      .map(
+        (r) => `
+          <li class="hp-res-item">
+            <a class="hp-res-link" href="${r.url}" target="_blank" rel="noopener">${r.title} <span aria-hidden="true">↗</span><span class="hp-res-sr"> (öppnas i ny flik)</span></a>
+            <span class="hp-res-desc">${r.desc}</span>
+            <span class="hp-res-cost hp-res-cost-${r.cost === "gratis" ? "free" : "other"}">${r.cost}</span>
+          </li>`
+      )
+      .join("");
+    return `
+      <section class="hp-res-group">
+        <h3 class="hp-res-heading">${group}</h3>
+        <ul class="hp-res-list">${items}</ul>
+      </section>`;
+  }).join("");
+  return `
+    <div class="hp-guide-page">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-resources-close">‹ Tillbaka till HP-hem</button>
+      </div>
+      <h2 class="hp-res-title">Externa resurser</h2>
+      <p class="hp-res-checked">Kontrollerade ${HP_RESOURCES_CHECKED_LABEL}</p>
+      ${groups}
+    </div>
+  `;
+}
+
 function renderHp(): string {
   if (hpForceHome) {
     hpCardOpen = null;
+    hpResourcesOpen = false;
     return renderHpHome();
+  }
+  if (hpResourcesOpen) {
+    return renderHpResources();
   }
   const openCard = hpCardOpen ? HP_CARDS.find((c) => c.id === hpCardOpen) : undefined;
   if (openCard) {
@@ -5628,6 +5665,20 @@ app.addEventListener("click", (event) => {
     render();
     hpAreaOpenMemo = null;
     window.scrollTo(0, hpCardReturnScroll);
+    return;
+  }
+
+  if (action === "hp-resources-open") {
+    hpResourcesOpen = true;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-resources-close") {
+    hpResourcesOpen = false;
+    render();
+    window.scrollTo(0, 0);
     return;
   }
 
