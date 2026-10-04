@@ -39,7 +39,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import type { HpLasErrorTag, HpMathAreaResult, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
+import type { HpLasErrorTag, HpMathAreaResult, HpMathQuestionResult, HpMathOutcome, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
 import type { GlossaryEntry, LSItem, LSTrap, Mode, Question, QuestionFilters, SessionDraft, StudySession, TrackId, VRAnswer, VRItem } from "./types";
 
 type Page = "overview" | "tracks" | "bank" | "mock" | "research" | "logic" | "walkthrough" | "glossary" | "course-prog1a" | "course-nackademin_ux" | "course-iths_itsec" | "iths-antagning" | "hp";
@@ -169,7 +169,7 @@ interface HpMathSession extends HpNavFields {
   userAnswer: number | null;
   showFeedback: boolean;
   questionStartedAt: number;
-  answers: { area: HpMathArea; correct: boolean; withHint: boolean; seconds: number }[];
+  answers: HpMathQuestionResult[];
   helpedIds: string[];
   currentTag: HpTwinErrorTag | null;
   errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
@@ -724,33 +724,42 @@ function hpMathAreaLearnUrl(area: HpMathArea): string {
   return HP_MATH_AREAS.find((a) => a.id === area)?.learnUrl ?? "https://www.matteboken.se/";
 }
 
-/** Slår ihop per-frågesvar till resultat per område enligt Kan/Repetera/Lär om-tröskeln. */
-function computeHpMathAreaResults(answers: HpMathSession["answers"]): HpMathAreaResult[] {
-  const byArea = new Map<HpMathArea, { correct: number; total: number; seconds: number[] }>();
-  for (const a of answers) {
-    const entry = byArea.get(a.area) ?? { correct: 0, total: 0, seconds: [] };
-    entry.total++;
-    if (a.correct) entry.correct++;
-    entry.seconds.push(a.seconds);
-    byArea.set(a.area, entry);
-  }
+/** Nivå per område:
+ *  Lär om: någon fråga slutade med visat svar (eller fel två gånger), eller ingen fråga klarades utan hjälp.
+ *  Repetera: någon fråga krävde ledtråd eller blev fel en gång, eller snittiden är över målet.
+ *  Kan: alla frågor utan hjälp inom tid. */
+function computeHpMathAreaResults(answers: HpMathQuestionResult[]): HpMathAreaResult[] {
   const results: HpMathAreaResult[] = [];
   for (const areaInfo of HP_MATH_AREAS) {
-    const entry = byArea.get(areaInfo.id);
-    if (!entry) continue;
-    const avgSeconds = entry.seconds.length > 0 ? Math.round(entry.seconds.reduce((a, b) => a + b, 0) / entry.seconds.length) : 0;
+    const list = answers.filter((a) => a.area === areaInfo.id);
+    if (list.length === 0) continue;
+    const clean = list.filter((a) => a.outcome === "clean").length;
+    const avgSeconds = Math.round(list.reduce((sum, a) => sum + a.seconds, 0) / list.length);
     let level: HpMathLevel;
-    if (entry.correct === 0) {
+    if (list.some((a) => a.outcome === "shown") || clean === 0) {
       level = "lar-om";
-    } else if (entry.correct === entry.total && avgSeconds <= HP_MATH_TEMPO_TARGET_SECONDS) {
+    } else if (clean === list.length && avgSeconds <= HP_MATH_TEMPO_TARGET_SECONDS) {
       level = "kan";
     } else {
       level = "repetera";
     }
-    results.push({ area: areaInfo.id, level, correct: entry.correct, total: entry.total, avgSeconds });
+    results.push({ area: areaInfo.id, level, correct: clean, total: list.length, avgSeconds });
   }
   const levelOrder: Record<HpMathLevel, number> = { "lar-om": 0, repetera: 1, kan: 2 };
-  return results.sort((a, b) => levelOrder[a.level] - levelOrder[b.level]);
+  return results.sort((x, y) => levelOrder[x.level] - levelOrder[y.level]);
+}
+
+/** Bygger sparbar rad för en besvarad fråga (svarstexter, eftersom alternativen blandas per pass). */
+function buildHpMathQuestionResult(item: HpMathQuestion, outcome: HpMathOutcome, picks: number[], seconds: number): HpMathQuestionResult {
+  return {
+    id: item.id,
+    area: item.area,
+    outcome,
+    wrongPicks: picks.filter((p) => p !== item.correct).length,
+    picks: picks.map((p) => item.options[p]),
+    correctText: item.options[item.correct],
+    seconds: Math.round(seconds)
+  };
 }
 
 function stopHpMathTempoInterval(): void {
@@ -1192,9 +1201,9 @@ function hpMathSaveResult(): void {
     return;
   }
   const areas = computeHpMathAreaResults(hpMathSession.answers);
-  const correct = hpMathSession.answers.filter((a) => a.correct).length;
-  const withHint = hpMathSession.answers.filter((a) => a.withHint).length;
-  saveHpMathResult({ completedAt: new Date().toISOString(), correct, withHint, total: hpMathSession.answers.length, areas });
+  const correct = hpMathSession.answers.filter((a) => a.outcome === "clean").length;
+  const withHint = hpMathSession.answers.filter((a) => a.outcome === "hint").length;
+  saveHpMathResult({ completedAt: new Date().toISOString(), correct, withHint, total: hpMathSession.answers.length, areas, questions: hpMathSession.answers });
 }
 
 /** Gemensam navigering för ORD, mattediagnos och matteträning: föregående (granskning), tillbaka, hoppa över. */
@@ -2579,8 +2588,8 @@ function renderHpHome(): string {
 
   const lastMathHtml = lastMathResult
     ? `<button class="hp-math-last-result" data-action="hp-math-view-last">
-        <span class="hp-math-last-result-label">Senaste mattediagnos</span>
-        <span class="hp-math-last-result-value">${lastMathResult.correct}/${lastMathResult.total} rätt · ${lastMathResult.areas.filter((a) => a.level === "lar-om").length} område(n) att lära om</span>
+        <span class="hp-math-last-result-label">Se senaste diagnos</span>
+        <span class="hp-math-last-result-value">${hpMathLevelCounts(lastMathResult.areas)}</span>
       </button>`
     : "";
 
@@ -2984,56 +2993,101 @@ const HP_MATH_LEVEL_LABEL: Record<HpMathLevel, string> = {
   kan: "Kan"
 };
 
-function renderHpMathAreaCard(result: HpMathAreaResult): string {
+/** "Lär om: 2 områden · Repetera: 3 · Kan: 6" */
+function hpMathLevelCounts(areas: HpMathAreaResult[]): string {
+  const n = (l: HpMathLevel) => areas.filter((a) => a.level === l).length;
+  const lar = n("lar-om");
+  return `Lär om: ${lar} ${lar === 1 ? "område" : "områden"} · Repetera: ${n("repetera")} · Kan: ${n("kan")}`;
+}
+
+const HP_MATH_OUTCOME_LABEL: Record<HpMathOutcome, string> = {
+  clean: "Rätt utan hjälp",
+  hint: "Rätt med ledtråd",
+  shown: "Visade svar"
+};
+
+/** En fråga i granskningen: fråga, ditt svar, rätt svar, utfall, lösning och "Så skulle du ha tänkt". */
+function renderHpMathReviewQuestion(q: HpMathQuestionResult): string {
+  const bank = HP_MATH_QUESTIONS.find((x) => x.id === q.id);
+  const mine = q.picks.length > 0 ? q.picks.join(" → ") : "Visade svaret utan att välja";
+  let outcomeLabel = HP_MATH_OUTCOME_LABEL[q.outcome];
+  if (q.outcome === "hint" && q.wrongPicks > 0) outcomeLabel = "Fel första försöket, rätt efteråt";
+  if (q.outcome === "shown" && q.wrongPicks >= 2) outcomeLabel = "Fel två gånger";
   return `
-    <div class="hp-math-area-card">
-      <div class="hp-math-area-card-top">
-        <span class="hp-math-level-badge hp-math-level-${result.level}">${HP_MATH_LEVEL_LABEL[result.level]}</span>
-        <span class="hp-math-area-card-score">${result.correct}/${result.total} rätt</span>
-      </div>
-      <p class="hp-math-area-card-name">${hpMathAreaLabel(result.area)}</p>
-      <a class="hp-math-learn-link" href="${hpMathAreaLearnUrl(result.area)}" target="_blank" rel="noopener">Lär dig ↗</a>
+    <div class="hp-math-review-q">
+      <p class="hp-math-review-outcome hp-math-review-${q.outcome}">${outcomeLabel}</p>
+      <p class="hp-math-review-prompt">${bank ? bank.prompt : "Frågan finns inte kvar i frågebanken."}</p>
+      <p class="hp-math-review-line"><span>Ditt svar</span> ${mine}</p>
+      <p class="hp-math-review-line"><span>Rätt svar</span> ${q.correctText}</p>
+      ${bank
+        ? `<div class="hp-math-solution">
+            ${bank.solutionSteps.map((step) => `<p class="hp-math-solution-step">${step}</p>`).join("")}
+            <p class="hp-math-formula">📐 ${bank.formula}</p>
+          </div>
+          ${renderHpThinkBlock(bank.hint)}`
+        : ""}
     </div>
   `;
 }
 
-function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], withHint: number | null, helpedCount = 0, tagCounts: Partial<Record<HpTwinErrorTag, number>> = {}, unanswered = 0): string {
+/** Område som expanderbar details; är det enda Lär om-området öppet från start; annars syns alla som kompakta rader (44 px) så listan ryms utan scroll. */
+function renderHpMathAreaCard(result: HpMathAreaResult, questions: HpMathQuestionResult[] | null, open = false): string {
+  const own = questions ? questions.filter((q) => q.area === result.area) : [];
+  const learn = `<a class="hp-math-learn-link" href="${hpMathAreaLearnUrl(result.area)}" target="_blank" rel="noopener">Lär dig ↗</a>`;
+  const body = questions === null
+    ? learn
+    : `${own.map(renderHpMathReviewQuestion).join("")}${learn}`;
+  return `
+    <details class="hp-guide-section hp-math-area-card" ${open ? "open" : ""}>
+      <summary class="hp-guide-section-summary">
+        <span class="hp-math-level-badge hp-math-level-${result.level}">${HP_MATH_LEVEL_LABEL[result.level]}</span>
+        <span class="hp-math-area-card-name">${hpMathAreaLabel(result.area)}</span>
+        <span class="hp-guide-section-count">${result.correct}/${result.total}</span>
+      </summary>
+      <div class="hp-guide-section-body">${body}</div>
+    </details>
+  `;
+}
+
+function renderHpMathResultFromData(correct: number, total: number, areas: HpMathAreaResult[], withHint: number | null, questions: HpMathQuestionResult[] | null, helpedCount = 0, tagCounts: Partial<Record<HpTwinErrorTag, number>> = {}, unanswered = 0): string {
   const lärOm = areas.filter((a) => a.level === "lar-om");
-  const rest = areas.filter((a) => a.level !== "lar-om");
+  const repetera = areas.filter((a) => a.level === "repetera");
+  const kan = areas.filter((a) => a.level === "kan");
 
   return `
     <div class="hp-summary">
       <p class="hp-summary-heading">Mattediagnos klar</p>
-      <div class="hp-progress-row">
-        <div class="stat-widget">
-          <span class="stat-widget-label">Utan hjälp</span>
-          <span class="stat-widget-value">${correct}<span class="stat-widget-unit">/${total}</span></span>
-        </div>
-        <div class="stat-widget">
-          <span class="stat-widget-label">Lär om</span>
-          <span class="stat-widget-value">${lärOm.length}<span class="stat-widget-unit">område(n)</span></span>
-        </div>
-      </div>
+      <p class="hp-math-level-counts">${hpMathLevelCounts(areas)}</p>
+      ${questions === null ? `<p class="hp-math-review-missing">Gör om diagnosen för att se dina svar fråga för fråga.</p>` : ""}
       ${withHint === null ? "" : ladderSummary(correct, withHint, total - correct - withHint)}
       ${helpedSummary(helpedCount)}
       ${unansweredSummary(unanswered)}
+      ${lärOm.length > 0
+        ? `<div class="hp-math-priority-list">
+            <p class="hp-missed-heading">Lär om</p>
+            ${lärOm.map((a) => renderHpMathAreaCard(a, questions, lärOm.length === 1)).join("")}
+          </div>`
+        : ""}
+      ${repetera.length > 0
+        ? `<div class="hp-math-priority-list">
+            <p class="hp-missed-heading">Repetera först</p>
+            ${repetera.map((a) => renderHpMathAreaCard(a, questions)).join("")}
+          </div>`
+        : ""}
+      ${lärOm.length === 0 && repetera.length === 0 ? `<p class="hp-summary-clean">Alla områden klarade utan hjälp inom tid — starkt jobbat!</p>` : ""}
+      <button class="hp-cta-btn" data-action="hp-math-close">Klart</button>
+      ${kan.length > 0
+        ? `<div class="hp-math-result-scroll">
+            <p class="hp-missed-heading">Kan</p>
+            ${kan.map((a) => renderHpMathAreaCard(a, questions)).join("")}
+          </div>`
+        : ""}
       ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[]).some((t) => (tagCounts[t] ?? 0) > 0)
         ? `<div class="hp-twin-tag-summary">
             <p class="hp-missed-heading">Felanalys</p>
             ${(Object.keys(HP_TWIN_TAG_LABEL) as HpTwinErrorTag[]).filter((t) => (tagCounts[t] ?? 0) > 0).map((t) => `<div class="hp-twin-tag-summary-row"><span>${HP_TWIN_TAG_LABEL[t]}</span><span>${tagCounts[t]}</span></div>`).join("")}
           </div>`
         : ""}
-      ${lärOm.length > 0
-        ? `<div class="hp-math-priority-list">
-            <p class="hp-missed-heading">Börja här</p>
-            ${lärOm.map(renderHpMathAreaCard).join("")}
-          </div>`
-        : `<p class="hp-summary-clean">Inget område behöver läras om — starkt jobbat!</p>`}
-      <button class="hp-cta-btn" data-action="hp-math-close">Klart</button>
-      <div class="hp-math-result-scroll">
-        <p class="hp-missed-heading">Övriga områden</p>
-        ${rest.map(renderHpMathAreaCard).join("")}
-      </div>
     </div>
   `;
 }
@@ -3043,10 +3097,10 @@ function renderHpMathResult(): string {
     return "";
   }
   const areas = computeHpMathAreaResults(hpMathSession.answers);
-  const correct = hpMathSession.answers.filter((a) => a.correct).length;
+  const correct = hpMathSession.answers.filter((a) => a.outcome === "clean").length;
   const total = hpMathSession.answers.length;
-  const withHint = hpMathSession.answers.filter((a) => a.withHint).length;
-  return renderHpMathResultFromData(correct, total, areas, withHint, hpMathSession.helpedIds.length, hpMathSession.errorTagCounts, hpMathSession.unanswered);
+  const withHint = hpMathSession.answers.filter((a) => a.outcome === "hint").length;
+  return renderHpMathResultFromData(correct, total, areas, withHint, hpMathSession.answers, hpMathSession.helpedIds.length, hpMathSession.errorTagCounts, hpMathSession.unanswered);
 }
 
 function renderHpMathSavedResult(): string {
@@ -3054,7 +3108,7 @@ function renderHpMathSavedResult(): string {
   if (!result) {
     return renderHpHome();
   }
-  return renderHpMathResultFromData(result.correct, result.total, result.areas, result.withHint ?? null);
+  return renderHpMathResultFromData(result.correct, result.total, result.areas, result.withHint ?? null, result.questions ?? null);
 }
 
 const HP_TWIN_TAG_LABEL: Record<HpTwinErrorTag, string> = {
@@ -5183,7 +5237,7 @@ app.addEventListener("click", (event) => {
     const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
     const res = hpLadderAnswer(hpMathSession, index, item.correct);
     if (res !== "retry") {
-      hpMathSession.answers.push({ area: item.area, correct: res === "clean", withHint: res === "hint", seconds: elapsedSeconds });
+      hpMathSession.answers.push(buildHpMathQuestionResult(item, res, hpMathSession.triesLog[hpMathSession.currentIndex] ?? [], elapsedSeconds));
       hpMathSession.currentTag = null;
     }
     render();
@@ -5202,7 +5256,7 @@ app.addEventListener("click", (event) => {
     const item = hpMathSession.items[hpMathSession.currentIndex];
     const elapsedSeconds = (Date.now() - hpMathSession.questionStartedAt) / 1000;
     hpLadderShow(hpMathSession);
-    hpMathSession.answers.push({ area: item.area, correct: false, withHint: false, seconds: elapsedSeconds });
+    hpMathSession.answers.push(buildHpMathQuestionResult(item, "shown", hpMathSession.triesLog[hpMathSession.currentIndex] ?? [], elapsedSeconds));
     hpMathSession.currentTag = null;
     render();
     return;

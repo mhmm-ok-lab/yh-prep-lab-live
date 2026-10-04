@@ -3,6 +3,18 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-05 — Mattediagnos: ärliga nivåer och granskning fråga för fråga
+
+**Vad:** (1) Ny nivåregel per område. Lär om: någon fråga slutade med visat svar (eller fel två gånger), eller ingen fråga klarades utan hjälp. Repetera: någon fråga krävde ledtråd eller blev fel en gång, eller snittiden är över målet (90 s). Kan: alla frågor utan hjälp inom tid. (2) Rubriken är nu en räkning, "Lär om: 2 områden · Repetera: 3 · Kan: 6", och texten "Inget område behöver läras om" kan inte längre visas när något område är Lär om eller Repetera. (3) Varje fråga sparas (id, område, utfall, valda svar, rätt svar, tid) och resultatet visar områdena som expanderbara rader (details/summary, samma mönster som guiden) med frågan, ditt svar, rätt svar, utfall, lösningen, "Så skulle du ha tänkt" och "Lär dig"-länken. (4) HP-hem: knappen heter "Se senaste diagnos" och öppnar samma vy i efterhand. Äldre sparade resultat saknar frågedata och visar "Gör om diagnosen för att se dina svar fråga för fråga".
+
+**Varför:** Martin sa "vet inte" på en fråga i två områden och fick 1/2 → "Repetera" och en rubrik som sa att inget behövde läras om. Men "vet inte" betyder att metoden inte sitter. Tidigare räknade nivån bara rätt/fel; nu väger hjälp-utfallet in. Och ett resultat man inte kan granska ger ingen lärdom: man ska kunna se exakt vad man svarade, vad som var rätt och hur man tänker.
+
+**Före/efter:** Före: en poäng per område (1/2) och en lugnande rubrik, inget sätt att se sina svar. Efter: nivå styrd av utfall, räkning i rubriken, och i 375 × 812 syns rubrik, räkning och alla Lär om-rader (44 px) utan scroll; är bara ett område Lär om är det öppet från start. Ingen sidledsscroll (scrollWidth 375; långa områdesnamn bryts).
+
+**Stitch-princip:** progressiv avslöjning (sammanfattning först, detaljer på tryck), No-Line (tonala kort, nivåbricka 28 px), 3 fontstorlekar. Teori: feedback ska vara specifik och åtgärdbar (Hattie & Timperley), och granskning av egna fel stärker inlärning (error analysis); ärlig självbild motverkar illusion of competence.
+
+---
+
 ## 2026-10-05 — LÄS-träning: frågan först, texten på knapptryck
 
 **Vad:** Ny övning "LÄS – läsförståelse" i HP: ett pass = en text med 3–4 frågor (10 egna texter, 37 frågor). (1) Frågan och fyra alternativ visas först; texten nås med "Visa texten", stycke för stycke med synligt styckenummer. (2) Tempomätare "1:12 / 6:00" (frågor × 2 min) syns hela tiden. (3) Efter svar visas varför för det alternativ du valde och för rätt alternativ, "Se alla alternativ" visar varför för alla fyra, och "Svaret finns i stycke N" öppnar texten med stycket markerat. (4) Vid fel frågas "Varför blev det fel?" med Missade detalj / Feltolkade / Tidsbrist. (5) Sammanfattning med tid mot budget, felanalys och frågetyper du missade. (6) Repetitionskö per text. (7) LÄS-kort på HP-hem och i "Rekommenderat nu".

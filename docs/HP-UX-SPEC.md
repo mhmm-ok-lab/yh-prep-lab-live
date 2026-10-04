@@ -195,3 +195,14 @@ Martin tränar mest på mobilen. All HP-design utgår från 375 px bredd och ska
     - **Ärlig räkning per fråga:** "utan hjälp" (rätt första försöket, ingen ledtråd), "med ledtråd" (rätt efter ledtråd eller andra försöket), "visade svar" (inklusive andra felet). Sammanfattningen visar t.ex. "8 utan hjälp · 2 med ledtråd · 1 visade svar". Sparade resultat: `correct` = utan hjälp (statistiken blir inte för snäll), `withHint` sparas separat. Mattediagnosens områdesnivåer räknar bara "utan hjälp" som rätt.
     - **Repetition:** frågor med "med ledtråd" eller "visade svar" läggs i repetitionskön (matteträning per delprov; LÄS per text) och lämnar den först när de klaras utan hjälp (LÄS: när alla frågor i texten klaras utan hjälp). Mattediagnosen har ingen repetitionskö.
     - **Motivering och källor:** låt användaren försöka först, ge hjälp när det behövs men inte före, och bromsa genvägen till facit. Kornell, Hays & Bjork (2009), "Unsuccessful retrieval attempts enhance subsequent learning": misslyckade försök före facit förbättrar inlärningen. Koedinger & Aleven (2007), "Exploring the assistance dilemma in experiments with cognitive tutors": balansen mellan att hjälpa och att låta eleven kämpa. Aleven m.fl. (2016), "Help helps, but only so much": elever som tar hjälp direkt vid svårighet ("hint abuse") lär sig sämre.
+
+## Beslut 2026-10-05 (5) Diagnosnivåer + granskning
+
+21. **Nivå per område i mattediagnosen styrs av utfallet, inte bara rätt/fel.**
+    - **Lär om:** någon fråga i området slutade med visat svar (eller fel två gånger), ELLER ingen fråga klarades utan hjälp.
+    - **Repetera:** någon fråga krävde ledtråd eller blev fel en gång, eller snittiden är över målet (90 s).
+    - **Kan:** alla frågor klarades utan hjälp inom tid.
+    - Motiv: "vet inte"/"visade svar" betyder att metoden inte sitter; 1/2 rätt får inte läsas som "nästan kan".
+    - Sammanfattningen visar en räkning, "Lär om: 2 områden · Repetera: 3 · Kan: 6", och får aldrig säga att inget behöver läras om när det finns Lär om eller Repetera. Samma rad står på HP-hem under "Se senaste diagnos".
+22. **Granskning fråga för fråga.** Per fråga sparas id, område, utfall (clean / hint / shown), valda svar, rätt svar och tid (`HpMathResult.questions`). Resultatskärmen listar områdena Lär om, Repetera först och Kan som expanderbara rader (details/summary, som i guiden). Varje område visar sina frågor med: frågan, ditt svar (flera val visas som "2 → 10"), rätt svar, utfall, lösningen, "Så skulle du ha tänkt" och "Lär dig"-länken till Matteboken. Ett enda Lär om-område är öppet från start; annars visas alla som 44 px-rader så att listan syns utan scroll i 375 × 812. Resultat sparade före detta beslut saknar frågedata: de visar "Gör om diagnosen för att se dina svar fråga för fråga" (och sina gamla nivåer).
+23. **HP-hem:** knappen heter "Se senaste diagnos" och öppnar samma resultatvy i efterhand.

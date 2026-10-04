@@ -3227,19 +3227,12 @@ details:not(.mini-menu)[open] {
   gap: 0.6rem;
 }
 
-.hp-math-area-card {
+details.hp-math-area-card {
   background: var(--card);
-  border-radius: var(--radius-card);
   box-shadow: var(--shadow);
-  padding: 0.75rem 1rem;
 }
-
-.hp-math-area-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.3rem;
-}
+.hp-math-area-card > .hp-guide-section-summary { gap: 0.6rem; min-height: 44px; }
+.hp-math-area-card .hp-guide-section-count { margin-left: 0; margin-right: 0; }
 
 .hp-math-area-card-score {
   font-size: var(--text-sm);
@@ -3248,10 +3241,66 @@ details:not(.mini-menu)[open] {
 }
 
 .hp-math-area-card-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-size: var(--text-md);
   font-weight: 700;
   color: var(--ink);
-  margin: 0 0 0.35rem;
+  margin: 0;
+}
+
+.hp-math-level-counts {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hp-math-review-q {
+  background: var(--surface-container);
+  border-radius: var(--radius-card);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.hp-math-review-outcome {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hp-math-review-clean { color: var(--ok); }
+.hp-math-review-hint { color: var(--honey-ink); }
+.hp-math-review-shown { color: var(--danger); }
+
+.hp-math-review-prompt {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hp-math-review-line {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink);
+}
+.hp-math-review-line span {
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 0.4rem;
+}
+
+.hp-math-review-missing {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
 
 .hp-math-learn-link {

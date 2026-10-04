@@ -30,6 +30,24 @@ export interface HpMathAreaResult {
   avgSeconds: number;
 }
 
+/** Utfall per fråga: clean = rätt utan hjälp, hint = rätt efter ledtråd/andra försöket,
+ *  shown = visade svar eller fel två gånger. */
+export type HpMathOutcome = "clean" | "hint" | "shown";
+
+/** En besvarad diagnosfråga. Svarstexter sparas (alternativen blandas per pass). */
+export interface HpMathQuestionResult {
+  id: string;
+  area: HpMathArea;
+  outcome: HpMathOutcome;
+  /** Antal felaktiga val innan frågan avslutades (0, 1 eller 2). */
+  wrongPicks: number;
+  /** Valda svarstexter i ordning (tom om svaret visades utan val). */
+  picks: string[];
+  /** Rätt svarstext. */
+  correctText: string;
+  seconds: number;
+}
+
 export interface HpMathResult {
   completedAt: string;
   /** Rätt utan hjälp (rätt efter ledtråd räknas inte hit, så statistiken blir ärlig). */
@@ -38,6 +56,8 @@ export interface HpMathResult {
   withHint?: number;
   total: number;
   areas: HpMathAreaResult[];
+  /** Per fråga, för granskning. Saknas i resultat sparade före 2026-10-05. */
+  questions?: HpMathQuestionResult[];
 }
 
 export interface StudyDataSnapshot {
