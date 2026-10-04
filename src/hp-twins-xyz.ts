@@ -28,6 +28,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "12 / (28 + 37)"
     ],
     correct: 0,
+    hint:
+      "Översätt ordning för ordning: 'summan av' blir en parentes, 'produkten av' betyder gånger. Vad ska multipliceras med 12?",
     solution:
       "Produkten av 12 och summan av 28 och 37 skrivs 12(28 + 37).",
     twinOf: {
@@ -50,6 +52,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "0,01"
     ],
     correct: 1,
+    hint:
+      "Gör om procenten till decimalform genom att dela med 100 och multiplicera sedan med talet. Eller ta 1 % av 250 först och skala.",
     solution:
       "0,4 % = 0,004. 0,004 · 250 = 1.",
     twinOf: {
@@ -72,6 +76,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(p - q)^2"
     ],
     correct: 2,
+    hint:
+      "Samma bas i en produkt: vad händer med exponenterna? Tänk på att (p - q) är basen.",
     solution:
       "Vid multiplikation av potenser med samma bas adderas exponenterna: -1 + 2 = 1, alltså (p - q)^1 = p - q.",
     twinOf: {
@@ -94,6 +100,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "-1 ≤ f(x) ≤ 3"
     ],
     correct: 3,
+    hint:
+      "Rita eller tänk på parabelns form: var ligger minimum, och vilket x-värde i intervallet ger störst värde? Testa ändpunkterna och x = 0.",
     solution:
       "Minsta värdet fås vid x = 0: f(0) = -1. Största värdet fås vid x = ±2: f(±2) = 4 - 1 = 3. Värdemängden är -1 ≤ f(x) ≤ 3.",
     twinOf: {
@@ -116,6 +124,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "0"
     ],
     correct: 0,
+    hint:
+      "Testa med några par, till exempel 3 och 4 eller 8 och 9. Vad kan du säga om jämna och udda tal i en rad?",
     solution:
       "Av två på varandra följande heltal är alltid exakt ett jämnt, så produkten är alltid jämn. Sannolikheten är därför 1.",
     twinOf: {
@@ -138,6 +148,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "960 dm3"
     ],
     correct: 1,
+    hint:
+      "Skriv om alla mått till samma enhet innan du multiplicerar längd · bredd · höjd. Alternativen anger cm3 eller dm3, så välj en av dem.",
     solution:
       "Allt i dm: 3 dm × 0,8 dm × 40 dm = 96 dm3.",
     twinOf: {
@@ -160,6 +172,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "x > -5"
     ],
     correct: 2,
+    hint:
+      "Lös som en ekvation: samla x-termerna på ena sidan och talen på den andra. Dela sist, och kom ihåg att tecknet vänder bara om du delar med ett negativt tal.",
     solution:
       "5x - 7 > 2x + 8 ger 3x > 15, alltså x > 5.",
     twinOf: {
@@ -182,6 +196,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "√18 · √8"
     ],
     correct: 3,
+    hint:
+      "Samla rötterna: √a · √b = √(a·b). Prova varje alternativ och se vilket som ger ett heltal, eller förenkla √18 och √8 först.",
     solution:
       "√18 · √8 = √144 = 12, vilket är ett heltal. √18 + √8 = 5√2 och √18 - √8 = √2 är irrationella, och √18 / √8 = 1,5 är inte ett heltal.",
     twinOf: {
@@ -204,6 +220,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "x^2"
     ],
     correct: 0,
+    hint:
+      "Skriv rötterna som potenser (√x = x^(1/2)) och använd regeln att exponenter adderas vid multiplikation med samma bas.",
     solution:
       "x^1 · x^(1/3) · x^(1/2) = x^(1 + 1/3 + 1/2) = x^(11/6).",
     twinOf: {
@@ -226,6 +244,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(b + c) / (a + c)"
     ],
     correct: 1,
+    hint:
+      "Prova med konkreta tal som uppfyller 1 < a < b < c, till exempel 2, 3, 4. Jämför täljare och nämnare i varje alternativ.",
     solution:
       "Eftersom c > b gäller c - a > b - a, och b - a > 0. Därför är (c - a) / (b - a) alltid större än 1, oavsett vilka värden a, b och c har så länge 1 < a < b < c.",
     twinOf: {
@@ -248,6 +268,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "6/5"
     ],
     correct: 2,
+    hint:
+      "Division med bråk: multiplicera med det andra bråkets inverterade bråk. Förkorta sist.",
     solution:
       "(2/5) / (8/3) = (2/5) · (3/8) = 6/40 = 3/20.",
     twinOf: {
@@ -270,6 +292,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "16"
     ],
     correct: 3,
+    hint:
+      "Medelvärde gånger antal är summan. Räkna ut totalsumman, dra bort de kända talen och dela resten på två.",
     solution:
       "Summan av alla sex tal är 6 · 15 = 90. Summan av de fyra kända talen är 9+13+16+20 = 58. Då är x + y = 90 - 58 = 32, och medelvärdet av x och y är 32/2 = 16.",
     twinOf: {
@@ -292,6 +316,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "4y"
     ],
     correct: 0,
+    hint:
+      "Lös upp minusparentesen först: minustecknet framför en parentes byter tecken på allt inuti. Samla sedan lika termer.",
     solution:
       "-(x - 2y) = -x + 2y. Då blir uttrycket (-x + 2y) + (-x + 2y) = -2x + 4y.",
     twinOf: {
@@ -314,6 +340,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "1332"
     ],
     correct: 1,
+    hint:
+      "Tre tal i rad: det mellersta är summan delat med 3. Därifrån hittar du de andra två.",
     solution:
       "Talen är 35, 36 och 37 (35+36+37=108). Produkten av det minsta och det största är 35 · 37 = 1295.",
     twinOf: {
@@ -336,6 +364,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "2a + 5k"
     ],
     correct: 2,
+    hint:
+      "Sätt in a + 1 respektive a i funktionen och subtrahera. Se vad som förkortas bort.",
     solution:
       "f(a+1) - f(a) = [2(a+1) + 5k] - [2a + 5k] = 2a + 2 + 5k - 2a - 5k = 2.",
     twinOf: {
@@ -358,6 +388,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "22"
     ],
     correct: 3,
+    hint:
+      "Räkna potenserna var för sig (bas upphöjt i exponent) innan du subtraherar.",
     solution:
       "7^2 = 49 och 3^3 = 27. 49 - 27 = 22.",
     twinOf: {
@@ -380,6 +412,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "27 areaenheter"
     ],
     correct: 0,
+    hint:
+      "Välj den sida som ligger längs en axel som bas, så blir höjden bara ett x-värde. Arean är bas · höjd / 2.",
     solution:
       "AC ligger på y-axeln och har längden 9 - 4 = 5. Höjden från B till y-axeln är 6. Arean = (5 · 6) / 2 = 15.",
     twinOf: {
@@ -402,6 +436,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "50"
     ],
     correct: 1,
+    hint:
+      "45 % = 45/100 = 9/20. För att få heltal måste x innehålla faktorn 20; vilka alternativ är delbara med 20?",
     solution:
       "0,45 · 20 = 9, vilket är ett heltal. 0,45 · 28 = 12,6, 0,45 · 36 = 16,2 och 0,45 · 50 = 22,5 är inte heltal.",
     twinOf: {
@@ -424,6 +460,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "80"
     ],
     correct: 2,
+    hint:
+      "Börja med tal som ger rätt rest för det större delaren (7): 3, 10, 17 ... Testa sedan vilka av dem som ger rest 1 vid delning med 4, och gå uppåt i steg om 28.",
     solution:
       "Tal som ger rest 1 vid delning med 4 och rest 3 vid delning med 7 är 17, 45, 73, 101 … Det minsta av dessa som är större än 50 är 73.",
     twinOf: {
@@ -446,6 +484,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "-7/3"
     ],
     correct: 3,
+    hint:
+      "Multiplicera ut båda sidor (kvadreringsregeln på högersidan), och se vad som händer med x^2-termerna.",
     solution:
       "Vänsterled: x^2 - x - 6. Högerled: x^2 + 2x + 1. Det ger -x - 6 = 2x + 1, alltså -7 = 3x och x = -7/3.",
     twinOf: {
@@ -468,6 +508,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "2h / A"
     ],
     correct: 0,
+    hint:
+      "Frilägg b genom att göra samma sak på båda sidor: först bli av med bråket, sedan det som multiplicerar b.",
     solution:
       "Multiplicera båda leden med 2: 2A = bh. Dela med h: b = 2A / h.",
     twinOf: {
@@ -490,6 +532,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "16 cm"
     ],
     correct: 1,
+    hint:
+      "Area växer med kvadraten på skalfaktorn. Om areaförhållandet är 9, vilken är då förhållandet mellan radierna?",
     solution:
       "Om B:s area är 9 gånger A:s area är B:s radie √9 = 3 gånger så stor som A:s. 3 · 4 cm = 12 cm.",
     twinOf: {
@@ -512,6 +556,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "2(q - p)"
     ],
     correct: 2,
+    hint:
+      "Gör om medelvärdena till summor: medelvärdet av två tal är summan delat med 2. Hur kan du få x - z ur dina två ekvationer?",
     solution:
       "x + y = 2p och y + z = 2q. Subtraktion ger x - z = 2p - 2q = 2(p - q).",
     twinOf: {
@@ -534,6 +580,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "69"
     ],
     correct: 3,
+    hint:
+      "Tänk på värsta möjliga fall: han råkar stryka allt han inte vill ha först. Räkna först hur många jämna tal som finns.",
     solution:
       "Det finns 62 jämna tal, så hälften är 31. Värsta fallet är att han först stryker alla 38 udda tal utan att träffa något jämnt. Därefter behövs 31 sträck till för att vara säker på 31 jämna. Totalt 38 + 31 = 69.",
     twinOf: {
@@ -556,6 +604,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "6,3 mil"
     ],
     correct: 0,
+    hint:
+      "Varje steg upp från mm till cm till dm är en division med 10. Skriv svaret i tiopotensform.",
     solution:
       "6 300 000 mm / 100 = 63 000 dm = 6,3 · 10^4 dm.",
     twinOf: {
@@ -578,6 +628,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "x + 4 = 2 · 42"
     ],
     correct: 1,
+    hint:
+      "Uttryck Saras ålder i x, och skriv sedan ihop summan av båda åldrarna som en ekvation.",
     solution:
       "Sara är x + 4 år. Summan är x + (x + 4) = 42, det vill säga 2x + 4 = 42.",
     twinOf: {
@@ -600,6 +652,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "3/5"
     ],
     correct: 2,
+    hint:
+      "Rita en tallinje för längden eller tänk i procent: de som är längre än Noa ingår redan i dem som är längre än Elin. Hur stor del blir över?",
     solution:
       "Andelen som är längre än Elin men inte längre än Noa är ungefär 70 % - 25 % = 45 %, det vill säga 9/20.",
     twinOf: {
@@ -622,6 +676,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "10"
     ],
     correct: 3,
+    hint:
+      "Isolera nämnaren stegvis: ta bort 5 från båda sidor, multiplicera med 4, och lös sedan ut x.",
     solution:
       "(3x - 6)/4 = 6, alltså 3x - 6 = 24, 3x = 30 och x = 10.",
     twinOf: {
@@ -644,6 +700,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "2/5"
     ],
     correct: 0,
+    hint:
+      "Räkna totalt antal hjul först, sedan antal hjul på motorcyklar. Sannolikhet = gynnsamma / alla.",
     solution:
       "Bilarna har 5 · 4 = 20 hjul och motorcyklarna 3 · 2 = 6 hjul, totalt 26 hjul. Sannolikheten är 6/26 = 3/13.",
     twinOf: {
@@ -666,6 +724,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(5, 2)"
     ],
     correct: 1,
+    hint:
+      "Sätt in x-värdet från varje punkt i y = 2x - 7 och se vilken som ger rätt y.",
     solution:
       "För x = 3 är y = 2 · 3 - 7 = -1, så (3, -1) ligger på linjen. De övriga punkterna uppfyller inte ekvationen.",
     twinOf: {
@@ -688,6 +748,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "4:3"
     ],
     correct: 2,
+    hint:
+      "Sidorna 4 och 3 är kateter i en rätvinklig triangel. Vad blir hypotenusan enligt Pythagoras?",
     solution:
       "Om sidorna är 4 och 3 blir diagonalen √(4^2+3^2) = √25 = 5 (Pythagoras sats). Förhållandet långsida:diagonal är då 4:5.",
     twinOf: {
@@ -710,6 +772,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "10^10"
     ],
     correct: 3,
+    hint:
+      "För att få störst resultat, hur beter sig potenser vid multiplikation respektive division? Testa vilka val som ger störst exponent.",
     solution:
       "Störst blir B om båda rutorna är multiplikation: 10^(5+2) · 10^3 = 10^10.",
     twinOf: {
@@ -732,6 +796,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "132/35"
     ],
     correct: 0,
+    hint:
+      "Räkna täljaren och nämnaren var för sig med gemensam nämnare. Dela sedan genom att multiplicera med inverterade bråket.",
     solution:
       "1/3 + 1/4 = 7/12. 2 + 1/5 = 11/5. (7/12) / (11/5) = (7/12) · (5/11) = 35/132.",
     twinOf: {
@@ -754,6 +820,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "9"
     ],
     correct: 1,
+    hint:
+      "Samla alla tal på ena sidan så att x/3 står ensamt, och multiplicera sedan med 3.",
     solution:
       "x/3 = 2 - 1 - 1/4 = 3/4. Då är x = 3 · 3/4 = 9/4.",
     twinOf: {
@@ -776,6 +844,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "50"
     ],
     correct: 2,
+    hint:
+      "Räkenordningen: först rot och potens, sedan multiplikation, sist addition och subtraktion från vänster.",
     solution:
       "2√9 = 6 och 7^2 = 49. 4 + 6 - 15 + 49 = 44.",
     twinOf: {
@@ -798,6 +868,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "x = (y + 3)/5"
     ],
     correct: 3,
+    hint:
+      "Lös ut x: gör omvända operationer i omvänd ordning mot hur y bildas av x.",
     solution:
       "y = 5x - 3 ger y + 3 = 5x, alltså x = (y + 3)/5.",
     twinOf: {
@@ -820,6 +892,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "5/9"
     ],
     correct: 0,
+    hint:
+      "Det är enklare att räkna antalet kulor som inte är röda än att lägga ihop de andra färgerna sannolikhetsvis. Förkorta bråket.",
     solution:
       "Kulor som inte är röda: 36 - 15 = 21. Sannolikheten är 21/36 = 7/12.",
     twinOf: {
@@ -842,6 +916,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "3/2"
     ],
     correct: 1,
+    hint:
+      "Samla x-termerna på ena sidan och talen på andra sidan, dela sedan med koefficienten.",
     solution:
       "3x + x = 5 - 11 ger 4x = -6, alltså x = -3/2.",
     twinOf: {
@@ -864,6 +940,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "5/4"
     ],
     correct: 2,
+    hint:
+      "Hitta en gemensam nämnare som alla tre nämnare går jämnt upp i, och addera täljarna.",
     solution:
       "Gemensam nämnare 12: 2/12 + 8/12 + 3/12 = 13/12.",
     twinOf: {
@@ -886,6 +964,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "f(x) = -5/2 x"
     ],
     correct: 3,
+    hint:
+      "En linje genom origo har formen f(x) = kx. Sätt in punkten du känner till och lös ut k.",
     solution:
       "En rät linje genom origo har formen f(x) = kx. f(-4) = -4k = 10 ger k = -5/2, alltså f(x) = -5/2 x.",
     twinOf: {
@@ -908,6 +988,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "10800 kronor"
     ],
     correct: 0,
+    hint:
+      "Det är 12 % som motsvarar 900 kr. Hur får du 100 % från det?",
     solution:
       "12 % av priset är 900 kr, så priset är 900 / 0,12 = 7500 kr.",
     twinOf: {
@@ -930,6 +1012,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "5,5 timmar"
     ],
     correct: 1,
+    hint:
+      "Först: hur lång tid tar hela staketet om 2/5 tog 3,5 timmar? Eller räkna ut hur lång tid 1/5 tar.",
     solution:
       "3,5 timmar motsvarar 2/5 av arbetet, så hela staketet tar 3,5 / (2/5) = 8,75 timmar. Återstående 3/5 tar 8,75 · 3/5 = 5,25 timmar.",
     twinOf: {
@@ -952,6 +1036,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(x + 5)/54"
     ],
     correct: 2,
+    hint:
+      "Medelvärde = summan av talen / antalet tal. Lägg ihop de kända talen först.",
     solution:
       "Summan av talen är 9+14+11+20+x = 54+x. Medelvärdet av fem tal är summan delat med 5: (54+x)/5.",
     twinOf: {
@@ -974,6 +1060,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "5 dm"
     ],
     correct: 3,
+    hint:
+      "1 liter = 1 dm3. Använd V = π·r²·h, med radien som halva diametern, och lös ut h med ett grovt π ≈ 3.",
     solution:
       "Volym = πr^2h med r = 2,5 dm. h = 100 / (π · 2,5^2) ≈ 5,09 dm, vilket är närmast 5 dm.",
     twinOf: {
@@ -996,6 +1084,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "2"
     ],
     correct: 0,
+    hint:
+      "Skriv båda sidor med samma bas, 3, och jämför exponenterna.",
     solution:
       "9 = 3^2 och 27 = 3^3, så 3^(2(3-2m)) = 3^6. Då är 2(3-2m) = 6, alltså 3 - 2m = 3 och m = 0.",
     twinOf: {
@@ -1018,6 +1108,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "3/2"
     ],
     correct: 1,
+    hint:
+      "Gör om till samma nämnare och räkna från vänster till höger.",
     solution:
       "5/8 - 2/8 + 5/8 = 8/8 = 1.",
     twinOf: {
@@ -1040,6 +1132,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "5/12"
     ],
     correct: 2,
+    hint:
+      "Medelvärde av två tal = (summan) / 2. Börja med att hitta gemensam nämnare för bråken.",
     solution:
       "Medelvärdet är (1/4 + 1/6) / 2 = (3/12 + 2/12) / 2 = (5/12) / 2 = 5/24.",
     twinOf: {
@@ -1062,6 +1156,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(2/3)y cm"
     ],
     correct: 3,
+    hint:
+      "Kvadratens area är sidan i kvadrat. Ställ upp areorna lika och dra roten ur båda sidor.",
     solution:
       "Rektangelns area är y · (4/9)y = (4/9)y^2. Kvadratens sida s uppfyller s^2 = (4/9)y^2, alltså s = (2/3)y.",
     twinOf: {
@@ -1084,6 +1180,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(8, 3)"
     ],
     correct: 0,
+    hint:
+      "Sätt in x-värdet från varje alternativ i linjens ekvation och jämför med y-värdet. Börja med de x som är delbara med 4.",
     solution:
       "För x = 4 är y = (3/4)·4 - 2 = 3 - 2 = 1, så (4, 1) ligger på L. De övriga punkterna uppfyller inte ekvationen.",
     twinOf: {
@@ -1106,6 +1204,8 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "y/(9x)"
     ],
     correct: 1,
+    hint:
+      "Räkna ut hastigheten (sträcka / tid) först, och sedan tiden som sträcka / hastighet.",
     solution:
       "Hastigheten är y/9 meter per sekund. Tiden för x meter är x / (y/9) = 9x/y.",
     twinOf: {
