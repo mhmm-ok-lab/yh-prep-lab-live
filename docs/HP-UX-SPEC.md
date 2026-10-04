@@ -149,3 +149,12 @@ Martin tränar mest på mobilen. All HP-design utgår från 375 px bredd och ska
 - **Ingen hover-beroende info** — allt som visas vid hover på desktop måste synas eller nås med tryck.
 - **Tryck var som helst** för att gå vidare efter rätt svar (se beslut 1).
 - **Testas i 375 × 812** (mobil-preset) innan något räknas som klart; desktop kontrolleras efteråt.
+
+## Beslut 2026-10-04 (Martins test)
+
+6. **Allt viktigt i första vyn, högst upp.** Fråga och svarsalternativ ligger tätt ihop direkt under topraden, och ingen grupp förankras nedtill. Det ersätter tumzon-regeln för frågevyerna. Tryckytorna är fortfarande minst 44 px.
+7. **Hjälpknapp "?" på varje fråga, i alla övningar** (ORD, mattediagnos, matteträning). Mer info hålls bakom knappen så att första vyn förblir ren.
+   - Före svar visar den **metoden för delprovet** (t.ex. NOG: testa (1), sedan (2), sedan båda) och **ledtråden för frågan** (`hint`), aldrig svaret.
+   - Den öppnas som ett kompakt lager som stängs med ett tryck, och frågan står kvar synlig.
+   - Att hjälpen har använts sparas per fråga och visas i sammanfattningen ("3 med hjälp"). Det räknas inte som fel.
+   - Efter svar finns lösningen redan i feedbacken, och "?" visar då metoden igen så att den går att lära till nästa gång.
