@@ -138,66 +138,60 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     varfor: "Provdagen kräver en utvilad hjärna, inte sista-minuten-stress."
   },
 
-  // ── LÄS ──
+  // ── LÄS ── (7 tips för bättre läsförståelse och snabbare tid)
   {
     id: "las-fraga-forst",
     kategori: "las",
-    rubrik: "Läs frågan före texten",
-    gorSaHar: "Läs de 2–4 frågorna innan du ens tittar på texten.",
-    varfor: "Du läser texten med ett syfte i stället för att läsa allt lika noga.",
+    rubrik: "Läs frågorna före texten",
+    gorSaHar: "Läs de 2–4 frågestammarna (inte alternativen) innan du tittar på texten, så vet du vad du letar efter.",
+    varfor: "Du läser med ett syfte i stället för att läsa allt lika noga, vilket sparar tid.",
     kalla: "hpguiden.se"
   },
   {
-    id: "las-skumma",
+    id: "las-skumma-soklas",
     kategori: "las",
-    rubrik: "Skumma innan du fördjupar",
-    gorSaHar: "Läs texten snabbt en gång för struktur och huvudtanke. Fördjupa dig först vid en detaljfråga.",
-    varfor: "Ger en helhetsbild som gör sökläsningen effektivare.",
+    rubrik: "Skumma först, sökläs sedan",
+    gorSaHar: "Skumläs texten en gång (ca 1 minut) för struktur och huvudtanke. Gå sedan tillbaka och sökläs bara efter det frågan efterfrågar.",
+    varfor: "Helhetsbilden gör sökläsningen snabbare, och du slipper läsa om allt.",
     kalla: "hv.se"
-  },
-  {
-    id: "las-finger",
-    kategori: "las",
-    rubrik: "Använd fingret som ankare",
-    gorSaHar: "Låt fingret följa raden du läser, och använd det för att hitta tillbaka.",
-    varfor: "Minskar risken att tappa platsen och läsa om samma stycke i onödan."
   },
   {
     id: "las-stycke",
     kategori: "las",
     rubrik: "Ett stycke i taget",
-    gorSaHar: "Läs ett stycke, sammanfatta det snabbt för dig själv, gå vidare.",
-    varfor: "Chunking minskar belastningen på arbetsminnet.",
+    gorSaHar: "Sammanfatta varje stycke i en egen mening i huvudet innan du går vidare.",
+    varfor: "Små bitar belastar arbetsminnet mindre, och du hittar lättare tillbaka till rätt ställe.",
     kalla: "Bedrock Learning"
   },
   {
-    id: "las-tidsruta",
+    id: "las-peka-ut-stallet",
     kategori: "las",
-    rubrik: "Sätt en tidsruta per text",
-    gorSaHar: "Bestäm i förväg hur många minuter texten får ta. Håll koll med en synlig klocka, inte nedräkning.",
-    varfor: "Motverkar tidsblindhet och fördelar tiden jämnt över passet."
+    rubrik: "Peka ut stället i texten",
+    gorSaHar: "Välj inte svar på känsla. Hitta meningen i texten som stöder alternativet och kontrollera att den svarar på just frågan.",
+    varfor: "Felalternativen låter ofta rimliga, men saknar stöd i texten."
   },
   {
-    id: "las-uteslut",
+    id: "las-uteslut-fallor",
     kategori: "las",
-    rubrik: "Uteslut innan du väljer",
-    gorSaHar: "Läs alla fyra alternativ och stryk de uppenbart fel innan du väljer.",
-    varfor: "Höjer träffchansen rejält även när du är osäker.",
+    rubrik: "Uteslut genom att namnge fällan",
+    gorSaHar: "Stryk alternativ som är för starka (alltid, aldrig), för generella, motsatsen, som saknas i texten eller bara stämmer för ett stycke.",
+    varfor: "Klassiska fällor går att känna igen, och varje struket alternativ höjer träffchansen rejält.",
     kalla: "hogskoleprovskurser.se"
-  },
-  {
-    id: "las-fastna",
-    kategori: "las",
-    rubrik: "Fastna aldrig — gissa och gå vidare",
-    gorSaHar: "Tar frågan längre än din tidsruta: gör en kvalificerad gissning och gå vidare direkt.",
-    varfor: "Ingen minuspoäng finns — ett fastnat svar kostar bara tid."
   },
   {
     id: "las-huvudtanke-sist",
     kategori: "las",
-    rubrik: "Svara på \"vad handlar det om\" sist",
-    gorSaHar: "Spara huvudtanke- och syftesfrågor till efter du besvarat detaljfrågorna för samma text.",
-    varfor: "Du har då läst hela texten noggrant med helhetsbilden färskast i minnet."
+    rubrik: "Huvudtanke och syfte sist",
+    gorSaHar: "Ta detaljfrågorna först och spara huvudtanke- och syftesfrågorna till efter dem för samma text.",
+    varfor: "Då har du läst texten noggrant och har helhetsbilden färskast i minnet."
+  },
+  {
+    id: "las-tidsruta-gissa",
+    kategori: "las",
+    rubrik: "Håll tiden, gissa och gå vidare",
+    gorSaHar: "Räkna med ca 2 minuter per uppgift. Tar en fråga längre tid: gör en kvalificerad gissning och gå vidare.",
+    varfor: "Ingen minuspoäng finns, så ett fastnat svar kostar bara tid medan en gissning kostar ingenting.",
+    kalla: "hogskoleprovskurser.se"
   },
 
   // ── ORD ──
