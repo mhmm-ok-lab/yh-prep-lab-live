@@ -466,7 +466,7 @@ export const HP_MEK_ITEMS: HpMekItem[] = [
   },
   {
     id: "mek-38",
-    text: "Hon blev ___ efter olyckan, ___ hon hade faktiskt klarat sig utan skador.",
+    text: "Hon blev ___ efter olyckan, ___ hon faktiskt hade klarat sig utan skador.",
     options: [
       { fills: ["lugn", "fastän"], why: "Att vara lugn efter olycka är ingen motsats till att klara sig." },
       { fills: ["chockad", "fastän"], why: "Fastän hon klarat sig utan skador blev hon ändå chockad." },
