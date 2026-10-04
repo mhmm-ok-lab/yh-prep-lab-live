@@ -461,7 +461,7 @@ export const HP_TWINS_XYZ: HpTwin[] = [
     ],
     correct: 2,
     hint:
-      "Börja med tal som ger rätt rest för det större delaren (7): 3, 10, 17 ... Testa sedan vilka av dem som ger rest 1 vid delning med 4, och gå uppåt i steg om 28.",
+      "Pröva alternativen baklänges: dela varje med 4 och med 7 och kolla resten.",
     solution:
       "Tal som ger rest 1 vid delning med 4 och rest 3 vid delning med 7 är 17, 45, 73, 101 … Det minsta av dessa som är större än 50 är 73.",
     twinOf: {
@@ -845,7 +845,7 @@ export const HP_TWINS_XYZ: HpTwin[] = [
     ],
     correct: 2,
     hint:
-      "Räkenordningen: först rot och potens, sedan multiplikation, sist addition och subtraktion från vänster.",
+      "Räkneordning: först rot och potens, sedan multiplikation, sist addition och subtraktion från vänster.",
     solution:
       "2√9 = 6 och 7^2 = 49. 4 + 6 - 15 + 49 = 44.",
     twinOf: {
