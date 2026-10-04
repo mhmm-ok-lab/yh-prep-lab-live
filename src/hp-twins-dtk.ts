@@ -13,6 +13,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "Ökning: Almstad 79%, Björkvik 33%, Cedersund 22%, Dalholm 146%. Dalholm hade störst procentuell ökning (146 procent).",
+    hint:
+      "Räkna ökningen per stad som (2023 minus 2010) delat med 2010, inte i antal. Överslag räcker: vilken stad har mer än fördubblat?",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -26,6 +28,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "15 100/145 000 ≈ 10,4 procent, vilket avrundas till 10 procent.",
+    hint:
+      "Andel = delmängd delat med helheten. Titta i kolumnen för 2023 och dela cykelpendlarna med invånarna för just Cedersund.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -39,6 +43,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "14 700 - 9 600 = 5 100 = 5 100.",
+    hint:
+      "Det här är en skillnad, alltså en subtraktion. Läs kolumnen för 2023 och ta rätt år och rätt två städer.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -52,6 +58,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "14 500/35 000 ≈ 41 procent.",
+    hint:
+      "Hitta raden för Öster och dela barnböckerna med totalen på samma rad. Runda av, svarsalternativen ligger glest.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 38, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -65,6 +73,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "9 000 + 6 500 + 5 000 = 20 500.",
+    hint:
+      "Du ska addera en hel kolumn, facklitteratur, över alla tre biblioteken. Kolla att du inte tar fel kolumn.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 39, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -78,6 +88,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "24 000/15 500 ≈ 1,5 gånger.",
+    hint:
+      "Det här är en kvot: dela Centrums siffra med Östers i kolumnen för skönlitteratur. Svaret är ett ungefärligt tal, så avrunda gärna först.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 40, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -91,6 +103,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Areal/park: Norra Norrland 23333, Södra Norrland 19000, Svealand 6000, Götaland 3000 ha. Norra Norrland hade störst areal per nationalpark.",
+    hint:
+      "Landareal per nationalpark kräver att du dividerar två kolumner för varje landsdel. Jämför kvoterna, överslag brukar räcka.",
     twinOf: { prov: "2018-10-21", provpass: 4, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -104,6 +118,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Totalt: 310+480+620+540 = 1950. Svealand: 620/1950 ≈ 32 procent.",
+    hint:
+      "Andel = Svealands naturreservat delat med summan av alla fyra landsdelar. Summera kolumnen först.",
     twinOf: { prov: "2018-10-21", provpass: 4, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -117,6 +133,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Endast Norra Norrland hade både färre än 400 naturreservat (310) och fler än 5 nationalparker (9).",
+    hint:
+      "Gå rad för rad och pröva båda villkoren samtidigt. Räkna bara de landsdelar där både och stämmer, och notera 'färre än' respektive 'fler än'.",
     twinOf: { prov: "2018-10-21", provpass: 4, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -130,6 +148,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Kvot 2022/2021 över havet: Dvärgpipistrell 9, Vattenfladdermus 1,5, Trollfladdermus 9, Nordisk fladdermus 1,1. Trollfladdermus hade 36/4 = 9 gånger så många.",
+    hint:
+      "Titta bara på raderna för observationer över havet och jämför 2022 med 2021 per art. Leta efter den art där 2022 är ungefär nio gånger så stort.",
     twinOf: { prov: "2015-10-24", provpass: 5, uppgift: 32, url: "https://www.studera.nu/hogskoleprov/fpn/facit-provfragor-och-normering-hosten-2015/" }
   },
   {
@@ -143,6 +163,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "66/(66+480) = 66/546 ≈ 12 procent.",
+    hint:
+      "Andel = över havet delat med (över havet + på land), alla för 2022 och för just Nordisk fladdermus. Läs av rätt rad och rätt år.",
     twinOf: { prov: "2015-10-24", provpass: 5, uppgift: 33, url: "https://www.studera.nu/hogskoleprov/fpn/facit-provfragor-och-normering-hosten-2015/" }
   },
   {
@@ -156,6 +178,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "640 - 480 = 160 = 160.",
+    hint:
+      "Subtrahera: ta dvärgpipistrellens siffra på land minus nordisk fladdermus siffra på land, 2022. Se upp med att du läser kolumnen 'på land'.",
     twinOf: { prov: "2015-10-24", provpass: 5, uppgift: 34, url: "https://www.studera.nu/hogskoleprov/fpn/facit-provfragor-och-normering-hosten-2015/" }
   },
   {
@@ -169,6 +193,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Export totalt: 172 400+24 300+18 900+5 100 = 220 700. Import totalt: 168 900+31 600+15 200+2 400 = 218 100. Skillnad: 2 600 miljoner kr.",
+    hint:
+      "Summera först all export och all import för sig över de fyra världsdelarna, och ta sedan skillnaden mellan summorna. Kolla enheten.",
     twinOf: { prov: "2018-10-21", provpass: 4, uppgift: 38, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -182,6 +208,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "31 600 - 15 200 = 16 400 miljoner kr.",
+    hint:
+      "Det är en enkel subtraktion mellan två rader i importkolumnen. Titta bara på importen, inte exporten.",
     twinOf: { prov: "2018-10-21", provpass: 4, uppgift: 40, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -195,6 +223,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "Enligt tabellen var exportvärdet till Amerika 18 900 miljoner kronor.",
+    hint:
+      "Här läser du bakifrån: leta i exportkolumnen efter värdet och se vilken rad det tillhör. Kontrollera att du tittar i export, inte import.",
     twinOf: { prov: "2018-10-21", provpass: 4, uppgift: 39, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -208,6 +238,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "Fynd 12 var 22 meter långt, 6 meter brett och daterat till 1520 — det enda som uppfyller alla villkor.",
+    hint:
+      "Använd villkoren som ett filter: stryk de fynd som inte klarar bredden, sedan längden, och till sist årtalet. Se upp med 'bredare än' och 'längre än'.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 35, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -221,6 +253,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "22 - 9 = 13 meter.",
+    hint:
+      "Subtrahera längden för Fynd 3 från längden för Fynd 12. Se till att du läser kolumnen för längd, inte bredd.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 36, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -234,6 +268,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Fynd 3 (3 m) och Fynd 18 (3 m) har tillsammans 3 + 3 = 6 meter bredd.",
+    hint:
+      "Testa par av fynd där bredderna adderas. Det går fortast om du skriver upp bredderna och söker två som ger rätt summa.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 37, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -247,6 +283,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "300/450 = 2/3 ≈ 67 procent.",
+    hint:
+      "Andel = njurtransplantationer från levande donator delat med alla njurtransplantationer 2013. Läs raden för njure och rätt år.",
     twinOf: { prov: "2020-10-25", provpass: 3, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -260,6 +298,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "Procentuell ökning: Njure 41%, Lever 45%, Hjärta 12%, Lunga 140%. Lunga hade störst ökning (140 procent).",
+    hint:
+      "Beräkna förändringen per organ i procent av 2005 års värde, inte bara i antal. Överslag räcker oftast för att se vilket organ som stack ut.",
     twinOf: { prov: "2020-10-25", provpass: 3, uppgift: 32, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -273,6 +313,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "(450+160+45+60)/4 = 715/4 = 179.",
+    hint:
+      "Summera de fyra organens antal för 2013 och dela med fyra. Kontrollera att du använder rätt år.",
     twinOf: { prov: "2020-10-25", provpass: 3, uppgift: 33, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -286,6 +328,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "6 900/(2 600+6 900) = 6 900/9 500 ≈ 73 procent.",
+    hint:
+      "Andel = löpande kostnader delat med summan av investeringar och löpande kostnader, för år 2018. Läs raden för rätt år.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -299,6 +343,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "Endast 2018 hade investeringar under 4 000 mkr (2 600) samtidigt som löpande kostnader var över 6 000 mkr (6 900).",
+    hint:
+      "Pröva båda villkoren för ett år i taget och räkna de år där båda stämmer. Läs 'mindre än' och 'större än' noga.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 34, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -312,6 +358,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "2015: 3 200+5 800=9 000. 2021: 4 100+7 400=11 500. Ökning: 2500 = 2 500 miljoner kr.",
+    hint:
+      "Beräkna total per år (investeringar plus löpande) för 2015 och 2021, och ta skillnaden i miljoner kronor. Fråga är absolut ökning, inte procent.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 32, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -325,6 +373,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "(1400-560)/1400 = 840/1400 = 60 procent.",
+    hint:
+      "Procentuell minskning = (1990 minus 2023) delat med 1990. Titta på raden för gymnastik och använd 1990 som utgångsvärde.",
     twinOf: { prov: "2019-04-06", provpass: 2, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -338,6 +388,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "3 100/1 240 ≈ 2,5, dvs ungefär 3:1.",
+    hint:
+      "Ställ fotbollsföreningar mot friidrottsföreningar som en kvot för 2023 och avrunda. Skriv förhållandet som 'x till 1'.",
     twinOf: { prov: "2019-04-06", provpass: 2, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -351,6 +403,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "(900+1350)/2 = 1125.",
+    hint:
+      "Medelvärde av två tal: addera 1990 och 2023 för ridsport och dela med två. Kolla att du tar rätt idrott.",
     twinOf: { prov: "2019-04-06", provpass: 2, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -364,6 +418,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "160 000 - 110 000 = 50 000.",
+    hint:
+      "Läs av raden för år 2000 och subtrahera utrikes från inrikes landningar, eller tvärtom enligt frågan. Titta på antal landningar, inte passagerare.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -377,6 +433,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "27 000 000/(95 000+120 000) = 27 000 000/215 000 ≈ 126.",
+    hint:
+      "Passagerare per landning = antal passagerare delat med antal landningar, för år 2010. Tänk på enheterna i tabellen, till exempel tusental.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -390,6 +448,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "(27-12)/12 = 15/12 = 125 procent.",
+    hint:
+      "Procentuell ökning = (2010 minus 1990) delat med 1990, för passagerare. Fördubbling är 100 procent, så ett överslag hjälper.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -403,6 +463,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Allmännyttan: 260+480=740. Bostadsrätt: 190+410=600. Skillnad: 140 = 140 kr/m².",
+    hint:
+      "Beräkna totalkostnaden för vardera ägarformen år 2002 och ta skillnaden. Se till att du håller dig till flerbostadshus och rätt år.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 35, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -416,6 +478,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "310/(310+450) = 310/760 ≈ 41 procent.",
+    hint:
+      "Andel = kapitalkostnad delat med totalen för privat ägo 2002. Läs av rätt rad och rätt kolumn.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 36, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -429,6 +493,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "60/210 ≈ 29 procent.",
+    hint:
+      "Andel = antal professorer delat med totala antalet lärare vid Uppsala 1945. Läs raden för Uppsala.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 39, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -442,6 +508,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Studenter/lärare: Uppsala 15,2, Lund 15,6, Karolinska 9,5, Stockholm 15,7. Karolinska institutet hade lägst kvot.",
+    hint:
+      "Studenter per lärare får du genom att dela studenter med lärare för varje lärosäte. Jämför kvoterna och välj den minsta.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 40, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -455,6 +523,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 3,
     solution:
       "3 200+2 800+900+1 100 = 8 000.",
+    hint:
+      "Summera studentkolumnen för alla fyra lärosäten, år 1945. Dubbelkolla att du inte tar lärarkolumnen.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 38, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -468,6 +538,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Högst 12,0 (2009), lägst 10,0 (2007). Skillnad: 2,0 poäng.",
+    hint:
+      "Skillnaden mellan max och min: hitta först det högsta och det lägsta provbetyget i matematik B och subtrahera. Titta bara på provbetyg, inte kursbetyg.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 35, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -481,6 +553,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 0,
     solution:
       "Skillnad kursbetyg-provbetyg: 2005: 0,5, 2007: 2,5, 2009: 1,0. Ökningen var störst 2005–2007 (från 0,5 till 2,5 poäng).",
+    hint:
+      "Räkna skillnaden provbetyg minus kursbetyg för varje år, och jämför sedan hur den ändras mellan åren. Du söker störst ökning av skillnaden.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 37, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -494,6 +568,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "9 500 + 2 500 = 12 000.",
+    hint:
+      "Utgå från antalet hushåll i början och lägg till de inflyttade hushållen fram till år 5. Kolla vilken kommun och vilket år frågan gäller.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 39, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -507,6 +583,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Högst: Kommun Öster (410 tkr). Lägst: Kommun Söder (340 tkr). Skillnad: 70 tkr = 70 000 kronor.",
+    hint:
+      "Hitta högsta och lägsta genomsnittliga årsinkomst i tabellen och subtrahera. Läs enheten, till exempel tusen kronor.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 38, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -520,6 +598,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Fritidsaktiviteter: 1 800+2 000+2 300 = 6 100 tkr = 6,1 miljoner kronor.",
+    hint:
+      "Summera 2021, 2022 och 2023 för varje ändamål och leta efter den summa som matchar. Räkna på alla ändamål om det behövs.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -533,6 +613,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "3 800/(3 800+2 600+2 300+1 300) = 3 800/10 000 = 38 procent.",
+    hint:
+      "Andel = bidrag till sommarlov delat med totalen för 2023. Använd bara kolumnen för 2023.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -546,6 +628,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "Bottennät: 265. Pelagiskt: 220. Andel bottennät: 265/485 ≈ 55 procent.",
+    hint:
+      "Andel = fisk fångad med bottennät delat med totalt antal fångade fiskar 2011 (summera alla redskap). Läs antal, inte vikt.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 33, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -559,6 +643,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "4 200/140 = 30 gram.",
+    hint:
+      "Genomsnittsvikt = total vikt delat med antal fiskar. Titta på abborre i bottennätet 2011 och kontrollera enheten, kilo eller gram.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 34, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -572,6 +658,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Totalt: 300. Kontakt med person: 60/300 = 20 procent = en femtedel.",
+    hint:
+      "En femtedel är 20 procent. Räkna ut vilken andel av totalen varje skademekanism har och leta efter den som är ungefär 20 procent.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 33, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -585,6 +673,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "15/40 = 38 procent.",
+    hint:
+      "Hitta raden för hugg/skärning mot skarp kant och dela antalet flickor med det totala antalet på just den raden. Inte med alla skadefall.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 34, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -598,6 +688,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "4,5/1,5 = 3 gånger så stor.",
+    hint:
+      "Jämför mejeriprodukter med övrigt flytande matavfall som en kvot eller som skillnad, beroende på hur frågan ställer det. Läs 'jämfört med' noga.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -611,6 +703,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "4,5+1,5+8,0+2,0 = 16,0 kg.",
+    hint:
+      "Addera de fyra kategorierna för att få totalen per person och år. Se till att enheten, till exempel liter eller kilo, är samma i alla.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -624,6 +718,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "Totalt per år: 41 000+13 500+72 000+18 000 = 144 500 ton. Per vecka: 144 500/52 ≈ 2779 ton.",
+    hint:
+      "Ta totalen per person och år, multiplicera med antal invånare och dela med 52 veckor. Avrunda tidigt, för det är ett överslag.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -637,6 +733,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 2,
     solution:
       "(6 200-3 100)/3 100 = 3 100/3 100 = 100 procent.",
+    hint:
+      "Procentuell ökning = (1905 minus 1892) delat med 1892. Använd det äldre året som utgångsvärde.",
     twinOf: { prov: "2020-10-25", provpass: 3, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -650,6 +748,8 @@ export const HP_TWINS_DTK: HpTwin[] = [
     correct: 1,
     solution:
       "Mellan 1892 (3 100) och 1897 (2 900) minskade medlemsantalet, övriga perioder ökade det.",
+    hint:
+      "Läs av medlemsantalet år för år och leta efter perioden där siffran faller. Jämför närliggande år, par för par.",
     twinOf: { prov: "2020-10-25", provpass: 3, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
 ];

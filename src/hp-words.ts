@@ -23,6 +23,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["behärska sig", "ändra sig", "bestämma sig", "förbättra sig", "ge upp"],
     correct: 0,
     explanation: "Att lägga band på sig betyder att hålla tillbaka en impuls, t.ex. att inte säga vad man tänker.",
+    hint: "Band kan sitta på en hund som rusar iväg. Tänk bildligt: vad gör man med en impuls som vill rusa?",
     source: "HT2025",
   },
   {
@@ -31,6 +32,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["faktura", "kostnadsförslag", "beställning", "orderbekräftelse", "affärsavtal"],
     correct: 1,
     explanation: "En offert är ett skriftligt förslag på pris för en vara eller tjänst, innan affären blir av.",
+    hint: "Ordet kommer från latinets offerre, 'bjuda fram'. Du ber ett företag om en sådan innan du bestämmer dig.",
     source: "HT2025",
   },
   {
@@ -39,6 +41,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["relativt stor", "noga uträknad", "väl avpassad", "neutral", "felfri"],
     correct: 2,
     explanation: "Proportionerlig betyder att delarna eller storleken står i rätt förhållande till helheten.",
+    hint: "Besläktat med 'proportion' i matte och ritning. Vad är det för förhållande mellan delar och helhet?",
     source: "HT2025",
   },
   {
@@ -47,6 +50,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["viktenhet", "längdmått", "volymenhet", "ytmått", "avståndsmått"],
     correct: 3,
     explanation: "En hektar är ett mått på markyta, 10 000 kvadratmeter.",
+    hint: "Ordet används när man pratar om skogsägare, åkrar och tomter. Kombinationen 'kvadratmeter' och 'tusental' hör hit.",
     source: "HT2025",
   },
   {
@@ -55,6 +59,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["på en gång", "då och då", "för länge sedan", "när som helst", "så småningom"],
     correct: 4,
     explanation: "Sedermera används om något som hände senare i en följd av händelser.",
+    hint: "Kom ihåg 'seder' som i 'sedan'. Ordet dyker ofta upp i historiska berättelser: 'han blev sedermera kung'.",
     source: "HT2025",
   },
   {
@@ -63,6 +68,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["kännetecken", "villkor", "innehåll", "begåvning", "utfyllnad"],
     correct: 0,
     explanation: "Ett attribut är en egenskap som är typisk eller kännetecknande för något.",
+    hint: "Samma ord som i 'objekt och attribut' inom programmering och grammatik. Ett adjektiv kan vara ett attributiv.",
     source: "HT2025",
   },
   {
@@ -71,6 +77,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["svårfångad", "lättstött", "oansvarig", "oförsiktig", "snabbtänkt"],
     correct: 1,
     explanation: "Den som är snarstucken blir lätt sårad eller förnärmad.",
+    hint: "Förleden 'snar' betyder snabb och efterleden kommer från att sticka. Vad händer när man lätt blir 'stucken'?",
     source: "HT2025",
   },
   {
@@ -79,6 +86,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["oväntat bakslag", "pinsamt misslyckande", "hemligt samförstånd", "falsk identitet", "underjordisk rörelse"],
     correct: 2,
     explanation: "Maskopi betyder att flera samarbetar hemligt, ofta i något ohederligt syfte.",
+    hint: "Du hittar 'mask' i ordet, som i 'maskera' och 'maskeradbal'. Tänk på två som döljer något tillsammans.",
     source: "HT2025",
   },
   {
@@ -87,6 +95,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["snygga till", "visa upp", "sätta fast", "göra hål i", "vika ihop"],
     correct: 3,
     explanation: "Att perforera något är att göra små hål i det, t.ex. frimärken.",
+    hint: "Latin per = genom, forare = borra. Tänk på hur ett frimärksark ser ut och varför man kan riva loss ett i taget.",
     source: "HT2025",
   },
   {
@@ -95,6 +104,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["giftig", "explosiv", "frätande", "trögflytande", "flyktig"],
     correct: 4,
     explanation: "Eterisk kan beskriva ämnen som lätt avdunstar, eller något som känns overkligt lätt.",
+    hint: "Besläktat med 'eter', 'luftlager' och 'etern'. Tänk på lukten av eter eller en olja som försvinner snabbt.",
     source: "HT2025",
   },
   {
@@ -103,6 +113,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ärftlig", "smittsam", "långvarig", "inbillad", "allvarlig"],
     correct: 0,
     explanation: "Hereditär betyder att något går i arv, t.ex. en sjukdom.",
+    hint: "Samma stam som 'hereditet' och latinets heres, 'arvinge'. Läkare använder ordet om sjukdomar i släkten.",
     source: "HT2025",
   },
   {
@@ -111,6 +122,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stötta", "informera", "tona ner", "läxa upp", "förolämpa"],
     correct: 1,
     explanation: "Att underrätta någon är att formellt meddela dem något.",
+    hint: "Förleden 'under' och verbet 'rätta' ger 'rätta efter'. Tänk på en officiell skrivelse du får i brevlådan.",
     source: "HT2025",
   },
   {
@@ -119,6 +131,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fönsternisch", "helrenovering", "folklig behandlingsmetod", "spontan hyllning", "invigningsfest"],
     correct: 2,
     explanation: "En huskur är ett enkelt, ofta traditionellt sätt att bota krämpor hemma.",
+    hint: "Ordet är sammansatt: ett hus och ett botemedel. Tänk på mormors recept med honung och citron.",
     source: "HT2025",
   },
   {
@@ -127,6 +140,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["glömsk", "pessimistisk", "ouppmärksam", "fördomsfull", "kritisk"],
     correct: 3,
     explanation: "Trångsynt betyder att ha en snäv och oflexibel syn på saker.",
+    hint: "Efterleden 'synt' kommer från 'syn' och förleden 'trång' beskriver utrymme. Bilden är ett litet synfält.",
     source: "HT2025",
   },
   {
@@ -135,6 +149,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tvång", "stress", "motgång", "tröghet", "ansträngning"],
     correct: 4,
     explanation: "Möda är den kraft och energi man lägger ner på något svårt.",
+    hint: "Besläktat med 'mödosam' och 'bemöda sig'. Tänk på hur det känns efter att ha släpat tunga kassar uppför en backe.",
     source: "HT2025",
   },
   {
@@ -143,6 +158,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["besöka ofta", "variera", "justera noga", "gradera", "hålla koll på"],
     correct: 0,
     explanation: "Att frekventera en plats är att gå dit regelbundet.",
+    hint: "Latin: frequens, 'talrik'. Samma rot som engelskans frequent och svenskans 'frekvens'. Ordet passar in på stamkunder.",
     source: "HT2025",
   },
   {
@@ -151,6 +167,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överflöd", "förfining", "urskiljning", "komplikation", "uppskattning"],
     correct: 1,
     explanation: "Raffinemang står för finess och elegans, ofta i stil eller smak.",
+    hint: "Franskt lånord av 'raffiner' som i 'raffinerad'. Tänk på en sofistikerad restaurangs matlagning.",
     source: "HT2025",
   },
   {
@@ -159,6 +176,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["med hänsyn till", "samtidig med", "likvärdig med", "medskyldig till", "med hjälp av"],
     correct: 2,
     explanation: "Att vara i paritet med något är att ligga på samma nivå.",
+    hint: "Latin par, 'lika', som i 'paritet' i matte och 'jämställdhet'. Tänk på samma värde på båda sidor.",
     source: "HT2025",
   },
   {
@@ -167,6 +185,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mur", "kärra", "torn", "båt", "kruka"],
     correct: 3,
     explanation: "En gondol är en smal, platt roddbåt, känd från Venedigs kanaler.",
+    hint: "Förknippas med Venedig och romantik. En man med randig tröja står upprätt bak i den.",
     source: "HT2025",
   },
   {
@@ -175,6 +194,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hemlös", "arbetslös", "ensam", "tanklös", "fattig"],
     correct: 4,
     explanation: "Obemedlad betyder att sakna pengar eller ekonomiska tillgångar.",
+    hint: "Förleden 'o' betyder 'inte', och 'medel' kan vara pengar eller resurser. Vad saknas om man är 'o-be-medlad'?",
     source: "HT2025",
   },
   {
@@ -183,6 +203,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["grundläggande", "hållbar", "underförstådd", "vardaglig", "genomtänkt"],
     correct: 0,
     explanation: "Basal betyder att något ligger till grund för annat, är helt fundamentalt.",
+    hint: "Samma stam som 'bas' och 'basera'. Tänk på basen i en pyramid eller 'baskunskaper'.",
     source: "VT2025",
   },
   {
@@ -191,6 +212,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["olycka", "brist", "obehag", "tröghet", "misstag"],
     correct: 1,
     explanation: "En defekt är ett fel eller en bristfällighet i något.",
+    hint: "Latin deficere, 'svika, saknas'. Samma rot som engelskans defect och svenskans 'deficit'.",
     source: "VT2025",
   },
   {
@@ -199,6 +221,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["putsa", "fånga", "tömma", "lossa", "sänka"],
     correct: 2,
     explanation: "Att länsa något, t.ex. ett konto eller en brunn, är att tömma det helt.",
+    hint: "Ordet används om rövare som plundrar, men också om vatten som man 'länsar' ur en båt eller källare.",
     source: "VT2025",
   },
   {
@@ -207,6 +230,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["reflektion", "påpekande", "klargörande", "respons", "upprepning"],
     correct: 3,
     explanation: "Gensvar är den reaktion eller det svar man får på något man gjort eller sagt.",
+    hint: "Förleden 'gen' betyder 'tillbaka' (som i 'genväg'), och efterleden 'svar' hör ihop med 'svara'.",
     source: "VT2025",
   },
   {
@@ -215,6 +239,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["obegriplig", "kritisk", "angelägen", "omdömeslös", "omtvistad"],
     correct: 4,
     explanation: "Kontroversiell betyder att väcka delade meningar och debatt.",
+    hint: "Latin: contra = mot, vertere = vända. Ordet hör hemma i debatter där människor tycker olika.",
     source: "VT2025",
   },
   {
@@ -223,6 +248,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["äventyr", "hemligheter", "genvägar", "drömmar", "förklädnader"],
     correct: 0,
     explanation: "Eskapader är djärva, ofta lite oansvariga upptåg eller äventyr.",
+    hint: "Franskt lånord som ofta används i pluralform. Tänk på en uppsluppen gammal historia från ungdomen.",
     source: "VT2025",
   },
   {
@@ -231,6 +257,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ge", "ha", "byta", "ta", "få"],
     correct: 1,
     explanation: "Att förfoga över något är att ha rätt att bestämma över eller använda det.",
+    hint: "Ordet har 'för' och 'foga'. Tänk på att du som ägare 'kan foga' dig själv i sakerna efter eget val.",
     source: "VT2025",
   },
   {
@@ -239,6 +266,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["härlig", "underlig", "stor", "djup", "smaklig"],
     correct: 2,
     explanation: "Diger används ofta om en omfattande mängd eller ett tjockt verk.",
+    hint: "Tänk på en bok som är en riktig tegelsten, eller en förmögenhet som man inte kan räkna ihop i huvudet. Ordet säger något om mängd.",
     source: "VT2025",
   },
   {
@@ -247,6 +275,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["motsats", "bestämdhet", "förtvivlan", "motvilja", "besvikelse"],
     correct: 3,
     explanation: "Aversion är en stark ovilja eller avsky mot något.",
+    hint: "Latin aversio, 'bortvändande'. Tänk på att vända bort blicken från något du inte tål, till exempel stark lukt.",
     source: "VT2025",
   },
   {
@@ -255,6 +284,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["energiskt", "sällsynt", "försiktigt", "imponerande", "resultatlöst"],
     correct: 4,
     explanation: "Fåfängt beskriver ett försök som inte leder någonstans, förgäves.",
+    hint: "Förleden 'fåfäng' används också om den som bryr sig om sitt utseende. Här gäller något annat: att allt ändå var förgäves.",
     source: "VT2025",
   },
   {
@@ -263,6 +293,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["omöjlig att uthärda", "osannolik", "oanständig", "bekymmerslös", "svår att förstå"],
     correct: 0,
     explanation: "Olidlig betyder outhärdlig, till exempel om smärta eller väntan.",
+    hint: "Förleden 'o' är negation, och 'lidlig' kommer av 'lida' och 'tåla'. Hur känns det när smärtan aldrig släpper?",
     source: "VT2025",
   },
   {
@@ -271,6 +302,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["slutet", "resten", "minnet", "svaret", "reprisen"],
     correct: 1,
     explanation: "Återstoden är det som blir kvar när man tagit bort en del av något.",
+    hint: "Verbet 'återstå' (att finnas kvar) ligger bakom. Tänk på en tårtbit som ingen ätit upp.",
     source: "VT2025",
   },
   {
@@ -279,6 +311,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["välgörande", "oskyldigt", "förkastligt", "otänkbart", "förvånande"],
     correct: 2,
     explanation: "Klandervärt betyder att förtjäna kritik, moraliskt tvivelaktigt.",
+    hint: "Besläktat med 'klandra' och 'klander'. Efterleden 'värd' visar att något förtjänar det.",
     source: "VT2025",
   },
   {
@@ -287,6 +320,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avbrott", "stödfunktion", "förmedling", "ingripande", "inaktivitet"],
     correct: 3,
     explanation: "En intervention är ett aktivt ingripande i en situation, t.ex. i vårdsammanhang.",
+    hint: "Latin inter = mellan, venire = komma. Tänk på någon som 'kommer mellan' i en konflikt eller kris.",
     source: "VT2025",
   },
   {
@@ -295,6 +329,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["vakta", "hålla ihop", "närvara", "stanna kvar", "hjälpa"],
     correct: 4,
     explanation: "Att bistå någon är att ge stöd eller assistans.",
+    hint: "Gammalt verb med 'bi' i betydelsen 'vid sidan av' och 'stå'. Tänk på 'stå bi' i nöden.",
     source: "VT2025",
   },
   {
@@ -303,6 +338,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["omskrivning", "inledning", "förkortning", "överläggning", "utvidgning"],
     correct: 0,
     explanation: "En parafras återger innehållet i en text med andra ord.",
+    hint: "Grekiska para = bredvid och phrasis = uttryck. Tänk på hur du återberättar en lärares ord med dina egna.",
     source: "VT2025",
   },
   {
@@ -311,6 +347,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["konkret", "solid", "effektiv", "realistisk", "uppskattad"],
     correct: 1,
     explanation: "Gedigen betyder grundlig och pålitlig, ofta om kunskap eller hantverk.",
+    hint: "Samma stam som 'gedigna' guldtackor. Ordet används om rent guld, god kunskap och bra hantverk.",
     source: "VT2025",
   },
   {
@@ -319,6 +356,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["samtycka till", "förvänta sig", "nöja sig med", "roa sig med", "ge tillstånd till"],
     correct: 2,
     explanation: "Att hålla till godo med något är att acceptera det man har, även om det inte är optimalt.",
+    hint: "Ett uttryck vid måltider: 'godo' som i 'tillgodose'. Tänk på när det du får inte är ditt förstahandsval.",
     source: "VT2025",
   },
   {
@@ -327,6 +365,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avsmak", "uppgivenhet", "saknad", "ångest", "ansträngning"],
     correct: 3,
     explanation: "Vånda är ett starkt inre lidande eller kval.",
+    hint: "Besläktat med 'vånda' som i 'värk'. Tänk på nerverna dagen före en svår operation.",
     source: "VT2025",
   },
   {
@@ -335,6 +374,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fastställd", "praktisk", "berörd", "reserverad", "påhittad"],
     correct: 4,
     explanation: "Fingerad betyder påhittad eller iscensatt för att verka äkta.",
+    hint: "Latin fingere, 'forma, låtsas'. Ordet hör hemma i teatern och i bluffakturor med falska namn och adresser.",
     source: "VT2025",
   },
   {
@@ -343,6 +383,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["vara fientligt inställd", "vara spydig", "kritisera", "irritera", "göra någon illa"],
     correct: 0,
     explanation: "Att hysa agg mot någon är att bära på långvarig vrede eller motvilja.",
+    hint: "Agg kan man 'bära' i åratal. Tänk på två släkter som inte pratar med varandra efter en gammal oförrätt.",
     source: "HT2024",
   },
   {
@@ -351,6 +392,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["upplösning", "obruten följd", "evigt liv", "motsatsförhållande", "förlängning"],
     correct: 1,
     explanation: "Ett kontinuum är en obruten, gradvis övergående helhet.",
+    hint: "Latin continuus, 'sammanhängande'. Tänk på en skala utan hack, som en färgskala från rött till blått.",
     source: "HT2024",
   },
   {
@@ -359,6 +401,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["trött", "osäker", "yr", "klumpig", "hjälplös"],
     correct: 2,
     explanation: "Vimmelkantig betyder yr i huvudet, förvirrad av intryck.",
+    hint: "Förleden 'vimmel' är folkvimlet på ett torg. Efterleden 'kant' hänvisar till att stå på gränsen.",
     source: "HT2024",
   },
   {
@@ -367,6 +410,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["korall", "sjögräs", "parasit", "kräftdjur", "grodyngel"],
     correct: 3,
     explanation: "Krill är små havslevande kräftdjur som är en viktig föda för valar.",
+    hint: "Ordet är norskt och betyder 'liten fisk', men det är inte en fisk. Blåvalen lever på det.",
     source: "HT2024",
   },
   {
@@ -375,6 +419,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["bestämd", "ordentlig", "påfrestande", "motvillig", "återhållsam"],
     correct: 4,
     explanation: "Restriktiv betyder att man är sparsam eller begränsande i sitt tillåtande.",
+    hint: "Latin restringere, 'binda, begränsa'. Samma rot som engelskans restrict och svenskans 'restriktioner'.",
     source: "HT2024",
   },
   {
@@ -383,6 +428,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["utmärkande egenskap", "avvikande åsikt", "skiljelinje", "klokt agerande", "diskriminering"],
     correct: 0,
     explanation: "Ett särdrag är något som gör en person eller sak unik.",
+    hint: "Förleden 'sär' betyder 'åtskild' och efterleden 'drag' kan vara ett drag i ansiktet. Tänk på det som skiljer dig från alla andra.",
     source: "HT2024",
   },
   {
@@ -391,6 +437,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["rättvist", "naturligt", "intressant", "hoppfullt", "viktigt"],
     correct: 1,
     explanation: "Osökt betyder att något sker utan ansträngning, av sig självt.",
+    hint: "Efterleden 'sökt' kommer av 'söka'. Tänk på 'långsökt' och dess motsats: ingen anstränger sig.",
     source: "HT2024",
   },
   {
@@ -399,6 +446,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hjälpsamhet", "uppskattning", "inlevelseförmåga", "tillgivenhet", "ömsesidighet"],
     correct: 2,
     explanation: "Empati är förmågan att leva sig in i och förstå andras känslor.",
+    hint: "Grekiska en = i, pathos = känsla. Tänk på 'sympati' och att känna det en annan känner.",
     source: "HT2024",
   },
   {
@@ -407,6 +455,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tilltala", "intyga", "motstå", "uppskjuta", "förevisa"],
     correct: 3,
     explanation: "Att bordlägga en fråga är att skjuta upp beslutet till senare.",
+    hint: "Ordet innehåller 'bord' och 'lägga'. Tänk på riksdagen som lägger ett förslag på bordet.",
     source: "HT2024",
   },
   {
@@ -415,6 +464,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["snabb", "högljudd", "noggrann", "uthållig", "finkänslig"],
     correct: 4,
     explanation: "Taktfull betyder att vara varsam och hänsynsfull i hur man agerar.",
+    hint: "Efterleden 'full' och förleden 'takt' som i 'taktkänsla'. Tänk på hur du framför dåliga nyheter med omtanke.",
     source: "HT2024",
   },
   {
@@ -423,6 +473,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["gå sönder", "ge sig", "ta med sig", "dra ut på tiden", "jämnas ut"],
     correct: 0,
     explanation: "Att haverera är att kollapsa eller gå fullständigt sönder, t.ex. ett projekt.",
+    hint: "Kommer från sjöfart och flyg, 'haveri' på en båt eller ett plan. Datorn kan också göra det mitt i jobbet.",
     source: "HT2024",
   },
   {
@@ -431,6 +482,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fullständig", "permanent", "principfast", "ordinarie", "trovärdig"],
     correct: 1,
     explanation: "Bestående betyder att något varar över tid, inte tillfälligt.",
+    hint: "Förleden 'be-' och 'stå'. Tänk på ett avtryck som ligger kvar efter att stormen är över.",
     source: "HT2024",
   },
   {
@@ -439,6 +491,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ansträngning", "medgivande", "hjälp", "hänvisning", "tröst"],
     correct: 2,
     explanation: "Handräckning är praktisk hjälp, ofta i en akut eller officiell situation.",
+    hint: "Hand och räcka. Tänk på 'räcka ut en hand' när polisen eller grannen behöver stöd i en nödsituation.",
     source: "HT2024",
   },
   {
@@ -447,6 +500,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stenig", "gropig", "halkig", "sumpig", "risig"],
     correct: 3,
     explanation: "Sank mark är blöt och mjuk, nästan som en myr.",
+    hint: "Ordet hör ihop med att sjunka. Tänk på stövlarna som fastnar i en äng på våren.",
     source: "HT2024",
   },
   {
@@ -455,6 +509,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["svårighet", "misslyckande", "spontan reflex", "förräderi", "häftig kritik"],
     correct: 4,
     explanation: "Mothugg är en skarp motreaktion eller kritik mot något som sagts.",
+    hint: "Mot- och hugg som i 'hugga'. Tänk på hur man hugger tillbaka med ord mot en motståndare.",
     source: "HT2024",
   },
   {
@@ -463,6 +518,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["av en tillfällighet", "helt plötsligt", "upprepade gånger", "i tur och ordning", "då och då"],
     correct: 0,
     explanation: "Händelsevis betyder av en slump, oavsiktligt.",
+    hint: "Händelse och efterleden '-vis' (som i 'möjligen'). Tänk på 'jag träffade henne händelsevis på bussen'.",
     source: "HT2024",
   },
   {
@@ -471,6 +527,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["uthållighet", "styrka och smidighet", "följsamhet", "balans och kontroll", "snabbhet"],
     correct: 1,
     explanation: "Spänst är kroppens förmåga till snabb, kraftfull rörelse.",
+    hint: "Besläktat med 'spänna' och 'spänstig'. Tänk på hur en gymnast eller kattunge hoppar i höjden.",
     source: "HT2024",
   },
   {
@@ -479,6 +536,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["uttorkad", "innehållslös", "genomsläpplig", "kompakt", "fjädrande"],
     correct: 2,
     explanation: "Poröst material har små hål som släpper igenom vätska eller luft.",
+    hint: "Grekiska poros, 'gång, öppning'. Tänk på en tvättsvamp eller en bit pimpsten med små kanaler.",
     source: "HT2024",
   },
   {
@@ -487,6 +545,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["god hälsa", "rationell lösning", "orsakssamband", "finansiell stabilitet", "styrkedemonstration"],
     correct: 3,
     explanation: "Soliditet mäter hur stabil en verksamhets ekonomi är.",
+    hint: "Samma rot som 'solid' och 'solidera'. Tänk på årsredovisningens nyckeltal som visar om ett bolag klarar en kris.",
     source: "HT2024",
   },
   {
@@ -495,6 +554,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ge upp", "gå vilse", "hamna efter", "mista förståndet", "bli mållös"],
     correct: 4,
     explanation: "Att förlora målföret är att bli så överraskad att man inte kan tala.",
+    hint: "Förled 'förlora' och 'målföre' som är 'förmågan att tala'. Tänk på en sprudlande vän som plötsligt blir tyst av chock.",
     source: "HT2024",
   },
   {
@@ -503,6 +563,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["gräl", "brist", "tvekan", "besvikelse", "undantag"],
     correct: 0,
     explanation: "En dispyt är en tvist eller meningsskiljaktighet mellan parter.",
+    hint: "Latin disputare, 'diskutera'. Samma stam som engelskans dispute och svenskans 'disputation'.",
     source: "VT2024",
   },
   {
@@ -511,6 +572,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tydligt", "viktigt", "utmanande", "informativt", "noggrant"],
     correct: 1,
     explanation: "Angeläget betyder brådskande viktigt, något som kräver uppmärksamhet.",
+    hint: "Verbet 'angå' ligger bakom. Tänk på ett brev märkt 'brådskande' som du bör öppna först.",
     source: "VT2024",
   },
   {
@@ -519,6 +581,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överskott", "urval", "tillägg", "innehåll", "understöd"],
     correct: 2,
     explanation: "Ett supplement kompletterar något som redan finns.",
+    hint: "Latin supplere, 'fylla på'. Tänk på ett kosttillskott eller en bilaga till en tidning.",
     source: "VT2024",
   },
   {
@@ -527,6 +590,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["högtidlig", "artig", "försiktig", "respekterad", "undanskymd"],
     correct: 3,
     explanation: "Aktad betyder att åtnjuta stor respekt och aktning.",
+    hint: "Samma stam som 'akta' och 'aktning'. Tänk på en person som alla nickar vördnadsfullt åt på stan.",
     source: "VT2024",
   },
   {
@@ -535,6 +599,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["granska", "fastställa", "ifrågasätta", "samordna", "avvisa"],
     correct: 4,
     explanation: "Att rata något är att bestämt välja bort det.",
+    hint: "Kommer från 'ratten'. Tänk på ett förslag som kastas ut av hela styrelsen utan diskussion.",
     source: "VT2024",
   },
   {
@@ -543,6 +608,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["svårt angripen", "helt uttorkad", "nästan slut", "mycket ledsen", "lämnad utanför"],
     correct: 0,
     explanation: "Illa åtgången betyder svårt skadad eller medtagen.",
+    hint: "'Åtgången' kommer från 'gå åt'. Tänk på hur en gammal bok ser ut efter en vattenskada.",
     source: "VT2024",
   },
   {
@@ -551,6 +617,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avlagring", "hållbarhet", "prestation", "tryck", "försörjning"],
     correct: 1,
     explanation: "Bärkraft är förmågan att hålla över tid utan att kollapsa.",
+    hint: "'Bära' och 'kraft'. Tänk på bron som ska klara tunga lastbilar eller en idé som ska stå sig över tid.",
     source: "VT2024",
   },
   {
@@ -559,6 +626,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tala gåtfullt", "vara generös", "leva i overksamhet", "besvära i onödan", "sprida oro"],
     correct: 2,
     explanation: "Att vegetera är att passivt låta tiden gå utan att göra något.",
+    hint: "Latin vegetare. Tänk på hur en kruka med en växt står på fönsterbrädan och inte gör något annat än att finnas.",
     source: "VT2024",
   },
   {
@@ -567,6 +635,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tillfällig", "obekymrad", "välvillig", "jämlik", "ursprunglig"],
     correct: 3,
     explanation: "Egalitär betyder att sträva efter jämlikhet mellan människor.",
+    hint: "Franska égal, 'lika'. Samma rot som i 'egalitet'. Tänk på ett samhälle där alla ska ha samma värde och chanser.",
     source: "VT2024",
   },
   {
@@ -575,6 +644,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["kort historia", "utvald grupp", "tapper skara", "begränsad mängd", "lång rad"],
     correct: 4,
     explanation: "En kavalkad är en lång följd av företeelser eller händelser i procession.",
+    hint: "Italienska cavalcare, 'rida'. Tänk på en färgglad karnevalsparad som drar förbi.",
     source: "VT2024",
   },
   {
@@ -583,6 +653,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tillsluta", "upphöra", "undersöka", "avgöra", "omringa"],
     correct: 0,
     explanation: "Att försegla något är att stänga det helt och hållet, ofta officiellt.",
+    hint: "Latin sigillum, 'sigill'. Tänk på ett vaxsigill på ett kungligt brev eller en tejpad kartong.",
     source: "VT2024",
   },
   {
@@ -591,6 +662,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["pålitlig person", "självlärd person", "mäktig person", "egoistisk person", "inbunden person"],
     correct: 1,
     explanation: "En autodidakt har lärt sig sina kunskaper på egen hand, utan formell utbildning.",
+    hint: "Grekiska autos = själv, didaktos = lärd. Tänk på någon som lärt sig en hel disciplin med hjälp av bibliotekets böcker.",
     source: "VT2024",
   },
   {
@@ -599,6 +671,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["nära intill", "bortsett från", "i förhållande till", "som alternativ till", "med tanke på"],
     correct: 2,
     explanation: "Gentemot används för att jämföra eller ställa något mot något annat.",
+    hint: "Gen- och -emot. Tänk på ett 'jämfört med' eller 'mot' i meningar som 'hans hållning gentemot kollegor'.",
     source: "VT2024",
   },
   {
@@ -607,6 +680,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fri", "farlig", "förlamad", "fattig", "feg"],
     correct: 3,
     explanation: "Utarmad betyder att ha förlorat sina resurser eller sin näring.",
+    hint: "'Arm' är det gamla ordet för den som saknar pengar. Tänk på åkermark som brukats så hårt att jorden blivit näringslös.",
     source: "VT2024",
   },
   {
@@ -615,6 +689,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["enformigt arbete", "förstahandsval", "kvalificerad gissning", "stor noggrannhet", "slumpartat urval"],
     correct: 4,
     explanation: "Ett axplock är ett litet, representativt urval ur en större mängd.",
+    hint: "Ett 'ax' är ett sädesax. Tänk på att plocka några ax för att provsmaka årets skörd.",
     source: "VT2024",
   },
   {
@@ -623,6 +698,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["sällsynt", "nyanserad", "högtidlig", "överdriven", "uttrycksfull"],
     correct: 0,
     explanation: "Exceptionell betyder utomordentlig, långt över det vanliga.",
+    hint: "Latin exceptio, 'undantag'. Tänk på en elev som får betyg långt över normalen.",
     source: "VT2024",
   },
   {
@@ -631,6 +707,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["anropa", "meddela", "besvara", "instämma", "efterfråga"],
     correct: 1,
     explanation: "Att tillkännage något är att offentligt informera om det.",
+    hint: "Förleden 'till-' och verbet 'känna' i 'känna till'. Tänk på en talesperson som läser upp ett officiellt besked för pressen.",
     source: "VT2024",
   },
   {
@@ -639,6 +716,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["löfte", "misstanke", "vädjan", "övertygelse", "intryck"],
     correct: 2,
     explanation: "En appell är en känsloladdad uppmaning eller begäran.",
+    hint: "Latin appellare, 'vända sig till'. Tänk på en insamlingsorganisation som skriver ett brev efter en katastrof.",
     source: "VT2024",
   },
   {
@@ -647,6 +725,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["intensiv", "inställsam", "intressant", "invecklad", "inåtvänd"],
     correct: 3,
     explanation: "Intrikat betyder komplicerad och svår att reda ut.",
+    hint: "Latin intricare, 'trassla in'. Samma stam som 'intrig'. Tänk på ett nystan eller ett avancerat urverk.",
     source: "VT2024",
   },
   {
@@ -655,6 +734,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["klarhet", "omröstning", "tillfällighet", "förbättring", "misslyckande"],
     correct: 4,
     explanation: "Ett debacle är ett spektakulärt och pinsamt misslyckande.",
+    hint: "Franska débâcle, ursprungligen isbrytning på en flod. Tänk på en karriär eller ett val som rasar helt.",
     source: "VT2024",
   },
   {
@@ -663,6 +743,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["välvårdad", "stolt", "måttfull", "allvarlig", "förmögen"],
     correct: 0,
     explanation: "Proper betyder prydlig och ordentlig i sitt yttre.",
+    hint: "Latin proprius, 'egen'. Tänk på en pojke som fått kammad kalufs och struken skjorta inför bröllopet.",
     source: "HT2023",
   },
   {
@@ -671,6 +752,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["filthatt", "gummisko", "slipsnål", "högtidsdräkt", "slängkappa"],
     correct: 1,
     explanation: "En galosch är en vattentät sko man drar utanpå den vanliga skon.",
+    hint: "Fransk härstamning. Tänk på regniga dagar och att slippa blöta fötter, trots att skorna är fina.",
     source: "HT2023",
   },
   {
@@ -679,6 +761,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["sörja", "ljuga", "förneka", "förbjuda", "störa"],
     correct: 2,
     explanation: "Att dementera ett påstående är att officiellt förklara att det är felaktigt.",
+    hint: "Latin mentiri, 'ljuga'. Ordet används av politiker eller press när ett rykte flyger omkring.",
     source: "HT2023",
   },
   {
@@ -687,6 +770,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["orsaken", "undantaget", "motståndet", "nackdelen", "resultatet"],
     correct: 3,
     explanation: "Medaljens baksida syftar på den mindre positiva sidan av något gott.",
+    hint: "Bilden är en medalj med två sidor. Tänk på den glansfulla framsidan och vad som är på andra sidan.",
     source: "HT2023",
   },
   {
@@ -695,6 +779,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["som orsakar smärta", "som rör synen", "som beror på kosten", "som sker reflexmässigt", "som gäller hjärnan"],
     correct: 4,
     explanation: "Cerebral relaterar till hjärnan, ofta i betydelsen intellektuell.",
+    hint: "Latin cerebrum. Samma stam som 'cerebellum' (lillhjärnan). Tänk på ett ord som en läkare använder om skallens innehåll.",
     source: "HT2023",
   },
   {
@@ -703,6 +788,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["utbredd plåga", "rastlöshet", "formell begäran", "uppståndelse", "personligt erbjudande"],
     correct: 0,
     explanation: "Hemsökelse är en svår och långvarig prövning som drabbar många.",
+    hint: "Verbet 'hemsöka' används om spöken. Här handlar det om en epidemi eller en naturkatastrof som slår mot en trakt.",
     source: "HT2023",
   },
   {
@@ -711,6 +797,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["lärorik", "användbar", "begriplig", "tillgänglig", "lättskött"],
     correct: 1,
     explanation: "Tjänlig betyder lämplig eller dugande för ett visst ändamål.",
+    hint: "Besläktat med 'tjäna' och 'tjänst'. Tänk på något som 'duger till' en viss uppgift.",
     source: "HT2023",
   },
   {
@@ -719,6 +806,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stå ut med", "räknas in i", "bero på", "utsättas för", "ha tilltro till"],
     correct: 2,
     explanation: "Att vara avhängig av något är att vara beroende av det.",
+    hint: "'Hänga' och 'av'. Tänk på något som hänger i en tråd och vad som får den tråden att hålla.",
     source: "HT2023",
   },
   {
@@ -727,6 +815,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["orimligt antagande", "osann uppgift", "omild behandling", "ogillande anmärkning", "olyckligt misstag"],
     correct: 3,
     explanation: "Klander är kritik som riktas mot någons handlande.",
+    hint: "Samma stam som 'klandra'. Tänk på lärarens rödpenna eller ett missnöjt omdöme från chefen.",
     source: "HT2023",
   },
   {
@@ -735,6 +824,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["trevlig", "bekymrad", "tankfull", "inställsam", "noggrann"],
     correct: 4,
     explanation: "Omsorgsfull betyder att utföra något med stor omtanke och noggrannhet.",
+    hint: "Ordet innehåller 'omsorg'. Tänk på hur man behandlar ett ömtåligt föremål, som ett porslinsfat.",
     source: "HT2023",
   },
   {
@@ -743,6 +833,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["få raserianfall", "gå vilse", "vara försenad", "bli överlycklig", "ramla omkull"],
     correct: 0,
     explanation: "Att löpa amok är att i ursinne tappa all kontroll.",
+    hint: "Malajiskt amuk, 'rasande anfall'. Tänk på en man som slår sönder allt han kommer åt i ett vredesutbrott.",
     source: "HT2023",
   },
   {
@@ -751,6 +842,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["bekant", "märkbar", "särskild", "passande", "hastig"],
     correct: 1,
     explanation: "Påtaglig betyder tydligt kännbar eller synlig.",
+    hint: "Verbet 'påta' (att känna med händerna). Tänk på en skillnad som du faktiskt kan ta på.",
     source: "HT2023",
   },
   {
@@ -759,6 +851,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["av välvilja", "i förtroende", "med avsikt", "på rätt sätt", "utan tvekan"],
     correct: 2,
     explanation: "Uppsåtligen betyder medvetet och avsiktligt, ofta i juridiska sammanhang.",
+    hint: "Förleden 'uppsåt' är juridisk term för vad man ämnar göra. Tänk på skillnaden mellan oaktsamhet och en medveten handling.",
     source: "HT2023",
   },
   {
@@ -767,6 +860,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["blodgivning", "ärrbildning", "röntgenbild", "vävnadsprov", "transplantation"],
     correct: 3,
     explanation: "En biopsi är ett vävnadsprov som tas för undersökning.",
+    hint: "Grekiska bios = liv, opsis = synande. Tänk på läkaren som tar en liten bit för att titta på i mikroskop.",
     source: "HT2023",
   },
   {
@@ -775,6 +869,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["utmana", "förakta", "avböja", "utvisa", "avsätta"],
     correct: 4,
     explanation: "Att detronisera någon är att beröva dem makten, avsätta en härskare.",
+    hint: "Latin de = bort, thronus = tron. Tänk på en kung som tvingas lämna palatset efter en revolution.",
     source: "HT2023",
   },
   {
@@ -783,6 +878,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["som inte ger resultat", "mager", "utan innehåll", "utan anledning", "ofullständig"],
     correct: 0,
     explanation: "Fruktlös betyder resultatlös, utan framgång.",
+    hint: "Frukt och -lös. Tänk på ett träd som aldrig bär några äpplen, trots all omsorg.",
     source: "HT2023",
   },
   {
@@ -791,6 +887,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["medelvägen", "det väsentliga", "det synliga", "den större delen", "avbildningen"],
     correct: 1,
     explanation: "Kvintessensen är kärnan eller det viktigaste i något.",
+    hint: "Latin quinta essentia, 'femte väsendet'. Tänk på 'destillerad' innebörd: det som blir kvar när allt onödigt kokats bort.",
     source: "HT2023",
   },
   {
@@ -799,6 +896,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["exakt", "erfaren", "envis", "egoistisk", "enkelriktad"],
     correct: 2,
     explanation: "Enveten betyder ihärdigt bestämd, ovillig att ge sig.",
+    hint: "Samma stam som 'veta' och 'viljestark'. Tänk på ett barn som vägrar byta åsikt i mataffären.",
     source: "HT2023",
   },
   {
@@ -807,6 +905,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ångra", "tillåta", "tvivla", "ordna", "upprepa"],
     correct: 3,
     explanation: "Att ombesörja något är att se till att det blir gjort.",
+    hint: "Latin curare, 'sörja för'. Tänk på att ta hand om en flytt, biljetter och hotell åt andra.",
     source: "HT2023",
   },
   {
@@ -815,6 +914,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["oväntad gåva", "tillfällig lättnad", "snabb förändring", "positivt besked", "plötslig impuls"],
     correct: 4,
     explanation: "En ingivelse är en spontan känsla eller idé som dyker upp.",
+    hint: "Verbet 'ingiva' och 'ge in'. Tänk på en tanke som 'blåser in' i huvudet utan förvarning.",
     source: "HT2023",
   },
   {
@@ -823,6 +923,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["rekommendera", "reflektera", "reservera", "resonera", "regissera"],
     correct: 0,
     explanation: "Att förespråka något är att argumentera för och stödja det.",
+    hint: "Förled 'före-' och 'språk'. Tänk på en talesperson som står upp för en sak i debatten.",
     source: "VT2023",
   },
   {
@@ -831,6 +932,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["maktlös", "grundlös", "ansvarslös", "gränslös", "meningslös"],
     correct: 1,
     explanation: "Obefogad betyder omotiverad, utan giltiga skäl.",
+    hint: "'Befogad' används för välgrundad oro, och 'o-' vänder på det. Tänk på rädsla som saknar verklig orsak.",
     source: "VT2023",
   },
   {
@@ -839,6 +941,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["symbol", "underhåll", "förpackning", "avspärrning", "handelsförbud"],
     correct: 2,
     explanation: "Emballage är materialet som skyddar en vara vid transport och förvaring.",
+    hint: "Franska emballer, 'packa in'. Tänk på kartongen, plasten och bubbelplasten runt en ny telefon.",
     source: "VT2023",
   },
   {
@@ -847,6 +950,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ofta", "förut", "punktligt", "ibland", "numera"],
     correct: 3,
     explanation: "Tidvis betyder vid vissa tider, med jämna mellanrum.",
+    hint: "Av 'tid' och -vis. Tänk på vädret när 'soligt tidvis' står i prognosen.",
     source: "VT2023",
   },
   {
@@ -855,6 +959,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["nytänkande", "självsäker", "uppjagad", "förväntansfull", "påträngande"],
     correct: 4,
     explanation: "Framfusig betyder att uppträda oförskämt eller pockande.",
+    hint: "Exempel: 'Han trängde sig fram i kön utan att fråga någon.' Ordet beskriver hur han uppträdde.",
     source: "VT2023",
   },
   {
@@ -863,6 +968,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överdåd", "värdighet", "merkostnad", "passion", "övermod"],
     correct: 0,
     explanation: "Extravagans är ett flärdfullt, kostsamt sätt att leva eller uppträda.",
+    hint: "Latin extra = utanför, vagari = vandra. Tänk på en rik som festar långt över gränsen för det rimliga.",
     source: "VT2023",
   },
   {
@@ -871,6 +977,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ta sitt ansvar", "lugnt invänta något", "vara i underläge", "fatta ett beslut", "visa sin styrka"],
     correct: 1,
     explanation: "Att ge sig till tåls är att tålmodigt vänta ut något.",
+    hint: "Ordet innehåller 'tåls' av 'tålamod'. Tänk på att vänta på besked efter ett jobbintervju.",
     source: "VT2023",
   },
   {
@@ -879,6 +986,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["notställ", "pianostycke", "röstläge", "slagverkare", "taktpinne"],
     correct: 2,
     explanation: "Baryton är ett manligt sångröstläge mellan tenor och bas.",
+    hint: "Italienskt lånord från grekiskans barys, 'tung'. Tänk på operasångare och hur en sångare placeras mellan olika röster.",
     source: "VT2023",
   },
   {
@@ -887,6 +995,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["kraftig", "bristfällig", "åtgärdad", "överfull", "avslutad"],
     correct: 3,
     explanation: "Rågad betyder fylld till brädden, mer än full.",
+    hint: "Rågat mått är gammalt hushållsmått. Tänk på en tesked med sockret som välter över kanten.",
     source: "VT2023",
   },
   {
@@ -895,6 +1004,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["reaktion", "jämvikt", "slutresultat", "förbindelse", "levnadsregel"],
     correct: 4,
     explanation: "En maxim är en kort, allmänt vedertagen livsregel eller sanning.",
+    hint: "Latin maxima, 'största'. Tänk på ett ordspråk som 'rent bo, gott liv' att styra sitt liv efter.",
     source: "VT2023",
   },
   {
@@ -903,6 +1013,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["envis och uthållig", "snabb och explosiv", "hård och okänslig", "ivrig och hoppfull", "erfaren och duktig"],
     correct: 0,
     explanation: "Ihärdig betyder att fortsätta trots motstånd, envist uthållig.",
+    hint: "Besläktat med 'ihärdigt' i betydelsen 'hård'. Tänk på en långdistanslöpare som aldrig släpper taget.",
     source: "VT2023",
   },
   {
@@ -911,6 +1022,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ensamhet", "ärftlighet", "vänlighet", "fromhet", "sjuklighet"],
     correct: 1,
     explanation: "Hereditet är läran om och förekomsten av arv mellan generationer.",
+    hint: "Latin heres, 'arvinge'. Ordet används i biologin om genetik och släkt.",
     source: "VT2023",
   },
   {
@@ -919,6 +1031,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tillägna sig", "instämma i", "fundera på", "ta itu med", "besluta sig för"],
     correct: 2,
     explanation: "Att begrunda något är att tänka igenom det noggrant.",
+    hint: "'Grund' i 'begrunda' är samma som i 'grundlig'. Tänk på att gräva djupt i en tanke på en promenad.",
     source: "VT2023",
   },
   {
@@ -927,6 +1040,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["blyg", "ytlig", "modern", "passande", "enkel"],
     correct: 3,
     explanation: "Klädsam betyder att klä eller passa någon väl.",
+    hint: "Verbet 'kläda' i betydelsen 'passa'. Tänk på en färg som 'klär' dig vid ett fotografi.",
     source: "VT2023",
   },
   {
@@ -935,6 +1049,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["av tvång", "till slut", "på pricken", "utan problem", "nästan inte"],
     correct: 4,
     explanation: "Med nöd och näppe betyder att något lyckades precis, med minsta marginal.",
+    hint: "Nöd och näppe är gamla ord för 'knapp'. Tänk på att hinna med tåget just som dörrarna stängs.",
     source: "VT2023",
   },
   {
@@ -943,6 +1058,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["resultat", "minskning", "avvikelse", "sannolikhet", "överskott"],
     correct: 0,
     explanation: "Utfall är resultatet eller effekten av en handling eller process.",
+    hint: "'Falla ut'. Tänk på hur en match eller ett val slutar när allt är klart.",
     source: "VT2023",
   },
   {
@@ -951,6 +1067,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["slutföra", "göra beständig", "jämna till", "göra avtryck", "stänga inne"],
     correct: 1,
     explanation: "Att cementera något är att befästa och göra det bestående.",
+    hint: "Latin caementum, 'stenar'. Tänk på hur murbruk binder ihop tegel för att en mur ska stå i hundra år.",
     source: "VT2023",
   },
   {
@@ -959,6 +1076,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["inbillad", "grundlurad", "fascinerad", "förvirrad", "överraskad"],
     correct: 2,
     explanation: "Trollbunden betyder helt fångad av intresse eller förundran.",
+    hint: "Troll och bunden. Tänk på ett barn som lyssnar öppenmunt på sagoberättaren.",
     source: "VT2023",
   },
   {
@@ -967,6 +1085,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["finslipad yta", "stilfull dekoration", "oönskad beläggning", "genomskinlig färg", "förgrenat mönster"],
     correct: 3,
     explanation: "Lasyr är ett tunt, genomskinligt färgskikt som används i måleri.",
+    hint: "Ordet används av hantverkare och konstnärer. Tänk på träbehandling där man ser vedens ådring genom färgen.",
     source: "VT2023",
   },
   {
@@ -975,6 +1094,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avlägsen", "betydelselös", "tillfällig", "ostadig", "obestämd"],
     correct: 4,
     explanation: "Vag betyder oklar och diffus, svår att precisera.",
+    hint: "Latin vagus, 'kringvandrande'. Tänk på 'vagabond' och beskrivningen 'det var ungefär så där'.",
     source: "VT2023",
   },
   {
@@ -983,6 +1103,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["betydelse", "undantag", "skillnad", "måluppfyllelse", "uppfattning"],
     correct: 0,
     explanation: "Signifikans anger hur betydelsefullt eller statistiskt säkerställt ett resultat är.",
+    hint: "Latin signum + facere, 'göra tecken'. Tänk på statistik: är resultatet slumpen eller något att ta på allvar?",
     source: "HT2022",
   },
   {
@@ -991,6 +1112,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["känslosam", "synliggjord", "värdelös", "övergiven", "undanröjd"],
     correct: 1,
     explanation: "Blottlagd betyder friläggd eller avslöjad, gjord synlig.",
+    hint: "Förleden 'blott' betyder 'bar' (som 'blotta'). Tänk på arkeologen som borstar bort jord och finner en gammal mur.",
     source: "HT2022",
   },
   {
@@ -999,6 +1121,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["uttorkning", "blödning", "celldelning", "sårläkning", "befruktning"],
     correct: 2,
     explanation: "Mitos är den process där en cell delar sig i två identiska celler.",
+    hint: "Grekiska mitos, 'tråd'. Tänk på bilder i biologiboken av kromosomer som delas och dras isär.",
     source: "HT2022",
   },
   {
@@ -1007,6 +1130,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["påpeka", "hindra", "ersätta", "ändra", "förneka"],
     correct: 3,
     explanation: "Att revidera något är att granska och göra ändringar i det.",
+    hint: "Latin re = om, videre = se. Tänk på att läsa om en lag eller kontrakt och korrigera där det behövs.",
     source: "HT2022",
   },
   {
@@ -1015,6 +1139,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hållbar", "i fast form", "naturell", "dubbelsidig", "olikartad"],
     correct: 4,
     explanation: "Heterogen betyder sammansatt av olika, blandade delar.",
+    hint: "Grekiska hetero = annan, genos = släkte. Tänk på en klass med elever med helt olika bakgrund.",
     source: "HT2022",
   },
   {
@@ -1023,6 +1148,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förutseende", "förhoppning", "upplysning", "övertygelse", "utveckling"],
     correct: 0,
     explanation: "Framsynthet är förmågan att förutse framtida behov eller händelser.",
+    hint: "Samma stam som 'framsyn'. Tänk på den som köper ett paraply innan molnen syns.",
     source: "HT2022",
   },
   {
@@ -1031,6 +1157,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ångra sig bittert", "göra mer vänligt inställd", "lämna i fred", "inge förtroende", "be om en tjänst"],
     correct: 1,
     explanation: "Att blidka någon är att lugna deras vrede genom vänligt bemötande.",
+    hint: "Besläktat med 'blid' (mild). Tänk på att ge en ilsken guds offergåvor så att stormen mojnar.",
     source: "HT2022",
   },
   {
@@ -1039,6 +1166,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["himlakropp", "spiralform", "stjärnsystem", "tidsrymd", "planetformation"],
     correct: 2,
     explanation: "En galax är ett enormt system av stjärnor, gas och stoft.",
+    hint: "Grekiska gala, 'mjölk'. Vintergatan är en sådan, och namnet har med mjölk att göra.",
     source: "HT2022",
   },
   {
@@ -1047,6 +1175,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["snäll", "pålitlig", "utmanande", "blygsam", "populär"],
     correct: 3,
     explanation: "Modest betyder anspråkslös, utan skryt.",
+    hint: "Latin modestus, 'måttfull'. Tänk på någon som tackar för en pris och viftar bort beröm.",
     source: "HT2022",
   },
   {
@@ -1055,6 +1184,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["naiv och godtrogen", "sviken och olycklig", "hård och känslokall", "hatisk och hämndlysten", "orolig och rastlös"],
     correct: 4,
     explanation: "Uttrycket beskriver någon som vandrar rastlöst, utan ro, likt ett spöke.",
+    hint: "Ande är ett spöke eller själ. 'Osalig' kan vara den som inte får frid efter döden. Tänk på bilden av någon som spökar omkring.",
     source: "HT2022",
   },
   {
@@ -1063,6 +1193,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["som hör till det egna landet", "som har vissa brister", "som uppskattas av många", "som kan verka obehaglig", "som har använts tidigare"],
     correct: 0,
     explanation: "Inhemsk betyder inrikes, tillhörande det egna landet.",
+    hint: "Förleden 'in' och 'hem'. Tänk på en tomat som odlats i Sverige, jämfört med en importerad.",
     source: "HT2022",
   },
   {
@@ -1071,6 +1202,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["bibelcitat", "meditationsformel", "takmålning", "lyckoamulett", "symmetrisk bild"],
     correct: 1,
     explanation: "Ett mantra är en fras eller ett ljud som upprepas vid meditation.",
+    hint: "Sanskrit: manas = tanke, tra = redskap. Tänk på yogan och en fras man säger om och om igen.",
     source: "HT2022",
   },
   {
@@ -1079,6 +1211,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förbruka", "förfalska", "förstöra", "förkasta", "förnedra"],
     correct: 2,
     explanation: "Att fördärva något är att skada det så att det blir odugligt.",
+    hint: "Förled 'för-' och 'därv' (samma som 'fördärv'). Tänk på en äpplekart där ett ruttet äpple smittar de andra.",
     source: "HT2022",
   },
   {
@@ -1087,6 +1220,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["utan tröst", "utan hjälp", "utan skydd", "utan nåd", "utan tvivel"],
     correct: 3,
     explanation: "Utan pardon betyder skoningslöst, utan förbarmande.",
+    hint: "Franska pardon, 'förlåtelse'. Tänk på en domare som inte visar någon nåd eller tolerans.",
     source: "HT2022",
   },
   {
@@ -1095,6 +1229,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["beskrivande", "lätthanterlig", "förebyggande", "långsiktig", "läkande"],
     correct: 4,
     explanation: "Terapeutisk syftar på något som har en läkande eller lindrande effekt.",
+    hint: "Grekiska therapeia, 'vård'. Tänk på att pyssla, måla eller gå i skogen för att må bättre.",
     source: "HT2022",
   },
   {
@@ -1103,6 +1238,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mindre avvikelse", "stort misstag", "olyckshändelse", "helomvändning", "oväntat beslut"],
     correct: 0,
     explanation: "Ett avsteg är att man avviker något från en regel eller plan.",
+    hint: "Av 'steg' och 'av'. Tänk på att hoppa av från stigen en bit, för att sedan gå tillbaka.",
     source: "HT2022",
   },
   {
@@ -1111,6 +1247,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ödsligt", "allvarligt", "skenbart", "knappt", "dolt"],
     correct: 1,
     explanation: "Gravt förstärker ofta ett negativt tillstånd, t.ex. gravt handikappad.",
+    hint: "Samma stam som 'grav' och 'gravallvarlig'. Tänk på läkarens besked om en skada som är mer än lindrig.",
     source: "HT2022",
   },
   {
@@ -1119,6 +1256,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["naiv", "grinig", "outtröttlig", "självisk", "eftertänksam"],
     correct: 2,
     explanation: "Enträgen betyder ihärdigt och bestämt bedjande, som inte ger upp.",
+    hint: "'Träget' i 'trägen' är släkt med 'träget arbete'. Tänk på ett barn som tjatar om glass hela eftermiddagen.",
     source: "HT2022",
   },
   {
@@ -1127,6 +1265,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["motsats", "motgång", "motkraft", "motvilja", "motsägelse"],
     correct: 3,
     explanation: "Antipati är en stark ogillande känsla mot någon eller något.",
+    hint: "Grekiska anti = mot, pathos = känsla. Det är motsatsen till sympati.",
     source: "HT2022",
   },
   {
@@ -1135,6 +1274,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["visa intresse", "blanda ihop", "granska noga", "skära upp", "skämta ironiskt"],
     correct: 4,
     explanation: "Att raljera är att göra sig lustig över något på ett lätt hånfullt sätt.",
+    hint: "Franska railler, 'håna'. Tänk på en klasskamrat som drar vitsar på någon med ett litet hånleende.",
     source: "HT2022",
   },
   {
@@ -1143,6 +1283,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["kroppsliga besvär vid avvänjning", "ökad aptit", "plötslig eufori", "djup sömn", "förhöjd puls av glädje"],
     correct: 0,
     explanation: "Abstinens är de fysiska och psykiska besvär som uppstår när man slutar med t.ex. ett beroendeframkallande ämne.",
+    hint: "Latin abstinere, 'avhålla sig'. Tänk på darrningar, svett och oro hos en rökare som slutar tvärt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1151,6 +1292,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överdrivet komplicerad", "lämplig för ändamålet", "svårbegriplig", "kostsam", "föråldrad"],
     correct: 1,
     explanation: "Adekvat betyder att något passar precis för sitt syfte.",
+    hint: "Latin adaequare, 'göra jämn'. Tänk på ett svar som 'räcker precis' till frågan.",
     source: "egen (HP-typ)",
   },
   {
@@ -1159,6 +1301,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["äkta och spontan", "sansad och lugn", "onaturligt tillgjord", "blyg och tillbakadragen", "otydlig i sitt tal"],
     correct: 2,
     explanation: "Affekterad beskriver ett tillgjort, överdrivet sätt att uttrycka sig.",
+    hint: "Latin affectare, 'sträva efter'. Tänk på en skådespelare som överdriver gester så att alla ser att det är spel.",
     source: "egen (HP-typ)",
   },
   {
@@ -1167,6 +1310,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["snabb improvisation", "personlig övertygelse", "praktisk erfarenhet", "vetenskaplig noggrannhet", "muntlig tradition"],
     correct: 3,
     explanation: "Akribi står för stor noggrannhet, särskilt i vetenskapligt arbete.",
+    hint: "Grekiska akribeia, 'exakthet'. Tänk på en forskare som kontrollerar varje siffra tre gånger.",
     source: "egen (HP-typ)",
   },
   {
@@ -1175,6 +1319,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["av ett enda slag", "i stor mängd", "i liten mängd", "sällan förekommande", "av olika slag"],
     correct: 4,
     explanation: "Allehanda betyder blandat, av många olika sorter.",
+    hint: "Sammansatt av 'alla' och 'handa' (slag). Tänk på en låda full av skruvar, spik, snören och annat.",
     source: "egen (HP-typ)",
   },
   {
@@ -1183,6 +1328,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["osjälviskt hjälpande", "strategiskt beräknande", "avundsjuk jämförelse", "likgiltig hållning", "aggressivt hävdande"],
     correct: 0,
     explanation: "Altruism innebär att handla till andras fördel utan tanke på egen vinning.",
+    hint: "Latin alter, 'den andre'. Tänk på någon som ger bort sin lunch till en främling utan att tänka på sig själv.",
     source: "egen (HP-typ)",
   },
   {
@@ -1191,6 +1337,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["helt övertygad", "delad i sin inställning", "likgiltig", "aggressivt avvisande", "entusiastiskt positiv"],
     correct: 1,
     explanation: "Ambivalent betyder att känna motstridiga känslor inför samma sak.",
+    hint: "Latin ambi = båda, valere = gälla. Tänk på att både vilja och inte vilja något samtidigt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1199,6 +1346,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["upprepad händelse", "logisk motsägelse", "tidsförskjuten företeelse", "kortlivad trend", "geografisk avvikelse"],
     correct: 2,
     explanation: "En anakronism är något som hör till fel tidsperiod, t.ex. en klocka i en medeltidsfilm.",
+    hint: "Grekiska ana = bakåt/fel, chronos = tid. Tänk på en riddare med armbandsur.",
     source: "egen (HP-typ)",
   },
   {
@@ -1207,6 +1355,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["formell ansökan", "tillfällig lösning", "juridiskt dokument", "krets av anhängare", "hemlig plan"],
     correct: 3,
     explanation: "Anhang syftar på personer som följer eller stödjer någon.",
+    hint: "Verbet 'hänga' i 'anhänga'. Tänk på en politikers fans eller familj som följer honom överallt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1215,6 +1364,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["djup beundran", "likgiltig neutralitet", "stark entusiasm", "vänskaplig omtanke", "fientlig inställning"],
     correct: 4,
     explanation: "Animositet är en uttalad ovilja eller fientlighet mot någon.",
+    hint: "Latin animus, 'sinne'. Tänk på två grannar som aldrig hälsar och på hur luften känns tjock mellan dem.",
     source: "egen (HP-typ)",
   },
   {
@@ -1223,6 +1373,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["som ställer höga krav", "blygsam", "oengagerad", "tillmötesgående", "obekymrad"],
     correct: 0,
     explanation: "Anspråksfull betyder att kräva eller förvänta sig mycket.",
+    hint: "Samma stam som 'anspråk'. Tänk på en gäst som kräver svit, champagne och privat chaufför.",
     source: "egen (HP-typ)",
   },
   {
@@ -1231,6 +1382,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förklara i efterhand", "förutse", "sammanfatta kort", "kritisera hårt", "avfärda helt"],
     correct: 1,
     explanation: "Att antecipera något är att räkna med det innan det händer.",
+    hint: "Latin ante = före, capere = ta. Tänk på att fatta tag i något innan det kommer.",
     source: "egen (HP-typ)",
   },
   {
@@ -1239,6 +1391,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förstärkning av en tes", "upprepning av ett argument", "motsats i ett resonemang", "sammanfattning av en debatt", "bevis för en teori"],
     correct: 2,
     explanation: "En antites ställer en motsatt ståndpunkt mot en tidigare tes.",
+    hint: "Grekiska anti = mot, thesis = sats. Tänk på tesen, antitesen och syntesen i filosofin.",
     source: "egen (HP-typ)",
   },
   {
@@ -1247,6 +1400,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stark entusiasm", "plötslig ilska", "djup sorg", "känslomässig likgiltighet", "överdriven optimism"],
     correct: 3,
     explanation: "Apati innebär avsaknad av engagemang eller känsloreaktion.",
+    hint: "Grekiska a = utan, pathos = känsla. Tänk på att se på tv med tom blick, fast intet roar.",
     source: "egen (HP-typ)",
   },
   {
@@ -1255,6 +1409,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["väl underbyggd", "konsekvent tillämpad", "vetenskapligt bevisad", "allmänt accepterad", "godtycklig"],
     correct: 4,
     explanation: "Arbiträr betyder att något bestäms utan tydlig logisk grund.",
+    hint: "Latin arbiter, 'domare'. Tänk på att slå tärning för att avgöra något istället för att ha en bra grund.",
     source: "egen (HP-typ)",
   },
   {
@@ -1263,6 +1418,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ålderdomlig", "nyskapande", "tillfällig", "praktisk", "populär"],
     correct: 0,
     explanation: "Arkaisk beskriver något som tillhör en svunnen tid, omodernt.",
+    hint: "Grekiska arkhaios, 'gammal'. Tänk på ett språk i en bibel från 1500-talet med ord ingen längre använder.",
     source: "egen (HP-typ)",
   },
   {
@@ -1271,6 +1427,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["naturlig", "konstgjord", "spontan", "genuin", "slumpmässig"],
     correct: 1,
     explanation: "Artificiell betyder tillverkad av människan, inte naturligt uppkommen.",
+    hint: "Latin ars = konst, facere = göra. Tänk på blommor av plast eller 'AI' som en maskin gjort.",
     source: "egen (HP-typ)",
   },
   {
@@ -1279,6 +1436,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["exakt spegelvänd", "perfekt symmetrisk", "olikformad på ömse sidor", "geometriskt regelbunden", "jämnt fördelad"],
     correct: 2,
     explanation: "Asymmetrisk betyder att de två sidorna av något inte överensstämmer.",
+    hint: "Grekiska a = utan, symmetria = likformighet. Tänk på en tavla där vänster halva ser helt annorlunda ut än höger.",
     source: "egen (HP-typ)",
   },
   {
@@ -1287,6 +1445,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["eftergiven", "rådgivande", "demokratisk", "maktfullkomlig", "återhållsam"],
     correct: 3,
     explanation: "Auktoritär betyder att styra med hård hand och kräva lydnad.",
+    hint: "Latin auctoritas, 'anseende'. Tänk på en rektor eller officer som inte tillåter motsägelser.",
     source: "egen (HP-typ)",
   },
   {
@@ -1295,6 +1454,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["konservativ i sin form", "traditionsbunden", "populistisk", "kommersiellt inriktad", "banbrytande inom konsten"],
     correct: 4,
     explanation: "Avantgardistisk syftar på det mest nyskapande och experimentella inom en konstform.",
+    hint: "Franska avant-garde, 'förtrupp'. Tänk på konstnärer som går före sin tid och chockar utställningsbesökarna.",
     source: "egen (HP-typ)",
   },
   {
@@ -1303,6 +1463,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ovänligt bemötande", "hjärtlig gästfrihet", "stort tålamod", "genuin nyfikenhet", "lugn eftertänksamhet"],
     correct: 0,
     explanation: "Avoghet är ett kyligt, ovänligt sätt att bemöta någon.",
+    hint: "Gammalt ord för 'ovilja'. Besläktat med 'avog' som i 'avoghet mot främlingar'. Tänk på en kall blick från bakom disken.",
     source: "egen (HP-typ)",
   },
   {
@@ -1311,6 +1472,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["motbevisad teori", "grundsats utan bevis", "tillfällig slutsats", "osäker gissning", "empirisk observation"],
     correct: 1,
     explanation: "Ett axiom är ett påstående som tas för givet, utan att behöva bevisas.",
+    hint: "Grekiska axios, 'värdig'. Tänk på matematikens utgångspunkter, som 'en linje kan dras mellan två punkter'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1319,6 +1481,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["djupsinnig", "originell", "alldaglig och ointressant", "chockerande", "svårtydd"],
     correct: 2,
     explanation: "Banal betyder utnött och föga tankeväckande.",
+    hint: "Franska banal, ursprungligen 'gemensam'. Tänk på en klyscha eller småprat om vädret.",
     source: "egen (HP-typ)",
   },
   {
@@ -1327,6 +1490,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tvivelaktig", "olönsam", "riskabel", "värd att stödja", "onödig"],
     correct: 3,
     explanation: "Behjärtansvärd beskriver ett syfte som är gott och förtjänar stöd.",
+    hint: "Hjärta och -värd. Tänk på en välgörenhetsinsamling som verkligen ligger en varm om hjärtat.",
     source: "egen (HP-typ)",
   },
   {
@@ -1335,6 +1499,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["helt ovillig", "likgiltig inför", "omedveten om", "tveksam till", "böjd att göra något"],
     correct: 4,
     explanation: "Benägen betyder att ha en tendens eller lutning åt visst håll.",
+    hint: "Samma stam som 'böja'. Tänk på hur en gren lutar åt ett håll i vinden.",
     source: "egen (HP-typ)",
   },
   {
@@ -1343,6 +1508,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["eftertänksam och tveksam", "obetänksam och hastig", "säker och beslutsam", "likgiltig och passiv", "aggressiv och otålig"],
     correct: 0,
     explanation: "Betänksam betyder att fundera noga innan man agerar.",
+    hint: "Verbet 'betänka' och 'tänka'. Tänk på en köpare som bläddrar länge i prislistan innan han skriver under.",
     source: "egen (HP-typ)",
   },
   {
@@ -1351,6 +1517,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["öppensinnad", "trångsynt i sin tro", "tvivlande", "likgiltig", "vetgirig"],
     correct: 1,
     explanation: "Bigott beskriver en person med snäv, självrättfärdig övertygelse.",
+    hint: "Franska bigot, möjligen från 'by God'. Tänk på en predikant som dömer alla som lever annorlunda.",
     source: "egen (HP-typ)",
   },
   {
@@ -1359,6 +1526,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förutsägbar", "vardaglig", "besynnerlig", "harmonisk", "traditionell"],
     correct: 2,
     explanation: "Bisarr betyder märklig och avvikande på ett iögonfallande sätt.",
+    hint: "Italienska bizzarro, 'häftig'. Tänk på en dröm där fiskar har hattar och regnet faller uppåt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1367,6 +1535,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["nyfiken och entusiastisk", "chockad och upprörd", "orolig och ängslig", "utlevad och oberörbar", "naiv och godtrogen"],
     correct: 3,
     explanation: "Blaserad beskriver någon som blivit likgiltig genom att ha upplevt för mycket.",
+    hint: "Franska blasé, 'avtrubbad'. Tänk på någon som yvigt suckar åt en fyrverkeri 'det har jag sett förut'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1375,6 +1544,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["vidsynt", "flexibel", "kunnig", "modig", "inskränkt i sitt tänkande"],
     correct: 4,
     explanation: "Bornerad betyder trångsynt och ovillig att ta in nya idéer.",
+    hint: "Tyskt lånord, born = hålla sig inom gränser. Tänk på någon med skygglappar som vägrar förstå nya idéer.",
     source: "egen (HP-typ)",
   },
   {
@@ -1383,6 +1553,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mogen i förtid", "sen i sin utveckling", "ovanligt barnslig", "extremt försiktig", "ointresserad av lärande"],
     correct: 0,
     explanation: "Brådmogen beskriver ett barn som utvecklas snabbare än förväntat.",
+    hint: "Brådmogen är 'brått' (snabbt) och 'mogen'. Tänk på ett barn som resonerar som en vuxen redan i förskolan.",
     source: "egen (HP-typ)",
   },
   {
@@ -1391,6 +1562,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["extremt tålig", "lätt att skada", "svårförstörbar", "kompakt", "flexibel"],
     correct: 1,
     explanation: "Bräcklig betyder ömtålig, lätt att gå sönder.",
+    hint: "Besläktat med 'bräcka' (knäcka). Tänk på ett tunt glas, en gammal vas eller en skör hälsa.",
     source: "egen (HP-typ)",
   },
   {
@@ -1399,6 +1571,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["diplomatisk", "försynt", "brysk och rättfram", "eftergiven", "reserverad"],
     correct: 2,
     explanation: "Burdus betyder ohövligt rakt på sak, utan finkänslighet.",
+    hint: "Exempel: 'Servitören slängde fram tallriken och muttrade en ohövlig kommentar.' Ordet beskriver ett sätt att vara.",
     source: "egen (HP-typ)",
   },
   {
@@ -1407,6 +1580,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hedervärd forskare", "erfaren hantverkare", "blygsam amatör", "bedragare som ger sig ut för expert", "trogen assistent"],
     correct: 3,
     explanation: "En charlatan låtsas ha kunskaper eller förmågor denne saknar.",
+    hint: "Italienska ciarlare, 'pladdra'. Tänk på en man med kappsäck som säljer mirakelmedel på torget.",
     source: "egen (HP-typ)",
   },
   {
@@ -1415,6 +1589,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hedersbetygelse", "uppmuntran", "belöning", "kompromiss", "trakasseri"],
     correct: 4,
     explanation: "Chikan är ett elakt, syftande till att förarga eller förnedra.",
+    hint: "Franska chicane, 'rättegångskonster'. Tänk på att tjata och sätta käppar i hjulet för att reta någon.",
     source: "egen (HP-typ)",
   },
   {
@@ -1423,6 +1598,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["misstroget nedvärderande", "godtrogen", "entusiastisk", "hoppfull", "naiv"],
     correct: 0,
     explanation: "Cynisk betyder att tvivla på andras goda avsikter.",
+    hint: "Grekiska kynikos, 'hundlik'. Tänk på någon som alltid säger 'ingen gör något utan egen vinning'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1431,6 +1607,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["strängt återhållsam", "moraliskt förfallen i sin lyx", "flitig och sparsam", "enkel och anspråkslös", "idealistisk"],
     correct: 1,
     explanation: "Dekadent beskriver ett överdådigt leverne präglat av förfall.",
+    hint: "Latin de = ner, cadere = falla. Tänk på Romarrikets sista dagar med fester, vin och förfall.",
     source: "egen (HP-typ)",
   },
   {
@@ -1439,6 +1616,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["saklig debattör", "tystlåten iakttagare", "folkuppviglande talare", "neutral moderator", "försiktig rådgivare"],
     correct: 2,
     explanation: "En demagog vinner stöd genom att spela på känslor snarare än fakta.",
+    hint: "Grekiska demos = folk, agein = leda. Tänk på en politiker som hetsar en folkmassa med lätta svar.",
     source: "egen (HP-typ)",
   },
   {
@@ -1447,6 +1625,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["vald representant", "rådgivande ämbetsman", "opartisk domare", "godtycklig envåldshärskare", "ödmjuk tjänare"],
     correct: 3,
     explanation: "En despot styr med absolut och ofta grym makt.",
+    hint: "Grekiska despotes, 'herre'. Tänk på en diktator som styr utan lagar eller kontroll.",
     source: "egen (HP-typ)",
   },
   {
@@ -1455,6 +1634,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["skarpt avgränsad", "exakt definierad", "lätt att förstå", "tydligt formulerad", "otydlig och svårurskiljbar"],
     correct: 4,
     explanation: "Diffus betyder oklar i sina konturer eller sitt innehåll.",
+    hint: "Latin diffundere, 'sprida'. Tänk på dimma, en suddig bild eller ett ljus som sprids över alla håll.",
     source: "egen (HP-typ)",
   },
   {
@@ -1463,6 +1643,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["återhållsam och omärklig", "högljudd", "iögonfallande", "påträngande", "skrytsam"],
     correct: 0,
     explanation: "Diskret betyder att uppträda utan att dra till sig onödig uppmärksamhet.",
+    hint: "Franska discret, 'urskiljande'. Tänk på en butler som kommer in, lämnar brevet och går utan ett ljud.",
     source: "egen (HP-typ)",
   },
   {
@@ -1471,6 +1652,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["öppen för omprövning", "orubbligt fast vid sina åsikter", "ödmjuk i sitt ställningstagande", "tveksam och sökande", "kompromissvillig"],
     correct: 1,
     explanation: "Dogmatisk betyder att hålla fast vid en lära utan att ifrågasätta den.",
+    hint: "Grekiska dogma, 'lärosats'. Tänk på en person som citerar boken ordagrant och aldrig tvekar eller ändrar sig.",
     source: "egen (HP-typ)",
   },
   {
@@ -1479,6 +1661,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["oantastlig", "väldokumenterad", "tvivelaktig", "trovärdig", "erkänd"],
     correct: 2,
     explanation: "Dubiös betyder osäker till sin karaktär, med tveksam trovärdighet.",
+    hint: "Latin dubium, 'tvivel'. Tänk på en begagnad bilhandlare med ett erbjudande 'som är för bra för att vara sant'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1487,6 +1670,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["renodlad i en enda stil", "strikt regelbunden", "helt originell", "sammansatt av olika stilar", "enhetlig i uttrycket"],
     correct: 3,
     explanation: "Eklektisk beskriver något som hämtar element från många olika håll.",
+    hint: "Grekiska eklektikos, 'utvald'. Tänk på ett möblerat rum med en gammal soffa, modern lampa och japansk skärm.",
     source: "egen (HP-typ)",
   },
   {
@@ -1495,6 +1679,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tystnad", "tvekan", "återhållsamhet", "avledning", "kraftig betoning"],
     correct: 4,
     explanation: "Emfas läggs på det man vill framhäva som särskilt viktigt.",
+    hint: "Grekiska emphasis, 'framhävande'. Tänk på hur man höjer rösten på ett ord i en mening.",
     source: "egen (HP-typ)",
   },
   {
@@ -1503,6 +1688,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["grundad på erfarenhet", "grundad på tro", "grundad på antaganden", "grundad på tradition", "grundad på känslor"],
     correct: 0,
     explanation: "Empirisk kunskap bygger på observation och undersökning, inte enbart teori.",
+    hint: "Grekiska empeiria. Tänk på ett experiment i laboratoriet där man mäter och observerar istället för att filosofera.",
     source: "egen (HP-typ)",
   },
   {
@@ -1511,6 +1697,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["skarpsinnig", "godtroget okritisk", "misstänksam", "beräknande", "analytisk"],
     correct: 1,
     explanation: "Enfaldig betyder naiv och lättlurad.",
+    hint: "En- och faldig (vikt en gång). Tänk på någon som tror på varje skämt och lätt blir lurad.",
     source: "egen (HP-typ)",
   },
   {
@@ -1519,6 +1706,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mångtydig", "vag", "helt klar och otvetydig", "motsägelsefull", "svårtolkad"],
     correct: 2,
     explanation: "Entydig betyder att bara kunna tolkas på ett sätt.",
+    hint: "Ordet består av 'en' och 'tydig'. Tänk på ett kontrakt där ingen kan missförstå vad som står.",
     source: "egen (HP-typ)",
   },
   {
@@ -1527,6 +1715,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["kortvarigt tillfälle", "enstaka händelse", "framtida möjlighet", "historisk tidsperiod", "personlig minnesbild"],
     correct: 3,
     explanation: "En epok är ett längre, sammanhängande skede i historien.",
+    hint: "Grekiska epoche, 'hållpunkt'. Tänk på stenåldern eller industrialismen som skeden i en tidslinje.",
     source: "egen (HP-typ)",
   },
   {
@@ -1535,6 +1724,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["allmänt tillgänglig", "lättfattlig", "populär", "förenklad", "begriplig endast för invigda"],
     correct: 4,
     explanation: "Esoterisk kunskap är förbehållen en liten, invigd krets.",
+    hint: "Grekiska esoterikos, 'inre'. Tänk på hemliga sällskap, symboler och språk som bara medlemmar förstår.",
     source: "egen (HP-typ)",
   },
   {
@@ -1543,6 +1733,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stark lyckokänsla", "djup sorg", "stilla ro", "kall likgiltighet", "svag besvikelse"],
     correct: 0,
     explanation: "Eufori är en intensiv känsla av lycka och upprymdhet.",
+    hint: "Grekiska eu = väl, pherein = bära. Tänk på hur man känner när man vunnit stort och inte kan sluta le.",
     source: "egen (HP-typ)",
   },
   {
@@ -1551,6 +1742,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["konventionell", "avvikande från det vanliga", "förutsägbar", "återhållsam", "anpasslig"],
     correct: 1,
     explanation: "Excentrisk betyder originell på ett udda, iögonfallande sätt.",
+    hint: "Latin ex = ut, centrum = mittpunkt. Tänk på en professor i morgonrock och hatt som bor i en vindsvåning.",
     source: "egen (HP-typ)",
   },
   {
@@ -1559,6 +1751,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["inkludera", "belöna", "utesluta", "uppmuntra", "framhäva"],
     correct: 2,
     explanation: "Att exkludera någon är att medvetet hålla dem utanför.",
+    hint: "Latin ex = ut, claudere = stänga. Tänk på att sluta bjuda någon till kalas och stänga dörren.",
     source: "egen (HP-typ)",
   },
   {
@@ -1567,6 +1760,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["dölja fullständigt", "skydda mot upptäckt", "underlätta för", "utsätta för insyn", "avleda från"],
     correct: 3,
     explanation: "Att exponera något är att göra det synligt eller sårbart.",
+    hint: "Latin ex = ut, ponere = placera. Tänk på en tavla i ett skyltfönster eller på hud som lämnas obeskyddad i solen.",
     source: "egen (HP-typ)",
   },
   {
@@ -1575,6 +1769,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["inåtvänd", "reserverad", "blyg", "tillbakadragen", "utåtriktad i sitt sätt"],
     correct: 4,
     explanation: "Extrovert betyder att söka energi i sociala sammanhang.",
+    hint: "Latin extra = utanför, vertere = vända. Tänk på någon som älskar fester och snackar med alla.",
     source: "egen (HP-typ)",
   },
   {
@@ -1583,6 +1778,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överdrivet hängiven", "likgiltig", "måttfull", "tveksam", "avmätt"],
     correct: 0,
     explanation: "Fanatisk betyder blint och okritiskt hängiven en sak eller idé.",
+    hint: "Latin fanum, 'tempel'. Tänk på en supporter som slåss för sitt lag eller en sekts medlem som vägrar höra argument.",
     source: "egen (HP-typ)",
   },
   {
@@ -1591,6 +1787,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stillsam och ordnad", "löjeväckande kaotisk", "allvarlig och högtidlig", "sorglig och tragisk", "sober och saklig"],
     correct: 1,
     explanation: "Farsartad beskriver en händelse som utvecklas till ett skämtsamt kaos.",
+    hint: "Fars är ett komiskt teaterstycke med snabba dörrsmällar. Tänk på en dag där allt går galet på ett skratta-eller-gråta-sätt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1599,6 +1796,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["klumpig", "tröghjärnad", "påhittigt smart", "ointresserad", "slarvig"],
     correct: 2,
     explanation: "Finurlig betyder uppfinningsrik och listig på ett sympatiskt sätt.",
+    hint: "Besläktat med 'fin' och 'finess'. Tänk på en genial liten uppfinning som löser problemet på ett oväntat sätt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1607,6 +1805,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hetlevrad", "lättrörd", "impulsiv", "trögt oberörd", "nervös"],
     correct: 3,
     explanation: "Flegmatisk betyder lugn och svårrubbad till sitt temperament.",
+    hint: "Grekiska phlegma, 'slem' (en gammal kroppsvätska). Tänk på någon som tuggar lugnt medan huset brinner.",
     source: "egen (HP-typ)",
   },
   {
@@ -1615,6 +1814,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["entydig", "tydlig", "exakt", "otvetydig", "möjlig att tolka på olika sätt"],
     correct: 4,
     explanation: "Flertydig betyder att ha mer än en möjlig tolkning.",
+    hint: "Förleden 'fler' och efterleden 'tydig'. Tänk på en mening som kan förstås på mer än ett sätt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1623,6 +1823,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["imponerande stor", "obetydlig", "blygsam", "anspråkslös", "försumbar"],
     correct: 0,
     explanation: "Formidabel betyder mäktig och respektingivande i sin storlek.",
+    hint: "Latin formidare, 'frukta'. Tänk på en motståndare man drar sig för att möta.",
     source: "egen (HP-typ)",
   },
   {
@@ -1631,6 +1832,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["strängt allvarlig", "lättsinnigt lekfull", "djupt religiös", "överdrivet formell", "återhållsam"],
     correct: 1,
     explanation: "Frivol betyder lekfullt oanständig eller ytligt underhållande.",
+    hint: "Latin frivolus, 'ihålig'. Tänk på lekfulla skämt om kärlek som man inte pratar om på en begravning.",
     source: "egen (HP-typ)",
   },
   {
@@ -1639,6 +1841,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stilla och lugn", "avslappnad", "febrilt intensiv", "trög och seg", "sansad"],
     correct: 2,
     explanation: "Frenetisk betyder hetsig och nästan upphetsad i sin aktivitet.",
+    hint: "Grekiska phrenitis, 'vanvett'. Tänk på folkmassan som jublar och viftar vilt efter en seger.",
     source: "egen (HP-typ)",
   },
   {
@@ -1647,6 +1850,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["nyskapande", "aktuell", "framtidsinriktad", "omodern", "modern"],
     correct: 3,
     explanation: "Föråldrad betyder att inte längre vara tidsenlig.",
+    hint: "Förled 'för-' och 'åldrad'. Tänk på en mobiltelefon från 1990-talet eller ett gammalt sätt att arbeta.",
     source: "egen (HP-typ)",
   },
   {
@@ -1655,6 +1859,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["helt bortse från", "tydligt bevisa", "aktivt förneka", "högljutt hävda", "vagt uppfatta"],
     correct: 4,
     explanation: "Att förnimma något är att ana eller känna det utan att helt kunna sätta ord på det.",
+    hint: "Förled 'för-' och 'nimma' (ta). Tänk på något du anar i mörkret utan att kunna peka på det.",
     source: "egen (HP-typ)",
   },
   {
@@ -1663,6 +1868,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["dominerande", "undanskymd", "sällsynt", "underordnad", "marginell"],
     correct: 0,
     explanation: "Förhärskande betyder rådande och mest utbredd.",
+    hint: "Verbet 'härska'. Tänk på en rådande åsikt eller vind som styr mest i trakten.",
     source: "egen (HP-typ)",
   },
   {
@@ -1671,6 +1877,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["godtrogen", "listigt beräknande", "ärlig", "rättfram", "naiv"],
     correct: 1,
     explanation: "Förslagen betyder slug och skicklig på att lura andra.",
+    hint: "Förled 'för-' och 'slå' (slå ihop). Tänk på rävens listighet i sagan när den lurar tuppen.",
     source: "egen (HP-typ)",
   },
   {
@@ -1679,6 +1886,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ytterst noggrann", "plikttrogen", "vårdslöst nonchalant", "omsorgsfull", "pålitlig"],
     correct: 2,
     explanation: "Försumlig betyder att inte sköta sina skyldigheter.",
+    hint: "'Försumma' betyder att låta bli något man borde göra. Tänk på en anställd som aldrig lämnar in sina rapporter.",
     source: "egen (HP-typ)",
   },
   {
@@ -1687,6 +1895,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["försenad", "planenlig", "återkommande", "tidigare än väntat", "uppskjuten"],
     correct: 3,
     explanation: "Förtida betyder att inträffa innan den normala tidpunkten.",
+    hint: "Förled 'för-' och 'tid', som i att något sker före sin tid. Tänk på ett val som hålls i förväg eller en pension som börjar redan nu.",
     source: "egen (HP-typ)",
   },
   {
@@ -1695,6 +1904,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["medioker", "undermålig", "bristfällig", "otillräcklig", "utomordentligt god"],
     correct: 4,
     explanation: "Förträfflig betyder utmärkt, av högsta kvalitet.",
+    hint: "Förled 'för-' och 'träffa'. Tänk på recensionen 'ett utmärkt middagsbord' i ett finare sammanhang.",
     source: "egen (HP-typ)",
   },
   {
@@ -1703,6 +1913,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["pinsamt", "hedrande", "smickrande", "upplyftande", "stärkande"],
     correct: 0,
     explanation: "Genant betyder att väcka förlägenhet eller skam.",
+    hint: "Franska gêner, 'besvära'. Tänk på det hetta i kinderna när du ropar fel namn på en lärare.",
     source: "egen (HP-typ)",
   },
   {
@@ -1711,6 +1922,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["konstlad", "äkta", "iscensatt", "efterapad", "förställd"],
     correct: 1,
     explanation: "Genuin betyder verkligt äkta, utan förställning.",
+    hint: "Latin genuinus, 'inhemsk, riktig'. Tänk på en Rolex som verkligen är tillverkad av Rolex, till skillnad från en kopia.",
     source: "egen (HP-typ)",
   },
   {
@@ -1719,6 +1931,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tät", "kompakt", "glest fördelad", "sammanpackad", "koncentrerad"],
     correct: 2,
     explanation: "Gles betyder att ha stora mellanrum mellan delarna.",
+    hint: "Gammalt ord för 'tunn'. Tänk på hår som glesnat eller ett skogsområde där träden står långt ifrån varandra.",
     source: "egen (HP-typ)",
   },
   {
@@ -1727,6 +1940,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["blygsam", "anspråkslös", "diskret", "storslaget överdriven", "återhållsam"],
     correct: 3,
     explanation: "Grandios betyder praktfull, ofta i överkant.",
+    hint: "Italienska grandioso, 'stor'. Tänk på en ceremoni med fanfarer, hundratals gäster och fyrverkerier.",
     source: "egen (HP-typ)",
   },
   {
@@ -1735,6 +1949,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["lättillgänglig", "uppenbar", "påträngande", "rättfram", "svårfångad och lurande"],
     correct: 4,
     explanation: "Gäckande betyder att undflyende reta eller lura.",
+    hint: "Verbet 'gäcka' (lura). Tänk på en fjäril som alltid flaxar iväg precis när du ska ta den.",
     source: "egen (HP-typ)",
   },
   {
@@ -1743,6 +1958,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överhögt inflytande", "jämbördigt samarbete", "underordnad ställning", "tillfällig allians", "öppen konkurrens"],
     correct: 0,
     explanation: "Hegemoni är en dominerande maktställning över andra.",
+    hint: "Grekiska hegemon, 'ledare'. Tänk på en supermakt som styr ekonomi och kultur långt utanför sina gränser.",
     source: "egen (HP-typ)",
   },
   {
@@ -1751,6 +1967,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["slumpmässig samling", "rangordnad struktur", "jämlik gemenskap", "informellt nätverk", "tillfällig grupp"],
     correct: 1,
     explanation: "Hierarki är ett system där delar rangordnas efter status eller makt.",
+    hint: "Grekiska hieros = helig, arkhe = styre. Tänk på en armé med soldater, löjtnanter och general.",
     source: "egen (HP-typ)",
   },
   {
@@ -1759,6 +1976,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fastställd genom bevis", "allmänt vedertagen", "antagen men obevisad", "empiriskt styrkt", "obestridlig"],
     correct: 2,
     explanation: "Hypotetisk betyder tänkt eller antagen, inte nödvändigtvis sann.",
+    hint: "Grekiska hypothesis, 'underlag'. Tänk på en fråga som 'vad skulle hända om...' innan man testat.",
     source: "egen (HP-typ)",
   },
   {
@@ -1767,6 +1985,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förlåtande", "likgiltig", "fridfull", "revanschsugen", "överseende"],
     correct: 3,
     explanation: "Hämndlysten betyder att vilja vedergälla en oförrätt.",
+    hint: "Hämnd och lysten. Tänk på en skurk i en film som planerar att ge tillbaka tusenfalt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1775,6 +1994,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["skör och känslig", "orörd och oprövad", "mjuk och foglig", "lättpåverkad", "prövad och tålig"],
     correct: 4,
     explanation: "Härdad betyder att ha blivit tålig genom svåra erfarenheter.",
+    hint: "Verbet 'härda', som i 'härdat stål'. Tänk på en veteran som sett det värsta och ändå står stadigt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1783,6 +2003,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["flitig och uthållig", "lat och ointresserad", "slarvig och ostrukturerad", "nyckfull", "obeslutsam"],
     correct: 0,
     explanation: "Idog betyder att arbeta träget och uthålligt.",
+    hint: "Tänk på myran som släpar barr dag ut och dag in utan att tröttna.",
     source: "egen (HP-typ)",
   },
   {
@@ -1791,6 +2012,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["välinformerad", "okunnig", "kunnig", "insatt", "beläst"],
     correct: 1,
     explanation: "Ignorant betyder att sakna kunskap om något, ofta medvetet.",
+    hint: "Latin ignorare, 'inte veta'. Samma stam som engelskans ignore och svenskans 'ignorera'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1799,6 +2021,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["konkret och verklig", "bevisligen sann", "skenbar men overklig", "väl underbyggd", "påtaglig"],
     correct: 2,
     explanation: "Illusorisk betyder att bara verka vara sant, en synvilla.",
+    hint: "Latin illudere, 'håna, spela med'. Tänk på en hägring i öknen som ser ut som vatten.",
     source: "egen (HP-typ)",
   },
   {
@@ -1807,6 +2030,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mottaglig", "känslig", "sårbar", "oemottaglig för påverkan", "påverkbar"],
     correct: 3,
     explanation: "Immun betyder skyddad från att påverkas, t.ex. av sjukdom eller kritik.",
+    hint: "Latin immunis, 'fri från skyldighet'. Tänk på vaccin som skyddar mot smitta, men också om kritik som rinner av.",
     source: "egen (HP-typ)",
   },
   {
@@ -1815,6 +2039,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["genomtänkt", "försiktig", "kalkylerande", "återhållsam", "handlande utan eftertanke"],
     correct: 4,
     explanation: "Impulsiv betyder att handla plötsligt, utan att först fundera.",
+    hint: "Latin impellere, 'driva på'. Tänk på att köpa något på godisgången utan att planera.",
     source: "egen (HP-typ)",
   },
   {
@@ -1823,6 +2048,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["djupt rotad i en vana", "nyfrälst", "tveksam", "ambivalent", "tillfällig"],
     correct: 0,
     explanation: "Inbiten betyder starkt fastvuxen i en vana eller övertygelse.",
+    hint: "Förled 'in-' och 'bita'. Tänk på en gammal kämpe, 'inbiten ungkarl', som inte ändrar sig.",
     source: "egen (HP-typ)",
   },
   {
@@ -1831,6 +2057,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["belåten", "upprört förnärmad", "likgiltig", "road", "avspänd"],
     correct: 1,
     explanation: "Indignerad betyder att känna moralisk upprördhet över något orätt.",
+    hint: "Latin indignari, 'anse ovärdigt'. Tänk på någon som lägger handen på bröstet och svarar 'hur vågar du?'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1839,6 +2066,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["hedervärd", "aktningsvärd", "avskyvärt skändlig", "oantastlig", "berömd"],
     correct: 2,
     explanation: "Infam betyder ökänd för sin skamlöshet.",
+    hint: "Latin infamis, 'ökänd'. Samma stam som engelskans infamous. Tänk på en ökänd förrädare i historien.",
     source: "egen (HP-typ)",
   },
   {
@@ -1847,6 +2075,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["nyligen uppkommen", "tillfällig", "lättföränderlig", "djupt inrotad", "ytlig"],
     correct: 3,
     explanation: "Ingrodd betyder att ha funnits så länge att det blivit svårt att ändra.",
+    hint: "Förled 'in-' och 'gro'. Tänk på rötter som tagit tag i marken, eller ett dåligt beteende som blivit rotfast.",
     source: "egen (HP-typ)",
   },
   {
@@ -1855,6 +2084,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["följdriktig", "konsekvent", "systematisk", "förutsägbar", "motsägelsefullt oregelbunden"],
     correct: 4,
     explanation: "Inkonsekvent betyder att inte handla enligt samma princip varje gång.",
+    hint: "Latin in = icke, consequi = följa. Tänk på en förälder som tillåter något en dag men straffar nästa.",
     source: "egen (HP-typ)",
   },
   {
@@ -1863,6 +2093,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["antyda något negativt", "öppet påstå", "tydligt bevisa", "direkt fråga", "uttryckligen förneka"],
     correct: 0,
     explanation: "Att insinuera är att antyda något, ofta illvilligt, utan att säga det rakt ut.",
+    hint: "Latin insinuare, 'smyga sig in'. Tänk på ett ryktesspridande 'jag säger inget, men...'.",
     source: "egen (HP-typ)",
   },
   {
@@ -1871,6 +2102,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["utåtriktad", "inåtvänd i sitt sätt", "social", "pratsam", "sällskaplig"],
     correct: 1,
     explanation: "Introvert betyder att hämta energi genom ensamhet snarare än socialt umgänge.",
+    hint: "Latin intro = inåt, vertere = vända. Tänk på någon som föredrar en bok i sin egen soffa framför fest.",
     source: "egen (HP-typ)",
   },
   {
@@ -1879,6 +2111,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fortsätta kämpa", "segra", "ge upp motståndet", "förhandla från styrka", "avvisa villkoren"],
     correct: 2,
     explanation: "Att kapitulera är att erkänna sig besegrad och sluta strida.",
+    hint: "Franska capituler, 'avtala'. Tänk på en armé som viftar med en vit flagga.",
     source: "egen (HP-typ)",
   },
   {
@@ -1887,6 +2120,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["frodig", "bördig", "riklig", "torftig och ogästvänlig", "lummig"],
     correct: 3,
     explanation: "Karg beskriver en miljö som ger lite, ofta stenig och naturfattig.",
+    hint: "Besläktat med 'kargt' i nordiska berg. Tänk på fjällens kala hed utan träd eller skydd.",
     source: "egen (HP-typ)",
   },
   {
@@ -1895,6 +2129,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["färglös och osynlig", "blyg och tillbakadragen", "avvisande och kylig", "trist och enformig", "utstrålande stark personlig dragningskraft"],
     correct: 4,
     explanation: "Karismatisk betyder att naturligt fängsla och entusiasmera andra.",
+    hint: "Grekiska charisma, 'nådegåva'. Tänk på en person som får hela rummet att lyssna så fort hon kommer in.",
     source: "egen (HP-typ)",
   },
   {
@@ -1903,6 +2138,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["påskyndande faktor", "bromsande hinder", "slumpmässig händelse", "oberoende variabel", "stabiliserande kraft"],
     correct: 0,
     explanation: "En katalysator sätter fart på en process utan att själv förbrukas.",
+    hint: "Grekiska katalysis, 'upplösning'. Tänk på kemi: ämnet som får en reaktion att gå snabbare men inte förbrukas.",
     source: "egen (HP-typ)",
   },
   {
@@ -1911,6 +2147,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["öppet rymlig", "instängt kvävande", "luftig och fri", "vidsträckt", "obegränsad"],
     correct: 1,
     explanation: "Klaustrofobisk beskriver en känsla av att vara instängd och trängd.",
+    hint: "Latin claustrum, 'sluten plats'. Tänk på en tom, trång hiss utan fönster, eller ett rum utan utgång.",
     source: "egen (HP-typ)",
   },
   {
@@ -1919,6 +2156,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["osammanhängande", "spretig", "sammanhängande logisk", "motsägelsefull", "splittrad"],
     correct: 2,
     explanation: "Koherent betyder att delarna hänger ihop på ett begripligt sätt.",
+    hint: "Latin co = samman, haerere = hänga fast. Tänk på en berättelse där alla delar hänger ihop utan luckor.",
     source: "egen (HP-typ)",
   },
   {
@@ -1927,6 +2165,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["oförenlig", "motstridig", "ovillig att samverka", "förenlig med annat", "svårförenlig"],
     correct: 3,
     explanation: "Kompatibel betyder att kunna fungera tillsammans med något annat.",
+    hint: "Latin com = med, pati = tåla. Tänk på en laddare som passar i flera telefoner, eller på människor som trivs ihop.",
     source: "egen (HP-typ)",
   },
   {
@@ -1935,6 +2174,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avvikande", "originell", "uppstudsig", "självständig", "anpassad efter normen"],
     correct: 4,
     explanation: "Konform betyder att rätta sig efter det förväntade.",
+    hint: "Latin con = med, forma = form. Tänk på en elev som klär sig och talar precis som alla andra.",
     source: "egen (HP-typ)",
   },
   {
@@ -1943,6 +2183,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["motverkande sitt eget syfte", "gynnsam för målet", "effektiv", "ändamålsenlig", "framgångsrik"],
     correct: 0,
     explanation: "Kontraproduktiv betyder att en åtgärd får motsatt effekt mot vad som avsågs.",
+    hint: "Latin contra = mot, producere = frambringa. Tänk på att organisera ett möte så noga att ingen hinner jobba.",
     source: "egen (HP-typ)",
   },
   {
@@ -1951,6 +2192,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["nyskapande", "traditionell och sedvanlig", "excentrisk", "radikal", "banbrytande"],
     correct: 1,
     explanation: "Konventionell betyder att följa det vedertagna och förväntade.",
+    hint: "Latin convenire, 'komma överens'. Tänk på traditioner och normer som alla följer utan att tänka.",
     source: "egen (HP-typ)",
   },
   {
@@ -1959,6 +2201,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["äkta", "naturlig", "onaturligt tillgjord", "spontan", "genuin"],
     correct: 2,
     explanation: "Konstlad betyder framtvingad eller tillgjord snarare än äkta.",
+    hint: "Latin con + stilare. Tänk på ett leende som aldrig når ögonen eller ett påklistrat skratt.",
     source: "egen (HP-typ)",
   },
   {
@@ -1967,6 +2210,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mager", "spenslig", "smärt", "kraftigt bastant", "vältränad"],
     correct: 3,
     explanation: "Korpulent betyder tjock och skrymmande till kroppshyddan.",
+    hint: "Latin corpus, 'kropp'. Tänk på en man som skämtar om sin runda mage och rejäla byggnad.",
     source: "egen (HP-typ)",
   },
   {
@@ -1975,6 +2219,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tillfälligt", "akut och kortvarigt", "sporadiskt", "övergående", "ihållande under lång tid"],
     correct: 4,
     explanation: "Kroniskt betyder långvarigt återkommande, t.ex. om en sjukdom.",
+    hint: "Grekiska chronos, 'tid'. Tänk på en sjukdom som varar i månader, år eller hela livet.",
     source: "egen (HP-typ)",
   },
   {
@@ -1983,6 +2228,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["instabil och lättpåverkad", "stabil", "fast", "orubblig", "beständig"],
     correct: 0,
     explanation: "Labil betyder att lätt växla mellan tillstånd, ofta känslomässigt.",
+    hint: "Latin labilis, 'glidande'. Tänk på ett humör som svänger från glädje till gråt på en minut.",
     source: "egen (HP-typ)",
   },
   {
@@ -1991,6 +2237,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["utförlig", "kortfattat sparsmakad", "svamlig", "omständlig", "pratsam"],
     correct: 1,
     explanation: "Lakonisk betyder kortfattad och fåordig.",
+    hint: "Lakedaimon (Sparta). Spartanerna var kända för att svara med få ord. Tänk på ett 'ja' eller 'nej' som hela svaret.",
     source: "egen (HP-typ)",
   },
   {
@@ -1999,6 +2246,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["upplyftande", "gladlynt", "dyster och olycksbådande", "hoppfull", "muntert"],
     correct: 2,
     explanation: "Lugubert beskriver en dyster, hotfull stämning.",
+    hint: "Latin lugere, 'sörja'. Tänk på ett slott på natten med en gammal klocka som ringer ensamt.",
     source: "egen (HP-typ)",
   },
   {
@@ -2007,6 +2255,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stabilt jämnmodig", "förutsägbar", "orubbligt lugn", "nyckfullt humörsvängande", "konsekvent"],
     correct: 3,
     explanation: "Lynnig betyder att växla mellan olika humör utan förvarning.",
+    hint: "Verbet 'lynne' (humör). Tänk på en kollega vars humör kan vara solsken eller storm utan förvarning.",
     source: "egen (HP-typ)",
   },
   {
@@ -2015,6 +2264,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["väl anpassad", "passande", "hemmahörande", "korrekt situerad", "olämpligt placerad"],
     correct: 4,
     explanation: "Malplacerad betyder att inte höra hemma i sammanhanget.",
+    hint: "Franska mal placé, 'illa ställd'. Tänk på att komma i sporthalare till ett bröllop, eller en skämtsam kommentar vid en begravning.",
     source: "egen (HP-typ)",
   },
   {
@@ -2023,6 +2273,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överdrivet upprymt intensiv", "dämpad och lugn", "loj och trög", "avspänd", "stillsam"],
     correct: 0,
     explanation: "Manisk betyder överdrivet och rastlöst upprymd, ibland i kliniskt bemärkelse.",
+    hint: "Grekiska mania, 'raseri'. Tänk på någon som städat hela natten och säger att det inte behövs sömn.",
     source: "egen (HP-typ)",
   },
   {
@@ -2031,6 +2282,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["avgörande", "obetydligt liten", "betydande", "central", "dominerande"],
     correct: 1,
     explanation: "Marginell betyder att ha liten påverkan eller betydelse.",
+    hint: "Latin margo, 'kant'. Tänk på en liten förändring i marginalen av en procent som knappt märks.",
     source: "egen (HP-typ)",
   },
   {
@@ -2039,6 +2291,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["uppsluppen", "livfull", "vemodigt nedstämd", "glättig", "jovialisk"],
     correct: 2,
     explanation: "Melankolisk betyder tyngd av ett stilla vemod.",
+    hint: "Grekiska melas = svart, khole = galla. Tänk på en regnig höstdag och ett stilla vemod.",
     source: "egen (HP-typ)",
   },
   {
@@ -2047,6 +2300,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["planlös", "spretig", "kaotisk", "systematiskt ordnad", "godtycklig"],
     correct: 3,
     explanation: "Metodisk betyder att arbeta strukturerat efter en bestämd ordning.",
+    hint: "Grekiska methodos, 'väg att följa'. Tänk på en forskare som går igenom checklistan steg för steg.",
     source: "egen (HP-typ)",
   },
   {
@@ -2055,6 +2309,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["fredlig och försonlig", "eftergiven", "passiv", "tillbakadragen", "stridslystet radikal"],
     correct: 4,
     explanation: "Militant betyder beredd att använda kraftfulla, ofta konfrontativa medel.",
+    hint: "Latin militare, 'strida'. Tänk på aktivister som går längre än vanliga demonstranter.",
     source: "egen (HP-typ)",
   },
   {
@@ -2063,6 +2318,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ytterst detaljerad", "översiktlig", "grovhuggen", "slarvig", "flyktig"],
     correct: 0,
     explanation: "Minutiös betyder extremt noggrann in i minsta detalj.",
+    hint: "Latin minutia, 'småsak'. Tänk på en bokhållare som granskar varje öre i kassaboken.",
     source: "egen (HP-typ)",
   },
   {
@@ -2071,6 +2327,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["rättvisande", "vilseledande i sitt intryck", "korrekt", "träffsäker", "klargörande"],
     correct: 1,
     explanation: "Missvisande betyder att ge en felaktig eller skev bild.",
+    hint: "Förled 'miss-' och 'visa'. Tänk på en rubrik som antyder något annat än sanningen.",
     source: "egen (HP-typ)",
   },
   {
@@ -2079,6 +2336,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["omväxlande", "varierad", "enformigt oföränderlig", "dynamisk", "nyanserad"],
     correct: 2,
     explanation: "Monoton betyder tråkigt oföränderlig, utan variation.",
+    hint: "Grekiska monos = en, tonos = ton. Tänk på en röst som aldrig ändrar tonläge i en lång föreläsning.",
     source: "egen (HP-typ)",
   },
   {
@@ -2087,6 +2345,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["klargörande", "uppenbar", "självförklarande", "förbryllande gåtfull", "entydig"],
     correct: 3,
     explanation: "Mystifierande betyder att göra något oklart eller svårgenomträngligt.",
+    hint: "Grekiska mystes, 'invigd'. Tänk på ett kryptiskt brev eller en person som svarar med gåtor.",
     source: "egen (HP-typ)",
   },
   {
@@ -2095,6 +2354,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["osjälvisk", "blygsam", "anspråkslös", "självutplånande", "överdrivet självupptagen"],
     correct: 4,
     explanation: "Narcissistisk betyder att ha en överdriven bild av sin egen betydelse.",
+    hint: "Efter Narkissos, myten om pojken som blev förälskad i sin egen spegelbild.",
     source: "egen (HP-typ)",
   },
   {
@@ -2103,6 +2363,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["likgiltigt oberörd", "engagerad", "noggrann", "omtänksam", "plikttrogen"],
     correct: 0,
     explanation: "Nonchalant betyder att bete sig obekymrat, utan större hänsyn.",
+    hint: "Franska nonchalant, 'inte bry sig om'. Tänk på en tonåring som sträcker på sig och säger 'äh, spelar ingen roll'.",
     source: "egen (HP-typ)",
   },
   {
@@ -2111,6 +2372,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["beskrivande hur något faktiskt är", "föreskrivande hur något bör vara", "neutralt konstaterande", "rent statistisk", "objektivt mätande"],
     correct: 1,
     explanation: "Normativ betyder att ange en norm eller ett önskvärt tillstånd.",
+    hint: "Latin norma, 'rättesnöre'. Tänk på en etisk regel som säger hur man bör leva snarare än hur det är.",
     source: "egen (HP-typ)",
   },
   {
@@ -2119,6 +2381,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["okänd", "anonym", "allmänt känd för något negativt", "obemärkt", "diskret"],
     correct: 2,
     explanation: "Notorisk betyder ökänd, känd för en återkommande dålig egenskap.",
+    hint: "Latin notorius. Tänk på 'notorisk' i polisrapporter: en återfallsförbrytare som alla redan har hört talas om.",
     source: "egen (HP-typ)",
   },
   {
@@ -2127,6 +2390,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["oskyldig", "anständig", "återhållsam", "stötande oanständig", "kysk"],
     correct: 3,
     explanation: "Obscen betyder grovt anstötlig, ofta sexuellt.",
+    hint: "Latin obscaenus, 'osedlig'. Tänk på ord och bilder som får tv-bolaget att pipa över dem.",
     source: "egen (HP-typ)",
   },
   {
@@ -2135,6 +2399,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["tveksam", "diskutabel", "omtvistad", "osäker", "bortom all tvekan"],
     correct: 4,
     explanation: "Odiskutabel betyder så självklar att den inte kan ifrågasättas.",
+    hint: "Förled 'o-' och 'diskutabel'. Tänk på en fakta som alla experter är överens om.",
     source: "egen (HP-typ)",
   },
   {
@@ -2143,6 +2408,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["omöjlig att förstå", "självklar", "lättbegriplig", "uppenbar", "logisk"],
     correct: 0,
     explanation: "Ofattbar betyder att gå bortom vad förnuftet kan greppa.",
+    hint: "Förled 'o-' och 'fatta'. Tänk på något så gigantiskt att hjärnan inte hänger med, som avstånden i universum.",
     source: "egen (HP-typ)",
   },
   {
@@ -2151,6 +2417,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["återhållsam", "utan spärrar eller återhållsamhet", "blyg", "reserverad", "tillbakadragen"],
     correct: 1,
     explanation: "Ohämmad betyder att agera fritt utan hänsyn till hämningar.",
+    hint: "Förled 'o-' och 'hämma'. Tänk på barn som springer, skrattar och ropar på en lekplats utan att generas.",
     source: "egen (HP-typ)",
   },
   {
@@ -2159,6 +2426,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["traditionell", "konventionell", "avvikande från det vedertagna", "sedvanlig", "vanlig"],
     correct: 2,
     explanation: "Okonventionell betyder att göra saker på ett ovanligt, oväntat sätt.",
+    hint: "Förled 'o-' och 'konventionell'. Tänk på en konstnär som bryter mot alla normer i sin stil.",
     source: "egen (HP-typ)",
   },
   {
@@ -2167,6 +2435,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["principfast", "idealistisk", "osjälvisk", "tillfällighetsutnyttjande", "konsekvent"],
     correct: 3,
     explanation: "Opportunistisk betyder att utnyttja tillfällen utan hänsyn till principer.",
+    hint: "Latin opportunus, 'lägligt'. Tänk på någon som byter parti när det blåser åt ett annat håll.",
     source: "egen (HP-typ)",
   },
   {
@@ -2175,6 +2444,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["stark oro", "tveksamhet", "vaksamhet", "misstänksamhet", "avsaknad av fruktan"],
     correct: 4,
     explanation: "Oräddhet är förmågan att handla trots fara eller risk.",
+    hint: "Förled 'o-' och 'rädd'. Tänk på brandmannen som springer in i huset medan alla andra springer ut.",
     source: "egen (HP-typ)",
   },
   {
@@ -2183,6 +2453,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ogenomtänkt", "väl genomtänkt", "noga övervägd", "eftertänksam", "kalkylerad"],
     correct: 0,
     explanation: "Oreflekterad betyder att göra något utan att först tänka igenom det.",
+    hint: "Förled 'o-' och 'reflektera'. Tänk på en spontan kommentar utan efterhand ångrar.",
     source: "egen (HP-typ)",
   },
   {
@@ -2191,6 +2462,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["strikt kontrollerad", "obehärskad och fri", "väl tillrättalagd", "disciplinerad", "återhållsam"],
     correct: 1,
     explanation: "Otyglad betyder att inte hålla tillbaka en kraft eller känsla.",
+    hint: "Förled 'o-' och 'tygla'. Tänk på en häst utan betsel som springer vilt över ängen.",
     source: "egen (HP-typ)",
   },
   {
@@ -2199,6 +2471,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["självklar sanning", "logisk följd", "skenbar motsägelse", "tydlig bekräftelse", "enkel förklaring"],
     correct: 2,
     explanation: "En paradox verkar motsäga sig själv men kan ändå vara sann.",
+    hint: "Grekiska para = mot, doxa = mening. Tänk på 'ju mer du vet, desto mer inser du att du inte vet'.",
     source: "egen (HP-typ)",
   },
   {
@@ -2207,6 +2480,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["handlingskraftig", "initiativrik", "drivande", "overksamt avvaktande", "aktiv"],
     correct: 3,
     explanation: "Passiv betyder att inte själv ta initiativ eller agera.",
+    hint: "Latin passivus, 'lidande'. Tänk på motsatsen till 'aktiv' i grammatiken, och på en åskådare som inte rör sig.",
     source: "egen (HP-typ)",
   },
   {
@@ -2215,6 +2489,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["imponerande", "respektingivande", "värdig", "sansad", "löjeväckande gripande"],
     correct: 4,
     explanation: "Patetisk beskriver något som väcker medlidande blandat med löje.",
+    hint: "Grekiska pathetikos, 'känslosam'. Tänk på en dålig skådespelare som gråter dramatiskt på scenen.",
     source: "egen (HP-typ)",
   },
   {
@@ -2223,6 +2498,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överdrivet noggrann med detaljer", "slarvig", "översiktlig", "obekymrad", "nonchalant"],
     correct: 0,
     explanation: "Pedantisk betyder att fästa överdriven vikt vid formaliteter och småsaker.",
+    hint: "Grekiska paidagogos, via franska. Tänk på en person som mäter varje bokstav i rapporten med linjal.",
     source: "egen (HP-typ)",
   },
   {
@@ -2231,6 +2507,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["central", "belägen i utkanten", "avgörande", "grundläggande", "kärnfull"],
     correct: 1,
     explanation: "Perifer betyder att ligga vid sidan om det viktigaste.",
+    hint: "Grekiska peri = runt, pherein = bära. Tänk på en dator som skrivare och mus, anslutna utanför huvuddatorn.",
     source: "egen (HP-typ)",
   },
   {
@@ -2239,6 +2516,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["orimlig", "osannolik", "trovärdigt rimlig", "obegriplig", "orealistisk"],
     correct: 2,
     explanation: "Plausibel betyder att verka trolig och rimlig.",
+    hint: "Latin plausibilis, 'värd att applådera'. Tänk på en förklaring som lyssnaren kan svälja utan att kräva bevis.",
     source: "egen (HP-typ)",
   },
   {
@@ -2247,6 +2525,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["enad", "samstämmig", "harmonisk", "uppdelad i motsatta läger", "sammanhållen"],
     correct: 3,
     explanation: "Polariserad betyder att åsikter dragit isär till skarpa motpoler.",
+    hint: "Latin polus, 'pol'. Tänk på nord- och sydpolen och en debatt där ingen längre hittar mellanvägar.",
     source: "egen (HP-typ)",
   },
   {
@@ -2255,6 +2534,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["förvirra", "fördunkla", "generalisera", "komplicera", "göra mer exakt"],
     correct: 4,
     explanation: "Att precisera något är att göra det tydligare och mer exakt.",
+    hint: "Latin praecisus, 'avskuren'. Tänk på en läkare som ber dig skriva ned i detalj var och hur mycket det gör ont.",
     source: "egen (HP-typ)",
   },
   {
@@ -2263,6 +2543,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["vansklig och osäker", "trygg", "stabil", "riskfri", "förutsägbar"],
     correct: 0,
     explanation: "Prekär betyder att befinna sig i ett osäkert och känsligt läge.",
+    hint: "Latin precarius, 'utbedd'. Tänk på ett läge där allt kan ramla samman av en liten störning.",
     source: "egen (HP-typ)",
   },
   {
@@ -2271,6 +2552,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["trogen", "obundet växlande i relationer", "monogam", "bunden", "lojal"],
     correct: 1,
     explanation: "Promiskuös beskriver ett mönster av många, lösa relationer.",
+    hint: "Latin pro + miscere, 'blanda'. Tänk på någon som byter partner ofta utan fast förhållande.",
     source: "egen (HP-typ)",
   },
   {
@@ -2279,6 +2561,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["försonande", "harmlös", "medvetet utmanande", "blygsam", "tillbakadragen"],
     correct: 2,
     explanation: "Provokativ betyder avsedd att reta upp eller utmana.",
+    hint: "Latin provocare, 'kalla fram'. Tänk på en reklam som med flit retar upp folk för att få uppmärksamhet.",
     source: "egen (HP-typ)",
   },
   {
@@ -2287,6 +2570,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["mogen", "vuxen i sitt sätt", "sansad", "barnsligt omogen", "ansvarsfull"],
     correct: 3,
     explanation: "Pueril betyder att uppföra sig barnsligt trots vuxen ålder.",
+    hint: "Latin puer, 'pojke'. Samma stam som engelskans puerile. Tänk på en vuxen som fnittrar åt skämt om rumpor.",
     source: "egen (HP-typ)",
   },
   {
@@ -2295,6 +2579,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["irrationell", "impulsiv", "känslostyrd", "godtycklig", "förnuftsstyrd"],
     correct: 4,
     explanation: "Rationell betyder att handla utifrån logik och förnuft.",
+    hint: "Latin ratio, 'förnuft'. Tänk på ett beslut som baseras på siffror istället för magkänsla.",
     source: "egen (HP-typ)",
   },
   {
@@ -2303,6 +2588,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ömsesidig", "ensidig", "obalanserad", "envägsriktad", "orättvis"],
     correct: 0,
     explanation: "Reciprok betyder att något gäller lika åt båda håll.",
+    hint: "Latin reciprocus, 'fram och tillbaka'. Tänk på ett förhållande där båda ger och tar lika mycket.",
     source: "egen (HP-typ)",
   },
   {
@@ -2311,6 +2597,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["öppenhjärtig", "avvaktande tillbakadragen", "utåtriktad", "pratsam", "hjärtlig"],
     correct: 1,
     explanation: "Reserverad betyder försiktigt återhållsam i kontakt med andra.",
+    hint: "Latin reservare, 'spara åt sidan'. Tänk på en gäst som håller sina tankar för sig själv och inte pratar mycket.",
     source: "egen (HP-typ)",
   },
   {
@@ -2319,6 +2606,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["kämpaglad", "hoppfull", "uppgivet accepterande", "beslutsam", "stridslysten"],
     correct: 2,
     explanation: "Resignerad betyder att ha gett upp hoppet om förändring.",
+    hint: "Latin re + signare, 'återlämna'. Tänk på någon som suckar 'det går ändå inte att ändra'.",
     source: "egen (HP-typ)",
   },
   {
@@ -2327,6 +2615,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["subjektiv", "vinklad", "känslostyrd", "objektivt korrekt", "partisk"],
     correct: 3,
     explanation: "Saklig betyder att hålla sig till fakta utan personliga infärgningar.",
+    hint: "Verbet 'sak'. Tänk på en debattör som håller sig till fakta och undviker personangrepp.",
     source: "egen (HP-typ)",
   },
   {
@@ -2335,6 +2624,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["godtrogen", "lättlurad", "naiv", "okritisk", "tvivlande kritisk"],
     correct: 4,
     explanation: "Skeptisk betyder att ifrågasätta och kräva bevis.",
+    hint: "Grekiska skeptikos, 'granskande'. Tänk på en kritiker som svarar 'visa mig bevisen'.",
     source: "egen (HP-typ)",
   },
   {
@@ -2343,6 +2633,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["sammanhållet stödjande", "egoistisk", "likgiltig", "konkurrerande", "splittrande"],
     correct: 0,
     explanation: "Solidarisk betyder att stå upp för och stödja andra i en gemenskap.",
+    hint: "Latin solidus, 'fast'. Tänk på en fackförening där alla ställer upp för varandra under en strejk.",
     source: "egen (HP-typ)",
   },
   {
@@ -2351,6 +2642,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ständigt pågående", "oregelbundet återkommande", "regelbunden", "kontinuerlig", "frekvent"],
     correct: 1,
     explanation: "Sporadisk betyder att inträffa då och då, utan fast mönster.",
+    hint: "Grekiska sporas, 'spridd'. Tänk på regnskurar som kommer här och där, men inte varje dag.",
     source: "egen (HP-typ)",
   },
   {
@@ -2359,6 +2651,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["blomstrande", "snabbt växande", "stillastående utan utveckling", "dynamisk", "framåtsträvande"],
     correct: 2,
     explanation: "Stagnerad betyder att ha slutat utvecklas eller växa.",
+    hint: "Latin stagnare, 'om vatten som blivit till en damm'. Tänk på ett vattendrag utan tillflöde som blir grumligt och ruttnar.",
     source: "egen (HP-typ)",
   },
   {
@@ -2367,6 +2660,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["objektiv", "opartisk", "saklig", "personligt färgad", "neutral"],
     correct: 3,
     explanation: "Subjektiv betyder präglad av den egna uppfattningen snarare än fakta.",
+    hint: "Latin subjectum, 'underlagt'. Tänk på en åsikt som beror på vem som tycker, som 'bäst smak' i mat.",
     source: "egen (HP-typ)",
   },
   {
@@ -2375,6 +2669,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["grov", "påträngande", "uppenbar", "klumpig", "förfinat diskret"],
     correct: 4,
     explanation: "Subtil betyder finstämt och svårupptäckt.",
+    hint: "Latin subtilis, 'fint vävd'. Tänk på en nyans i en tavla eller ett hot gömt i en artig mening.",
     source: "egen (HP-typ)",
   },
   {
@@ -2383,6 +2678,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["överlägset skicklig", "klumpig", "osäker", "medioker", "bristfällig"],
     correct: 0,
     explanation: "Suverän betyder att behärska något med stor säkerhet och auktoritet.",
+    hint: "Latin superanus, 'överlägsen'. Tänk på en kung eller en spelare som vinner utan att anstränga sig.",
     source: "egen (HP-typ)",
   },
   {
@@ -2391,6 +2687,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["ensidigt utnyttjande", "ömsesidigt givande samlevnad", "fientlig konkurrens", "isolerad existens", "kortvarig konflikt"],
     correct: 1,
     explanation: "Symbios är ett samspel där båda parter drar nytta av varandra.",
+    hint: "Grekiska syn = samman, bios = liv. Tänk på en klounfisk som bor i en anemon och får skydd och mat.",
     source: "egen (HP-typ)",
   },
   {
@@ -2399,6 +2696,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["känslokall", "avmätt", "starkt känslostyrd", "oberörd", "likgiltig"],
     correct: 2,
     explanation: "Temperamentsfull betyder att ha starka, lättväckta känsloreaktioner.",
+    hint: "Latin temperamentum, 'blandning'. Tänk på en italiensk kock som skriker, skrattar och gråter inom en minut.",
     source: "egen (HP-typ)",
   },
   {
@@ -2407,6 +2705,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["entydig", "otvetydig", "klar", "möjlig att tolka på olika sätt", "exakt"],
     correct: 3,
     explanation: "Tvetydig betyder att ha mer än en möjlig innebörd.",
+    hint: "Förleden 'tve' betyder 'två', som i 'tvekan' och 'tvåfald'. Tänk på en mening som går att läsa på två sätt.",
     source: "egen (HP-typ)",
   },
   {
@@ -2415,6 +2714,7 @@ export const HP_WORDS: HpWord[] = [
     options: ["splittrad", "oenig", "motsägelsefull", "spretig", "helt samstämmig"],
     correct: 4,
     explanation: "Unison betyder att alla är fullständigt överens.",
+    hint: "Grekiska unus + sonus, 'ett ljud'. Tänk på en kör som sjunger exakt samma ton på en gång.",
     source: "egen (HP-typ)",
   },
 ];
