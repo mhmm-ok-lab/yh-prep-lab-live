@@ -616,3 +616,10 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Vad:** frågetexten i matteträningen är inte längre i fetstil (700 → 500) och har radavståndet 1,5.
 - **Varför:** långa frågor med påståenden (1) och (2), till exempel i NOG, var tunga att läsa i fetstil på mobilen.
 - **Princip:** brödtext läses bäst i normal vikt med luftigt radavstånd. Fetstil används för rubriker, inte för stycken.
+
+## 2026-10-09 (5): Introskärm "Så fungerar NOG" och "Så fungerar KVA"
+- **Vad:** första gången man startar ett pass i NOG eller KVA visas en genomgång före första frågan: vad uppgiften går ut på, de fem (NOG) eller fyra (KVA) svarsalternativen i klartext, metoden som tre numrerade steg, ett genomräknat exempel (NOG: kulorna i påsen, svar B. KVA: x² mot x, svar D) och fällorna i en honungsruta. Knappen "Jag fattar – kör" sitter fast längst ned. Genomgången går att öppna igen via Strategi → "Visa genomgången". Flaggor: `hp-nog-intro-seen`, `hp-kva-intro-seen`.
+- **Varför:** Martin hade aldrig gjort eller inte mindes NOG och förstod inte formatet. Ett ovanligt format går inte att lära genom att gissa sig fram.
+- **Före/efter:** före hamnade man direkt på en NOG-fråga med "(1) … (2) …" och fem svar utan förklaring. Efter får man formatet förklarat en gång, med ett exempel, och sedan aldrig mer om man inte ber om det.
+- **Mått (375 × 812, ljust och mörkt):** en skärm och lite scroll, ingen sidledsscroll. Knappen 36 px med 44 px träffyta, fast ovanför flytande navigeringen. Tre nivåer: etikett och rubrik, kortrubrik, innehåll.
+- **Princip:** worked example effect (Sweller): ett genomräknat exempel före egna uppgifter minskar den kognitiva belastningen för nybörjare. Progressiv avslöjning (en gång, sedan på begäran), igenkänning före minne, förkortningen som rubrik med förklaringen under. Färg bär inte betydelse ensam: svaret står som text.

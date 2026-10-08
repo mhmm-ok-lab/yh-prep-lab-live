@@ -28,7 +28,7 @@ import {
 } from "./hp-formulas";
 import { HP_RESOURCE_GROUPS, HP_RESOURCES_CHECKED_LABEL, hpResourcesForGroup } from "./hp-resources";
 import type { HpCard } from "./hp-cards";
-import { HP_LAS_STRATEGY, HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
+import { HP_LAS_STRATEGY, HP_NOG_INTRO, HP_KVA_INTRO, HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
 import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
 import {
   buildPlanOverview,
@@ -611,6 +611,26 @@ function hpLasIntroSeen(): boolean {
 function hpLasIntroMarkSeen(): void {
   try {
     localStorage.setItem(HP_LAS_INTRO_KEY, "1");
+  } catch {
+    /* utan lagring visas introt bara en gång per session */
+  }
+}
+/** Introskärmen för NOG/KVA (beslut 2026-10-09): visas första gången ett pass startas, och via Strategi → "Visa genomgången".
+ *  startAfter = true vid första start (knappen startar passet), false när den öppnats mitt i ett pass. */
+let hpTwinIntro: { delprov: "NOG" | "KVA"; startAfter: boolean } | null = null;
+function hpTwinIntroKey(d: "NOG" | "KVA"): string {
+  return d === "NOG" ? "hp-nog-intro-seen" : "hp-kva-intro-seen";
+}
+function hpTwinIntroSeen(d: "NOG" | "KVA"): boolean {
+  try {
+    return localStorage.getItem(hpTwinIntroKey(d)) === "1";
+  } catch {
+    return true;
+  }
+}
+function hpTwinIntroMarkSeen(d: "NOG" | "KVA"): void {
+  try {
+    localStorage.setItem(hpTwinIntroKey(d), "1");
   } catch {
     /* utan lagring visas introt bara en gång per session */
   }
@@ -1502,7 +1522,16 @@ function startHpTwinTempoInterval(): void {
   hpTwinTempoIntervalRef = window.setInterval(updateHpTwinTempoUI, 500);
 }
 
-function hpTwinStart(delprov: HpDelprov): void {
+function hpTwinStart(delprov: HpDelprov, skipIntro = false): void {
+  if (!skipIntro && (delprov === "NOG" || delprov === "KVA") && !hpTwinIntroSeen(delprov)) {
+    hpForceHome = false;
+    hpCardOpen = null;
+    hpPlanCardDelprov = null;
+    hpTwinIntro = { delprov, startAfter: true };
+    window.scrollTo(0, 0);
+    render();
+    return;
+  }
   hpForceHome = false;
   hpCardOpen = null;
   hpPlanCardDelprov = null;
@@ -3840,6 +3869,7 @@ function renderHpHelpPanel(categoryId: "ord" | "las" | "mek" | "elf" | "xyz" | "
     <div class="hp-help-panel" role="region" aria-label="Hjälp">
       <p class="hp-help-title">Så löser du ${info.label.toLowerCase()}</p>
       <ul class="hp-help-list">${steps}</ul>
+      ${categoryId === "nog" || categoryId === "kva" ? `<button class="hp-help-intro-link" data-action="hp-twin-intro-open" data-delprov="${categoryId.toUpperCase()}">Visa genomgången</button>` : ""}
       <button class="hp-help-close" data-action="hp-help">Stäng</button>
     </div>
   `;
@@ -4565,6 +4595,54 @@ function renderHpLasBar(item: HpLasQuestion, idx: number): string {
   `;
 }
 
+/** Introskärm för NOG/KVA: ovanligt format, förklaras med ett genomräknat exempel (worked example, Sweller). */
+function renderHpTwinIntro(): string {
+  const intro = hpTwinIntro!;
+  const nog = intro.delprov === "NOG";
+  const c = nog ? HP_NOG_INTRO : HP_KVA_INTRO;
+  const opts = c.options
+    .map(([letter, text]) => `<li><span class="hp-twin-intro-letter">${letter}</span><span>${text}</span></li>`)
+    .join("");
+  const lead = nog ? `<p class="hp-twin-intro-lead">${HP_NOG_INTRO.optionsLead}</p>` : "";
+  const steps = c.steps.map((t) => `<li>${t}</li>`).join("");
+  const claims = c.example.claims
+    .map((t, i) => `<li>${nog ? `<span class="hp-twin-intro-claim-n">(${i + 1})</span>` : ""}<span>${t}</span></li>`)
+    .join("");
+  const walk = c.example.walk.map((t) => `<li>${t}</li>`).join("");
+  const traps = c.traps.map((t) => `<li>${t}</li>`).join("");
+  return `
+    <div class="hp-drill hp-twin-intro">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-twin-intro-close">${intro.startAfter ? "Tillbaka" : "Stäng"}</button>
+      </div>
+      <p class="hp-ready-kicker">${c.kicker}</p>
+      <h2 class="hp-las-intro-title">${c.title}</h2>
+      <p class="hp-twin-intro-sub">${c.sub}</p>
+      <p class="hp-twin-intro-goal">${c.goal}</p>
+      ${lead}
+      <ul class="hp-twin-intro-options">${opts}</ul>
+      <div class="hp-twin-intro-card">
+        <p class="hp-twin-intro-h">${c.stepsTitle}</p>
+        <ol class="hp-twin-intro-list">${steps}</ol>
+      </div>
+      <div class="hp-twin-intro-card">
+        <p class="hp-twin-intro-h">${c.example.title}</p>
+        <p class="hp-twin-intro-q">${c.example.question}</p>
+        <ul class="hp-twin-intro-claims">${claims}</ul>
+        <ul class="hp-twin-intro-walk">${walk}</ul>
+        <p class="hp-twin-intro-answer">${c.example.answer}</p>
+      </div>
+      <div class="hp-twin-intro-traps">
+        <p class="hp-twin-intro-h">${c.trapsTitle}</p>
+        <ul class="hp-twin-intro-list">${traps}</ul>
+      </div>
+      <div class="hp-twin-intro-actions">
+        <button class="hp-cta-btn" data-action="hp-twin-intro-go">${intro.startAfter ? "Jag fattar – kör" : "Jag fattar"}</button>
+      </div>
+    </div>
+  `;
+}
+
 /** Introskärmen "Så läser du": strategin på en skärm, en knapp. Visas första gången (och går att öppna via Strategi). */
 function renderHpLasIntro(): string {
   const intro = hpLasIntro!;
@@ -4932,6 +5010,9 @@ function renderHp(): string {
   }
   if (hpLasIntro) {
     return renderHpLasIntro();
+  }
+  if (hpTwinIntro) {
+    return renderHpTwinIntro();
   }
   if (hpFormulaSession) {
     return renderHpFormula();
@@ -6912,6 +6993,33 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-mek-close") {
     hpMekSession = null;
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-intro-open") {
+    const d = actionEl.dataset.delprov === "KVA" ? "KVA" : "NOG";
+    hpTwinIntro = { delprov: d, startAfter: false };
+    window.scrollTo(0, 0);
+    render();
+    return;
+  }
+
+  if (action === "hp-twin-intro-go") {
+    if (!hpTwinIntro) return;
+    const { delprov, startAfter } = hpTwinIntro;
+    hpTwinIntro = null;
+    hpTwinIntroMarkSeen(delprov);
+    if (startAfter) {
+      hpTwinStart(delprov, true);
+    } else {
+      render();
+    }
+    return;
+  }
+
+  if (action === "hp-twin-intro-close") {
+    hpTwinIntro = null;
     render();
     return;
   }

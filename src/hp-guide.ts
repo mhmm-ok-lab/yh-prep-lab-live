@@ -62,6 +62,77 @@ export const HP_LAS_STRATEGY = {
   nudge: "Nyckelord → leta → läs 2–3 meningar"
 } as const;
 
+/** Introskärmar för NOG och KVA (beslut 2026-10-09): ovanliga format som förklaras första gången.
+ *  Visas första gången ett pass startas och går att öppna igen via Strategi ("Visa genomgången"). */
+export const HP_NOG_INTRO = {
+  kicker: "Så fungerar NOG",
+  title: "NOG",
+  sub: "Kvantitativa resonemang – räcker informationen?",
+  goal: "Du ska INTE räkna ut svaret. Du ska avgöra om påstående (1) och/eller (2) ger tillräcklig information för att svaret ska bli ett enda bestämt värde.",
+  optionsLead: "Tillräcklig information för lösningen erhålls …",
+  options: [
+    ["A", "i (1) men ej i (2)"],
+    ["B", "i (2) men ej i (1)"],
+    ["C", "i (1) tillsammans med (2)"],
+    ["D", "i (1) och (2) var för sig"],
+    ["E", "ej genom de båda påståendena"]
+  ],
+  stepsTitle: "Tre steg, alltid i samma ordning",
+  steps: [
+    "Räcker (1) ensamt?",
+    "Räcker (2) ensamt?",
+    "Om ingen räcker ensam: räcker båda tillsammans?"
+  ],
+  example: {
+    title: "Ett exempel",
+    question: "I en påse finns 60 kulor, röda, blå och gröna. Hur många är gröna?",
+    claims: ["Det finns dubbelt så många röda som blå.", "Hälften är röda och en fjärdedel är blå."],
+    walk: [
+      "(1) ensamt: nej. Det ger bara ett förhållande, inte antalet.",
+      "(2) ensamt: ja. 30 röda och 15 blå, så 60 − 30 − 15 = 15 gröna.",
+      "Bara (2) räcker."
+    ],
+    answer: "Svar B"
+  },
+  trapsTitle: "Två fällor",
+  traps: [
+    "Räkna inte klart. Det räcker att se att det GÅR.",
+    "Kontrollera (2) ensamt även om (1) räckte."
+  ]
+} as const;
+
+export const HP_KVA_INTRO = {
+  kicker: "Så fungerar KVA",
+  title: "KVA",
+  sub: "Kvantitativa jämförelser",
+  goal: "Du jämför kvantitet I och kvantitet II och väljer ett av fyra svar:",
+  options: [
+    ["A", "I är större än II"],
+    ["B", "II är större än I"],
+    ["C", "I är lika med II"],
+    ["D", "Informationen är otillräcklig"]
+  ],
+  stepsTitle: "Metoden",
+  steps: [
+    "Förenkla båda sidorna.",
+    "Finns det variabler: testa −1, 0, ½ och ett stort tal.",
+    "Ändras svaret beroende på talet: välj otillräcklig."
+  ],
+  example: {
+    title: "Ett exempel",
+    question: "x är ett tal.",
+    claims: ["I: x²", "II: x"],
+    walk: [
+      "x = 2: I är 4 och II är 2, så I är större.",
+      "x = ½: I är ¼ och II är ½, så II är större.",
+      "Svaret ändras med talet, alltså otillräcklig."
+    ],
+    answer: "Svar D"
+  },
+  trapsTitle: "Fälla",
+  traps: ["Anta inte att x är positivt eller ett heltal."]
+} as const;
+
 export interface HpGuideCard {
   id: string;
   kategori: HpGuideCategoryId;
