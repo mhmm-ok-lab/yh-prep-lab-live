@@ -6,6 +6,7 @@ import {
   isChecked,
   larOmAreas,
   localDateKey,
+  planMathDelprov,
   planPosition,
   weakestOrUntriedDelprov,
   type HpPlanData,
@@ -97,7 +98,7 @@ describe("hp-plan: Lär om-urval", () => {
 describe("hp-plan: stegens uppgifter", () => {
   const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
 
-  it("11 okt: generalrepetition på papper, manuell, plus formler och LÄS", () => {
+  it("11 okt: generalrepetition på papper, manuell, plus formler och läsförståelse", () => {
     const tasks = buildDayTasks("2026-10-11", data);
     expect(tasks.map((t) => t.id)).toEqual(["generalrep", "formler", "las"]);
     expect(tasks[0].auto).toBeUndefined();
@@ -107,11 +108,11 @@ describe("hp-plan: stegens uppgifter", () => {
   });
 
   it("14 okt: svagaste delprov och ny diagnos", () => {
-    expect(buildDayTasks("2026-10-14", data).map((t) => t.id)).toEqual(["laga-train", "laga-diagnos", "formler", "las"]);
+    expect(buildDayTasks("2026-10-14", data).map((t) => t.id)).toEqual(["laga-train", "laga-diagnos", "formler", "elf"]);
   });
 
   it("15 och 16 okt: flashcards plus korta pass", () => {
-    expect(buildDayTasks("2026-10-16", data).map((t) => t.id)).toEqual(["strategi-flashcards", "formler", "las"]);
+    expect(buildDayTasks("2026-10-16", data).map((t) => t.id)).toEqual(["strategi-flashcards", "formler", "elf", "matte-train"]);
   });
 
   it("17 okt: bara flashcards och vila (inga dagliga pass)", () => {
@@ -121,34 +122,81 @@ describe("hp-plan: stegens uppgifter", () => {
   });
 });
 
-describe("hp-plan: MEK och ELF", () => {
+describe("hp-plan: läsförståelse, meningskomplettering och matterotation", () => {
   const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
   const ids = (key: string) => buildDayTasks(key, data).map((t) => t.id);
 
-  it("MEK på udda dagar och ELF på jämna dagar i Lär om och Laga", () => {
-    expect(ids("2026-10-05")).toContain("mek");
+  it("svensk läsförståelse på udda dagar, engelsk på jämna, varje dag t.o.m. 16 okt", () => {
+    expect(ids("2026-10-05")).toContain("las");
     expect(ids("2026-10-06")).toContain("elf");
-    expect(ids("2026-10-07")).toContain("mek");
-    expect(ids("2026-10-10")).toContain("elf");
-    expect(ids("2026-10-12")).toContain("elf");
-    expect(ids("2026-10-13")).toContain("mek");
-  });
-
-  it("aldrig både MEK och ELF samma dag, och aldrig mer än 4 uppgifter per dag", () => {
-    for (let day = 1; day <= 13; day++) {
+    expect(ids("2026-10-07")).toContain("las");
+    expect(ids("2026-10-08")).toContain("elf");
+    expect(ids("2026-10-16")).toContain("elf");
+    for (let day = 1; day <= 12; day++) {
       const list = ids(addDays("2026-10-05", day - 1));
-      expect(list.includes("mek") && list.includes("elf")).toBe(false);
-      expect(list.length).toBeLessThanOrEqual(4);
+      expect(list.includes("las") !== list.includes("elf")).toBe(true);
     }
   });
 
-  it("generalrepetitionen, ny diagnos och sista dagarna får inget extra", () => {
-    expect(ids("2026-10-11")).toEqual(["generalrep", "formler", "las"]);
-    expect(ids("2026-10-14")).toEqual(["laga-train", "laga-diagnos", "formler", "las"]);
-    expect(ids("2026-10-16")).toEqual(["strategi-flashcards", "formler", "las"]);
+  it("läsförståelsen säger sökläsning och 2 min/fråga, med fulla namn", () => {
+    const las = buildDayTasks("2026-10-05", data).find((t) => t.id === "las")!;
+    const elf = buildDayTasks("2026-10-06", data).find((t) => t.id === "elf")!;
+    expect(las.title).toBe("Svensk läsförståelse: en text");
+    expect(elf.title).toBe("Engelsk läsförståelse: en text");
+    expect(las.sub).toMatch(/sökläsning, 2 min\/fråga/);
+    expect(elf.sub).toMatch(/sökläsning, 2 min\/fråga/);
   });
 
-  it("bockas av automatiskt när ett MEK-pass eller en ELF-text är klar i dag", () => {
+  it("meningskomplettering varannan dag (udda dagar t.o.m. 13 okt), aldrig ordförståelse", () => {
+    expect(ids("2026-10-05")).toContain("mek");
+    expect(ids("2026-10-06")).not.toContain("mek");
+    expect(ids("2026-10-07")).toContain("mek");
+    expect(ids("2026-10-13")).toContain("mek");
+    expect(ids("2026-10-15")).not.toContain("mek");
+    for (let day = 1; day <= 13; day++) {
+      const tasks = buildDayTasks(addDays("2026-10-05", day - 1), data);
+      expect(tasks.some((t) => t.id === "ord" || /ordförståelse/i.test(t.title))).toBe(false);
+    }
+  });
+
+  it("matterotation: resonemang och jämförelser oftast, sedan diagram, sedan problemlösning", () => {
+    const count: Record<string, number> = {};
+    for (let day = 1; day <= 13; day++) {
+      const d = planMathDelprov(day);
+      count[d] = (count[d] ?? 0) + 1;
+    }
+    expect(count.NOG).toBeGreaterThanOrEqual(count.DTK);
+    expect(count.KVA).toBeGreaterThanOrEqual(count.DTK);
+    expect(count.DTK).toBeGreaterThanOrEqual(count.XYZ);
+    expect(planMathDelprov(1)).toBe("NOG");
+    const day2 = buildDayTasks("2026-10-06", data).find((t) => t.id === "matte-train")!;
+    expect(day2.action).toEqual({ type: "train", delprov: "KVA" });
+    expect(day2.title).toBe("Matteträning: Kvantitativa jämförelser");
+    expect(day2.auto).toEqual({ kind: "train", delprov: "KVA" });
+  });
+
+  it("inga förkortningar i uppgifternas titlar, texter och korta etiketter", () => {
+    for (let day = 1; day <= 13; day++) {
+      for (const t of buildDayTasks(addDays("2026-10-05", day - 1), data)) {
+        const text = [t.title, t.short, t.sub ?? "", t.why].join(" ");
+        expect(text).not.toMatch(/\b(ORD|LÄS|MEK|ELF|XYZ|KVA|NOG|DTK)\b/);
+      }
+    }
+  });
+
+  it("aldrig mer än 4 uppgifter per dag", () => {
+    for (let day = 1; day <= 13; day++) {
+      expect(ids(addDays("2026-10-05", day - 1)).length).toBeLessThanOrEqual(4);
+    }
+  });
+
+  it("stegen finns kvar: generalrepetition, ny diagnos och sista dagarna får inget extra", () => {
+    expect(ids("2026-10-11")).toEqual(["generalrep", "formler", "las"]);
+    expect(ids("2026-10-14")).toEqual(["laga-train", "laga-diagnos", "formler", "elf"]);
+    expect(ids("2026-10-17")).toEqual(["strategi-flashcards", "vila"]);
+  });
+
+  it("bockas av automatiskt när ett pass i meningskomplettering eller engelsk läsförståelse är klart i dag", () => {
     const mek = buildTodayPlan("2026-10-07", { ...data, mekCompletedAt: [iso("2026-10-07", "08:00:00")] });
     expect(mek.items.find((i) => i.task.id === "mek")!.done).toBe(true);
     const old = buildTodayPlan("2026-10-07", { ...data, mekCompletedAt: [iso("2026-10-06")] });
@@ -158,9 +206,22 @@ describe("hp-plan: MEK och ELF", () => {
     expect(elf.newlyAutoDone).toContain("elf");
   });
 
-  it("MEK och ELF flyttas inte fram (dagliga, ingen skuld)", () => {
+  it("dagliga uppgifter flyttas inte fram (ingen skuld)", () => {
     const plan = buildTodayPlan("2026-10-06", data);
-    expect(plan.items.some((i) => i.carried && (i.task.id === "mek" || i.task.id === "elf"))).toBe(false);
+    expect(plan.items.some((i) => i.carried && ["mek", "elf", "las", "matte-train"].includes(i.task.id))).toBe(false);
+  });
+
+  it("en fryst lista för i dag påverkas inte av den nya planen", () => {
+    const old = [
+      { id: "las", title: "En LÄS-text", short: "LÄS", why: "", action: { type: "las" as const }, buttonLabel: "Starta", auto: { kind: "las" as const }, carry: false },
+      { id: "elf", title: "En ELF-text", short: "ELF", why: "", action: { type: "elf" as const }, buttonLabel: "Starta", auto: { kind: "elf" as const }, carry: false }
+    ];
+    const plan = buildTodayPlan("2026-10-08", data, state({ snapshots: { "2026-10-08": old }, checks: { "2026-10-08": ["las"] } }));
+    expect(plan.items.filter((i) => !i.carried).map((i) => i.task.id)).toEqual(["las", "elf"]);
+    expect(plan.items[0].done).toBe(true);
+    // Gammal frusen text får fulla namn, men id och avbockning är oförändrade.
+    expect(plan.items[0].task.title).toBe("Svensk läsförståelse: en text");
+    expect(plan.items[1].task.title).toBe("Engelsk läsförståelse: en text");
   });
 });
 
@@ -183,10 +244,10 @@ describe("hp-plan: auto-avbockning", () => {
     expect(checked.items[0].done).toBe(true);
   });
 
-  it("LÄS klar när en text är klar i dag, inte i går", () => {
-    const yesterday = buildTodayPlan("2026-10-06", { ...data, lasCompletedAt: [iso("2026-10-05")] });
+  it("svensk läsförståelse klar när en text är klar i dag, inte i går", () => {
+    const yesterday = buildTodayPlan("2026-10-07", { ...data, lasCompletedAt: [iso("2026-10-06")] });
     expect(yesterday.items.find((i) => i.task.id === "las")!.done).toBe(false);
-    const today = buildTodayPlan("2026-10-06", { ...data, lasCompletedAt: [iso("2026-10-06", "08:00:00")] });
+    const today = buildTodayPlan("2026-10-07", { ...data, lasCompletedAt: [iso("2026-10-07", "08:00:00")] });
     expect(today.items.find((i) => i.task.id === "las")!.done).toBe(true);
     expect(today.newlyAutoDone).toContain("las");
   });

@@ -3,6 +3,21 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-08 — HP: fulla namn, läsförståelsestrategi och prioriterad plan
+
+**Vad och varför.** Martin (skrev provet 1995) känner inte igen förkortningarna ORD, LÄS, MEK, ELF, XYZ, KVA, NOG och DTK och är långsam i läsförståelse. Tre ändringar: (1) fulla namn överallt, (2) en sökläsningsstrategi för svensk och engelsk läsförståelse, (3) en plan som prioriterar poäng per timme.
+
+**Före.** Kort, rubriker, progress ("KVA 1/10"), "Är jag redo?", planens uppgifter, guiden och resurserna använde förkortningar som huvudetikett. Läsförståelsens Strategi-panel hade sju tips och ingen introduktion; tiden syntes bara som en räknare. Planen hade en LÄS-text varje dag, MEK och ELF varannan dag och matte enligt Lär om.
+
+**Efter.**
+- Fulla namn från en namnkarta (`src/hp-names.ts`), korta namn där 375 px inte räcker ("Jämförelser 1/10", "Engelska fråga 1/4"). Förkortningen står som liten dämpad text bara i "Är jag redo?"-raden ("Kvantitativa jämförelser · KVA"). Text från datafiler skrivs ut vid rendering.
+- "Läs inte texten — leta i den": sex steg plus fokus-rad i Strategi-panelen och i guiden. Introskärmen "Så läser du" visas första gången, påminnelsen "Nyckelord → leta → läs 2–3 meningar" ligger ovanför frågan de tre första passen, och en vänlig honungsfärgad banner visas när frågans tid (2 min, lucka 1 min) passerats. Banner och påminnelse påverkar inte poäng och stänger inget.
+- Planen: formelträning och en läsförståelsetext varje dag (växelvis svensk och engelsk, "Använd sökläsning, 2 min/fråga"), matterotation med kvantitativa resonemang och jämförelser oftast, meningskomplettering varannan dag, ingen ordförståelse. Stegen och högst 4 uppgifter per dag är oförändrade.
+
+**Stitch-princip.** No-Line och Tonal Layering: banner och påminnelse är tonade ytor utan linje (honey respektive accent-soft), introskärmen använder kort på `--card` med ambient skugga. Bara de tre textstorlekarna, befintliga tokens och pill-höjderna 28/36 px. Mörkt läge via samma tokens.
+
+**UX-teori.** Nielsens heuristik 6, igenkänning före minne: fulla namn tar bort uppslagningen. Mindre belastning på arbetsminnet (ADHD): ett nyckelord och ett nästa steg i stället för en hel strategi vid frågan. Tidsbannern är ett riktmärke, inte ett straff.
+
 ## 2026-10-05 — HP: ELF och MEK i appen (verbala delen komplett)
 
 **Vad:** Två nya övningar. **ELF** (engelsk läsförståelse) återanvänder LÄS-träningen med en annan källa: samma växlare Frågan ⇄ Texten, Strategi, Ledtråd, nytt försök, Visa svar, `why` per alternativ, felanalys, repetitionskö och sammanfattning. Rubrik "ELF – engelsk läsförståelse · [titel]". Tidsbudget 2 min per fråga, i lucktexter ("Gap-fill") 1 min per lucka. I lucktexter ligger stycket med luckan direkt ovanför frågan med aktuell lucka markerad. **MEK** (meningskomplettering) är en ny drill: en uppgift per skärm, luckorna som numrerade rutor, fyra alternativ som "A  ord1 – ord2". Efter ett val sätts de valda orden in i luckorna, rätt i grönt och fel i rött, så man hör hur meningen låter; efter fel visas också meningen med rätt ord. 10 uppgifter per pass, tempomål 50 s per uppgift. På HP-hem ligger MEK och ELF som två kort i en rad under LÄS-kortet, och "Din plan" tar upp "10 MEK" och "En ELF-text" varannan dag (MEK udda dagar, ELF jämna; max 4 uppgifter per dag).

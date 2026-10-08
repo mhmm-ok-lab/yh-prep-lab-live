@@ -1,7 +1,9 @@
 // HP-guiden: strategiråd inför högskoleprovet, som data — visas både som
 // flashcards (snabb repetition) och som lång översiktssida.
 // Innehållet är kortat/omskrivet från docs/HP-GUIDE.md och docs/HP-LAS-SPEC.md
-// (avsnittet "Guide: bli bättre på LÄS"). Källor finns i respektive md-fil.
+// (avsnittet "Guide: bli bättre på svensk läsförståelse"). Källor finns i respektive md-fil.
+
+import { HP_NAMES } from "./hp-names";
 
 export type HpGuideCategoryId =
   | "viktigast"
@@ -22,7 +24,7 @@ export interface HpGuideCategoryInfo {
   id: HpGuideCategoryId;
   /** Kort etikett för filter-chips. */
   shortLabel: string;
-  /** Fullständig etikett (förkortning + förklaring), visas på korten. */
+  /** Fullständigt namn, visas på korten. */
   label: string;
 }
 
@@ -30,18 +32,35 @@ export interface HpGuideCategoryInfo {
 export const HP_GUIDE_CATEGORIES: HpGuideCategoryInfo[] = [
   { id: "viktigast", shortLabel: "Viktigast", label: "De 7 viktigaste råden" },
   { id: "plan", shortLabel: "Plan", label: "Plan — sista 3 veckorna" },
-  { id: "las", shortLabel: "LÄS", label: "LÄS (svensk läsförståelse)" },
-  { id: "ord", shortLabel: "ORD", label: "ORD (ordförståelse)" },
-  { id: "mek", shortLabel: "MEK", label: "MEK (meningskomplettering)" },
-  { id: "elf", shortLabel: "ELF", label: "ELF (engelsk läsförståelse)" },
-  { id: "xyz", shortLabel: "XYZ", label: "XYZ (matematisk problemlösning)" },
-  { id: "kva", shortLabel: "KVA", label: "KVA (kvantitativa jämförelser)" },
-  { id: "nog", shortLabel: "NOG", label: "NOG (tillräcklig information)" },
-  { id: "dtk", shortLabel: "DTK", label: "DTK (diagram, tabeller, kartor)" },
+  { id: "las", shortLabel: HP_NAMES.LÄS.short, label: HP_NAMES.LÄS.full },
+  { id: "ord", shortLabel: HP_NAMES.ORD.short, label: HP_NAMES.ORD.full },
+  { id: "mek", shortLabel: HP_NAMES.MEK.short, label: HP_NAMES.MEK.full },
+  { id: "elf", shortLabel: HP_NAMES.ELF.short, label: HP_NAMES.ELF.full },
+  { id: "xyz", shortLabel: HP_NAMES.XYZ.short, label: HP_NAMES.XYZ.full },
+  { id: "kva", shortLabel: HP_NAMES.KVA.short, label: HP_NAMES.KVA.full },
+  { id: "nog", shortLabel: HP_NAMES.NOG.short, label: HP_NAMES.NOG.full },
+  { id: "dtk", shortLabel: HP_NAMES.DTK.short, label: HP_NAMES.DTK.full },
   { id: "adhd", shortLabel: "ADHD", label: "ADHD-anpassningar" },
   { id: "provdagen", shortLabel: "Provdagen", label: "Provdagen" },
   { id: "misstag", shortLabel: "Misstag", label: "Vanliga misstag" }
 ];
+
+/** Läsförståelsestrategin för en långsam läsare (beslut 2026-10-08 (2)). Gäller svensk och engelsk läsförståelse.
+ *  Används i Strategi-panelen, introskärmen "Så läser du" och som kort i guiden. */
+export const HP_LAS_STRATEGY = {
+  title: "Läs inte texten — leta i den.",
+  steps: [
+    "Läs frågan först och ta ut ETT nyckelord.",
+    "Sökläs: låt blicken glida tills du hittar nyckelordet.",
+    "Läs bara 2–3 meningar runt stället.",
+    "Stryk fel alternativ: för starkt, motsatsen eller står inte i texten.",
+    "Detaljfrågor först. \"Vad handlar texten om\" tar du sist: läs då första och sista stycket.",
+    "Max 2 minuter per fråga, sedan gissar du och går vidare. Det finns inga minuspoäng."
+  ],
+  focus: "Följ raden med pennan eller fingret och ha alltid frågan \"vad letar jag efter?\" i huvudet.",
+  /** Kort påminnelse ovanför frågan de första passen. */
+  nudge: "Nyckelord → leta → läs 2–3 meningar"
+} as const;
 
 export interface HpGuideCard {
   id: string;
@@ -87,7 +106,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     kategori: "viktigast",
     rubrik: "Gör delproven i din ordning",
     gorSaHar: "Börja med det du är snabbast/säkrast på, inte häftets ordning.",
-    varfor: "Sparar tid och mental energi till det som är svårast för dig (LÄS).",
+    varfor: "Sparar tid och mental energi till det som är svårast för dig (svensk läsförståelse).",
     kalla: "Flashback, hpspelet.se"
   },
   {
@@ -127,7 +146,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "plan-v2",
     kategori: "plan",
     rubrik: "Vecka 2: tidspress och volym",
-    gorSaHar: "Kör hela provpass på full tid 3–4 gånger, plus daglig ORD/MEK-drill.",
+    gorSaHar: "Kör hela provpass på full tid 3–4 gånger, plus daglig träning i ordförståelse och meningskomplettering.",
     varfor: "Bygger den tempokänsla som avgör resultatet på riktiga provet."
   },
   {
@@ -138,59 +157,58 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     varfor: "Provdagen kräver en utvilad hjärna, inte sista-minuten-stress."
   },
 
-  // ── LÄS ── (7 tips för bättre läsförståelse och snabbare tid)
+  // ── Svensk läsförståelse ── (strategin "Läs inte texten, leta i den", se HP_LAS_STRATEGY)
   {
-    id: "las-fraga-forst",
+    id: "las-leta",
     kategori: "las",
-    rubrik: "Läs frågorna före texten",
-    gorSaHar: "Läs de 2–4 frågestammarna (inte alternativen) innan du tittar på texten, så vet du vad du letar efter.",
-    varfor: "Du läser med ett syfte i stället för att läsa allt lika noga, vilket sparar tid.",
+    rubrik: "Läs inte texten, leta i den",
+    gorSaHar: "Du ska inte läsa hela texten. Ha hela tiden frågan \"vad letar jag efter?\" i huvudet.",
+    varfor: "Du läser långsamt och tappar lätt fokus, och då är en sökning med ett mål lättare att hålla igång än en läsning utan mål."
+  },
+  {
+    id: "las-nyckelord",
+    kategori: "las",
+    rubrik: "1. Läs frågan först",
+    gorSaHar: "Läs frågan och ta ut ETT nyckelord att leta efter.",
+    varfor: "Ett enda ord är lätt att hålla kvar i huvudet medan blicken glider över raderna.",
     kalla: "hpguiden.se"
   },
   {
-    id: "las-skumma-soklas",
+    id: "las-soklas",
     kategori: "las",
-    rubrik: "Skumma först, sökläs sedan",
-    gorSaHar: "Skumläs texten en gång (ca 1 minut) för struktur och huvudtanke. Gå sedan tillbaka och sökläs bara efter det frågan efterfrågar.",
-    varfor: "Helhetsbilden gör sökläsningen snabbare, och du slipper läsa om allt.",
+    rubrik: "2. Sökläs",
+    gorSaHar: "Låt blicken glida över texten tills du hittar nyckelordet. Följ raden med pennan eller fingret.",
+    varfor: "Ögonen hittar ett ord snabbare än hjärnan hinner läsa en mening, och pennan hindrar blicken från att hoppa.",
     kalla: "hv.se"
   },
   {
-    id: "las-stycke",
+    id: "las-runt-stallet",
     kategori: "las",
-    rubrik: "Ett stycke i taget",
-    gorSaHar: "Sammanfatta varje stycke i en egen mening i huvudet innan du går vidare.",
-    varfor: "Små bitar belastar arbetsminnet mindre, och du hittar lättare tillbaka till rätt ställe.",
-    kalla: "Bedrock Learning"
+    rubrik: "3. Läs 2–3 meningar runt stället",
+    gorSaHar: "När du hittat ordet läser du bara meningarna närmast före och efter, inte hela stycket.",
+    varfor: "Svaret ligger nästan alltid i närheten av nyckelordet, och du sparar tid och energi till nästa fråga."
   },
   {
-    id: "las-peka-ut-stallet",
+    id: "las-stryk",
     kategori: "las",
-    rubrik: "Peka ut stället i texten",
-    gorSaHar: "Välj inte svar på känsla. Hitta meningen i texten som stöder alternativet och kontrollera att den svarar på just frågan.",
-    varfor: "Felalternativen låter ofta rimliga, men saknar stöd i texten."
-  },
-  {
-    id: "las-uteslut-fallor",
-    kategori: "las",
-    rubrik: "Uteslut genom att namnge fällan",
-    gorSaHar: "Stryk alternativ som är för starka (alltid, aldrig), för generella, motsatsen, som saknas i texten eller bara stämmer för ett stycke.",
+    rubrik: "4. Stryk fel alternativ",
+    gorSaHar: "Stryk alternativ som är för starka (alltid, aldrig), säger motsatsen eller inte står i texten.",
     varfor: "Klassiska fällor går att känna igen, och varje struket alternativ höjer träffchansen rejält.",
     kalla: "hogskoleprovskurser.se"
   },
   {
-    id: "las-huvudtanke-sist",
+    id: "las-detalj-forst",
     kategori: "las",
-    rubrik: "Huvudtanke och syfte sist",
-    gorSaHar: "Ta detaljfrågorna först och spara huvudtanke- och syftesfrågorna till efter dem för samma text.",
-    varfor: "Då har du läst texten noggrant och har helhetsbilden färskast i minnet."
+    rubrik: "5. Detaljfrågor först",
+    gorSaHar: "Ta detaljfrågorna först. Frågor som \"vad handlar texten om\" tar du sist: läs då första och sista stycket.",
+    varfor: "Efter detaljfrågorna har du redan rört dig i texten, och första och sista stycket brukar bära huvudtanken."
   },
   {
-    id: "las-tidsruta-gissa",
+    id: "las-tid",
     kategori: "las",
-    rubrik: "Håll tiden, gissa och gå vidare",
-    gorSaHar: "Räkna med ca 2 minuter per uppgift. Tar en fråga längre tid: gör en kvalificerad gissning och gå vidare.",
-    varfor: "Ingen minuspoäng finns, så ett fastnat svar kostar bara tid medan en gissning kostar ingenting.",
+    rubrik: "6. Max 2 minuter per fråga",
+    gorSaHar: "Gå vidare efter 2 minuter: gissa och fortsätt. Det finns inga minuspoäng.",
+    varfor: "En fastnad fråga kostar tid från flera andra, medan en gissning kostar ingenting.",
     kalla: "hogskoleprovskurser.se"
   },
 
@@ -200,7 +218,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     kategori: "ord",
     rubrik: "Lär dig 10–15 ord/dag",
     gorSaHar: "Lär dig 10–15 nya ord om dagen med en ordlista.",
-    varfor: "ORD (ordförståelse) är det delprov som förbättras snabbast rent mekaniskt.",
+    varfor: "Ordförståelse är det delprov som förbättras snabbast rent mekaniskt.",
     kalla: "hpspelet.se"
   },
   {
@@ -222,8 +240,8 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
   {
     id: "mek-samma-ord",
     kategori: "mek",
-    rubrik: "Ordträning hjälper även MEK",
-    gorSaHar: "Samma ordträning som för ORD ger effekt även på MEK (meningskomplettering).",
+    rubrik: "Ordträning hjälper även meningskomplettering",
+    gorSaHar: "Samma ordträning som för ordförståelse ger effekt även på meningskomplettering.",
     varfor: "Bredare ordförråd hjälper dig fylla i luckan rätt."
   },
   {
@@ -245,9 +263,9 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
   {
     id: "elf-samma-metod",
     kategori: "elf",
-    rubrik: "Samma metod som LÄS funkar",
-    gorSaHar: "Läs frågor först, skumläs, sökläs — precis som på LÄS, på ELF (engelsk läsförståelse).",
-    varfor: "ELF har samma uppbyggnad: huvudbudskap, detalj, ord-i-sammanhang, slutsats.",
+    rubrik: "Samma metod som svensk läsförståelse",
+    gorSaHar: "Läs frågan först, sökläs och läs bara 2–3 meningar runt stället — precis som i svensk läsförståelse.",
+    varfor: "Engelsk läsförståelse har samma uppbyggnad: huvudbudskap, detalj, ord-i-sammanhang, slutsats.",
     kalla: "hpbuddy.se"
   },
   {
@@ -261,7 +279,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "elf-klocka",
     kategori: "elf",
     rubrik: "Öva med klocka, 22 min",
-    gorSaHar: "Öva på samma tidspress som LÄS: 22 minuters provtid.",
+    gorSaHar: "Öva på samma tidspress som i svensk läsförståelse: 22 minuters provtid.",
     varfor: "Annars kommer tidspressen som en chock på riktiga provet."
   },
 
@@ -270,7 +288,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "xyz-las-fragan",
     kategori: "xyz",
     rubrik: "Läs frågan innan du räknar",
-    gorSaHar: "Identifiera vad frågan faktiskt efterfrågar innan du sätter igång att räkna, på XYZ (matematisk problemlösning).",
+    gorSaHar: "Identifiera vad frågan faktiskt efterfrågar innan du sätter igång att räkna i matematisk problemlösning.",
     varfor: "Undviker att du snabbt räknar ut fel sak.",
     kalla: "hpguiden.se"
   },
@@ -279,7 +297,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     kategori: "xyz",
     rubrik: "Repetera vanliga formler",
     gorSaHar: "Gå igenom procent, förändringsfaktor och potenslagar.",
-    varfor: "Det är de vanligast förekommande formeltyperna på XYZ."
+    varfor: "Det är de vanligast förekommande formeltyperna i matematisk problemlösning."
   },
   {
     id: "xyz-orimliga-svar",
@@ -294,8 +312,8 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "kva-jamfor",
     kategori: "kva",
     rubrik: "Jämför, räkna inte ut",
-    gorSaHar: "Jämför storleksordning eller tecken i stället för att räkna ut exakta värden, på KVA (kvantitativa jämförelser).",
-    varfor: "Du behöver sällan det exakta talet på KVA.",
+    gorSaHar: "Jämför storleksordning eller tecken i stället för att räkna ut exakta värden i kvantitativa jämförelser.",
+    varfor: "Du behöver sällan det exakta talet i kvantitativa jämförelser.",
     kalla: "hpguiden.se"
   },
   {
@@ -310,7 +328,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     kategori: "kva",
     rubrik: "Se upp för negativa tal och nollor",
     gorSaHar: "Dubbelkolla särskilt negativa tal och nollor.",
-    varfor: "Vanligaste fällan i KVA-uppgifter."
+    varfor: "Vanligaste fällan i kvantitativa jämförelser."
   },
 
   // ── NOG ──
@@ -318,8 +336,8 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "nog-rakna-bara-om",
     kategori: "nog",
     rubrik: "Räkna bara om du måste",
-    gorSaHar: "Avgör om informationen räcker för att lösa problemet — på NOG (tillräcklig information) ska du oftast inte lösa det.",
-    varfor: "NOG testar om du känner igen tillräcklig information, inte facit.",
+    gorSaHar: "Avgör om informationen räcker för att lösa problemet — i kvantitativa resonemang ska du oftast inte lösa det.",
+    varfor: "Kvantitativa resonemang testar om du känner igen tillräcklig information, inte facit.",
     kalla: "hpguiden.se"
   },
   {
@@ -332,8 +350,8 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
   {
     id: "nog-tidigt",
     kategori: "nog",
-    rubrik: "Gör NOG tidigt om du kan tekniken",
-    gorSaHar: "NOG brukar vara det snabbaste kvantitativa delprovet när du kan metoden.",
+    rubrik: "Gör kvantitativa resonemang tidigt om du kan tekniken",
+    gorSaHar: "Kvantitativa resonemang brukar vara det snabbaste kvantitativa delprovet när du kan metoden.",
     varfor: "Bra kandidat att göra tidigt i passet för att spara tid."
   },
 
@@ -342,8 +360,8 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "dtk-axlar",
     kategori: "dtk",
     rubrik: "Läs axlar och enheter först",
-    gorSaHar: "Läs alltid axlar, enheter och förklaringar innan du läser av värden, på DTK (diagram, tabeller, kartor).",
-    varfor: "Vanligaste felkällan på DTK.",
+    gorSaHar: "Läs alltid axlar, enheter och förklaringar innan du läser av värden i diagram, tabeller och kartor.",
+    varfor: "Vanligaste felkällan i diagram, tabeller och kartor.",
     kalla: "hpguiden.se"
   },
   {
@@ -357,7 +375,7 @@ export const HP_GUIDE_CARDS: HpGuideCard[] = [
     id: "dtk-tidsbudget",
     kategori: "dtk",
     rubrik: "Planera tidsbudgeten extra",
-    gorSaHar: "Räkna med att DTK tar mest tid av de kvantitativa delproven.",
+    gorSaHar: "Räkna med att diagram, tabeller och kartor tar mest tid av de kvantitativa delproven.",
     varfor: "Så du inte blir tidspressad i sista delprovet."
   },
 

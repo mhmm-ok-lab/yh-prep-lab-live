@@ -28,7 +28,7 @@ import {
 } from "./hp-formulas";
 import { HP_RESOURCE_GROUPS, HP_RESOURCES_CHECKED_LABEL, hpResourcesForGroup } from "./hp-resources";
 import type { HpCard } from "./hp-cards";
-import { HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
+import { HP_LAS_STRATEGY, HP_GUIDE_CATEGORIES, hpGuideCardsForCategory } from "./hp-guide";
 import type { HpGuideCard, HpGuideCategoryId } from "./hp-guide";
 import {
   buildPlanOverview,
@@ -95,6 +95,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
+import { HP_NAMES, hpExpand, hpFull, hpShort } from "./hp-names";
 import { loadColorMode, saveColorMode } from "./storage";
 import type { ColorMode } from "./storage";
 import type { HpLasErrorTag, HpLasSource, HpMathAreaResult, HpMathQuestionResult, HpMathOutcome, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
@@ -599,6 +600,28 @@ let hpMekShowAllFor: string | null = null;
 let hpLasView: "fraga" | "text" = "fraga";
 let hpLasHighlight: number | null = null;
 let hpLasShowAllFor: string | null = null;
+/** Introskärmen "Så läser du" (beslut 2026-10-08 (2)): väntande start, visas första gången läsförståelse öppnas. */
+let hpLasIntro: { text: HpLasText; source: HpLasSource } | null = null;
+const HP_LAS_INTRO_KEY = "hp-las-intro-seen";
+function hpLasIntroSeen(): boolean {
+  try {
+    return localStorage.getItem(HP_LAS_INTRO_KEY) === "1";
+  } catch {
+    return true;
+  }
+}
+function hpLasIntroMarkSeen(): void {
+  try {
+    localStorage.setItem(HP_LAS_INTRO_KEY, "1");
+  } catch {
+    /* utan lagring visas introt bara en gång per session */
+  }
+}
+/** Påminnelsen ovanför frågan visas de tre första passen (svensk och engelsk läsförståelse sammanlagt). */
+const HP_LAS_NUDGE_PASSES = 3;
+function hpLasShowNudge(): boolean {
+  return Object.keys(loadHpLasResults()).length + Object.keys(loadHpLasResults("elf")).length < HP_LAS_NUDGE_PASSES;
+}
 const hpLasScroll = { fraga: 0, text: 0 };
 /** True när man nått HP via nav/startsidans HP-kort medan ett pass pågår —
  *  visar HP-hem med "Fortsätt pass" i stället för att hoppa rakt in i övningen. */
@@ -953,10 +976,10 @@ function hpMathAdvanceQuestion(): void {
 }
 
 const HP_TWIN_DELPROV_INFO: Record<HpDelprov, { label: string; desc: string }> = {
-  XYZ: { label: "XYZ", desc: "Problemlösning" },
-  KVA: { label: "KVA", desc: "Jämför två värden" },
-  NOG: { label: "NOG", desc: "Räcker informationen?" },
-  DTK: { label: "DTK", desc: "Läs tabeller" }
+  XYZ: { label: hpFull("XYZ"), desc: "Räkna ut svaret" },
+  KVA: { label: hpFull("KVA"), desc: "Jämför två värden" },
+  NOG: { label: hpFull("NOG"), desc: HP_NAMES.NOG.sub ?? "" },
+  DTK: { label: hpFull("DTK"), desc: "Läs diagram och tabeller" }
 };
 
 /** Delprov där svarsordningen blandas — KVA och NOG har fasta alternativ i fast ordning som på provet. */
@@ -985,11 +1008,12 @@ let hpFigureZoom = false;
 /** Antal uppgifter per pass = antal i ett provpass på riktiga provet. */
 const HP_TWIN_PASS_SIZE: Record<HpDelprov, number> = { XYZ: 12, KVA: 10, NOG: 6, DTK: 12 };
 
+/** Fullt namn per matte-delprov (central namnkarta). */
 const HP_DELPROV_NAMES: Record<HpDelprov, string> = {
-  XYZ: "problemlösning",
-  KVA: "jämför två värden",
-  NOG: "räcker informationen?",
-  DTK: "diagram, tabeller, kartor"
+  XYZ: hpFull("XYZ"),
+  KVA: hpFull("KVA"),
+  NOG: hpFull("NOG"),
+  DTK: hpFull("DTK")
 };
 
 /** Vad ska Martin göra nu? 1) mattedelprov han aldrig provat, 2) dagens ord om de inte är gjorda,
@@ -1000,8 +1024,8 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
   if (untried) {
     return {
       delprov: untried,
-      label: `Matte ${untried} – ${HP_DELPROV_NAMES[untried]}`,
-      reason: `Du har inte provat ${untried} än · ${HP_TWIN_PASS_SIZE[untried]} uppgifter`
+      label: HP_DELPROV_NAMES[untried],
+      reason: `Du har inte provat ${HP_DELPROV_NAMES[untried]} än · ${HP_TWIN_PASS_SIZE[untried]} uppgifter`
     };
   }
   // LÄS är prioriterat (Martins svåraste del): direkt efter otränade mattedelprov, och sedan en text om dagen.
@@ -1010,21 +1034,21 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
   if (lasText && lasResults.length === 0) {
     return {
       las: lasText,
-      label: `LÄS – ${lasText.title}`,
-      reason: `Du har inte tränat LÄS än · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
+      label: `${hpFull("LÄS")} – ${lasText.title}`,
+      reason: `Du har inte tränat ${hpFull("LÄS").toLowerCase()} än · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
     };
   }
   // Verbala delprov som aldrig tränats: MEK, sedan ELF.
   if (HP_MEK_ITEMS.length > 0 && loadHpMekResults().length === 0) {
-    return { mek: true, label: "MEK – meningskomplettering", reason: `Du har inte tränat MEK än · ${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min` };
+    return { mek: true, label: hpFull("MEK"), reason: `Du har inte tränat ${hpFull("MEK").toLowerCase()} än · ${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min` };
   }
   const elfText = pickHpLasText("elf");
   if (elfText && Object.keys(loadHpLasResults("elf")).length === 0) {
     return {
       las: elfText,
       source: "elf",
-      label: `ELF – ${elfText.title}`,
-      reason: `Du har inte tränat ELF än · ${elfText.questions.length} frågor, ca ${Math.round(hpLasBudgetSeconds(elfText) / 60)} min`
+      label: `${hpFull("ELF")} – ${elfText.title}`,
+      reason: `Du har inte tränat ${hpFull("ELF").toLowerCase()} än · ${elfText.questions.length} frågor, ca ${Math.round(hpLasBudgetSeconds(elfText) / 60)} min`
     };
   }
   if (wordsToday === 0 && HP_WORDS.length > 0) {
@@ -1035,15 +1059,15 @@ function recommendHpNext(wordsToday: number): { label: string; reason: string; d
     const isRepeat = loadHpLasRepeatQueue().includes(lasText.id);
     return {
       las: lasText,
-      label: `LÄS – ${lasText.title}`,
-      reason: `${isRepeat ? "Du hade fel här sist, dags att repetera" : "Ingen LÄS i dag än"} · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
+      label: `${hpFull("LÄS")} – ${lasText.title}`,
+      reason: `${isRepeat ? "Du hade fel här sist, dags att repetera" : "Ingen svensk läsförståelse i dag än"} · ${lasText.questions.length} frågor, ca ${hpLasBudgetSeconds(lasText) / 60} min`
     };
   }
   const weakest = suggestNextHpTwinDelprov();
   const r = loadHpTwinResult(weakest)!;
   return {
     delprov: weakest,
-    label: `Matte ${weakest} – ${HP_DELPROV_NAMES[weakest]}`,
+    label: HP_DELPROV_NAMES[weakest],
     reason: `Ditt svagaste just nu (senast ${r.correct}/${r.total}) · ${HP_TWIN_PASS_SIZE[weakest]} uppgifter`
   };
 }
@@ -1056,6 +1080,18 @@ function hpIsGapFill(text: HpLasText): boolean {
   return /^gap-fill/i.test(text.title);
 }
 
+/** Tidsbudget för den fråga man är på (2 min, lucka 1 min). */
+function hpLasQuestionBudgetSeconds(text: HpLasText): number {
+  return hpIsGapFill(text) ? HP_GAPFILL_SECONDS_PER_QUESTION : HP_LAS_SECONDS_PER_QUESTION;
+}
+
+/** Är tiden för den aktuella frågan slut? Bara medan frågan är obesvarad. */
+function hpLasQuestionOver(): boolean {
+  const s = hpLasSession;
+  if (!s || s.reviewIndex !== null || s.showFeedback || s.currentIndex >= s.items.length) return false;
+  return (Date.now() - s.questionStartedAt) / 1000 > hpLasQuestionBudgetSeconds(s.text);
+}
+
 function hpLasBudgetSeconds(text: HpLasText): number {
   return text.questions.length * (hpIsGapFill(text) ? HP_GAPFILL_SECONDS_PER_QUESTION : HP_LAS_SECONDS_PER_QUESTION);
 }
@@ -1064,9 +1100,9 @@ function hpLasTexts(source: HpLasSource): HpLasText[] {
   return source === "elf" ? HP_ELF_TEXTS : HP_LAS_TEXTS;
 }
 
-/** Rubrik i övningen: "LÄS – titel" eller "ELF – engelsk läsförståelse · titel". */
+/** Rubrik i övningen: "Svensk läsförståelse – titel" eller "Engelsk läsförståelse · titel". */
 function hpLasHeading(source: HpLasSource, text: HpLasText): string {
-  return source === "elf" ? `ELF – engelsk läsförståelse · ${text.title}` : `LÄS – ${text.title}`;
+  return source === "elf" ? `${hpFull("ELF")} · ${text.title}` : `${hpFull("LÄS")} – ${text.title}`;
 }
 
 function formatMinSec(totalSeconds: number): string {
@@ -1129,6 +1165,7 @@ function updateHpLasTempoUI(): void {
   }
   el.textContent = hpLasTempoText();
   el.classList.toggle("hp-tempo-over", hpLasElapsedSeconds() > hpLasBudgetSeconds(hpLasSession.text));
+  app.querySelector<HTMLElement>("[data-hp-las-banner]")?.classList.toggle("hp-time-banner-on", hpLasQuestionOver());
 }
 
 function startHpLasTempoInterval(): void {
@@ -2929,7 +2966,7 @@ function renderHpActiveResume(): string {
     return `
       <div class="hp-resume-card">
         <p class="hp-resume-label">Pågående pass</p>
-        <p class="hp-resume-desc">MEK – meningskomplettering — uppgift ${at}/${total}</p>
+        <p class="hp-resume-desc">${hpFull("MEK")} — uppgift ${at}/${total}</p>
         <button class="hp-cta-btn" data-action="hp-resume">Fortsätt pass</button>
       </div>
     `;
@@ -3618,7 +3655,7 @@ function renderHpReadyRow(row: HpReadyRow): string {
   return `
     <li class="hp-ready-row hp-ready-${row.status}">
       <div class="hp-ready-main">
-        <span class="hp-ready-name">${row.name}</span>
+        <span class="hp-ready-name">${row.name}${row.id in HP_NAMES ? ` <span class="hp-ready-abbr">· ${row.short}</span>` : ""}</span>
         <span class="hp-ready-status"><span aria-hidden="true">${HP_READY_STATUS_ICON[row.status]}</span> ${HP_READY_STATUS_LABEL[row.status]}${row.reasonText ? ` · ${row.reasonText}` : ""}</span>
         <span class="hp-ready-meta">${meta}</span>
       </div>
@@ -3728,7 +3765,7 @@ function renderHpHome(): string {
   `;
 }
 
-/** MEK-kortet: kompakt, bredvid ELF (verbala delen: ORD, LÄS, MEK, ELF). */
+/** Meningskompletteringskortet: kompakt, bredvid engelska läsförståelsen (verbala delen). */
 function renderHpMekHomeCard(): string {
   if (HP_MEK_ITEMS.length === 0) {
     return "";
@@ -3738,8 +3775,8 @@ function renderHpMekHomeCard(): string {
   const status = passes === 0 ? "inte påbörjad" : `${passes} pass${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
   return `
     <button class="hp-las-card hp-verbal-card" data-action="hp-mek-start">
-      <span class="hp-las-card-name">MEK</span>
-      <span class="hp-las-card-desc">Meningskomplettering · ${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min</span>
+      <span class="hp-las-card-name">${hpFull("MEK")}</span>
+      <span class="hp-las-card-desc">${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min</span>
       <span class="hp-las-card-count">${status}</span>
     </button>
   `;
@@ -3755,8 +3792,8 @@ function renderHpElfHomeCard(): string {
   const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_ELF_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
   return `
     <button class="hp-las-card hp-verbal-card" data-action="hp-las-start" data-source="elf">
-      <span class="hp-las-card-name">ELF</span>
-      <span class="hp-las-card-desc">Engelsk läsförståelse · 1–2 min per fråga</span>
+      <span class="hp-las-card-name">${hpFull("ELF")}</span>
+      <span class="hp-las-card-desc">Sökläs i texten · 1–2 min per fråga</span>
       <span class="hp-las-card-count">${status}</span>
     </button>
   `;
@@ -3773,7 +3810,7 @@ function renderHpLasHomeCard(): string {
   const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_LAS_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
   return `
     <button class="hp-las-card" data-action="hp-las-start">
-      <span class="hp-las-card-name">LÄS – läsförståelse</span>
+      <span class="hp-las-card-name">${hpFull("LÄS")}</span>
       <span class="hp-las-card-desc">Frågan först, sedan texten · ca 2 min per fråga</span>
       <span class="hp-las-card-count">${HP_LAS_TEXTS.length} texter · ${questions} frågor · ${status}</span>
     </button>
@@ -3888,15 +3925,24 @@ function ladderSummary(clean: number, hint: number, shown: number): string {
 
 /** Kompakt hjälplager: bara den allmänna metoden för delprovet (ur HP_GUIDE). Frågespecifik ledtråd visas först efter svar. */
 function renderHpHelpPanel(categoryId: "ord" | "las" | "mek" | "elf" | "xyz" | "kva" | "nog" | "dtk"): string {
+  if (categoryId === "las" || categoryId === "elf") {
+    return `
+    <div class="hp-help-panel" role="region" aria-label="Hjälp">
+      <p class="hp-help-title">${HP_LAS_STRATEGY.title}</p>
+      <ol class="hp-help-list">${HP_LAS_STRATEGY.steps.map((t) => `<li>${t}</li>`).join("")}</ol>
+      <p class="hp-help-focus"><strong>Fokus:</strong> ${HP_LAS_STRATEGY.focus}</p>
+      <button class="hp-help-close" data-action="hp-help">Stäng</button>
+    </div>
+  `;
+  }
   const info = HP_GUIDE_CATEGORIES.find((c) => c.id === categoryId)!;
-  // LÄS har sju korta tips, övriga visar de tre första.
-  const cards = hpGuideCardsForCategory(categoryId).slice(0, categoryId === "las" ? 7 : 3);
+  const cards = hpGuideCardsForCategory(categoryId).slice(0, 3);
   const steps = cards
     .map((c) => `<li><strong>${c.rubrik}.</strong> ${c.gorSaHar}</li>`)
     .join("");
   return `
     <div class="hp-help-panel" role="region" aria-label="Hjälp">
-      <p class="hp-help-title">Så löser du ${info.label}</p>
+      <p class="hp-help-title">Så löser du ${info.label.toLowerCase()}</p>
       <ul class="hp-help-list">${steps}</ul>
       <button class="hp-help-close" data-action="hp-help">Stäng</button>
     </div>
@@ -3986,7 +4032,7 @@ function renderHpQuestion(): string {
         ${renderHpProgress(`Ord ${idx + 1}/${total}`, reviewIndex, !inReview && hpSession.skippedIds.includes(item.id))}
         ${inReview ? "" : `<span class="hp-tempo" data-hp-tempo>0s / ${HP_TEMPO_TARGET_SECONDS}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
-      ${renderHpDrillTitle("ORD – ordförståelse")}
+      ${renderHpDrillTitle(hpFull("ORD"))}
       <div class="hp-pip-row">${pips}</div>
       <p class="hp-word">${item.word}</p>
       <div class="hp-options">${optionsHtml}</div>
@@ -4249,7 +4295,7 @@ function renderHpCardLinks(keys: string[]): string {
   const cards = hpCardsFor(keys);
   if (cards.length === 0) return "";
   return `<div class="hp-card-links">${cards
-    .map((c) => `<button class="hp-card-link" data-action="hp-card-open" data-card="${c.id}">Påminn mig: ${c.title}</button>`)
+    .map((c) => `<button class="hp-card-link" data-action="hp-card-open" data-card="${c.id}">Påminn mig: ${hpExpand(c.title)}</button>`)
     .join("")}</div>`;
 }
 
@@ -4260,24 +4306,24 @@ function renderHpCard(card: HpCard): string {
         <button class="hp-drill-cancel" data-action="hp-card-back">← Tillbaka</button>
         <span class="hp-drill-progress">Påminnelsekort</span>
       </div>
-      <h2 class="hp-card-title">${card.title}</h2>
+      <h2 class="hp-card-title">${hpExpand(card.title)}</h2>
       ${card.formula ? `<p class="hp-card-formula">${card.formula}</p>` : ""}
-      ${card.svg ? `<div class="hp-card-figure">${card.svg}</div>` : ""}
+      ${card.svg ? `<div class="hp-card-figure">${hpExpand(card.svg)}</div>` : ""}
       <div class="hp-card-block">
         <p class="hp-card-label">Varför</p>
-        <p class="hp-card-text">${card.why}</p>
+        <p class="hp-card-text">${hpExpand(card.why)}</p>
       </div>
       <div class="hp-card-block">
         <p class="hp-card-label">Exempel</p>
-        <p class="hp-card-text hp-card-prompt">${card.example.prompt}</p>
-        <ol class="hp-card-steps">${card.example.steps.map((st) => `<li>${st}</li>`).join("")}</ol>
+        <p class="hp-card-text hp-card-prompt">${hpExpand(card.example.prompt)}</p>
+        <ol class="hp-card-steps">${card.example.steps.map((st) => `<li>${hpExpand(st)}</li>`).join("")}</ol>
       </div>
       <div class="hp-card-block hp-card-trap">
         <p class="hp-card-label">Fällan på provet</p>
-        <p class="hp-card-text">${card.trap}</p>
+        <p class="hp-card-text">${hpExpand(card.trap)}</p>
       </div>
-      <a class="hp-card-extlink" href="${card.link.url}" target="_blank" rel="noopener">${card.link.label} ↗</a>
-      ${hpPlanCardDelprov ? `<button class="hp-cta-btn hp-plan-card-cta" data-action="hp-twin-start" data-delprov="${hpPlanCardDelprov}">Nu ett pass i ${hpPlanCardDelprov}</button>` : ""}
+      <a class="hp-card-extlink" href="${card.link.url}" target="_blank" rel="noopener">${hpExpand(card.link.label)} ↗</a>
+      ${hpPlanCardDelprov ? `<button class="hp-cta-btn hp-plan-card-cta" data-action="hp-twin-start" data-delprov="${hpPlanCardDelprov}">Nu ett pass: ${HP_DELPROV_NAMES[hpPlanCardDelprov].toLowerCase()}</button>` : ""}
     </div>
   `;
 }
@@ -4291,7 +4337,7 @@ function renderHpCardList(): string {
         <span class="hp-drill-progress">Påminnelsekort · ${HP_CARDS.length}</span>
       </div>
       <div class="hp-card-list">
-        ${HP_CARDS.map((c) => `<button class="hp-card-list-item" data-action="hp-card-open" data-card="${c.id}"><span>${c.title}</span><span class="hp-card-list-go" aria-hidden="true">›</span></button>`).join("")}
+        ${HP_CARDS.map((c) => `<button class="hp-card-list-item" data-action="hp-card-open" data-card="${c.id}"><span>${hpExpand(c.title)}</span><span class="hp-card-list-go" aria-hidden="true">›</span></button>`).join("")}
       </div>
     </div>
   `;
@@ -4360,10 +4406,10 @@ function renderHpTwinQuestion(): string {
     <div class="hp-drill">
       <div class="hp-drill-top">
         <button class="hp-drill-cancel" data-action="hp-twin-cancel">Avbryt</button>
-        ${renderHpProgress(`${delprov} ${idx + 1}/${total}`, reviewIndex, !inReview && hpTwinSession.skippedIds.includes(item.id))}
+        ${renderHpProgress(`${hpShort(delprov)} ${idx + 1}/${total}`, reviewIndex, !inReview && hpTwinSession.skippedIds.includes(item.id))}
         ${inReview ? "" : `<span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
-      ${renderHpDrillTitle(`Matteträning · ${delprov} – ${HP_DELPROV_NAMES[delprov]}`)}
+      ${renderHpDrillTitle(HP_DELPROV_NAMES[delprov])}
       ${item.figure ? `<div class="hp-twin-figure${hpFigureZoom ? " hp-twin-figure--zoom" : ""}" data-action="hp-figure-zoom" role="button" aria-label="${hpFigureZoom ? "Förminska figuren" : "Förstora figuren"}">${item.figure}</div><p class="hp-twin-figure-hint">${hpFigureZoom ? "Tryck på figuren för att förminska" : "Tryck på figuren för att förstora"}</p>` : ""}
       <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
@@ -4388,7 +4434,7 @@ function renderHpTwinSummary(): string {
 
   return `
     <div class="hp-summary">
-      <p class="hp-summary-heading">${delprov} — passet klart</p>
+      <p class="hp-summary-heading">${HP_DELPROV_NAMES[delprov]} — passet klart</p>
       <div class="hp-progress-row">
         <div class="stat-widget">
           <span class="stat-widget-label">Utan hjälp</span>
@@ -4508,10 +4554,10 @@ function renderHpMekQuestion(): string {
     <div class="hp-drill hp-mek">
       <div class="hp-drill-top">
         <button class="hp-drill-cancel" data-action="hp-mek-cancel">Avbryt</button>
-        ${renderHpProgress(`Uppgift ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
+        ${renderHpProgress(`${hpShort("MEK")} ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
         ${inReview ? "" : `<span class="hp-tempo" data-hp-mek-tempo>0s / ${HP_MEK_TEMPO_TARGET_SECONDS}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
-      ${renderHpDrillTitle("MEK – meningskomplettering")}
+      ${renderHpDrillTitle(hpFull("MEK"))}
       <p class="hp-mek-text" aria-live="polite">${textHtml}</p>
       <div class="hp-options">${optionsHtml}</div>
       ${!answered ? renderHpLadder("hp-mek", s, item.hint) : ""}
@@ -4533,7 +4579,7 @@ function renderHpMekSummary(): string {
   const underTarget = avg > 0 && avg <= HP_MEK_TEMPO_TARGET_SECONDS;
   return `
     <div class="hp-summary">
-      <p class="hp-summary-heading">MEK – meningskomplettering — klart</p>
+      <p class="hp-summary-heading">${hpFull("MEK")} — klart</p>
       <div class="hp-progress-row">
         <div class="stat-widget">
           <span class="stat-widget-label">Utan hjälp</span>
@@ -4611,13 +4657,32 @@ function renderHpLasBar(item: HpLasQuestion, idx: number): string {
     <div class="hp-las-bar">
       <div class="hp-drill-top">
         <button class="hp-drill-cancel" data-action="hp-las-cancel">Avbryt</button>
-        ${renderHpProgress(`Fråga ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
+        ${renderHpProgress(`${hpShort(s.source === "elf" ? "ELF" : "LÄS")} fråga ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
         <span class="hp-tempo ${over ? "hp-tempo-over" : ""}" data-hp-las-tempo>${hpLasTempoText()}</span>
         ${inReview ? "" : renderHpHelpButton(hpHelpOpenFor === item.id)}
       </div>
       ${textView ? "" : renderHpDrillTitle(hpLasHeading(s.source, s.text))}
       <div class="hp-las-switch" role="group" aria-label="Växla mellan fråga och text">${segQ}${segT}</div>
       ${textView ? `<p class="hp-las-reminder"><strong>Fråga ${idx + 1}:</strong> ${item.prompt}</p>` : ""}
+      ${inReview ? "" : `<p class="hp-time-banner ${hpLasQuestionOver() ? "hp-time-banner-on" : ""}" data-hp-las-banner role="status">Tiden för frågan är slut – stryk det som är fel, gissa och gå vidare</p>`}
+    </div>
+  `;
+}
+
+/** Introskärmen "Så läser du": strategin på en skärm, en knapp. Visas första gången (och går att öppna via Strategi). */
+function renderHpLasIntro(): string {
+  const intro = hpLasIntro!;
+  return `
+    <div class="hp-drill hp-las-intro">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-las-intro-close">Tillbaka</button>
+      </div>
+      <p class="hp-ready-kicker">Så läser du</p>
+      <h2 class="hp-las-intro-title">${HP_LAS_STRATEGY.title}</h2>
+      <ol class="hp-las-intro-steps">${HP_LAS_STRATEGY.steps.map((t) => `<li>${t}</li>`).join("")}</ol>
+      <p class="hp-las-intro-focus"><strong>Fokus:</strong> ${HP_LAS_STRATEGY.focus}</p>
+      <button class="hp-cta-btn" data-action="hp-las-intro-go">Jag fattar – kör</button>
+      <p class="hp-las-intro-note">${intro.source === "elf" ? hpFull("ELF") : hpFull("LÄS")} · du hittar strategin igen under Strategi i övningen.</p>
     </div>
   `;
 }
@@ -4744,6 +4809,7 @@ function renderHpLasQuestion(): string {
     <div class="hp-drill hp-las">
       ${renderHpLasBar(item, idx)}
       ${gapContext}
+      ${gapNo === null && !answered && hpLasShowNudge() ? `<p class="hp-las-nudge">${HP_LAS_STRATEGY.nudge}</p>` : ""}
       <p class="hp-las-prompt">${item.prompt}</p>
       <div class="hp-options">${optionsHtml}</div>
       ${ladderHtml}
@@ -4917,8 +4983,8 @@ function renderHpResources(): string {
       .map(
         (r) => `
           <li class="hp-res-item">
-            <a class="hp-res-link" href="${r.url}" target="_blank" rel="noopener">${r.title} <span aria-hidden="true">↗</span><span class="hp-res-sr"> (öppnas i ny flik)</span></a>
-            <span class="hp-res-desc">${r.desc}</span>
+            <a class="hp-res-link" href="${r.url}" target="_blank" rel="noopener">${hpExpand(r.title)} <span aria-hidden="true">↗</span><span class="hp-res-sr"> (öppnas i ny flik)</span></a>
+            <span class="hp-res-desc">${hpExpand(r.desc)}</span>
             <span class="hp-res-cost hp-res-cost-${r.cost === "gratis" ? "free" : "other"}">${r.cost}</span>
           </li>`
       )
@@ -4968,6 +5034,9 @@ function renderHp(): string {
   }
   if (hpGuideMode === "page") {
     return renderHpGuidePage();
+  }
+  if (hpLasIntro) {
+    return renderHpLasIntro();
   }
   if (hpFormulaSession) {
     return renderHpFormula();
@@ -6739,7 +6808,31 @@ app.addEventListener("click", (event) => {
     const source: HpLasSource = actionEl.dataset.source === "elf" ? "elf" : "las";
     const wanted = actionEl.dataset.textId ? hpLasTexts(source).find((t) => t.id === actionEl.dataset.textId) : undefined;
     const text = wanted ?? pickHpLasText(source);
-    if (text) hpLasStart(text, source);
+    if (text) {
+      if (hpLasIntroSeen()) {
+        hpLasStart(text, source);
+      } else {
+        hpForceHome = false;
+        hpLasIntro = { text, source };
+        window.scrollTo(0, 0);
+        render();
+      }
+    }
+    return;
+  }
+
+  if (action === "hp-las-intro-go") {
+    if (!hpLasIntro) return;
+    const { text, source } = hpLasIntro;
+    hpLasIntro = null;
+    hpLasIntroMarkSeen();
+    hpLasStart(text, source);
+    return;
+  }
+
+  if (action === "hp-las-intro-close") {
+    hpLasIntro = null;
+    render();
     return;
   }
 

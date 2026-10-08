@@ -2,6 +2,7 @@
 // Rena funktioner, ingen localStorage eller DOM, så allt går att testa.
 // Mål: minst 70 % utan hjälp i senaste passet (LÄS/ELF: senaste två texterna) OCH tempo inom budget.
 import { HP_FORMULA_GREEN_SHARE } from "./hp-formulas";
+import { HP_NAMES } from "./hp-names";
 import { HP_PLAN_START, HP_PLAN_EXAM, addDays, dayDiff } from "./hp-plan";
 
 export const HP_READY_THRESHOLD = 0.7;
@@ -43,9 +44,9 @@ export interface HpReadyTextResult {
 
 export interface HpReadyRow {
   id: HpReadyId;
-  /** Förkortning, t.ex. "MEK". */
+  /** Provets förkortning, t.ex. "MEK". Visas bara som liten sekundär text. */
   short: string;
-  /** Förkortningen förklarad: "MEK – meningskomplettering". */
+  /** Fullt namn, t.ex. "Meningskomplettering". */
   name: string;
   status: HpReadyStatus;
   /** "7/10 utan hjälp" eller "–". */
@@ -60,16 +61,16 @@ export interface HpReadyRow {
 }
 
 const NAMES: Record<HpReadyId, string> = {
-  ORD: "ORD – ordförståelse",
-  LÄS: "LÄS – läsförståelse",
-  MEK: "MEK – meningskomplettering",
-  ELF: "ELF – engelsk läsförståelse",
-  XYZ: "XYZ – problemlösning",
-  KVA: "KVA – kvantitativa jämförelser",
-  NOG: "NOG – räcker informationen?",
-  DTK: "DTK – diagram, tabeller, kartor",
+  ORD: HP_NAMES.ORD.full,
+  LÄS: HP_NAMES.LÄS.full,
+  MEK: HP_NAMES.MEK.full,
+  ELF: HP_NAMES.ELF.full,
+  XYZ: HP_NAMES.XYZ.full,
+  KVA: HP_NAMES.KVA.full,
+  NOG: HP_NAMES.NOG.full,
+  DTK: HP_NAMES.DTK.full,
   DIAG: "Mattediagnos",
-  FORM: "Formler – formelträning"
+  FORM: "Formelträning"
 };
 
 export const HP_READY_ORDER: HpReadyId[] = ["ORD", "LÄS", "MEK", "ELF", "XYZ", "KVA", "NOG", "DTK"];

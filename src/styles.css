@@ -6255,3 +6255,87 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   font-size: var(--text-sm);
   color: var(--text-muted);
 }
+
+/* ── Fulla namn + läsförståelsestrategi (beslut 2026-10-08 (2)) ── */
+.hp-ready-abbr {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.hp-help-focus {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink);
+}
+
+.hp-las-nudge {
+  margin: 0;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Vänlig tidsbanner: dold tills tiden för frågan är slut. Påverkar inte poäng och stänger inget. */
+.hp-time-banner {
+  display: none;
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background: var(--honey);
+  color: var(--honey-ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.hp-time-banner-on {
+  display: block;
+}
+
+.hp-las-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hp-las-intro-title {
+  margin: 0;
+  font-size: var(--text-hero);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.hp-las-intro-steps {
+  margin: 0;
+  padding: 0.85rem 1rem 0.85rem 2.2rem;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.hp-las-intro-focus {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background: var(--surface-container);
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+
+.hp-las-intro-note {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}

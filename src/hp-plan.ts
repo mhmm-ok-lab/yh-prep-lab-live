@@ -4,17 +4,24 @@
 import { HP_MATH_AREAS } from "./hp-math";
 import type { HpMathArea } from "./hp-math";
 import type { HpDelprov } from "./hp-twins";
+import { HP_NAMES, hpFull, hpShort } from "./hp-names";
 
 export const HP_PLAN_START = "2026-10-05";
 export const HP_PLAN_EXAM = "2026-10-18";
 export const HP_PLAN_DAYS = 13;
-/** Daglig formelträning och LÄS gäller t.o.m. 16 okt (dag 12). */
+/** Daglig formelträning och läsförståelse gäller t.o.m. 16 okt (dag 12). */
 const HP_PLAN_DAILY_UNTIL_DAY = 12;
 const HP_PLAN_MAX_CARRIED = 2;
 /** Uppgifter flyttas fram i högst så här många dagar; äldre släpps tyst (ingen skuldlista). */
 const HP_PLAN_CARRY_DAYS = 2;
-/** MEK/ELF ligger i Lär om (dag 1–6) och Laga (dag 8–10). */
-const HP_PLAN_MEK_ELF_UNTIL_DAY = 10;
+/** Meningskomplettering: varannan dag (udda dagar) t.o.m. dag 10, när det finns plats. */
+const HP_PLAN_MEK_UNTIL_DAY = 10;
+/** Mattens rotation efter poäng per timme (beslut 2026-10-08 (2)): kvantitativa resonemang (NOG) och jämförelser (KVA)
+ *  oftast, sedan diagram (DTK), sedan problemlösning (XYZ). Index = (dag - 1) % längden. */
+export const HP_PLAN_MATH_ROTATION: HpDelprov[] = ["NOG", "KVA", "DTK", "NOG", "KVA", "XYZ", "DTK"];
+export function planMathDelprov(day: number): HpDelprov {
+  return HP_PLAN_MATH_ROTATION[(day - 1) % HP_PLAN_MATH_ROTATION.length];
+}
 const HP_PLAN_MAX_TASKS_PER_DAY = 4;
 const DELPROV_ORDER: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
 
@@ -104,11 +111,11 @@ export interface HpPlanDiagnosisArea {
 export interface HpPlanData {
   /** completedAt (ISO) för varje avslutat formelpass. */
   formulaCompletedAt: string[];
-  /** completedAt (ISO) för varje sparat LÄS-resultat. */
+  /** completedAt (ISO) för varje sparat resultat i svensk läsförståelse. */
   lasCompletedAt: string[];
-  /** completedAt (ISO) för varje sparat MEK-pass. */
+  /** completedAt (ISO) för varje sparat pass i meningskomplettering. */
   mekCompletedAt: string[];
-  /** completedAt (ISO) för varje sparad ELF-text. */
+  /** completedAt (ISO) för varje sparad text i engelsk läsförståelse. */
   elfCompletedAt: string[];
   /** Senaste mattediagnos. */
   diagnosis: { completedAt: string; hasQuestions: boolean; areas: HpPlanDiagnosisArea[] } | null;
@@ -187,10 +194,10 @@ export function hpMathAreaLabel(area: HpMathArea): string {
 // ── Uppgifter ──
 
 const WHY_FORMLER = "På provet får du ingen formelsamling. Fem minuter om dagen räcker om formlerna kommer tillbaka på olika dagar: en formel är klar först när du klarat den på första försöket tre dagar.";
-const WHY_LAS = "LÄS är din svåraste del. En text om dagen bygger tempo och vana, och felanalysen visar vilken sorts fråga du missar.";
+const WHY_LAS = "Läsförståelse är din svåraste del. Du läser långsamt, så målet är inte att läsa fort utan att leta smart: ett nyckelord, sökläs, två eller tre meningar runt stället. En text om dagen, växelvis svensk och engelsk, bygger vanan.";
 
-const WHY_MEK = "MEK är det snabbaste verbala delprovet att förbättra: samma fem, sex samband återkommer hela tiden. Tio uppgifter om dagen tränar dig att läsa hela meningen innan du väljer.";
-const WHY_ELF = "ELF tränar engelskan på provets nivå. Varannan dag räcker för att hålla tempot uppe utan att dagen blir för lång, och förklaringarna visar varför varje alternativ är rätt eller fel.";
+const WHY_MEK = "Meningskomplettering är det snabbaste verbala delprovet att förbättra: samma fem, sex samband återkommer hela tiden. Tio uppgifter varannan dag tränar dig att läsa hela meningen innan du väljer.";
+const WHY_MATH = "Kvantitativa resonemang och kvantitativa jämförelser ger flest poäng per timme för dig, så de kommer oftast. Diagram, tabeller och kartor samt matematisk problemlösning turas om däremellan.";
 
 function taskFormler(): HpPlanTask {
   return {
@@ -206,15 +213,43 @@ function taskFormler(): HpPlanTask {
   };
 }
 
-function taskLas(): HpPlanTask {
-  return { id: "las", title: "En LÄS-text", short: "LÄS", why: WHY_LAS, action: { type: "las" }, buttonLabel: "Starta", auto: { kind: "las" }, carry: false };
+/** Dagens läsförståelse: udda dagar svensk, jämna dagar engelsk. Id:n "las" och "elf" behålls så att avbockning och sparade listor fungerar. */
+function taskReading(day: number): HpPlanTask {
+  return taskReadingKind(day % 2 === 1 ? "las" : "elf");
+}
+
+function taskReadingKind(kind: "las" | "elf"): HpPlanTask {
+  if (kind === "las") {
+    return {
+      id: "las",
+      title: `${hpFull("LÄS")}: en text`,
+      short: hpFull("LÄS"),
+      sub: "Använd sökläsning, 2 min/fråga",
+      why: WHY_LAS,
+      action: { type: "las" },
+      buttonLabel: "Starta",
+      auto: { kind: "las" },
+      carry: false
+    };
+  }
+  return {
+    id: "elf",
+    title: `${hpFull("ELF")}: en text`,
+    short: hpFull("ELF"),
+    sub: "Använd sökläsning, 2 min/fråga",
+    why: WHY_LAS,
+    action: { type: "elf" },
+    buttonLabel: "Starta",
+    auto: { kind: "elf" },
+    carry: false
+  };
 }
 
 function taskMek(): HpPlanTask {
   return {
     id: "mek",
-    title: "10 MEK",
-    short: "MEK",
+    title: `10 uppgifter: ${hpFull("MEK").toLowerCase()}`,
+    short: hpFull("MEK"),
     sub: "ca 8 min",
     why: WHY_MEK,
     action: { type: "mek" },
@@ -224,16 +259,17 @@ function taskMek(): HpPlanTask {
   };
 }
 
-function taskElf(): HpPlanTask {
+/** Dagens matteträning enligt rotationen (när steget inte redan är matte). */
+function taskMath(delprov: HpDelprov): HpPlanTask {
   return {
-    id: "elf",
-    title: "En ELF-text",
-    short: "ELF",
-    sub: "engelsk läsförståelse",
-    why: WHY_ELF,
-    action: { type: "elf" },
+    id: "matte-train",
+    title: `Matteträning: ${hpFull(delprov)}`,
+    short: hpShort(delprov),
+    sub: delprov === "NOG" ? HP_NAMES.NOG.sub : undefined,
+    why: WHY_MATH,
+    action: { type: "train", delprov },
     buttonLabel: "Starta",
-    auto: { kind: "elf" },
+    auto: { kind: "train", delprov },
     carry: false
   };
 }
@@ -258,7 +294,7 @@ function taskLarOm(area: HpMathArea): HpPlanTask {
     id: `lar-om:${area}`,
     title: `Lär om: ${label}`,
     short: `Lär om: ${label}`,
-    sub: "Påminnelsekort och ett pass i XYZ",
+    sub: `Påminnelsekort och ett pass i ${hpFull("XYZ").toLowerCase()}`,
     why: "Kortet visar metoden och passet låter dig använda den direkt. Det är så den fastnar, en sak i taget.",
     action: { type: "lar-om", area, delprov: "XYZ" },
     buttonLabel: "Starta",
@@ -270,8 +306,8 @@ function taskLarOm(area: HpMathArea): HpPlanTask {
 function taskTrainFallback(delprov: HpDelprov): HpPlanTask {
   return {
     id: `lar-om-train:${delprov}`,
-    title: `Lär om: matteträning i ${delprov}`,
-    short: `Lär om: träning ${delprov}`,
+    title: `Lär om: matteträning i ${hpFull(delprov).toLowerCase()}`,
+    short: `Lär om: ${hpShort(delprov).toLowerCase()}`,
     why: "Utan diagnos börjar vi där du har tränat minst eller har lägst andel rätt. Då ser du direkt vad som behöver arbetas upp.",
     action: { type: "train", delprov },
     buttonLabel: "Starta",
@@ -296,9 +332,10 @@ function taskGeneralrep(): HpPlanTask {
 function taskLagaTrain(delprov: HpDelprov): HpPlanTask {
   return {
     id: "laga-train",
-    title: `Matteträning i ditt svagaste delprov (${delprov})`,
-    short: `Träning ${delprov}`,
-    why: "Efter generalrepetitionen vet du var du tappar poäng. Ett pass i det svagaste delprovet ger mest per minut.",
+    title: `Matteträning: ${hpFull(delprov)}`,
+    short: `Träning: ${hpShort(delprov).toLowerCase()}`,
+    sub: delprov === "NOG" ? HP_NAMES.NOG.sub : undefined,
+    why: "Efter generalrepetitionen laga det som ger mest poäng per timme. Kvantitativa resonemang och jämförelser kommer oftast, diagram och problemlösning turas om.",
     action: { type: "train", delprov },
     buttonLabel: "Starta",
     auto: { kind: "train", delprov },
@@ -369,7 +406,7 @@ export function buildDayTasks(key: string, data: HpPlanData): HpPlanTask[] {
   } else if (day === 7) {
     tasks.push(taskGeneralrep());
   } else if (day <= 10) {
-    tasks.push(taskLagaTrain(weakestOrUntriedDelprov(data)));
+    tasks.push(taskLagaTrain(planMathDelprov(day)));
     if (day === 10) tasks.push(taskLagaDiagnos());
   } else {
     tasks.push(taskFlashcards());
@@ -377,12 +414,17 @@ export function buildDayTasks(key: string, data: HpPlanData): HpPlanTask[] {
   }
 
   if (day <= HP_PLAN_DAILY_UNTIL_DAY) {
-    tasks.push(taskFormler(), taskLas());
+    tasks.push(taskFormler(), taskReading(day));
   }
-  // MEK och ELF turas om under Lär om och Laga (max 4 uppgifter per dag): MEK udda dagar, ELF jämna.
-  // Generalrepetitionen (dag 7) och ny diagnos (dag 10) är redan stora, så de dagarna hoppar vi över.
-  if (day <= HP_PLAN_MEK_ELF_UNTIL_DAY && day !== 7 && day !== 10 && tasks.length < HP_PLAN_MAX_TASKS_PER_DAY) {
-    tasks.push(day % 2 === 1 ? taskMek() : taskElf());
+  // Varannan dag meningskomplettering (udda dagar t.o.m. dag 10), övriga dagar matteträning enligt rotationen när steget inte redan är matte.
+  // Generalrepetitionen (dag 7) och ny diagnos (dag 10) är redan stora, så de dagarna hoppar vi över. Aldrig ordförståelse.
+  if (day <= HP_PLAN_DAILY_UNTIL_DAY && day !== 7 && day !== 10 && tasks.length < HP_PLAN_MAX_TASKS_PER_DAY) {
+    const stepIsMath = day >= 8 && day <= 10;
+    if (day % 2 === 1 && day <= HP_PLAN_MEK_UNTIL_DAY) {
+      tasks.push(taskMek());
+    } else if (!stepIsMath) {
+      tasks.push(taskMath(planMathDelprov(day)));
+    }
   }
   return tasks;
 }
@@ -453,9 +495,25 @@ export interface HpPlanToday {
   todayTasks: HpPlanTask[];
 }
 
+/** Frysta listor behåller uppgifternas id, åtgärd och avbockning men får dagens texter (fulla namn, sökläsning),
+ *  så att en lista som frystes före namnbytet inte visar förkortningar. */
+function refreshTaskText(t: HpPlanTask): HpPlanTask {
+  let fresh: HpPlanTask | null = null;
+  if (t.id === "ord") fresh = taskFormler();
+  else if (t.id === "formler") fresh = taskFormler();
+  else if (t.id === "las" || t.id === "elf") fresh = taskReadingKind(t.id);
+  else if (t.id === "mek") fresh = taskMek();
+  else if (t.id === "matte-train" && t.action.type === "train") fresh = taskMath(t.action.delprov);
+  else if (t.id === "laga-train" && t.action.type === "train") fresh = taskLagaTrain(t.action.delprov);
+  else if (t.id.startsWith("lar-om-train:") && t.action.type === "train") fresh = taskTrainFallback(t.action.delprov);
+  else if (t.id.startsWith("lar-om:") && t.action.type === "lar-om") fresh = taskLarOm(t.action.area);
+  if (!fresh) return t;
+  return t.id === "ord" ? fresh : { ...t, title: fresh.title, short: fresh.short, sub: fresh.sub, why: fresh.why };
+}
+
 function tasksFor(key: string, data: HpPlanData, state: HpPlanState): HpPlanTask[] {
   // Frysta listor från före 2026-10-08 kan innehålla "Dagens 10 ord": byt mot formelträningen.
-  const snap = state.snapshots[key]?.map((t) => (t.id === "ord" ? taskFormler() : t));
+  const snap = state.snapshots[key]?.map(refreshTaskText);
   return snap ?? buildDayTasks(key, data);
 }
 
