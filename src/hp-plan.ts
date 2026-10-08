@@ -248,7 +248,7 @@ function taskReadingKind(kind: "las" | "elf"): HpPlanTask {
 function taskMek(): HpPlanTask {
   return {
     id: "mek",
-    title: `10 uppgifter: ${hpFull("MEK").toLowerCase()}`,
+    title: `10 uppgifter: ${hpFull("MEK")}`,
     short: hpFull("MEK"),
     sub: "ca 8 min",
     why: WHY_MEK,
@@ -294,7 +294,7 @@ function taskLarOm(area: HpMathArea): HpPlanTask {
     id: `lar-om:${area}`,
     title: `Lär om: ${label}`,
     short: `Lär om: ${label}`,
-    sub: `Påminnelsekort och ett pass i ${hpFull("XYZ").toLowerCase()}`,
+    sub: `Påminnelsekort och ett pass i ${hpFull("XYZ")}`,
     why: "Kortet visar metoden och passet låter dig använda den direkt. Det är så den fastnar, en sak i taget.",
     action: { type: "lar-om", area, delprov: "XYZ" },
     buttonLabel: "Starta",
@@ -306,8 +306,8 @@ function taskLarOm(area: HpMathArea): HpPlanTask {
 function taskTrainFallback(delprov: HpDelprov): HpPlanTask {
   return {
     id: `lar-om-train:${delprov}`,
-    title: `Lär om: matteträning i ${hpFull(delprov).toLowerCase()}`,
-    short: `Lär om: ${hpShort(delprov).toLowerCase()}`,
+    title: `Lär om: matteträning i ${hpFull(delprov)}`,
+    short: `Lär om: ${hpShort(delprov)}`,
     why: "Utan diagnos börjar vi där du har tränat minst eller har lägst andel rätt. Då ser du direkt vad som behöver arbetas upp.",
     action: { type: "train", delprov },
     buttonLabel: "Starta",
@@ -333,7 +333,7 @@ function taskLagaTrain(delprov: HpDelprov): HpPlanTask {
   return {
     id: "laga-train",
     title: `Matteträning: ${hpFull(delprov)}`,
-    short: `Träning: ${hpShort(delprov).toLowerCase()}`,
+    short: `Träning: ${hpShort(delprov)}`,
     sub: delprov === "NOG" ? HP_NAMES.NOG.sub : undefined,
     why: "Efter generalrepetitionen laga det som ger mest poäng per timme. Kvantitativa resonemang och jämförelser kommer oftast, diagram och problemlösning turas om.",
     action: { type: "train", delprov },
