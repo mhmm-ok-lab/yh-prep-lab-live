@@ -3469,7 +3469,8 @@ details.hp-math-area-card {
 
 .hp-twin-prompt {
   font-size: var(--text-md);
-  font-weight: 700;
+  font-weight: 500;
+  line-height: 1.5;
   color: var(--ink);
   white-space: pre-line;
   margin: 0.2rem 0;

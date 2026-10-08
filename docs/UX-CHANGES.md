@@ -611,3 +611,8 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Varför:** Martin: "texten är för liten för att jag ska kunna läsa frågan så här dags".
 - **Före/efter:** före 14 px, efter 17 px. Frågan och alla svar ryms fortfarande utan scroll i 375 × 812.
 - **Princip:** läsbarhet före täthet där användaren läser mest. Tre storlekar i skalan, så designsystemet hålls.
+
+## 2026-10-09 (4): Frågetext i normal vikt
+- **Vad:** frågetexten i matteträningen är inte längre i fetstil (700 → 500) och har radavståndet 1,5.
+- **Varför:** långa frågor med påståenden (1) och (2), till exempel i NOG, var tunga att läsa i fetstil på mobilen.
+- **Princip:** brödtext läses bäst i normal vikt med luftigt radavstånd. Fetstil används för rubriker, inte för stycken.
