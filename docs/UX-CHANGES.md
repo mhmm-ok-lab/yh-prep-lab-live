@@ -605,3 +605,9 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Varför:** Martin: "Förkortning som huvudrubrik, förklaring som text under … scannable." Förkortningen är det han möter på provet och ska kunna skumma efter. Förklaringen är stödet.
 - **Före/efter:** före stod "Kvantitativa resonemang (NOG)" på en rad. Efter står "NOG" som rubrik och "Kvantitativa resonemang" under.
 - **Princip:** visuell hierarki för skumläsning (F-mönster), där den korta igenkänningsbara etiketten står först. Igenkänning före minne.
+
+## 2026-10-09 (3): Större text i övningarna
+- **Vad:** inne i alla HP-övningar är typskalans tre steg ett snäpp större. Frågor och svar går från ca 14 till 17 px. Övriga sidor är oförändrade.
+- **Varför:** Martin: "texten är för liten för att jag ska kunna läsa frågan så här dags".
+- **Före/efter:** före 14 px, efter 17 px. Frågan och alla svar ryms fortfarande utan scroll i 375 × 812.
+- **Princip:** läsbarhet före täthet där användaren läser mest. Tre storlekar i skalan, så designsystemet hålls.

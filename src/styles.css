@@ -6140,3 +6140,11 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
 .hp-guide-home-btns {
   margin-top: 0;
 }
+
+/* Större text i alla HP-övningar (Martin, 2026-10-09: "texten är för liten för att läsa frågan så här dags").
+   Samma tre steg i typskalan, men ett snäpp större inne i övningarna: 14 → 17 px för frågor och svar. */
+.hp-drill {
+  --text-xs: 0.8rem;
+  --text-sm: 0.95rem;
+  --text-md: 1.06rem;
+}
