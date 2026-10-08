@@ -95,7 +95,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
-import { HP_NAMES, hpExpand, hpFull, hpShort } from "./hp-names";
+import { HP_NAMES, hpAbbr, hpExpand, hpFull, hpShort } from "./hp-names";
 import { loadColorMode, saveColorMode } from "./storage";
 import type { ColorMode } from "./storage";
 import type { HpLasErrorTag, HpLasSource, HpMathAreaResult, HpMathQuestionResult, HpMathOutcome, HpMathLevel, HpTwinErrorTag, HpTwinResult } from "./storage";
@@ -979,7 +979,7 @@ const HP_TWIN_DELPROV_INFO: Record<HpDelprov, { label: string; desc: string }> =
   XYZ: { label: hpFull("XYZ"), desc: "Räkna ut svaret" },
   KVA: { label: hpFull("KVA"), desc: "Jämför två värden" },
   NOG: { label: hpFull("NOG"), desc: HP_NAMES.NOG.sub ?? "" },
-  DTK: { label: hpFull("DTK"), desc: "Läs diagram och tabeller" }
+  DTK: { label: hpFull("DTK"), desc: "Läs diagram, tabeller och kartor" }
 };
 
 /** Delprov där svarsordningen blandas — KVA och NOG har fasta alternativ i fast ordning som på provet. */
@@ -3655,7 +3655,7 @@ function renderHpReadyRow(row: HpReadyRow): string {
   return `
     <li class="hp-ready-row hp-ready-${row.status}">
       <div class="hp-ready-main">
-        <span class="hp-ready-name">${row.name}${row.id in HP_NAMES ? ` <span class="hp-ready-abbr">· ${row.short}</span>` : ""}</span>
+        <span class="hp-ready-name">${row.id in HP_NAMES ? `${row.short} <span class="hp-ready-abbr">${row.name}</span>` : row.name}</span>
         <span class="hp-ready-status"><span aria-hidden="true">${HP_READY_STATUS_ICON[row.status]}</span> ${HP_READY_STATUS_LABEL[row.status]}${row.reasonText ? ` · ${row.reasonText}` : ""}</span>
         <span class="hp-ready-meta">${meta}</span>
       </div>
@@ -3775,7 +3775,8 @@ function renderHpMekHomeCard(): string {
   const status = passes === 0 ? "inte påbörjad" : `${passes} pass${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
   return `
     <button class="hp-las-card hp-verbal-card" data-action="hp-mek-start">
-      <span class="hp-las-card-name">${hpFull("MEK")}</span>
+      <span class="hp-las-card-name">${hpAbbr("MEK")}</span>
+      <span class="hp-las-card-desc">${HP_NAMES.MEK.full}</span>
       <span class="hp-las-card-desc">${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min</span>
       <span class="hp-las-card-count">${status}</span>
     </button>
@@ -3792,7 +3793,8 @@ function renderHpElfHomeCard(): string {
   const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_ELF_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
   return `
     <button class="hp-las-card hp-verbal-card" data-action="hp-las-start" data-source="elf">
-      <span class="hp-las-card-name">${hpFull("ELF")}</span>
+      <span class="hp-las-card-name">${hpAbbr("ELF")}</span>
+      <span class="hp-las-card-desc">${HP_NAMES.ELF.full}</span>
       <span class="hp-las-card-desc">Sökläs i texten · 1–2 min per fråga</span>
       <span class="hp-las-card-count">${status}</span>
     </button>
@@ -3810,7 +3812,8 @@ function renderHpLasHomeCard(): string {
   const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_LAS_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
   return `
     <button class="hp-las-card" data-action="hp-las-start">
-      <span class="hp-las-card-name">${hpFull("LÄS")}</span>
+      <span class="hp-las-card-name">${hpAbbr("LÄS")}</span>
+      <span class="hp-las-card-desc">${HP_NAMES.LÄS.full}</span>
       <span class="hp-las-card-desc">Frågan först, sedan texten · ca 2 min per fråga</span>
       <span class="hp-las-card-count">${HP_LAS_TEXTS.length} texter · ${questions} frågor · ${status}</span>
     </button>
@@ -3834,7 +3837,6 @@ function renderHpTwinHomeSection(): string {
   const delprover: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
   const cards = delprover
     .map((delprov) => {
-      const info = HP_TWIN_DELPROV_INFO[delprov];
       const count = hpTwinBank(delprov).length;
       const lastResult = loadHpTwinResult(delprov);
       const lastResultHtml = lastResult
@@ -3842,8 +3844,8 @@ function renderHpTwinHomeSection(): string {
         : "";
       return `
         <button class="hp-twin-card" data-action="hp-twin-start" data-delprov="${delprov}">
-          <span class="hp-twin-card-name">${info.label}</span>
-          <span class="hp-twin-card-desc">${info.desc}</span>
+          <span class="hp-twin-card-name">${hpAbbr(delprov)}</span>
+          <span class="hp-twin-card-desc">${HP_NAMES[delprov].full}${delprov === "NOG" ? " – räcker informationen?" : ""}</span>
           <span class="hp-twin-card-count">${count} uppgifter</span>
           ${lastResultHtml}
         </button>

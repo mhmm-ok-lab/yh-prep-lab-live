@@ -1,6 +1,6 @@
 // En enda namnkarta för högskoleprovets delprov (beslut 2026-10-08 (2)).
-// Fullt namn + förkortning visas tillsammans överallt, t.ex. "Kvantitativa resonemang (NOG)" —
-// Martin känner då igen förkortningen på provet OCH förstår vad den betyder (beslut 2026-10-09).
+// Förkortningen är rubriken och förklaringen står under eller efter den, t.ex. "NOG – Kvantitativa resonemang".
+// Martin känner då igen förkortningen från provet och ser samtidigt vad den betyder (beslut 2026-10-09).
 // Interna id:n och datafält är oförändrade.
 
 export type HpNameId = "ORD" | "LÄS" | "MEK" | "ELF" | "XYZ" | "KVA" | "NOG" | "DTK";
@@ -27,8 +27,10 @@ export const HP_NAMES: Record<HpNameId, HpName> = {
   DTK: { full: "Diagram, tabeller och kartor", short: "Diagram", abbr: "DTK" }
 };
 
-export const hpFull = (id: HpNameId): string => `${HP_NAMES[id].full} (${HP_NAMES[id].abbr})`;
-export const hpShort = (id: HpNameId): string => `${HP_NAMES[id].short} (${HP_NAMES[id].abbr})`;
+export const hpFull = (id: HpNameId): string => `${HP_NAMES[id].abbr} – ${HP_NAMES[id].full}`;
+/** Bara förkortningen — för rubriker där förklaringen står på raden under. */
+export const hpAbbr = (id: HpNameId): string => HP_NAMES[id].abbr;
+export const hpShort = (id: HpNameId): string => HP_NAMES[id].abbr;
 
 /** Skriver ut förkortningar i text som kommer från datafiler (påminnelsekort, resurslänkar).
  *  Första ordet i en mening får stor bokstav, "DTK-fel" blir "diagram-fel". */
@@ -37,6 +39,6 @@ export function hpExpand(text: string): string {
     const n = HP_NAMES[id];
     if (whole[offset + id.length] === "-") return n.short.toLowerCase();
     const sentenceStart = offset === 0 || /\.\s$/.test(whole.slice(Math.max(0, offset - 2), offset));
-    return `${sentenceStart ? n.full : n.full.toLowerCase()} (${id})`;
+    return `${id} (${sentenceStart ? n.full.toLowerCase() : n.full.toLowerCase()})`;
   });
 }

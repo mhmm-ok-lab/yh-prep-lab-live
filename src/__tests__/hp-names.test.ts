@@ -12,9 +12,9 @@ describe("hp-names: fulla namn", () => {
   });
 
   it("hpExpand skriver ut förkortningar i löpande text", () => {
-    expect(hpExpand("KVA: testa fem tal")).toBe("Kvantitativa jämförelser (KVA): testa fem tal");
+    expect(hpExpand("KVA: testa fem tal")).toBe("KVA (kvantitativa jämförelser): testa fem tal");
     expect(hpExpand("De flesta DTK-fel är inte räknefel")).toBe("De flesta diagram-fel är inte räknefel");
-    expect(hpExpand("Fördjupa: NOG och svaren")).toBe("Fördjupa: kvantitativa resonemang (NOG) och svaren");
+    expect(hpExpand("Fördjupa: NOG och svaren")).toBe("Fördjupa: NOG (kvantitativa resonemang) och svaren");
   });
 
   it("Är jag redo? använder fullt namn och behåller förkortningen i separat fält", () => {

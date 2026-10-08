@@ -583,3 +583,9 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Varför:** när förkortningarna byttes mot bara fulla namn försvann kopplingen till de förkortningar som används i guiden, på provet och i chatten. Martin: "vafan är NOG nu då? ingenstans?"
 - **Före/efter:** före stod bara "Kvantitativa resonemang". Efter står "Kvantitativa resonemang (NOG)".
 - **Princip:** igenkänning före minne (Nielsen #6). Användaren ska kunna koppla etiketten till den term han möter på provet utan att behöva komma ihåg översättningen.
+
+## 2026-10-09 (2): Förkortningen som rubrik, förklaringen under
+- **Vad:** korten och "Är jag redo?" visar förkortningen stort ("NOG") och det fulla namnet som en rad under ("Kvantitativa resonemang – räcker informationen?"). I löpande text står "NOG – Kvantitativa resonemang", och i progress-texten bara förkortningen ("NOG 1/6"), eftersom rubriken ovanför förklarar den.
+- **Varför:** Martin: "Förkortning som huvudrubrik, förklaring som text under … scannable." Förkortningen är det han möter på provet och ska kunna skumma efter. Förklaringen är stödet.
+- **Före/efter:** före stod "Kvantitativa resonemang (NOG)" på en rad. Efter står "NOG" som rubrik och "Kvantitativa resonemang" under.
+- **Princip:** visuell hierarki för skumläsning (F-mönster), där den korta igenkänningsbara etiketten står först. Igenkänning före minne.

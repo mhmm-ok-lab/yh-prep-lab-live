@@ -6258,6 +6258,7 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
 
 /* ── Fulla namn + läsförståelsestrategi (beslut 2026-10-08 (2)) ── */
 .hp-ready-abbr {
+  display: block;
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--text-muted);
