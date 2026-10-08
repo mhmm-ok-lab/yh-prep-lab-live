@@ -577,3 +577,9 @@ På HP-hem: en ny sekundär rad "Guide" med två knappar ("Flashcards", "Läs he
 - **Före/efter:** före fanns ingen formelträning och planen hade tio ord om dagen. Efter finns en daglig femminuters-rutin med räknare per formel ("klarad 1 av 3") och totalt ("12 klara · 40 kvar"). "Är jag redo?" har en Formler-rad (grå, gul, grön vid minst 80 % klara eller på 2 av 3), och planraden bockas av automatiskt när passet är klart.
 - **Mått (375 × 812, ljust och mörkt):** ett kort per skärm, framsidan har uppgiften överst och knappen direkt under; baksidan ryms utan scroll (de valfria fyra svaren i "Räkna själv" ligger under knapparna så att inget hoppar). Ingen sidledsscroll. Pill 36 px med 44 px träffyta (befintliga knappar), "På papper" 44 px rad.
 - **Stitch-princip:** tonal skiktning (formeln i `--accent-soft`, uträkningen i `--honey`, kort på `--card`), No-Line, tre fontstorlekar plus hero för formeln, progressiv avslöjning (På papper och Räkna själv fälls ut först när man trycker), ingen skuld (inga röda markeringar för missade kort). Färg bär aldrig betydelse ensam: texterna "Rätt." och "Fel.".
+
+## 2026-10-09: Fullt namn OCH förkortning tillsammans
+- **Vad:** alla delprov visas som "Kvantitativa resonemang (NOG)", "Kvantitativa jämförelser (KVA)" och så vidare, i rubriker, kort, plan, guide och progress ("Resonemang (NOG) 1/6").
+- **Varför:** när förkortningarna byttes mot bara fulla namn försvann kopplingen till de förkortningar som används i guiden, på provet och i chatten. Martin: "vafan är NOG nu då? ingenstans?"
+- **Före/efter:** före stod bara "Kvantitativa resonemang". Efter står "Kvantitativa resonemang (NOG)".
+- **Princip:** igenkänning före minne (Nielsen #6). Användaren ska kunna koppla etiketten till den term han möter på provet utan att behöva komma ihåg översättningen.

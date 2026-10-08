@@ -141,8 +141,8 @@ describe("hp-plan: läsförståelse, meningskomplettering och matterotation", ()
   it("läsförståelsen säger sökläsning och 2 min/fråga, med fulla namn", () => {
     const las = buildDayTasks("2026-10-05", data).find((t) => t.id === "las")!;
     const elf = buildDayTasks("2026-10-06", data).find((t) => t.id === "elf")!;
-    expect(las.title).toBe("Svensk läsförståelse: en text");
-    expect(elf.title).toBe("Engelsk läsförståelse: en text");
+    expect(las.title).toBe("Svensk läsförståelse (LÄS): en text");
+    expect(elf.title).toBe("Engelsk läsförståelse (ELF): en text");
     expect(las.sub).toMatch(/sökläsning, 2 min\/fråga/);
     expect(elf.sub).toMatch(/sökläsning, 2 min\/fråga/);
   });
@@ -171,15 +171,16 @@ describe("hp-plan: läsförståelse, meningskomplettering och matterotation", ()
     expect(planMathDelprov(1)).toBe("NOG");
     const day2 = buildDayTasks("2026-10-06", data).find((t) => t.id === "matte-train")!;
     expect(day2.action).toEqual({ type: "train", delprov: "KVA" });
-    expect(day2.title).toBe("Matteträning: Kvantitativa jämförelser");
+    expect(day2.title).toBe("Matteträning: Kvantitativa jämförelser (KVA)");
     expect(day2.auto).toEqual({ kind: "train", delprov: "KVA" });
   });
 
-  it("inga förkortningar i uppgifternas titlar, texter och korta etiketter", () => {
+  it("förkortningar står aldrig ensamma — alltid som (FÖRKORTNING) efter det fulla namnet", () => {
     for (let day = 1; day <= 13; day++) {
       for (const t of buildDayTasks(addDays("2026-10-05", day - 1), data)) {
         const text = [t.title, t.short, t.sub ?? "", t.why].join(" ");
-        expect(text).not.toMatch(/\b(ORD|LÄS|MEK|ELF|XYZ|KVA|NOG|DTK)\b/);
+        const withoutExplained = text.replace(/\((ORD|LÄS|MEK|ELF|XYZ|KVA|NOG|DTK)\)/g, "");
+        expect(withoutExplained).not.toMatch(/\b(ORD|LÄS|MEK|ELF|XYZ|KVA|NOG|DTK)\b/);
       }
     }
   });
@@ -220,8 +221,8 @@ describe("hp-plan: läsförståelse, meningskomplettering och matterotation", ()
     expect(plan.items.filter((i) => !i.carried).map((i) => i.task.id)).toEqual(["las", "elf"]);
     expect(plan.items[0].done).toBe(true);
     // Gammal frusen text får fulla namn, men id och avbockning är oförändrade.
-    expect(plan.items[0].task.title).toBe("Svensk läsförståelse: en text");
-    expect(plan.items[1].task.title).toBe("Engelsk läsförståelse: en text");
+    expect(plan.items[0].task.title).toBe("Svensk läsförståelse (LÄS): en text");
+    expect(plan.items[1].task.title).toBe("Engelsk läsförståelse (ELF): en text");
   });
 });
 
