@@ -161,3 +161,28 @@ describe("formatMinSec", () => {
     expect(formatMinSec(5)).toBe("0:05");
   });
 });
+
+describe("Formler i 'Är jag redo?'", () => {
+  const form = (done: number, almost: number, started: number, total = 50) => computeReadiness({ ...empty, formula: { total, done, almost, started } }).formula;
+
+  it("grå utan påbörjade formler (och utan indata)", () => {
+    expect(computeReadiness(empty).formula.status).toBe("inte-provat");
+    expect(form(0, 0, 0).status).toBe("inte-provat");
+  });
+
+  it("gul när man börjat men under 80 %", () => {
+    const r = form(10, 20, 30);
+    expect(r.status).toBe("under");
+    expect(r.result).toBe("10 av 50 klara");
+  });
+
+  it("grön vid minst 80 % klara, eller minst 80 % på 2 av 3", () => {
+    expect(form(40, 45, 50).status).toBe("redo");
+    expect(form(39, 40, 50).status).toBe("redo");
+    expect(form(39, 39, 50).status).toBe("under");
+  });
+
+  it("räknas inte med i 'X av 8 redo'", () => {
+    expect(computeReadiness({ ...empty, formula: { total: 50, done: 50, almost: 50, started: 50 } }).rows).toHaveLength(8);
+  });
+});

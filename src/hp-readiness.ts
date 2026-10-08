@@ -1,11 +1,12 @@
 // "Är jag redo?": status per delprov utifrån sparade resultat (beslut 2026-10-08).
 // Rena funktioner, ingen localStorage eller DOM, så allt går att testa.
 // Mål: minst 70 % utan hjälp i senaste passet (LÄS/ELF: senaste två texterna) OCH tempo inom budget.
+import { HP_FORMULA_GREEN_SHARE } from "./hp-formulas";
 import { HP_PLAN_START, HP_PLAN_EXAM, addDays, dayDiff } from "./hp-plan";
 
 export const HP_READY_THRESHOLD = 0.7;
 
-export type HpReadyId = "ORD" | "LÄS" | "MEK" | "ELF" | "XYZ" | "KVA" | "NOG" | "DTK" | "DIAG";
+export type HpReadyId = "ORD" | "LÄS" | "MEK" | "ELF" | "XYZ" | "KVA" | "NOG" | "DTK" | "DIAG" | "FORM";
 export type HpReadyStatus = "inte-provat" | "under" | "redo";
 export type HpReadyReason = "procent" | "tempo" | "tempo-saknas";
 
@@ -28,6 +29,8 @@ export interface HpReadyInput {
   mek: { completedAt: string; correct: number; total: number; seconds: number }[];
   twin: Partial<Record<"XYZ" | "KVA" | "NOG" | "DTK", { completedAt: string; correct: number; total: number; seconds?: number }>>;
   diagnosis: { hasQuestions: boolean; areas: { level: "kan" | "repetera" | "lar-om" }[] } | null;
+  /** Formelträning: antal formler totalt, klara (3 av 3), minst 2 av 3, och påbörjade. */
+  formula?: { total: number; done: number; almost: number; started: number } | null;
 }
 
 export interface HpReadyTextResult {
@@ -65,7 +68,8 @@ const NAMES: Record<HpReadyId, string> = {
   KVA: "KVA – kvantitativa jämförelser",
   NOG: "NOG – räcker informationen?",
   DTK: "DTK – diagram, tabeller, kartor",
-  DIAG: "Mattediagnos"
+  DIAG: "Mattediagnos",
+  FORM: "Formler – formelträning"
 };
 
 export const HP_READY_ORDER: HpReadyId[] = ["ORD", "LÄS", "MEK", "ELF", "XYZ", "KVA", "NOG", "DTK"];
@@ -174,8 +178,19 @@ function diagRow(d: HpReadyInput["diagnosis"]): HpReadyRow {
   return row;
 }
 
-/** Status per delprov (i HP_READY_ORDER) plus mattediagnosen sist. */
-export function computeReadiness(input: HpReadyInput): { rows: HpReadyRow[]; diag: HpReadyRow } {
+/** Formler: grå = inte påbörjat, grön = minst 80 % klara (3 av 3) eller minst 80 % på 2 av 3, annars gul. */
+function formulaRow(f: HpReadyInput["formula"]): HpReadyRow {
+  if (!f || f.total <= 0 || f.started <= 0) return noData("FORM");
+  const row = noData("FORM");
+  row.result = `${f.done} av ${f.total} klara`;
+  const ready = f.done / f.total >= HP_FORMULA_GREEN_SHARE || f.almost / f.total >= HP_FORMULA_GREEN_SHARE;
+  row.status = ready ? "redo" : "under";
+  row.reasonText = ready ? "" : `Under 80 % klara`;
+  return row;
+}
+
+/** Status per delprov (i HP_READY_ORDER) plus mattediagnosen och formlerna (utanför de 8). */
+export function computeReadiness(input: HpReadyInput): { rows: HpReadyRow[]; diag: HpReadyRow; formula: HpReadyRow } {
   const rows: HpReadyRow[] = [
     ordRow(input.ord),
     textRow("LÄS", input.las),
@@ -186,7 +201,7 @@ export function computeReadiness(input: HpReadyInput): { rows: HpReadyRow[]; dia
     twinRow("NOG", input.twin.NOG),
     twinRow("DTK", input.twin.DTK)
   ];
-  return { rows, diag: diagRow(input.diagnosis) };
+  return { rows, diag: diagRow(input.diagnosis), formula: formulaRow(input.formula) };
 }
 
 const STATUS_RANK: Record<HpReadyStatus, number> = { "inte-provat": 0, under: 1, redo: 2 };

@@ -8,12 +8,11 @@ import type { HpDelprov } from "./hp-twins";
 export const HP_PLAN_START = "2026-10-05";
 export const HP_PLAN_EXAM = "2026-10-18";
 export const HP_PLAN_DAYS = 13;
-/** Dagliga ord och LÄS gäller t.o.m. 16 okt (dag 12). */
+/** Daglig formelträning och LÄS gäller t.o.m. 16 okt (dag 12). */
 const HP_PLAN_DAILY_UNTIL_DAY = 12;
 const HP_PLAN_MAX_CARRIED = 2;
 /** Uppgifter flyttas fram i högst så här många dagar; äldre släpps tyst (ingen skuldlista). */
 const HP_PLAN_CARRY_DAYS = 2;
-const HP_PLAN_WORDS_GOAL = 10;
 /** MEK/ELF ligger i Lär om (dag 1–6) och Laga (dag 8–10). */
 const HP_PLAN_MEK_ELF_UNTIL_DAY = 10;
 const HP_PLAN_MAX_TASKS_PER_DAY = 4;
@@ -103,8 +102,8 @@ export interface HpPlanDiagnosisArea {
 }
 
 export interface HpPlanData {
-  /** Antal ord klara i dag. Bara relevant för dagens datum. */
-  wordsToday: number;
+  /** completedAt (ISO) för varje avslutat formelpass. */
+  formulaCompletedAt: string[];
   /** completedAt (ISO) för varje sparat LÄS-resultat. */
   lasCompletedAt: string[];
   /** completedAt (ISO) för varje sparat MEK-pass. */
@@ -118,7 +117,7 @@ export interface HpPlanData {
 }
 
 export type HpPlanAction =
-  | { type: "ord" }
+  | { type: "formler" }
   | { type: "las" }
   | { type: "mek" }
   | { type: "elf" }
@@ -129,7 +128,7 @@ export type HpPlanAction =
   | { type: "flashcards" }
   | { type: "none" };
 
-export type HpPlanAuto = { kind: "ord" } | { kind: "las" } | { kind: "mek" } | { kind: "elf" } | { kind: "diagnos" } | { kind: "train"; delprov: HpDelprov };
+export type HpPlanAuto = { kind: "formler" } | { kind: "las" } | { kind: "mek" } | { kind: "elf" } | { kind: "diagnos" } | { kind: "train"; delprov: HpDelprov };
 
 export interface HpPlanTask {
   id: string;
@@ -143,7 +142,7 @@ export interface HpPlanTask {
   buttonLabel: string;
   /** Hur uppgiften bockas av automatiskt (saknas = bara manuellt). */
   auto?: HpPlanAuto;
-  /** Flyttas fram till nästa dag om den inte blev gjord. Dagliga ord/LÄS gör det inte. */
+  /** Flyttas fram till nästa dag om den inte blev gjord. Dagliga formler/LÄS gör det inte. */
   carry: boolean;
 }
 
@@ -187,14 +186,24 @@ export function hpMathAreaLabel(area: HpMathArea): string {
 
 // ── Uppgifter ──
 
-const WHY_ORD = "Tio ord om dagen är kort nog att alltid hinnas med, och orden fastnar bättre när de upprepas dag efter dag än när de pluggas i bulk.";
+const WHY_FORMLER = "På provet får du ingen formelsamling. Fem minuter om dagen räcker om formlerna kommer tillbaka på olika dagar: en formel är klar först när du klarat den på första försöket tre dagar.";
 const WHY_LAS = "LÄS är din svåraste del. En text om dagen bygger tempo och vana, och felanalysen visar vilken sorts fråga du missar.";
 
 const WHY_MEK = "MEK är det snabbaste verbala delprovet att förbättra: samma fem, sex samband återkommer hela tiden. Tio uppgifter om dagen tränar dig att läsa hela meningen innan du väljer.";
 const WHY_ELF = "ELF tränar engelskan på provets nivå. Varannan dag räcker för att hålla tempot uppe utan att dagen blir för lång, och förklaringarna visar varför varje alternativ är rätt eller fel.";
 
-function taskOrd(): HpPlanTask {
-  return { id: "ord", title: "Dagens 10 ord", short: "Ord", why: WHY_ORD, action: { type: "ord" }, buttonLabel: "Starta", auto: { kind: "ord" }, carry: false };
+function taskFormler(): HpPlanTask {
+  return {
+    id: "formler",
+    title: "Formelträning, 5 min",
+    short: "Formler",
+    sub: "vilken formel, hur den ser ut, hur du räknar",
+    why: WHY_FORMLER,
+    action: { type: "formler" },
+    buttonLabel: "Starta",
+    auto: { kind: "formler" },
+    carry: false
+  };
 }
 
 function taskLas(): HpPlanTask {
@@ -368,7 +377,7 @@ export function buildDayTasks(key: string, data: HpPlanData): HpPlanTask[] {
   }
 
   if (day <= HP_PLAN_DAILY_UNTIL_DAY) {
-    tasks.push(taskOrd(), taskLas());
+    tasks.push(taskFormler(), taskLas());
   }
   // MEK och ELF turas om under Lär om och Laga (max 4 uppgifter per dag): MEK udda dagar, ELF jämna.
   // Generalrepetitionen (dag 7) och ny diagnos (dag 10) är redan stora, så de dagarna hoppar vi över.
@@ -394,8 +403,8 @@ export function isAutoDone(task: HpPlanTask, origin: string, today: string, data
   const auto = task.auto;
   if (!auto) return false;
   switch (auto.kind) {
-    case "ord":
-      return origin === today && data.wordsToday >= HP_PLAN_WORDS_GOAL;
+    case "formler":
+      return data.formulaCompletedAt.some((iso) => inRange(isoToKey(iso), origin, today));
     case "las":
       return data.lasCompletedAt.some((iso) => inRange(isoToKey(iso), origin, today));
     case "mek":
@@ -413,7 +422,9 @@ export function isAutoDone(task: HpPlanTask, origin: string, today: string, data
 
 /** Är id avbockat (manuellt eller sparat från automatik) någon gång mellan origin och i dag? */
 export function isChecked(id: string, origin: string, today: string, checks: Record<string, string[]>): boolean {
-  return Object.keys(checks).some((k) => inRange(k, origin, today) && checks[k].includes(id));
+  // "ord" (Dagens 10 ord) ersattes av "formler"; en gammal avbockning räknas som gjord.
+  const ids = id === "formler" ? [id, "ord"] : [id];
+  return Object.keys(checks).some((k) => inRange(k, origin, today) && ids.some((i) => checks[k].includes(i)));
 }
 
 export interface HpPlanItem {
@@ -443,7 +454,9 @@ export interface HpPlanToday {
 }
 
 function tasksFor(key: string, data: HpPlanData, state: HpPlanState): HpPlanTask[] {
-  return state.snapshots[key] ?? buildDayTasks(key, data);
+  // Frysta listor från före 2026-10-08 kan innehålla "Dagens 10 ord": byt mot formelträningen.
+  const snap = state.snapshots[key]?.map((t) => (t.id === "ord" ? taskFormler() : t));
+  return snap ?? buildDayTasks(key, data);
 }
 
 export function buildTodayPlan(todayKey: string, data: HpPlanData, state: HpPlanState = EMPTY_HP_PLAN_STATE): HpPlanToday {

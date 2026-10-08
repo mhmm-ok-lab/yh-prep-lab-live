@@ -15,7 +15,7 @@ import {
 const iso = (key: string, time = "12:00:00") => new Date(`${key}T${time}`).toISOString();
 
 const emptyData = (over: Partial<HpPlanData> = {}): HpPlanData => ({
-  wordsToday: 0,
+  formulaCompletedAt: [],
   lasCompletedAt: [],
   mekCompletedAt: [],
   elfCompletedAt: [],
@@ -68,7 +68,7 @@ describe("hp-plan: Lär om-urval", () => {
   it("diagnos utan frågedata ger inget urval och planen ber om en ny diagnos", () => {
     const data = emptyData({ diagnosis: diagnosis("2026-10-01", false) });
     expect(larOmAreas(data)).toEqual([]);
-    expect(buildDayTasks("2026-10-05", data).map((t) => t.id)).toEqual(["diagnos", "ord", "las", "mek"]);
+    expect(buildDayTasks("2026-10-05", data).map((t) => t.id)).toEqual(["diagnos", "formler", "las", "mek"]);
   });
 
   it("dag 3 ger ett område per dag i ordning", () => {
@@ -97,9 +97,9 @@ describe("hp-plan: Lär om-urval", () => {
 describe("hp-plan: stegens uppgifter", () => {
   const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
 
-  it("11 okt: generalrepetition på papper, manuell, plus ord och LÄS", () => {
+  it("11 okt: generalrepetition på papper, manuell, plus formler och LÄS", () => {
     const tasks = buildDayTasks("2026-10-11", data);
-    expect(tasks.map((t) => t.id)).toEqual(["generalrep", "ord", "las"]);
+    expect(tasks.map((t) => t.id)).toEqual(["generalrep", "formler", "las"]);
     expect(tasks[0].auto).toBeUndefined();
     expect(tasks[0].title).toContain("4 pass à 55 min");
     expect(tasks[0].action).toEqual({ type: "resources" });
@@ -107,11 +107,11 @@ describe("hp-plan: stegens uppgifter", () => {
   });
 
   it("14 okt: svagaste delprov och ny diagnos", () => {
-    expect(buildDayTasks("2026-10-14", data).map((t) => t.id)).toEqual(["laga-train", "laga-diagnos", "ord", "las"]);
+    expect(buildDayTasks("2026-10-14", data).map((t) => t.id)).toEqual(["laga-train", "laga-diagnos", "formler", "las"]);
   });
 
   it("15 och 16 okt: flashcards plus korta pass", () => {
-    expect(buildDayTasks("2026-10-16", data).map((t) => t.id)).toEqual(["strategi-flashcards", "ord", "las"]);
+    expect(buildDayTasks("2026-10-16", data).map((t) => t.id)).toEqual(["strategi-flashcards", "formler", "las"]);
   });
 
   it("17 okt: bara flashcards och vila (inga dagliga pass)", () => {
@@ -143,9 +143,9 @@ describe("hp-plan: MEK och ELF", () => {
   });
 
   it("generalrepetitionen, ny diagnos och sista dagarna får inget extra", () => {
-    expect(ids("2026-10-11")).toEqual(["generalrep", "ord", "las"]);
-    expect(ids("2026-10-14")).toEqual(["laga-train", "laga-diagnos", "ord", "las"]);
-    expect(ids("2026-10-16")).toEqual(["strategi-flashcards", "ord", "las"]);
+    expect(ids("2026-10-11")).toEqual(["generalrep", "formler", "las"]);
+    expect(ids("2026-10-14")).toEqual(["laga-train", "laga-diagnos", "formler", "las"]);
+    expect(ids("2026-10-16")).toEqual(["strategi-flashcards", "formler", "las"]);
   });
 
   it("bockas av automatiskt när ett MEK-pass eller en ELF-text är klar i dag", () => {
@@ -167,9 +167,20 @@ describe("hp-plan: MEK och ELF", () => {
 describe("hp-plan: auto-avbockning", () => {
   const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
 
-  it("ord klara först vid minst 10 ord i dag", () => {
-    expect(buildTodayPlan("2026-10-06", { ...data, wordsToday: 9 }).items.find((i) => i.task.id === "ord")!.done).toBe(false);
-    expect(buildTodayPlan("2026-10-06", { ...data, wordsToday: 10 }).items.find((i) => i.task.id === "ord")!.done).toBe(true);
+  it("formelträning klar först när ett formelpass är avslutat i dag", () => {
+    const find = (d: HpPlanData) => buildTodayPlan("2026-10-06", d).items.find((i) => i.task.id === "formler")!;
+    expect(find({ ...data, formulaCompletedAt: [] }).done).toBe(false);
+    expect(find({ ...data, formulaCompletedAt: [iso("2026-10-05")] }).done).toBe(false);
+    expect(find({ ...data, formulaCompletedAt: [iso("2026-10-06")] }).done).toBe(true);
+  });
+
+  it("gammal fryst lista med 'Dagens 10 ord' visas som formelträning", () => {
+    const old = { id: "ord", title: "Dagens 10 ord", short: "Ord", why: "", action: { type: "none" as const }, buttonLabel: "", carry: false };
+    const plan = buildTodayPlan("2026-10-06", data, state({ snapshots: { "2026-10-06": [old] } }));
+    expect(plan.items[0].task.title).toBe("Formelträning, 5 min");
+    expect(plan.items[0].task.auto).toEqual({ kind: "formler" });
+    const checked = buildTodayPlan("2026-10-06", data, state({ snapshots: { "2026-10-06": [old] }, checks: { "2026-10-06": ["ord"] } }));
+    expect(checked.items[0].done).toBe(true);
   });
 
   it("LÄS klar när en text är klar i dag, inte i går", () => {
@@ -222,7 +233,7 @@ describe("hp-plan: överföring", () => {
     expect(carried).toHaveLength(1);
     expect(carried[0].task.id).toBe("lar-om:procent");
     expect(carried[0].carriedLabel).toBe("Från i går");
-    expect(plan.items.filter((i) => i.task.id === "ord")).toHaveLength(1);
+    expect(plan.items.filter((i) => i.task.id === "formler")).toHaveLength(1);
   });
 
   it("gjord uppgift flyttas inte", () => {
@@ -231,8 +242,8 @@ describe("hp-plan: överföring", () => {
   });
 
   it("max 2 överförda, de senaste, och bara från de två senaste dagarna", () => {
-    const t13 = buildDayTasks("2026-10-11", data); // generalrep, ord, las
-    const t14 = buildDayTasks("2026-10-14", data); // laga-train, laga-diagnos, ord, las
+    const t13 = buildDayTasks("2026-10-11", data); // generalrep, formler, las
+    const t14 = buildDayTasks("2026-10-14", data); // laga-train, laga-diagnos, formler, las
     const snap = state({ snapshots: { "2026-10-13": t13, "2026-10-14": t14 } });
     const carried = buildTodayPlan("2026-10-15", data, snap).items.filter((i) => i.carried);
     expect(carried).toHaveLength(2);
@@ -271,7 +282,7 @@ describe("hp-plan: hela planen", () => {
   it("13 dagar grupperade efter steg, dagens markerad och avbockade dagar märkta", () => {
     const data = emptyData({ diagnosis: diagnosis("2026-10-04") });
     const s = state({
-      checks: { "2026-10-05": ["lar-om:procent", "ord", "las", "mek"] },
+      checks: { "2026-10-05": ["lar-om:procent", "formler", "las", "mek"] },
       snapshots: { "2026-10-05": buildDayTasks("2026-10-05", data) }
     });
     const rows = buildPlanOverview("2026-10-07", data, s);
