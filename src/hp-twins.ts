@@ -214,7 +214,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     options: ["1/3", "4/9", "1/2", "5/9"],
     correct: 1,
     solution:
-      "Den nya medianen (6 tal) är medelvärdet av det tredje och fjärde värdet i den sorterade serien. Om det tillagda talet är 1, 2, 3 eller 4 blir sorteringen t, 2, 4, 5, 5, 9 med median (4+5)/2 = 4,5 < 5. Är talet 5-9 blir median (5+5)/2 = 5. Det gäller alltså för 4 av 9 möjliga tal, så sannolikheten är 4/9.",
+      "Den nya medianen (6 tal) är medelvärdet av det tredje och fjärde värdet i den sorterade serien. Om det tillagda talet är 1, 2, 3 eller 4 hamnar det bland de minsta talen, så det tredje och fjärde värdet blir 4 och 5 (till exempel 2, 4, 4, 5, 5, 9 om talet är 4), med median (4+5)/2 = 4,5 < 5. Är talet 5-9 blir det tredje och fjärde värdet 5 och 5, med median 5. Det gäller alltså för 4 av 9 möjliga tal, så sannolikheten är 4/9.",
     twinOf: { prov: "2025-04-05", provpass: 3, uppgift: 11, url: VAREN_2025_URL }
   },
 
@@ -224,7 +224,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Förenkla bråket på högra sidan först. Lös sedan ut x och jämför med kvantitet II.",
     delprov: "KVA",
     area: "bråk",
-    prompt: "x/12 = 9/18\n\nKvantitet I: x\nKvantitet II: 6",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nx/12 = 9/18\n\nKvantitet I: x\nKvantitet II: 6",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "9/18 = 1/2, alltså x/12 = 1/2, vilket ger x = 6. Kvantitet I och II är båda 6.",
@@ -235,7 +235,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Skriv om båda procentuttrycken som decimal gånger tal och räkna ut dem. Finns det en genväg, vad händer om man byter plats på talen?",
     delprov: "KVA",
     area: "procent",
-    prompt: "Kvantitet I: 25 procent av 60\nKvantitet II: 60 procent av 25",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 25 procent av 60\nKvantitet II: 60 procent av 25",
     options: KVA_OPTIONS,
     correct: 2,
     solution:
@@ -248,7 +248,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "Kvantitet I: Medelvärdet av mätserien 2, 5, 11\nKvantitet II: Medelvärdet av mätserien 2, 2, 5, 11, 11",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: Medelvärdet av mätserien 2, 5, 11\nKvantitet II: Medelvärdet av mätserien 2, 2, 5, 11, 11",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -261,7 +261,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "KVA",
     area: "bråk",
     prompt:
-      "Anna har p kulor och Boel har q kulor. Cim har inga kulor. Anna ger en tredjedel av sina kulor till Cim. Boel ger också en tredjedel av sina kulor till Cim.\n\nKvantitet I: Det sammanlagda antalet kulor som Cim får av Anna och Boel\nKvantitet II: Medelvärdet av antalet kulor som Anna och Boel hade innan de gav kulor till Cim",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nAnna har p kulor och Boel har q kulor, där p och q är positiva heltal. Cim har inga kulor. Anna ger en tredjedel av sina kulor till Cim. Boel ger också en tredjedel av sina kulor till Cim.\n\nKvantitet I: Det sammanlagda antalet kulor som Cim får av Anna och Boel\nKvantitet II: Medelvärdet av antalet kulor som Anna och Boel hade innan de gav kulor till Cim",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -274,11 +274,11 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "KVA",
     area: "algebra",
     prompt:
-      "Bos ålder är en tredjedel av Cias och Didriks sammanlagda ålder.\n\nKvantitet I: Bos ålder\nKvantitet II: Cias ålder",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nBos ålder är en tredjedel av Cias och Didriks sammanlagda ålder.\n\nKvantitet I: Bos ålder\nKvantitet II: Cias ålder",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
-      "Bos ålder = (Cias ålder + Didriks ålder)/3. Utan att veta hur åldern fördelar sig mellan Cia och Didrik går det inte att avgöra om Bo är äldre eller yngre än Cia — det beror helt på fördelningen. Informationen är otillräcklig.",
+      "Bos ålder = (Cias ålder + Didriks ålder)/3. Om Cia och Didrik båda är 30 år är Bo 20 år, alltså yngre än Cia (Kvantitet II störst). Om Cia är 6 år och Didrik 30 år är Bo 12 år, alltså äldre än Cia (Kvantitet I störst). Det beror på hur åldrarna fördelar sig mellan Cia och Didrik, så informationen är otillräcklig.",
     twinOf: { prov: "2022-10-23", provpass: 1, uppgift: 14, url: HOSTEN_2022_URL }
   },
   {
@@ -286,7 +286,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Subtrahera kvantiteterna från varandra och förenkla. Vad vet du om tecknet på resultatet utifrån villkoret?",
     delprov: "KVA",
     area: "algebra",
-    prompt: "0 < a < b\n\nKvantitet I: a + 3b\nKvantitet II: 3a + b",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\n0 < a < b\n\nKvantitet I: a + 3b\nKvantitet II: 3a + b",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -299,7 +299,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "PQRS är en rektangel.\n\nKvantitet I: (PS)² + (PR)²\nKvantitet II: (QR)² + (QS)²",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nPQRS är en rektangel.\n\nKvantitet I: (PS)² + (PR)²\nKvantitet II: (QR)² + (QS)²",
     options: KVA_OPTIONS,
     correct: 2,
     solution:
@@ -312,7 +312,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "KVA",
     area: "räta linjen",
     prompt:
-      "Linjen L ges av ekvationen y = -3x + 9.\n\nKvantitet I: x-koordinaten för den punkt där L skär x-axeln\nKvantitet II: y-koordinaten för den punkt där L skär y-axeln",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nLinjen L ges av ekvationen y = -3x + 9.\n\nKvantitet I: x-koordinaten för den punkt där L skär x-axeln\nKvantitet II: y-koordinaten för den punkt där L skär y-axeln",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -325,7 +325,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "En mätserie består av åtta positiva heltal. De sex största mätvärdena är större än 20. De sex minsta mätvärdena är mindre än 24.\n\nKvantitet I: Mätseriens median\nKvantitet II: 22",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nEn mätserie består av åtta positiva heltal. De sex största mätvärdena är större än 20. De sex minsta mätvärdena är mindre än 24.\n\nKvantitet I: Mätseriens median\nKvantitet II: 22",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -337,7 +337,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Testa först x = y = 1, och prova sedan helt andra tal som uppfyller xy = 1, till exempel ett stort x och ett litet y. Blir jämförelsen alltid densamma?",
     delprov: "KVA",
     area: "algebra",
-    prompt: "xy = 1, där x > 0 och y > 0.\n\nKvantitet I: x + y\nKvantitet II: 2",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nxy = 1, där x > 0 och y > 0.\n\nKvantitet I: x + y\nKvantitet II: 2",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -486,9 +486,9 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "DTK",
     area: "procent",
     prompt:
-      "I hela landet var den genomsnittliga insatsen för en bostadsrättslägenhet 2024 2 000 000 kr. Hur hög var insatsen i kommuner med färre än 75 000 invånare jämfört med landets genomsnitt?",
+      "Tabellen visar genomsnittliga boendekostnader 2024. I hela landet var den genomsnittliga insatsen för en bostadsrättslägenhet samma år 2 000 000 kr. Hur hög var den genomsnittliga insatsen i kommuner med färre än 75 000 invånare jämfört med landets genomsnitt?",
     table:
-      "| Område | Årsavgift bostadsrätt (kr/m²) | Årshyra hyresrätt (kr/m²) | Insats (tkr) |\n|---|---|---|---|\n| Stor-Stockholm | 1 050 | 1 780 | 2 900 |\n| Stor-Göteborg | 980 | 1 620 | 2 100 |\n| Kommuner >75 000 inv. | 890 | 1 340 | 1 600 |\n| Kommuner <75 000 inv. | 760 | 1 190 | 900 |",
+      "| Område | Årsavgift bostadsrätt (kr/m²) | Årshyra hyresrätt (kr/m²) | Genomsnittlig insats (tkr) |\n|---|---|---|---|\n| Stor-Stockholm | 1 050 | 1 780 | 2 900 |\n| Stor-Göteborg | 980 | 1 620 | 2 100 |\n| Kommuner >75 000 inv. | 890 | 1 340 | 1 600 |\n| Kommuner <75 000 inv. | 760 | 1 190 | 900 |",
     options: ["Dubbelt så hög", "Tre fjärdedelar så hög", "45 procent så hög", "Hälften så hög"],
     correct: 2,
     solution: "900 000/2 000 000 = 0,45 = 45 procent. Insatsen i mindre kommuner var 45 procent av landets genomsnitt.",
@@ -499,7 +499,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Hitta raden Filmklubben och kolumnen 2023, samt Summa beviljat för samma år. Andel = del delat med helheten.",
     delprov: "DTK",
     area: "procent",
-    prompt: "Hur stor andel av de beviljade bidragen 2023 gick till Filmklubben?",
+    prompt: "Tabellen visar kommunens beviljade kulturbidrag per förening, i tusental kronor. Hur stor andel av de beviljade bidragen 2023 gick till Filmklubben?",
     table:
       "| Förening | 2021 | 2022 | 2023 |\n|---|---|---|---|\n| Körsångarna | 180 | 210 | 240 |\n| Konstnärsgillet | 90 | 95 | 100 |\n| Teaterverkstan | 320 | 300 | 340 |\n| Filmklubben | 60 | 75 | 90 |\n| Musikskolan | 410 | 430 | 450 |\n| **Summa beviljat** | **1 060** | **1 110** | **1 220** |",
     options: ["5 procent", "6 procent", "7 procent", "9 procent"],
@@ -512,7 +512,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Hitta Region C:s totalsumma och radens Riket totalt. Dela del med helhet, avrunda och välj närmaste alternativ.",
     delprov: "DTK",
     area: "statistik",
-    prompt: "Hur stor andel av rikets totala kulturkostnader 2023 utgjorde Region Cs kostnader?",
+    prompt: "Tabellen visar kulturkostnaderna 2023 per region, i tusental kronor. Hur stor andel av rikets totala kulturkostnader 2023 utgjorde Region C:s kostnader?",
     table:
       "| Region | Teater & musik | Bibliotek | Övrigt | Totalt |\n|---|---|---|---|---|\n| Region A | 45 000 | 12 000 | 18 000 | 75 000 |\n| Region B | 20 000 | 9 000 | 11 000 | 40 000 |\n| Region C | 60 000 | 15 000 | 25 000 | 100 000 |\n| Region D | 15 000 | 6 000 | 9 000 | 30 000 |\n| **Riket totalt** | **140 000** | **42 000** | **63 000** | **245 000** |",
     options: ["30 procent", "35 procent", "41 procent", "48 procent"],
@@ -526,7 +526,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "DTK",
     area: "procent",
     prompt:
-      "Hur stor andel av den totala omsättningen inom kultur, nöje och fritid 2022 stod Spel- och vadhållning för?",
+      "Tabellen visar omsättningen inom kultur, nöje och fritid, i miljoner kronor, fördelad på samtliga verksamheter. Hur stor andel av den totala omsättningen 2022 stod Spel- och vadhållning för?",
     table:
       "| Verksamhet | 2022 | 2023 |\n|---|---|---|\n| Konsertarrangörer | 3 000 | 3 400 |\n| Nöjesparker | 2 000 | 2 100 |\n| Biografer | 1 500 | 1 600 |\n| Spel- och vadhållning | 6 000 | 6 200 |\n| Övrigt | 2 500 | 2 700 |",
     options: ["1/4", "3/10", "1/3", "2/5"],
@@ -568,9 +568,9 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "DTK",
     area: "statistik",
     prompt:
-      "Det totala importvärdet för de redovisade varugrupperna 2024 var 394 miljarder kronor. Hur stor andel av detta avsåg varugruppen med störst importvärde?",
+      "Tabellen visar export- och importvärde 2024 för fem varugrupper, i miljarder kronor (mdkr). Det totala importvärdet för de redovisade varugrupperna var 394 miljarder kronor. Hur stor andel av detta avsåg varugruppen med störst importvärde?",
     table:
-      "| Varugrupp | Export | Import |\n|---|---|---|\n| Fordon | 145 | 98 |\n| Läkemedel | 88 | 42 |\n| Elektronik | 76 | 130 |\n| Livsmedel | 54 | 112 |\n| Skogsprodukter | 160 | 12 |",
+      "| Varugrupp | Export (mdkr) | Import (mdkr) |\n|---|---|---|\n| Fordon | 145 | 98 |\n| Läkemedel | 88 | 42 |\n| Elektronik | 76 | 130 |\n| Livsmedel | 54 | 112 |\n| Skogsprodukter | 160 | 12 |",
     options: ["1/5", "1/4", "1/3", "2/5"],
     correct: 2,
     solution:
@@ -583,7 +583,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "DTK",
     area: "statistik",
     prompt:
-      "Vilket svarsförslag beskriver bäst förhållandet mellan tekniker, ingenjörer och arkitekter vad gäller det totala antalet certifieringar 2023?",
+      "Vilket svarsalternativ beskriver bäst förhållandet mellan tekniker, ingenjörer och arkitekter vad gäller det totala antalet certifieringar 2023?",
     table:
       "| Yrkesgrupp | 2021 | 2022 | 2023 |\n|---|---|---|---|\n| Tekniker | 320 | 340 | 365 |\n| Ingenjörer | 210 | 225 | 240 |\n| Arkitekter | 55 | 58 | 60 |",
     options: ["5:3:1", "5:4:1", "6:4:1", "6:5:1"],

@@ -30,7 +30,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "procent",
     prompt:
-      "Maja använder 40 procent av sin veckopeng till klistermärken. Leo använder 25 procent av sin veckopeng till klistermärken. Den ena av dem köper klistermärken för 60 kr mer än den andra.\n\nKvantitet I: Summan som Maja köper klistermärken för\nKvantitet II: Summan som Leo köper klistermärken för",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nMaja använder 40 procent av sin veckopeng till klistermärken. Leo använder 25 procent av sin veckopeng till klistermärken. Den ena av dem köper klistermärken för 60 kr mer än den andra.\n\nKvantitet I: Summan som Maja köper klistermärken för\nKvantitet II: Summan som Leo köper klistermärken för",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -42,7 +42,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Ett heltal kan vara positivt, noll eller negativt. Pröva k = 0, k = 1 och ett större k och se om utfallet ändras.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "n är ett positivt heltal.\nk är ett heltal.\n\nKvantitet I: n\nKvantitet II: nk",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nn är ett positivt heltal.\nk är ett heltal.\n\nKvantitet I: n\nKvantitet II: nk",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -54,7 +54,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Sätt bara in värdena i funktionen en i taget och jämför talen. Ta hand om minustecknen noga.",
     delprov: "KVA",
     area: "funktioner",
-    prompt: "g(x) = x² − 4x + 1\n\nKvantitet I: g(0)\nKvantitet II: g(3)",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\ng(x) = x² − 4x + 1\n\nKvantitet I: g(0)\nKvantitet II: g(3)",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -67,7 +67,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "I en viss parallellogram är vinkeln i ett av hörnen 64°.\n\nKvantitet I: Vinkeln i ett av de andra hörnen i parallellogrammen\nKvantitet II: 120°",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nI en viss parallellogram är vinkeln i ett av hörnen 64°.\n\nKvantitet I: Vinkeln i ett av de andra hörnen i parallellogrammen\nKvantitet II: 120°",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -80,7 +80,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "Medelvärdet av tio på varandra följande heltal är 21,5.\n\nKvantitet I: Hälften av det största av de tio heltalen\nKvantitet II: Det minsta av de tio heltalen",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nMedelvärdet av tio på varandra följande heltal är 21,5.\n\nKvantitet I: Hälften av det största av de tio heltalen\nKvantitet II: Det minsta av de tio heltalen",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -93,7 +93,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "talteori",
     prompt:
-      "s är summan av alla heltal x sådana att 0 < x < 7.\np är produkten av alla primtal y sådana att 2 < y < 8.\n\nKvantitet I: s\nKvantitet II: p",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\ns är summan av alla heltal x sådana att 0 < x < 7.\np är produkten av alla primtal y sådana att 2 < y < 8.\n\nKvantitet I: s\nKvantitet II: p",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -106,7 +106,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "Punkterna A = (1, 2), B = (3, 5) och C = (3, −9) är inritade i ett koordinatsystem.\n\nKvantitet I: Avståndet mellan A och B\nKvantitet II: Avståndet mellan A och C",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nPunkterna A = (1, 2), B = (3, 5) och C = (3, −9) är inritade i ett koordinatsystem.\n\nKvantitet I: Avståndet mellan A och B\nKvantitet II: Avståndet mellan A och C",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -119,7 +119,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "Mätserie x: 9, 12, 18\nMätserie y: 8, 10, 11, 25\n\nKvantitet I: Medianen i mätserie x\nKvantitet II: Medianen i mätserie y",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nMätserie x: 9, 12, 18\nMätserie y: 8, 10, 11, 25\n\nKvantitet I: Medianen i mätserie x\nKvantitet II: Medianen i mätserie y",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -131,7 +131,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Skriv ut de första potenserna och leta efter ett mönster i entalssiffran. Fråga dig om n spelar roll för mönstret.",
     delprov: "KVA",
     area: "potenser",
-    prompt: "n är ett positivt heltal.\n\nKvantitet I: Entalssiffran i talet 9ⁿ\nKvantitet II: 5",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nn är ett positivt heltal.\n\nKvantitet I: Entalssiffran i talet 9ⁿ\nKvantitet II: 5",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -143,7 +143,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Du får inte veta hur stora talen är. Testa ett par där a är litet och ett par där a är stort, och glöm inte att kvadrater av negativa tal blir positiva.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "a > b\nb < 0\n\nKvantitet I: a²\nKvantitet II: b²",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\na > b\nb < 0\n\nKvantitet I: a²\nKvantitet II: b²",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -156,7 +156,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "hastighet",
     prompt:
-      "Det tar 20 minuter för 8 likadana kranar att tillsammans fylla en bassäng med 4 m³ vatten.\n\nKvantitet I: Den tid det tar för 12 likadana kranar att tillsammans fylla en bassäng med 9 m³ vatten\nKvantitet II: 25 minuter",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nDet tar 20 minuter för 8 likadana kranar att tillsammans fylla en bassäng med 4 m³ vatten.\n\nKvantitet I: Den tid det tar för 12 likadana kranar att tillsammans fylla en bassäng med 9 m³ vatten\nKvantitet II: 25 minuter",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -168,7 +168,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Addera bråken med gemensam nämnare och jämför med talet 1. Slarva inte med att läsa vilka bråk det gäller.",
     delprov: "KVA",
     area: "bråk",
-    prompt: "Kvantitet I: 3/8 + 5/8\nKvantitet II: 1",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 3/8 + 5/8\nKvantitet II: 1",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "3/8 + 5/8 = 8/8 = 1. Kvantiteterna är lika.",
@@ -180,7 +180,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "sannolikhet",
     prompt:
-      "Tre vanliga sexsidiga tärningar kastas slumpmässigt en gång.\n\nKvantitet I: Sannolikheten att få tre sexor\nKvantitet II: Sannolikheten att summan av det tärningarna visar är 16",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nTre vanliga sexsidiga tärningar kastas slumpmässigt en gång.\n\nKvantitet I: Sannolikheten att få tre sexor\nKvantitet II: Sannolikheten att summan av det tärningarna visar är 16",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -193,7 +193,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "bråk",
     prompt:
-      "4 nypor motsvarar 1 tesked.\n3 teskedar motsvarar 1 matsked.\n\nKvantitet I: 5 nypor och 2 matskedar\nKvantitet II: 3 teskedar och 20 nypor",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\n4 nypor motsvarar 1 tesked.\n3 teskedar motsvarar 1 matsked.\n\nKvantitet I: 5 nypor och 2 matskedar\nKvantitet II: 3 teskedar och 20 nypor",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -205,7 +205,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Testa konkreta tal som uppfyller p < q < r. Flytta q närmare p och sedan närmare r och se om svaret ändras.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "p < q < r\n\nKvantitet I: (p + r)/2\nKvantitet II: (p + q + r)/3",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\np < q < r\n\nKvantitet I: (p + r)/2\nKvantitet II: (p + q + r)/3",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -217,7 +217,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Börja med formeln för omkrets och lös ut radien. Jämför sedan med 8 utan att behöva räkna med en miniräknare.",
     delprov: "KVA",
     area: "geometri",
-    prompt: "Omkretsen av en cirkel är 18π cm.\n\nKvantitet I: Cirkelns radie\nKvantitet II: 8 cm",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nOmkretsen av en cirkel är 18π cm.\n\nKvantitet I: Cirkelns radie\nKvantitet II: 8 cm",
     options: KVA_OPTIONS,
     correct: 0,
     solution: "Omkrets = 2πr, så 18π = 2πr ger r = 9 cm. Kvantitet I (9 cm) är större än Kvantitet II (8 cm).",
@@ -228,7 +228,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Ett bråk i exponenten betyder en rot. Fråga dig vilket tal som multiplicerat med sig själv tre gånger ger basen.",
     delprov: "KVA",
     area: "potenser",
-    prompt: "Kvantitet I: 64^(1/3)\nKvantitet II: 4",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 64^(1/3)\nKvantitet II: 4",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "64^(1/3) = 4, eftersom 4³ = 64. Kvantiteterna är lika.",
@@ -240,7 +240,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "procent",
     prompt:
-      "x, y och z är positiva tal.\nx procent av y är lika med 84.\nx procent av z är lika med 42.\n\nKvantitet I: y\nKvantitet II: z",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nx, y och z är positiva tal.\nx procent av y är lika med 84.\nx procent av z är lika med 42.\n\nKvantitet I: y\nKvantitet II: z",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -253,7 +253,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "T är en triangel.\n\nKvantitet I: Omkretsen av T dividerad med 3\nKvantitet II: Medelvärdet av sidlängderna för T",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nT är en triangel.\n\nKvantitet I: Omkretsen av T dividerad med 3\nKvantitet II: Medelvärdet av sidlängderna för T",
     options: KVA_OPTIONS,
     correct: 2,
     solution:
@@ -265,7 +265,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Division med ett bråk är multiplikation med det inverterade bråket. Förenkla båda och uppskatta storleken, är de nära 1, över eller under?",
     delprov: "KVA",
     area: "bråk",
-    prompt: "Kvantitet I: (2/9) delat med (9/2)\nKvantitet II: (9/2) delat med (2/9)",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: (2/9) delat med (9/2)\nKvantitet II: (9/2) delat med (2/9)",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -278,7 +278,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "algebra",
     prompt:
-      "Cornelia är dubbelt så gammal som Erik och Filip tillsammans.\n\nKvantitet I: Cornelias ålder\nKvantitet II: Tre gånger Eriks ålder",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nCornelia är dubbelt så gammal som Erik och Filip tillsammans.\n\nKvantitet I: Cornelias ålder\nKvantitet II: Tre gånger Eriks ålder",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -291,7 +291,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "Kvadraterna K1 och K2 överlappar varandra så att 30 procent av arean av K1 täcks av K2, medan 15 procent av arean av K2 täcks av K1.\n\nKvantitet I: Arean av K1\nKvantitet II: Arean av K2",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvadraterna K1 och K2 överlappar varandra så att 30 procent av arean av K1 täcks av K2, medan 15 procent av arean av K2 täcks av K1.\n\nKvantitet I: Arean av K1\nKvantitet II: Arean av K2",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -303,7 +303,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Utnyttja villkoret: uttryck y med x. Förenkla båda kvantiteterna och fråga dig om något av dem alltid är noll eller positivt.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "x + y = 0, där x ≠ 0.\n\nKvantitet I: x² + y²\nKvantitet II: x² + 2xy + y²",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nx + y = 0, där x ≠ 0.\n\nKvantitet I: x² + y²\nKvantitet II: x² + 2xy + y²",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -316,7 +316,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "funktioner",
     prompt:
-      "Grafen till funktionen f är en rät linje genom origo.\nb > 0\n\nKvantitet I: f(b)\nKvantitet II: f(−b)",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nGrafen till funktionen f är en rät linje genom origo.\nb > 0\n\nKvantitet I: f(b)\nKvantitet II: f(−b)",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -329,7 +329,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "En mätserie består av värdena −8, p, q, 5. Seriens medelvärde är −2.\n\nKvantitet I: p + q\nKvantitet II: −3",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nEn mätserie består av värdena −8, p, q, 5. Seriens medelvärde är −2.\n\nKvantitet I: p + q\nKvantitet II: −3",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -342,7 +342,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "Medelvärdet av de tre talen x, y och z är 15. Summan av y och z är 22.\n\nKvantitet I: x\nKvantitet II: 14",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nMedelvärdet av de tre talen x, y och z är 15. Summan av y och z är 22.\n\nKvantitet I: x\nKvantitet II: 14",
     options: KVA_OPTIONS,
     correct: 0,
     solution: "Summan av alla tre tal är 3 · 15 = 45. Då är x = 45 − 22 = 23. Kvantitet I (23) är större än Kvantitet II (14).",
@@ -353,7 +353,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Villkoren säger bara tecknen, inte storlekarna. Kvadrater blir positiva, så testa små och stora tal i båda leden.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "a > 0\nb < 0\nc > 0\nd < 0\n\nKvantitet I: a² + b²\nKvantitet II: c² + d²",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\na > 0\nb < 0\nc > 0\nd < 0\n\nKvantitet I: a² + b²\nKvantitet II: c² + d²",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -366,7 +366,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "Kvantitet I: Arean av en rektangel med sidorna 14 cm och 18 cm\nKvantitet II: Arean av en rätvinklig triangel med kateterna 9 cm och 50 cm",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: Arean av en rektangel med sidorna 14 cm och 18 cm\nKvantitet II: Arean av en rätvinklig triangel med kateterna 9 cm och 50 cm",
     options: KVA_OPTIONS,
     correct: 0,
     solution: "Rektangelns area: 14 · 18 = 252 cm². Triangelns area: (9 · 50)/2 = 225 cm². Kvantitet I är större.",
@@ -377,7 +377,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Räkna ut procenten, eller skriv om den som decimaltal, och jämför med det andra talet.",
     delprov: "KVA",
     area: "procent",
-    prompt: "Kvantitet I: 65 procent av 120\nKvantitet II: 78",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 65 procent av 120\nKvantitet II: 78",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "65 % av 120 = 0,65 · 120 = 78. Kvantiteterna är lika.",
@@ -389,7 +389,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "talteori",
     prompt:
-      "F(n) definieras som summan av alla positiva heltal mindre än n.\nG(n) definieras som summan av alla jämna positiva heltal mindre än n.\n\nKvantitet I: F(9)\nKvantitet II: G(9) delat med 2",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nF(n) definieras som summan av alla positiva heltal mindre än n.\nG(n) definieras som summan av alla jämna positiva heltal mindre än n.\n\nKvantitet I: F(9)\nKvantitet II: G(9) delat med 2",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -402,7 +402,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "Kvantitet I: Kvoten mellan en cirkels omkrets och dess diameter\nKvantitet II: Kvoten mellan en kvadrats omkrets och dess sidlängd",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: Kvoten mellan en cirkels omkrets och dess diameter\nKvantitet II: Kvoten mellan en kvadrats omkrets och dess sidlängd",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -415,7 +415,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "procent",
     prompt:
-      "En grupp med enbart kvinnor och män består av totalt 90 personer. Var och en av personerna är antingen högerhänt eller vänsterhänt. 70 % av kvinnorna är högerhänta. 9 kvinnor är vänsterhänta.\n\nKvantitet I: Antalet kvinnor i gruppen\nKvantitet II: Antalet män i gruppen",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nEn grupp med enbart kvinnor och män består av totalt 90 personer. Var och en av personerna är antingen högerhänt eller vänsterhänt. 70 % av kvinnorna är högerhänta. 9 kvinnor är vänsterhänta.\n\nKvantitet I: Antalet kvinnor i gruppen\nKvantitet II: Antalet män i gruppen",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -427,7 +427,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Byt ut x mot 6y i kvantitet II och förenkla. Jämför sedan med kvantitet I.",
     delprov: "KVA",
     area: "bråk",
-    prompt: "y > 0\nx = 6y\n\nKvantitet I: y\nKvantitet II: En sjättedel av x",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\ny > 0\nx = 6y\n\nKvantitet I: y\nKvantitet II: En sjättedel av x",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "En sjättedel av x = x/6 = 6y/6 = y. Kvantiteterna är alltid lika.",
@@ -439,7 +439,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "räta linjen",
     prompt:
-      "Linjen L1 har ekvationen y = 2x + 5\nLinjen L2 har ekvationen y = −3x + 5\n\nKvantitet I: x-koordinaten för skärningspunkten mellan L1 och L2\nKvantitet II: 0",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nLinjen L1 har ekvationen y = 2x + 5\nLinjen L2 har ekvationen y = −3x + 5\n\nKvantitet I: x-koordinaten för skärningspunkten mellan L1 och L2\nKvantitet II: 0",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "Vid skärningspunkten gäller 2x + 5 = −3x + 5, det vill säga 5x = 0, så x = 0. Kvantiteterna är lika.",
@@ -451,7 +451,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "talteori",
     prompt:
-      "x och y är två på varandra följande positiva heltal sådana att y² − x² = 15.\n\nKvantitet I: y\nKvantitet II: 8",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nx och y är två på varandra följande positiva heltal sådana att y² − x² = 15.\n\nKvantitet I: y\nKvantitet II: 8",
     options: KVA_OPTIONS,
     correct: 2,
     solution:
@@ -464,7 +464,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "algebra",
     prompt:
-      "I Sixtens necessär finns det pennor, suddgummin och linjaler. Suddgummin är dubbelt så många som linjalerna. Pennorna är 4 fler än linjalerna och 3 färre än suddgummin.\n\nKvantitet I: Antalet pennor i Sixtens necessär\nKvantitet II: 11",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nI Sixtens necessär finns det pennor, suddgummin och linjaler. Suddgummin är dubbelt så många som linjalerna. Pennorna är 4 fler än linjalerna och 3 färre än suddgummin.\n\nKvantitet I: Antalet pennor i Sixtens necessär\nKvantitet II: 11",
     options: KVA_OPTIONS,
     correct: 2,
     solution:
@@ -477,7 +477,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "En mätserie består av tolv mätvärden. Vart och ett av mätvärdena är ett heltal mellan 1 och 60. Mätseriens median är 30.\n\nKvantitet I: Mätseriens median om det minsta mätvärdet tas bort\nKvantitet II: 30",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nEn mätserie består av tolv mätvärden. Vart och ett av mätvärdena är ett heltal mellan 1 och 60. Mätseriens median är 30.\n\nKvantitet I: Mätseriens median om det minsta mätvärdet tas bort\nKvantitet II: 30",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -489,7 +489,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Räkna ut båda värdena var för sig och jämför. Förenkla procent och bråk till vanliga tal.",
     delprov: "KVA",
     area: "procent",
-    prompt: "Kvantitet I: 5 procent av 240\nKvantitet II: En tredjedel av 36",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 5 procent av 240\nKvantitet II: En tredjedel av 36",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "5 % av 240 = 0,05 · 240 = 12. En tredjedel av 36 = 36/3 = 12. Kvantiteterna är lika.",
@@ -500,7 +500,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Du behöver inte räkna med hela funktionen. Fundera på hur mycket h ändras när x ändras en viss mängd, och jämför stegen i x.",
     delprov: "KVA",
     area: "funktioner",
-    prompt: "h(x) = 5x − 2\n\nKvantitet I: h(2) − h(6)\nKvantitet II: h(−1) − h(3)",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nh(x) = 5x − 2\n\nKvantitet I: h(2) − h(6)\nKvantitet II: h(−1) − h(3)",
     options: KVA_OPTIONS,
     correct: 2,
     solution:
@@ -512,7 +512,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Gör om bråken till gemensam nämnare, till exempel tolftedelar, och addera. Jämför sedan med 1/2.",
     delprov: "KVA",
     area: "bråk",
-    prompt: "Kvantitet I: 1/4 + 1/12 + 1/6\nKvantitet II: 1/2",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 1/4 + 1/12 + 1/6\nKvantitet II: 1/2",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "Gemensam nämnare 12: 1/4 = 3/12, 1/12 = 1/12, 1/6 = 2/12. Summan blir 3/12+1/12+2/12 = 6/12 = 1/2. Kvantiteterna är lika.",
@@ -523,7 +523,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Fundera på tecknet på m² och på vad som händer när du multiplicerar med n. Testa n positivt, noll och negativt.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "m < 0\nn < 1\n\nKvantitet I: m²\nKvantitet II: m² · n",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nm < 0\nn < 1\n\nKvantitet I: m²\nKvantitet II: m² · n",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -536,7 +536,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "sannolikhet",
     prompt:
-      "En burk innehåller endast enfärgade röda och gröna kulor. Antalet gröna kulor är sju gånger så stort som antalet röda kulor.\n\nKvantitet I: Sannolikheten att en slumpmässigt vald kula ur burken är röd\nKvantitet II: 1/6",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nEn burk innehåller endast enfärgade röda och gröna kulor. Antalet gröna kulor är sju gånger så stort som antalet röda kulor.\n\nKvantitet I: Sannolikheten att en slumpmässigt vald kula ur burken är röd\nKvantitet II: 1/6",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
@@ -549,7 +549,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "talteori",
     prompt:
-      "x och y är heltal sådana att 20 < x < 30 och 20 < y < 30. x är inte jämnt delbart med vare sig 2 eller 3. y är jämnt delbart med 5.\n\nKvantitet I: Antalet olika tal som x kan vara\nKvantitet II: Antalet olika tal som y kan vara",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nx och y är heltal sådana att 20 < x < 30 och 20 < y < 30. x är inte jämnt delbart med vare sig 2 eller 3. y är jämnt delbart med 5.\n\nKvantitet I: Antalet olika tal som x kan vara\nKvantitet II: Antalet olika tal som y kan vara",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -561,7 +561,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Gör om till samma enhet. Kom ihåg hur många cm det är i en meter och hur många meter i en kilometer.",
     delprov: "KVA",
     area: "aritmetik",
-    prompt: "Kvantitet I: 500 000 cm\nKvantitet II: 5 km",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 500 000 cm\nKvantitet II: 5 km",
     options: KVA_OPTIONS,
     correct: 2,
     solution: "500 000 cm = 5 000 m = 5 km. Kvantiteterna är lika.",
@@ -572,7 +572,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Gör om till gemensam nämnare och subtrahera. Är resultatet positivt, noll eller negativt?",
     delprov: "KVA",
     area: "bråk",
-    prompt: "Kvantitet I: 1/4 − 1/6\nKvantitet II: 0",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: 1/4 − 1/6\nKvantitet II: 0",
     options: KVA_OPTIONS,
     correct: 0,
     solution: "1/4 − 1/6 = 3/12 − 2/12 = 1/12, vilket är större än 0. Kvantitet I är större.",
@@ -584,7 +584,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "statistik",
     prompt:
-      "En mätserie består av de fem positiva heltalen 9, 3, b, 11 och 6.\n\nKvantitet I: Mätseriens median\nKvantitet II: 6",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nEn mätserie består av de fem positiva heltalen 9, 3, b, 11 och 6.\n\nKvantitet I: Mätseriens median\nKvantitet II: 6",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -596,7 +596,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Använd triangelolikheten: varje sida måste vara kortare än summan av de två andra. Testa olika sätt att dela upp de 21 cm.",
     delprov: "KVA",
     area: "geometri",
-    prompt: "Summan av två sidor i en triangel är 21 cm.\n\nKvantitet I: Längden av den tredje sidan\nKvantitet II: 19 cm",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nSumman av två sidor i en triangel är 21 cm.\n\nKvantitet I: Längden av den tredje sidan\nKvantitet II: 19 cm",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -608,7 +608,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     hint: "Titta på skillnaden mellan kvantiteterna i stället för på dem var för sig. Testa sedan positivt och negativt q.",
     delprov: "KVA",
     area: "algebra",
-    prompt: "p < q\n\nKvantitet I: p + q\nKvantitet II: p − q",
+    prompt: "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\np < q\n\nKvantitet I: p + q\nKvantitet II: p − q",
     options: KVA_OPTIONS,
     correct: 3,
     solution:
@@ -621,7 +621,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "geometri",
     prompt:
-      "Fyra cirklar har radierna 6 cm, 9 cm, 12 cm respektive 18 cm.\n\nKvantitet I: Den sammanlagda arean av den minsta och den största cirkeln\nKvantitet II: Den sammanlagda arean av de två mellanstora cirklarna",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nFyra cirklar har radierna 6 cm, 9 cm, 12 cm respektive 18 cm.\n\nKvantitet I: Den sammanlagda arean av den minsta och den största cirkeln\nKvantitet II: Den sammanlagda arean av de två mellanstora cirklarna",
     options: KVA_OPTIONS,
     correct: 0,
     solution:
@@ -634,7 +634,7 @@ export const HP_TWINS_KVA: HpTwin[] = [
     delprov: "KVA",
     area: "talteori",
     prompt:
-      "Kvantitet I: Summan av de olika primtalsfaktorerna i heltalet 42\nKvantitet II: Summan av de olika primtalsfaktorerna i heltalet 55",
+      "Uppgiften består av två kvantiteter, I och II. Din uppgift är att jämföra dem.\n\nKvantitet I: Summan av de olika primtalsfaktorerna i heltalet 42\nKvantitet II: Summan av de olika primtalsfaktorerna i heltalet 55",
     options: KVA_OPTIONS,
     correct: 1,
     solution:
