@@ -352,7 +352,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "aritmetik",
     prompt:
-      "Mattias och Nour har varsin påse med russin. Påsarna innehåller bara mörka och gyllene russin. Hur många gyllene russin har Nour i sin påse?\n\n(1) I Mattias påse finns det 12 mörka russin och 18 gyllene russin. Nour har 5 russin fler än Mattias.\n(2) 2/5 av russinen i Nours påse är gyllene.",
+      "Mattias och Nour har varsin påse med russin. Påsarna innehåller bara mörka och gyllene russin. Hur många gyllene russin har Nour i sin påse?\n\n(1) I Mattias påse finns det 12 mörka russin och 18 gyllene russin. Nour har 5 russin fler än Mattias.\n(2) 2/5 av russinen i Nours påse är gyllene.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 2,
     solution:
@@ -365,7 +365,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "aritmetik",
     prompt:
-      "I en burk finns det bara enfärgade knappar: blå och gula. Hur många fler blå än gula knappar finns det i burken?\n\n(1) Sammanlagt finns det 40 knappar i burken.\n(2) Det finns 25 blå knappar i burken. Antalet gula knappar är 3/5 av antalet blå knappar.",
+      "I en burk finns det bara enfärgade knappar: blå och gula. Hur många fler blå än gula knappar finns det i burken?\n\n(1) Sammanlagt finns det 40 knappar i burken.\n(2) Det finns 25 blå knappar i burken. Antalet gula knappar är 3/5 av antalet blå knappar.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 1,
     solution:
@@ -378,7 +378,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "hastighet",
     prompt:
-      "Elin och Robin ska tapetsera varsin lika stor vägg med samma sorts tapet, som går åt i 6 tapetbanor per vägg. De arbetar utan avbrott, var och en med sin egen konstanta hastighet, och blir färdiga samtidigt. Vilken tid börjar Elin tapetsera?\n\n(1) Klockan 9.10 börjar Robin tapetsera. Det tar honom 90 minuter att tapetsera hela sin vägg.\n(2) När Robin börjar tapetsera har Elin redan satt upp 2 tapetbanor.",
+      "Elin och Robin ska tapetsera varsin lika stor vägg med samma sorts tapet, som går åt i 6 tapetbanor per vägg. De arbetar utan avbrott, var och en med sin egen konstanta hastighet, och blir färdiga samtidigt. Vilken tid börjar Elin tapetsera?\n\n(1) Klockan 9.10 börjar Robin tapetsera. Det tar honom 90 minuter att tapetsera hela sin vägg.\n(2) När Robin börjar tapetsera har Elin redan satt upp 2 tapetbanor.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 2,
     solution:
@@ -390,7 +390,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     hint: "Tre steg: (1) ensamt, (2) ensamt, båda. Testa med konkreta tal som passar påståendena, både jämna och udda.",
     delprov: "NOG",
     area: "algebra",
-    prompt: "Är p ett jämnt heltal?\n\n(1) q = 3p\n(2) q är ett heltal.",
+    prompt: "Är p ett jämnt heltal?\n\n(1) q = 3p\n(2) q är ett heltal.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 4,
     solution:
@@ -403,7 +403,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "hastighet",
     prompt:
-      "Vera cyklade från X till Y. Hur långt cyklade Vera?\n\n(1) Veras medelhastighet var 18 km/h.\n(2) Om Vera hade cyklat med dubbla hastigheten, hade hon varit framme vid Y 20 minuter tidigare.",
+      "Vera cyklade från X till Y. Hur långt cyklade Vera?\n\n(1) Veras medelhastighet var 18 km/h.\n(2) Om Vera hade cyklat med dubbla hastigheten, hade hon varit framme vid Y 20 minuter tidigare.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 2,
     solution:
@@ -416,11 +416,11 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "bråk",
     prompt:
-      "I en påse finns det 72 enfärgade russin i tre olika färger: gula, gröna och lila. Hur många lila russin finns det i påsen?\n\n(1) Förhållandet mellan antalet gula och antalet gröna russin i påsen är 5:4.\n(2) 4/9 av russinen i påsen är gula. 1/3 av russinen i påsen är gröna.",
+      "I en påse finns det 72 enfärgade russin i tre olika färger: gula, gröna och lila. Hur många lila russin finns det i påsen?\n\n(1) Förhållandet mellan antalet gula och antalet gröna russin i påsen är 4:3.\n(2) 4/9 av russinen i påsen är gula. 1/3 av russinen i påsen är gröna.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 1,
     solution:
-      "Från (2): gula = 4/9 · 72 = 32, gröna = 1/3 · 72 = 24, alltså lila = 72 - 32 - 24 = 16 — tillräckligt ensamt. Från (1) vet vi bara förhållandet 5:4 mellan gula och gröna, vilket inte ensamt ger de exakta antalen eftersom det totala antalet lila är okänt.",
+      "Från (2): gula = 4/9 · 72 = 32, gröna = 1/3 · 72 = 24, alltså lila = 72 - 32 - 24 = 16 — tillräckligt ensamt. Från (1) vet vi bara förhållandet 4:3 mellan gula och gröna. Gula + gröna kan då vara 7, 14, 21 ... russin, så antalet lila går inte att bestämma — otillräckligt ensamt. Svaret blir alltså: i (2) men ej i (1).",
     twinOf: { prov: "2023-10-22", provpass: 2, uppgift: 26, url: HOSTEN_2023_URL }
   },
   {
@@ -429,7 +429,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "algebra",
     prompt:
-      "För de positiva heltalen x och y gäller att x/y = 5. Vad är x - y?\n\n(1) x + y = 30\n(2) xy = 125",
+      "För de positiva heltalen x och y gäller att x/y = 5. Vad är x - y?\n\n(1) x + y = 30\n(2) xy = 125\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 3,
     solution:
@@ -442,7 +442,7 @@ const HP_TWINS_BASE: HpTwin[] = [
     delprov: "NOG",
     area: "procent",
     prompt:
-      "På en festival är antalet jonglörer 75 procent av antalet akrobater. Hur många akrobater finns det på festivalen?\n\n(1) Om det hade funnits dubbelt så många jonglörer och hälften så många akrobater, så hade det funnits 40 fler jonglörer än akrobater.\n(2) Det finns 10 fler akrobater än jonglörer.",
+      "På en festival är antalet jonglörer 75 procent av antalet akrobater. Hur många akrobater finns det på festivalen?\n\n(1) Om det hade funnits dubbelt så många jonglörer och hälften så många akrobater, så hade det funnits 40 fler jonglörer än akrobater.\n(2) Det finns 10 fler akrobater än jonglörer.\n\nTillräcklig information för lösningen erhålls …",
     options: NOG_OPTIONS,
     correct: 3,
     solution:
