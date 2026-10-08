@@ -3467,68 +3467,6 @@ details.hp-math-area-card {
    HP-FLIK — Tvillingträning (XYZ/KVA/NOG/DTK)
    ========================================= */
 
-.hp-twin-section {
-  margin-top: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.hp-twin-section-heading {
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.hp-twin-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-}
-
-.hp-twin-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  background: var(--card);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow);
-  border: none;
-  padding: 0.65rem 0.75rem;
-  text-align: left;
-  cursor: pointer;
-}
-
-.hp-twin-card-name {
-  font-size: var(--text-md);
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.hp-twin-card-desc {
-  font-size: var(--text-sm);
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.hp-twin-card-count {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.hp-twin-card-last {
-  font-size: var(--text-xs);
-  color: var(--accent-soft-ink);
-  font-weight: 700;
-}
-
 .hp-twin-prompt {
   font-size: var(--text-md);
   font-weight: 700;
@@ -4471,22 +4409,6 @@ details[open] .course-research-summary::after { transform: rotate(-180deg); }
    HP-FLIK — Guide (flashcards + lång översikt)
    ========================================= */
 
-.hp-guide-home-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.hp-guide-home-heading {
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin: 0;
-}
-
 .hp-guide-home-btns {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -5124,50 +5046,8 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
 }
 
 /* HP-hem: LÄS-kortet i accent-soft (prioriterad övning), full bredd. */
-.hp-las-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: var(--radius-card);
-  background: var(--accent-soft);
-  color: var(--accent-soft-ink);
-  text-align: left;
-  cursor: pointer;
-}
-
-.hp-las-card-name {
-  font-size: var(--text-md);
-  font-weight: 800;
-}
-
-.hp-las-card-desc {
-  font-size: var(--text-sm);
-  font-weight: 600;
-}
-
-.hp-las-card-count {
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 /* ── ELF och MEK (beslut 2026-10-05 (10)) ──
    HP-hem: MEK och ELF delar en rad under LÄS-kortet (verbala delen: ORD, LÄS, MEK, ELF). */
-.hp-verbal-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-}
-
-.hp-verbal-card {
-  min-width: 0;
-}
-
 /* ELF-lucktext: stycket med luckan ligger tätt ovanför frågan, aktuell lucka markerad. */
 .hp-gap-context {
   padding: 0.75rem;
@@ -5498,10 +5378,6 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
 
 .hp-card-list-go {
   color: var(--text-muted);
-}
-
-.hp-guide-home-btn-wide {
-  grid-column: 1 / -1;
 }
 
 /* ── HP Externa resurser: rubrik över, länkar under, en rad förklaring ── */
@@ -5879,48 +5755,6 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
    Sammanfattning, nästa enligt planen, en rad per delprov (grå, gul, grön). Status bärs av ikon + text,
    inte bara färg. Bara tokens; chip-paren (ok-ink/ok-bg, warn-ink/warn-bg, text-muted/surface-highest) kontrolleras i
    scripts/check-dark-contrast.mjs. */
-.hp-ready-entry {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0 1rem;
-  border: none;
-  border-radius: var(--radius-card);
-  background: var(--card);
-  box-shadow: var(--shadow);
-  color: var(--ink);
-  font-size: var(--text-md);
-  font-weight: 700;
-  cursor: pointer;
-  text-align: left;
-}
-
-.hp-ready-entry-sum {
-  color: var(--accent);
-  white-space: nowrap;
-}
-
-.hp-ready {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.hp-ready-summary {
-  background: linear-gradient(135deg, var(--fill-start), var(--fill-end));
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow);
-  padding: 0.75rem 1.25rem;
-  color: var(--on-fill);
-  text-align: center;
-}
-
-.hp-ready-summary .hp-ready-kicker {
-  color: var(--on-fill);
-}
-
 .hp-ready-kicker {
   display: block;
   margin: 0;
@@ -5929,146 +5763,6 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
-}
-
-.hp-ready-headline {
-  margin: 0.15rem 0 0;
-  font-size: var(--text-hero);
-  font-weight: 800;
-}
-
-.hp-ready-countdown {
-  margin: 0.1rem 0 0;
-  font-size: var(--text-md);
-  font-weight: 600;
-}
-
-.hp-ready-next {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--card);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow);
-  padding: 0.6rem 0.75rem 0.6rem 1rem;
-}
-
-.hp-ready-next-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.hp-ready-next-title {
-  overflow-wrap: anywhere;
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-
-.hp-ready-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.hp-ready-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 56px;
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
-  background: var(--card);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow);
-}
-
-.hp-ready-main {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  min-width: 0;
-}
-
-.hp-ready-name {
-  overflow-wrap: anywhere;
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-
-.hp-ready-status {
-  align-self: flex-start;
-  padding: 0.1rem 0.5rem;
-  border-radius: 999px;
-  font-size: var(--text-sm);
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.hp-ready-inte-provat .hp-ready-status {
-  background: var(--surface-highest);
-  color: var(--text-muted);
-}
-
-.hp-ready-under .hp-ready-status {
-  background: var(--warn-bg);
-  color: var(--warn-ink);
-}
-
-.hp-ready-redo .hp-ready-status {
-  background: var(--ok-bg);
-  color: var(--ok-ink);
-}
-
-.hp-ready-meta {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  line-height: 1.35;
-}
-
-.hp-ready-ok {
-  color: var(--ok);
-  font-weight: 800;
-}
-
-.hp-ready-bad {
-  color: var(--danger);
-  font-weight: 800;
-}
-
-.hp-ready-go {
-  position: relative;
-  height: 36px;
-  min-height: 36px;
-  padding: 0 1.1rem;
-  border-radius: 999px;
-  border: none;
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  color: var(--accent);
-  font-size: var(--text-md);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.hp-ready-go::after {
-  content: "";
-  position: absolute;
-  inset: -4px -4px;
-}
-
-.hp-ready-goal {
-  margin: 0;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  text-align: center;
 }
 
 /* ── Formelträning (beslut 2026-10-08) ──
@@ -6257,13 +5951,6 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
 }
 
 /* ── Fulla namn + läsförståelsestrategi (beslut 2026-10-08 (2)) ── */
-.hp-ready-abbr {
-  display: block;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
 .hp-help-focus {
   margin: 0;
   font-size: var(--text-sm);
@@ -6339,4 +6026,117 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   text-align: center;
   font-size: var(--text-sm);
   color: var(--text-muted);
+}
+
+/* ── HP-hem: informationshierarki (beslut 2026-10-09) ──
+   Ett startkort för alla delprov: titel + "Starta ›", en rad förklaring, statuschip + senaste resultat.
+   Hela kortet är en knapp. Sektionsrubriker gör att man hittar fram genom att skumma. */
+.hp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.hp-section-title {
+  margin: 0;
+  font-size: var(--text-h3);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hp-start-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.2rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.hp-start-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.hp-start-card-title {
+  font-size: var(--text-md);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.hp-start-card-go {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.hp-start-card-sub {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.hp-start-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  margin-top: 0.15rem;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.hp-start-card-last {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.hp-chip {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.hp-chip-inte-provat {
+  background: var(--surface-highest);
+  color: var(--text-muted);
+}
+
+.hp-chip-under {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+}
+
+.hp-chip-redo {
+  background: var(--ok-bg);
+  color: var(--ok-ink);
+}
+
+.hp-ready-summary-line {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.hp-guide-home-btns {
+  margin-top: 0;
 }

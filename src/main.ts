@@ -47,8 +47,6 @@ import {
 } from "./hp-plan";
 import {
   computeReadiness,
-  readinessCountdown,
-  sortReadiness,
   summarizeReadiness,
   type HpReadyId,
   type HpReadyRow
@@ -638,7 +636,6 @@ let hpResourcesOpen = false;
  *  startas från ett Lär om-kort som öppnades via planen. */
 let hpPlanAllOpen = false;
 /** "Är jag redo?" (beslut 2026-10-08): översikten öppen. Ligger sist i renderHp, så en pågående övning går före. */
-let hpReadyOpen = false;
 const hpPlanWhyOpen = new Set<string>();
 let hpPlanCardDelprov: HpDelprov | null = null;
 /** Dev-parameter ?plandate=YYYY-MM-DD simulerar ett annat datum. Sparar inget i localStorage. */
@@ -3190,7 +3187,7 @@ function renderHpPlanAll(): string {
   return `
     <div class="hp-guide-page">
       <div class="hp-drill-top">
-        <button class="hp-drill-cancel" data-action="hp-plan-back">‹ Tillbaka till ${hpReadyOpen ? "Är jag redo?" : "HP-hem"}</button>
+        <button class="hp-drill-cancel" data-action="hp-plan-back">‹ Tillbaka till HP-hem</button>
       </div>
       <h2 class="hp-res-title">Din plan</h2>
       <p class="hp-res-checked">${HP_PLAN_DAYS} dagar · ${formatPlanDate(HP_PLAN_START)}–${formatPlanDate(rows[rows.length - 1].dateKey)} · provet ${formatPlanDate(HP_PLAN_EXAM)}</p>
@@ -3429,7 +3426,7 @@ function renderHpFormulaTop(label: string): string {
       <button class="hp-drill-cancel" data-action="hp-formula-cancel">Avbryt</button>
       <span class="hp-drill-progress">${label}</span>
     </div>
-    <p class="hp-drill-title">Formelträning – vilken formel, hur den ser ut, hur du räknar</p>`;
+    <p class="hp-drill-title">Formelträning</p>`;
 }
 
 function renderHpFormulaCards(s: HpFormulaSession): string {
@@ -3477,7 +3474,7 @@ function renderHpFormulaCards(s: HpFormulaSession): string {
       </div>
       <div class="hp-fm-extras">
         <button class="hp-card-link" data-action="hp-formula-calc">Räkna själv</button>
-        ${card ? `<button class="hp-card-link" data-action="hp-card-open" data-card="${card.id}">Påminn mig: ${card.title}</button>` : ""}
+        ${card ? `<button class="hp-card-link" data-action="hp-card-open" data-card="${card.id}">Påminn mig ›</button>` : ""}
       </div>
       ${calcOptions}
     </div>`;
@@ -3499,7 +3496,7 @@ function renderHpFormulaLearn(s: HpFormulaSession): string {
         <p class="hp-fm-line"><strong>Exempel:</strong> ${ex.stem}</p>
         <p class="hp-fm-calc">${ex.calc}</p>
       </div>
-      ${card ? `<div class="hp-fm-extras"><button class="hp-card-link" data-action="hp-card-open" data-card="${card.id}">Påminn mig: ${card.title}</button></div>` : ""}
+      ${card ? `<div class="hp-fm-extras"><button class="hp-card-link" data-action="hp-card-open" data-card="${card.id}">Påminn mig ›</button></div>` : ""}
       <button class="hp-cta-btn hp-fm-wide" data-action="hp-formula-learned">Jag har läst</button>
     </div>`;
 }
@@ -3585,18 +3582,23 @@ function renderHpFormula(): string {
   }
 }
 
-/** Kortet på HP-hem, före matteträningskorten. */
-function renderHpFormulaHomeCard(): string {
-  const state = loadHpFormulaState();
-  const p = formulaProgress(HP_FORMULAS, state);
-  const plan = planFormulaPass(HP_FORMULAS, state, hpFormulaDate());
-  const dueText = plan.due.length > 0 ? ` · ${plan.due.length} att repetera` : plan.learn.length > 0 ? ` · ${plan.learn.length} nya` : "";
+/** Ett startkort på HP-hem (beslut 2026-10-09). Tre nivåer: titel + "Starta ›", en rad förklaring, en statusrad.
+ *  Hela kortet är en knapp (minst 44 px hög). Samma komponent för alla delprov så likvärdiga kort ser lika ut. */
+function renderHpStartCard(attrs: string, title: string, sub: string, meta: string): string {
   return `
-    <button class="hp-las-card" data-action="hp-formula-start">
-      <span class="hp-las-card-name">Formelträning</span>
-      <span class="hp-las-card-desc">Vilken formel, hur den ser ut, hur du räknar · ca 5 min</span>
-      <span class="hp-las-card-count">${p.done} klara · ${p.left} kvar${dueText}</span>
+    <button class="hp-start-card" ${attrs}>
+      <span class="hp-start-card-top"><span class="hp-start-card-title">${title}</span><span class="hp-start-card-go" aria-hidden="true">Starta ›</span></span>
+      <span class="hp-start-card-sub">${sub}</span>
+      <span class="hp-start-card-meta">${meta}</span>
     </button>`;
+}
+
+/** Kortet på HP-hem, först i mattesektionen. */
+function renderHpFormulaHomeCard(ready: HpReadyMap): string {
+  const state = loadHpFormulaState();
+  const plan = planFormulaPass(HP_FORMULAS, state, hpFormulaDate());
+  const dueText = plan.due.length > 0 ? `${plan.due.length} att repetera` : plan.learn.length > 0 ? `${plan.learn.length} nya` : "";
+  return renderHpStartCard('data-action="hp-formula-start"', "Formelträning", "Formler du behöver kunna utantill · 5 min", hpReadyMeta(ready.FORM, dueText));
 }
 
 // ── Är jag redo? (beslut 2026-10-08) ──
@@ -3629,80 +3631,24 @@ const HP_READY_STATUS_LABEL: Record<HpReadyRow["status"], string> = {
 };
 const HP_READY_STATUS_ICON: Record<HpReadyRow["status"], string> = { "inte-provat": "○", under: "▲", redo: "✓" };
 
-/** Startknappen per rad: samma åtgärder som resten av HP-fliken (data-action återanvänds). */
-function hpReadyGoAttrs(id: HpReadyId): string {
-  switch (id) {
-    case "ORD":
-      return 'data-action="hp-start-pass"';
-    case "LÄS":
-      return 'data-action="hp-las-start"';
-    case "ELF":
-      return 'data-action="hp-las-start" data-source="elf"';
-    case "MEK":
-      return 'data-action="hp-mek-start"';
-    case "DIAG":
-      return 'data-action="hp-math-start"';
-    case "FORM":
-      return 'data-action="hp-formula-start"';
-    default:
-      return `data-action="hp-twin-start" data-delprov="${id}"`;
-  }
-}
-
-function renderHpReadyRow(row: HpReadyRow): string {
-  const mark = row.tempoOk === true ? ' <span class="hp-ready-ok" aria-label="inom tempomålet">✓</span>' : row.tempoOk === false ? ' <span class="hp-ready-bad" aria-label="över tempomålet">✗</span>' : "";
-  const meta = row.id === "DIAG" || row.id === "FORM" || row.status === "inte-provat" ? row.result :`${row.result} · ${row.tempo}${mark}`;
-  return `
-    <li class="hp-ready-row hp-ready-${row.status}">
-      <div class="hp-ready-main">
-        <span class="hp-ready-name">${row.id in HP_NAMES ? `${row.short} <span class="hp-ready-abbr">${row.name}</span>` : row.name}</span>
-        <span class="hp-ready-status"><span aria-hidden="true">${HP_READY_STATUS_ICON[row.status]}</span> ${HP_READY_STATUS_LABEL[row.status]}${row.reasonText ? ` · ${row.reasonText}` : ""}</span>
-        <span class="hp-ready-meta">${meta}</span>
-      </div>
-      <button class="hp-ready-go" ${hpReadyGoAttrs(row.id)} aria-label="Kör ${row.name}">Kör</button>
-    </li>`;
-}
-
-function renderHpReady(): string {
+type HpReadyMap = Partial<Record<HpReadyId, HpReadyRow>>;
+function hpReadyMap(): HpReadyMap {
   const { rows, diag, formula } = hpReadyData();
-  const sum = summarizeReadiness(rows);
-  const countdown = readinessCountdown(hpPlanTodayKey());
-  const { plan } = hpPlanCompute();
-  let next = "";
-  if (plan.phase === "plan") {
-    const item = plan.items.find((i) => !i.done);
-    next = item
-      ? `<section class="hp-ready-next" aria-label="Nästa enligt planen">
-          <div class="hp-ready-next-text">
-            <span class="hp-ready-kicker">Nästa enligt planen</span>
-            <span class="hp-ready-next-title">${item.task.title}</span>
-          </div>
-          ${hpPlanGoButton(item).replace("hp-plan-go", "hp-plan-go hp-ready-next-go")}
-        </section>`
-      : `<section class="hp-ready-next"><p class="hp-plan-done">Klart för i dag ✓</p></section>`;
-  }
-  const list = sortReadiness([...rows, formula, diag]).map(renderHpReadyRow).join("");
-  return `
-    <div class="hp-ready">
-      <div class="hp-drill-top">
-        <button class="hp-drill-cancel" data-action="hp-ready-close">‹ Tillbaka till HP-hem</button>
-      </div>
-      <section class="hp-ready-summary" aria-label="Sammanfattning">
-        <p class="hp-ready-kicker">Är jag redo?</p>
-        <p class="hp-ready-headline">${sum.ready} av ${sum.total} redo · ${sum.notTried} inte ${sum.notTried === 1 ? "provad" : "provade"}</p>
-        <p class="hp-ready-countdown">${countdown}</p>
-      </section>
-      ${next}
-      <ul class="hp-ready-list">${list}</ul>
-      <p class="hp-ready-goal">Redo = minst 70 % utan hjälp i senaste passet och tempo inom målet.</p>
-      <button class="hp-plan-all-btn" data-action="hp-plan-all">Se hela planen</button>
-    </div>`;
+  const map: HpReadyMap = { DIAG: diag, FORM: formula };
+  for (const r of rows) map[r.id] = r;
+  return map;
 }
 
-/** Knappen på HP-hem, direkt under "I dag": en slim rad med mini-sammanfattning. */
-function renderHpReadyEntry(): string {
-  const sum = summarizeReadiness(hpReadyData().rows);
-  return `<button class="hp-ready-entry" data-action="hp-ready-open"><span class="hp-ready-entry-label">Är jag redo?</span><span class="hp-ready-entry-sum">${sum.ready}/${sum.total} redo ›</span></button>`;
+/** Statuschip + senaste resultat i kort form ("7/10 · 18 s") för ett startkort (beslut 2026-10-09 (2)). */
+function hpReadyMeta(row: HpReadyRow | undefined, extra = ""): string {
+  if (!row) return extra;
+  const chip = `<span class="hp-chip hp-chip-${row.status}"><span aria-hidden="true">${HP_READY_STATUS_ICON[row.status]}</span> ${HP_READY_STATUS_LABEL[row.status]}</span>`;
+  let last = "";
+  if (row.status !== "inte-provat") {
+    last = row.id === "DIAG" || row.id === "FORM" ? row.result : [row.result.replace(" utan hjälp", ""), row.tempo === "–" ? "" : row.tempo.replace(/\/\S+$/, "")].filter(Boolean).join(" · ");
+  }
+  const rest = [last, extra].filter(Boolean).join(" · ");
+  return `${chip}${rest ? `<span class="hp-start-card-last">${rest}</span>` : ""}`;
 }
 
 function renderHpHome(): string {
@@ -3714,13 +3660,15 @@ function renderHpHome(): string {
 
   const lastMathHtml = lastMathResult
     ? `<button class="hp-math-last-result" data-action="hp-math-view-last">
-        <span class="hp-math-last-result-label">Se senaste diagnos</span>
-        <span class="hp-math-last-result-value">${hpMathLevelCounts(lastMathResult.areas)}</span>
+        <span class="hp-math-last-result-label">Se senaste diagnos ›</span>
       </button>`
     : "";
 
   const activeResumeHtml = renderHpActiveResume();
 
+  const hpSection = (title: string, body: string) => `<section class="hp-section"><h2 class="hp-section-title">${title}</h2>${body}</section>`;
+  const ready = hpReadyMap();
+  const sum = summarizeReadiness(hpReadyData().rows);
   return `
     <div class="hp-home">
       <div class="hp-countdown-card">
@@ -3729,136 +3677,82 @@ function renderHpHome(): string {
         <p class="hp-countdown-sub">18 okt 2026</p>
       </div>
       ${activeResumeHtml ? "" : renderHpPlanSection(progress, hasWords)}
-      ${activeResumeHtml ? "" : renderHpReadyEntry()}
+      ${activeResumeHtml ? "" : `<p class="hp-ready-summary-line">${sum.ready} av ${sum.total} redo · ${sum.notTried} inte ${sum.notTried === 1 ? "provad" : "provade"}</p>`}
       ${activeResumeHtml}
-      <div class="hp-progress-row">
-        <div class="stat-widget">
-          <div class="stat-widget-top">
-            <span class="stat-widget-label">Idag</span>
-            <span class="stat-widget-icon">📚</span>
-          </div>
-          <span class="stat-widget-value">${progress.wordsCompleted}<span class="stat-widget-unit">ord</span></span>
-          <span class="stat-widget-sub">${progress.passesCompleted} pass klara</span>
-        </div>
-        <div class="stat-widget">
-          <div class="stat-widget-top">
-            <span class="stat-widget-label">Repetition</span>
-            <span class="stat-widget-icon">🔁</span>
-          </div>
-          <span class="stat-widget-value">${repeatCount}</span>
-          <span class="stat-widget-sub">${repeatCount > 0 ? "väntande ord från tidigare pass" : "inga just nu"}</span>
-        </div>
-      </div>
       ${activeResumeHtml
         ? ""
         : `
-          ${renderHpLasHomeCard()}
-          <div class="hp-verbal-row">${renderHpMekHomeCard()}${renderHpElfHomeCard()}</div>
-          <button class="hp-secondary-btn" data-action="hp-math-start">Mattediagnos (ca 15 min)</button>
-          ${lastMathHtml}
-          <button class="hp-secondary-btn" data-action="hp-resources-open">Externa resurser</button>
-          ${renderHpFormulaHomeCard()}
-          ${renderHpTwinHomeSection()}
-          ${renderHpGuideHomeSection()}
+          ${hpSection("Matte", `${renderHpFormulaHomeCard(ready)}${renderHpTwinHomeSection(ready)}${renderHpDiagHomeCard(ready)}${lastMathHtml}`)}
+          ${hpSection("Läsning och språk", `${renderHpLasHomeCard(ready)}${renderHpMekHomeCard(ready)}${renderHpElfHomeCard(ready)}`)}
+          ${hpSection("Ord", renderHpOrdHomeCard(ready, progress.wordsCompleted, repeatCount))}
+          ${hpSection("Guide och resurser", `${renderHpGuideHomeSection()}`)}
         `}
     </div>
   `;
 }
 
-/** Meningskompletteringskortet: kompakt, bredvid engelska läsförståelsen (verbala delen). */
-function renderHpMekHomeCard(): string {
+function renderHpOrdHomeCard(ready: HpReadyMap, wordsToday: number, repeatCount: number): string {
+  const extra = [`${wordsToday} ord i dag`, repeatCount > 0 ? `${repeatCount} att repetera` : ""].filter(Boolean).join(" · ");
+  return renderHpStartCard('data-action="hp-start-pass"', hpAbbr("ORD"), `${HP_NAMES.ORD.full} · 10 ord`, hpReadyMeta(ready.ORD, extra));
+}
+
+function renderHpDiagHomeCard(ready: HpReadyMap): string {
+  return renderHpStartCard('data-action="hp-math-start"', "Mattediagnos", "Visar vilka områden du ska lära om · 15 min", hpReadyMeta(ready.DIAG));
+}
+
+/** Meningskompletteringskortet. */
+function renderHpMekHomeCard(ready: HpReadyMap): string {
   if (HP_MEK_ITEMS.length === 0) {
     return "";
   }
   const passes = loadHpMekResults().length;
   const repeat = loadHpMekRepeatQueue().filter((id) => HP_MEK_ITEMS.some((i) => i.id === id)).length;
-  const status = passes === 0 ? "inte påbörjad" : `${passes} pass${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
-  return `
-    <button class="hp-las-card hp-verbal-card" data-action="hp-mek-start">
-      <span class="hp-las-card-name">${hpAbbr("MEK")}</span>
-      <span class="hp-las-card-desc">${HP_NAMES.MEK.full}</span>
-      <span class="hp-las-card-desc">${HP_MEK_PASS_SIZE} uppgifter, ca ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min</span>
-      <span class="hp-las-card-count">${status}</span>
-    </button>
-  `;
+  void passes;
+  return renderHpStartCard('data-action="hp-mek-start"', hpAbbr("MEK"), `${HP_NAMES.MEK.full} · ${HP_MEK_PASS_SIZE} st, ${Math.round((HP_MEK_PASS_SIZE * HP_MEK_TEMPO_TARGET_SECONDS) / 60)} min`, hpReadyMeta(ready.MEK, repeat > 0 ? `${repeat} att repetera` : ""));
 }
 
-function renderHpElfHomeCard(): string {
+function renderHpElfHomeCard(ready: HpReadyMap): string {
   if (HP_ELF_TEXTS.length === 0) {
     return "";
   }
   const results = loadHpLasResults("elf");
   const done = HP_ELF_TEXTS.filter((t) => results[t.id]).length;
   const repeat = loadHpLasRepeatQueue("elf").filter((id) => HP_ELF_TEXTS.some((t) => t.id === id)).length;
-  const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_ELF_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
-  return `
-    <button class="hp-las-card hp-verbal-card" data-action="hp-las-start" data-source="elf">
-      <span class="hp-las-card-name">${hpAbbr("ELF")}</span>
-      <span class="hp-las-card-desc">${HP_NAMES.ELF.full}</span>
-      <span class="hp-las-card-desc">Sökläs i texten · 1–2 min per fråga</span>
-      <span class="hp-las-card-count">${status}</span>
-    </button>
-  `;
+  const extra = [done === 0 ? `${HP_ELF_TEXTS.length} texter` : `${done} av ${HP_ELF_TEXTS.length} klara`, repeat > 0 ? `${repeat} att repetera` : ""].filter(Boolean).join(" · ");
+  return renderHpStartCard('data-action="hp-las-start" data-source="elf"', hpAbbr("ELF"), HP_NAMES.ELF.full, hpReadyMeta(ready.ELF, extra));
 }
 
-function renderHpLasHomeCard(): string {
+function renderHpLasHomeCard(ready: HpReadyMap): string {
   if (HP_LAS_TEXTS.length === 0) {
     return "";
   }
   const results = loadHpLasResults();
   const done = HP_LAS_TEXTS.filter((t) => results[t.id]).length;
   const repeat = loadHpLasRepeatQueue().filter((id) => HP_LAS_TEXTS.some((t) => t.id === id)).length;
-  const questions = HP_LAS_TEXTS.reduce((sum, t) => sum + t.questions.length, 0);
-  const status = done === 0 ? "inte påbörjad" : `${done} av ${HP_LAS_TEXTS.length} klara${repeat > 0 ? ` · ${repeat} att repetera` : ""}`;
-  return `
-    <button class="hp-las-card" data-action="hp-las-start">
-      <span class="hp-las-card-name">${hpAbbr("LÄS")}</span>
-      <span class="hp-las-card-desc">${HP_NAMES.LÄS.full}</span>
-      <span class="hp-las-card-desc">Frågan först, sedan texten · ca 2 min per fråga</span>
-      <span class="hp-las-card-count">${HP_LAS_TEXTS.length} texter · ${questions} frågor · ${status}</span>
-    </button>
-  `;
+  const extra = [done === 0 ? `${HP_LAS_TEXTS.length} texter` : `${done} av ${HP_LAS_TEXTS.length} klara`, repeat > 0 ? `${repeat} att repetera` : ""].filter(Boolean).join(" · ");
+  return renderHpStartCard('data-action="hp-las-start"', hpAbbr("LÄS"), HP_NAMES.LÄS.full, hpReadyMeta(ready.LÄS, extra));
 }
 
 function renderHpGuideHomeSection(): string {
   return `
-    <div class="hp-guide-home-row">
-      <p class="hp-guide-home-heading">Guide</p>
-      <div class="hp-guide-home-btns">
-        <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-flashcards">Flashcards</button>
-        <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-page">Läs hela guiden</button>
-        <button class="hp-secondary-btn hp-guide-home-btn hp-guide-home-btn-wide" data-action="hp-guide-cards">Påminnelsekort</button>
-      </div>
+    <div class="hp-guide-home-btns">
+      <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-flashcards">Flashcards</button>
+      <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-page">Läs hela guiden</button>
+      <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-guide-cards">Påminnelsekort</button>
+      <button class="hp-secondary-btn hp-guide-home-btn" data-action="hp-resources-open">Externa resurser</button>
     </div>
   `;
 }
 
-function renderHpTwinHomeSection(): string {
-  const delprover: HpDelprov[] = ["XYZ", "KVA", "NOG", "DTK"];
-  const cards = delprover
+function renderHpTwinHomeSection(ready: HpReadyMap): string {
+  // Ordning efter prioritet: NOG, KVA, DTK, XYZ (beslut 2026-10-09).
+  const delprover: HpDelprov[] = ["NOG", "KVA", "DTK", "XYZ"];
+  return delprover
     .map((delprov) => {
-      const count = hpTwinBank(delprov).length;
-      const lastResult = loadHpTwinResult(delprov);
-      const lastResultHtml = lastResult
-        ? `<span class="hp-twin-card-last">senast ${lastResult.correct}/${lastResult.total}</span>`
-        : "";
-      return `
-        <button class="hp-twin-card" data-action="hp-twin-start" data-delprov="${delprov}">
-          <span class="hp-twin-card-name">${hpAbbr(delprov)}</span>
-          <span class="hp-twin-card-desc">${HP_NAMES[delprov].full}${delprov === "NOG" ? " – räcker informationen?" : ""}</span>
-          <span class="hp-twin-card-count">${count} uppgifter</span>
-          ${lastResultHtml}
-        </button>
-      `;
+      const sub = `${HP_NAMES[delprov].full} · ${HP_TWIN_PASS_SIZE[delprov]} st`;
+      return renderHpStartCard(`data-action="hp-twin-start" data-delprov="${delprov}"`, hpAbbr(delprov), sub, hpReadyMeta(ready[delprov]));
     })
     .join("");
-
-  return `
-    <div class="hp-twin-section">
-      <p class="hp-twin-section-heading">Matteträning – uppgifter byggda på riktiga prov</p>
-      <div class="hp-twin-grid">${cards}</div>
-    </div>
-  `;
 }
 
 /** Enkel markdown-tabellrenderare (header, avdelarrad, datarader) — anpassad för HP_TWINS.table. */
@@ -5014,7 +4908,6 @@ function renderHp(): string {
     hpCardOpen = null;
     hpResourcesOpen = false;
     hpPlanAllOpen = false;
-    hpReadyOpen = false;
     hpPlanCardDelprov = null;
     return renderHpHome();
   }
@@ -5060,9 +4953,6 @@ function renderHp(): string {
   }
   if (hpSession) {
     return hpSession.currentIndex >= hpSession.items.length ? renderHpSummary() : renderHpQuestion();
-  }
-  if (hpReadyOpen) {
-    return renderHpReady();
   }
   return renderHpHome();
 }
@@ -7233,20 +7123,6 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-plan-all") {
     hpPlanAllOpen = true;
-    render();
-    window.scrollTo(0, 0);
-    return;
-  }
-
-  if (action === "hp-ready-open") {
-    hpReadyOpen = true;
-    render();
-    window.scrollTo(0, 0);
-    return;
-  }
-
-  if (action === "hp-ready-close") {
-    hpReadyOpen = false;
     render();
     window.scrollTo(0, 0);
     return;

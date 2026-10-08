@@ -3,6 +3,22 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-09 — HP-hem: en vy med indikatorer i stället för parallella sidor
+
+**Vad och varför.** Martin: "för mycket text på trånga utrymmen" och "för många versioner av samma sak". HP-hem hade tre olika korttyper (mint, vit, halvbredd), åtta delprov spridda i fel ordning, en separat sida "Är jag redo?" som upprepade samma delprov och en versalstatus som skrek. Han hittade inte var man startar Kvantitativa resonemang (NOG).
+
+**Före.** Plan, raden "Är jag redo?" (egen sida), två statkort för ord, LÄS-kort (mint, tre rader text), MEK och ELF halvbredd, två knappar, Formelträning, matteträning som 2 × 2-rutnät (XYZ, KVA, NOG, DTK) långt ned, Guide. Statusrader i VERSALER.
+
+**Efter.**
+- Ett startkort för alla delprov: rubrik (förkortningen) + "Starta ›", en rad förklaring, statuschip (○ Inte provat / ▲ Under målet / ✓ Redo) och senaste resultat i kort form ("7/10 · 18 s"). Hela kortet är träffyta (minst 44 px). Statusen kommer från `computeReadiness`, logiken är oförändrad.
+- Sektionerna "Matte" (Formelträning, NOG, KVA, DTK, XYZ, Mattediagnos), "Läsning och språk" (LÄS, MEK, ELF), "Ord", "Guide och resurser". Ordningen följer prioriteringen och är fast (sorteras inte efter status) så att positionen går att lära sig.
+- Sidan "Är jag redo?" och raden på HP-hem är borta. I stället en enda rad under "I dag": "0 av 8 redo · 8 inte provade" (inte klickbar). `hp-readiness.ts` är kvar.
+- Övningar: "Formelträning" som rubrik (tidigare två rader), "Påminn mig ›" i stället för en avklippt titel.
+
+**Stitch-princip.** Tonal Layering och No-Line: alla kort vita med ambient skugga, ingen linje. Bara de tre textstorlekarna, chip i befintliga tokens, mörkt läge via samma tokens.
+
+**UX-teori.** F-mönster/scannability (rubriker och första orden), visuell hierarki (tre nivåer), Gestalt likhet (samma kort för samma sak) och närhet (status vid kortet, inte på en annan sida), Hicks lag (en vy, ett val), progressive disclosure (detaljer bakom Strategi), signifiers (Starta ›).
+
 ## 2026-10-08 — HP: fulla namn, läsförståelsestrategi och prioriterad plan
 
 **Vad och varför.** Martin (skrev provet 1995) känner inte igen förkortningarna ORD, LÄS, MEK, ELF, XYZ, KVA, NOG och DTK och är långsam i läsförståelse. Tre ändringar: (1) fulla namn överallt, (2) en sökläsningsstrategi för svensk och engelsk läsförståelse, (3) en plan som prioriterar poäng per timme.

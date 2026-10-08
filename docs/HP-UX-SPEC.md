@@ -6,6 +6,30 @@ Denna spec beskriver en ny huvudflik "HP" i appen, byggd från grunden inom befi
 
 ---
 
+## Beslut 2026-10-09 Informationshierarki
+
+_Martin: "för mycket text på trånga utrymmen", "för många versioner av samma sak". Gäller före äldre beslut nedan; beslut 29 (sidan "Är jag redo?") är ersatt._
+
+**Principer.** (1) F-mönster/scannability: rubrik och första orden bär innehållet. (2) Visuell hierarki, max tre nivåer per kort: rubrik (förkortning), en rad förklaring, en status/meta-rad. (3) Hicks lag: en vy med fasta sektioner i stället för parallella sidor. (4) Progressive disclosure: sekundär text bakom Strategi, "?" eller "Varför?". (5) Gestalt likhet: samma kort för samma sak; närhet: status ligger på kortet.
+
+**Beslut.**
+34. **En vy med indikatorer i stället för parallella sidor.** "Är jag redo?" som sida och rad är borttagen. Varje delprovskort på HP-hem visar rubrik (förkortningen), en förklaringsrad, statuschip (○ Inte provat, ▲ Under målet, ✓ Redo) och senaste resultat ("7/10 · 18 s"), från `computeReadiness` (`hp-readiness.ts` oförändrad). Under "I dag" står en rad, inte klickbar: "5 av 8 redo · 2 inte provade".
+35. **Ordning följer prioriteringen och är fast.** Sektionen "Matte": Formelträning, NOG, KVA, DTK, XYZ, Mattediagnos. Sedan "Läsning och språk": LÄS, MEK, ELF. Sedan "Ord" och "Guide och resurser". Korten sorteras aldrig efter status.
+36. **Hela kortet startar ett pass**, med synlig signal "Starta ›" (träffyta minst 44 px). Sektionsrubriker (1 rem) gör att man hittar fram genom att skumma. NOG ligger direkt under Formelträning.
+
+**Före → efter per vy.**
+- HP-hem: tre korttyper, 2 × 2-rutnät, versalstatus → ett kort, fast ordning, sektionsrubriker, chip och "Starta ›".
+- Är jag redo?: egen sida → borttagen, status på korten + en summeringsrad.
+- Se hela planen: "Tillbaka till Är jag redo?" → alltid "Tillbaka till HP-hem".
+- Plan "I dag": oförändrad.
+- Formelträning: rubrik på två rader → "Formelträning"; "Påminn mig: [lång titel]…" → "Påminn mig ›".
+- Ord (statkort): två stora rutor → ett ORD-kort i sektionen "Ord".
+- Mattediagnos: knapp + separat knapp → kort med chip; "Se senaste diagnos ›" som rad under.
+- Resurser: lös knapp → i "Guide och resurser".
+- Övningar (LÄS, ELF, MEK, matte, ORD), guide, påminnelsekort, resurser: granskade, redan kompakta i 375 × 812, oförändrade.
+
+---
+
 ## 1. Mål och principer
 
 1. **Tempo är produkten, inte bara innehållet.** Störst research-fynd: tidsbrist är HP:s huvudproblem. Varje ORD-fråga visar målsnitt (~20 s/uppgift) och faktisk tid, så användaren tränar rätt hastighet — inte bara rätt svar. _(Motivering: feedback om prestation mot en tydlig norm förbättrar självreglering — "knowledge of results".)_
