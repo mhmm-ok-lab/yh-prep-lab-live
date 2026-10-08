@@ -31,6 +31,14 @@ import {
   type HpPlanItem,
   type HpPlanState
 } from "./hp-plan";
+import {
+  computeReadiness,
+  readinessCountdown,
+  sortReadiness,
+  summarizeReadiness,
+  type HpReadyId,
+  type HpReadyRow
+} from "./hp-readiness";
 import { createDailyPlan, getNextMockExam } from "./planner";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
@@ -48,6 +56,7 @@ import {
   loadHpMekSeen,
   loadHpLasResults,
   loadHpMathResult,
+  loadHpOrdResults,
   loadHpPlanState,
   loadHpProgress,
   loadHpRepeatQueue,
@@ -64,6 +73,7 @@ import {
   saveHpMekResult,
   saveHpMekSeen,
   saveHpMathResult,
+  saveHpOrdResult,
   saveHpPlanState,
   saveHpTwinResult,
   saveStudySession,
@@ -224,6 +234,8 @@ interface HpTwinSession extends HpNavFields {
   errorTagCounts: Partial<Record<HpTwinErrorTag, number>>;
   currentTag: HpTwinErrorTag | null;
   helpedIds: string[];
+  /** Summa svarstid över besvarade uppgifter (sekunder), för "Är jag redo?". */
+  answerSeconds: number;
 }
 
 /** HP LÄS-träning: ett pass = en text med dess frågor. Tempomätaren går per text (frågor × 2 min). */
@@ -585,6 +597,8 @@ let hpResourcesOpen = false;
 /** "Din plan" (beslut 2026-10-05 (9)): hela planen öppen, vilka "Varför?" som är öppna, och delprovet som
  *  startas från ett Lär om-kort som öppnades via planen. */
 let hpPlanAllOpen = false;
+/** "Är jag redo?" (beslut 2026-10-08): översikten öppen. Ligger sist i renderHp, så en pågående övning går före. */
+let hpReadyOpen = false;
 const hpPlanWhyOpen = new Set<string>();
 let hpPlanCardDelprov: HpDelprov | null = null;
 /** Dev-parameter ?plandate=YYYY-MM-DD simulerar ett annat datum. Sparar inget i localStorage. */
@@ -771,13 +785,31 @@ function startHpTempoInterval(): void {
   hpTempoIntervalRef = window.setInterval(updateHpTempoUI, 500);
 }
 
+/** Avslutar ORD-passet: dagens räknare plus resultatet som "Är jag redo?" bygger på. */
+function hpOrdFinish(): void {
+  if (!hpSession) {
+    return;
+  }
+  const answered = hpSession.items.length - hpSession.unanswered;
+  recordHpPassCompleted(answered);
+  if (answered > 0) {
+    const t = hpSession.tempoSeconds;
+    saveHpOrdResult({
+      completedAt: new Date().toISOString(),
+      correct: hpSession.correct,
+      total: answered,
+      avgSeconds: t.length > 0 ? t.reduce((a, b) => a + b, 0) / t.length : 0
+    });
+  }
+}
+
 function hpAdvanceQuestion(): void {
   if (!hpSession) {
     return;
   }
   hpSession.currentIndex++;
   if (hpSession.currentIndex >= hpSession.items.length) {
-    recordHpPassCompleted(hpSession.items.length - hpSession.unanswered);
+    hpOrdFinish();
   } else {
     hpSession.userAnswer = null;
     hpSession.showFeedback = false;
@@ -1438,6 +1470,7 @@ function hpTwinStart(delprov: HpDelprov): void {
     errorTagCounts: {},
     currentTag: null,
     helpedIds: [],
+    answerSeconds: 0,
     ...hpNavInit()
   };
   render();
@@ -1468,6 +1501,7 @@ function hpTwinAdvanceQuestion(): void {
 /** Räknar utfallet och uppdaterar repetitionskön: bara "utan hjälp" tar bort uppgiften ur kön. */
 function hpTwinRecordOutcome(outcome: HpOutcome, item: HpTwin): void {
   const s = hpTwinSession!;
+  s.answerSeconds += (Date.now() - s.questionStartedAt) / 1000;
   if (outcome === "clean") {
     s.correct++;
     removeHpTwinRepeatItem(s.delprov, item.id);
@@ -1490,6 +1524,7 @@ function hpTwinSaveResult(): void {
     correct: hpTwinSession.correct,
     withHint: hpTwinSession.withHint,
     total: hpTwinSession.items.length - hpTwinSession.unanswered,
+    seconds: Math.round(hpTwinSession.answerSeconds),
     errorTags: hpTwinSession.errorTagCounts
   };
   saveHpTwinResult(result);
@@ -3092,13 +3127,115 @@ function renderHpPlanAll(): string {
   return `
     <div class="hp-guide-page">
       <div class="hp-drill-top">
-        <button class="hp-drill-cancel" data-action="hp-plan-back">‹ Tillbaka till HP-hem</button>
+        <button class="hp-drill-cancel" data-action="hp-plan-back">‹ Tillbaka till ${hpReadyOpen ? "Är jag redo?" : "HP-hem"}</button>
       </div>
       <h2 class="hp-res-title">Din plan</h2>
       <p class="hp-res-checked">${HP_PLAN_DAYS} dagar · ${formatPlanDate(HP_PLAN_START)}–${formatPlanDate(rows[rows.length - 1].dateKey)} · provet ${formatPlanDate(HP_PLAN_EXAM)}</p>
       ${groups}
     </div>
   `;
+}
+
+// ── Är jag redo? (beslut 2026-10-08) ──
+
+function hpReadyData(): { rows: HpReadyRow[]; diag: HpReadyRow } {
+  const twin: Parameters<typeof computeReadiness>[0]["twin"] = {};
+  for (const d of ["XYZ", "KVA", "NOG", "DTK"] as const) {
+    const r = loadHpTwinResult(d);
+    if (r) twin[d] = { completedAt: r.completedAt, correct: r.correct, total: r.total, seconds: r.seconds };
+  }
+  const diagnosis = loadHpMathResult();
+  return computeReadiness({
+    ord: loadHpOrdResults(),
+    las: Object.values(loadHpLasResults()),
+    elf: Object.values(loadHpLasResults("elf")),
+    mek: loadHpMekResults(),
+    twin,
+    diagnosis: diagnosis
+      ? { hasQuestions: Array.isArray(diagnosis.questions) && diagnosis.questions.length > 0, areas: diagnosis.areas.map((a) => ({ level: a.level })) }
+      : null
+  });
+}
+
+const HP_READY_STATUS_LABEL: Record<HpReadyRow["status"], string> = {
+  "inte-provat": "Inte provat",
+  under: "Under målet",
+  redo: "Redo"
+};
+const HP_READY_STATUS_ICON: Record<HpReadyRow["status"], string> = { "inte-provat": "○", under: "▲", redo: "✓" };
+
+/** Startknappen per rad: samma åtgärder som resten av HP-fliken (data-action återanvänds). */
+function hpReadyGoAttrs(id: HpReadyId): string {
+  switch (id) {
+    case "ORD":
+      return 'data-action="hp-start-pass"';
+    case "LÄS":
+      return 'data-action="hp-las-start"';
+    case "ELF":
+      return 'data-action="hp-las-start" data-source="elf"';
+    case "MEK":
+      return 'data-action="hp-mek-start"';
+    case "DIAG":
+      return 'data-action="hp-math-start"';
+    default:
+      return `data-action="hp-twin-start" data-delprov="${id}"`;
+  }
+}
+
+function renderHpReadyRow(row: HpReadyRow): string {
+  const mark = row.tempoOk === true ? ' <span class="hp-ready-ok" aria-label="inom tempomålet">✓</span>' : row.tempoOk === false ? ' <span class="hp-ready-bad" aria-label="över tempomålet">✗</span>' : "";
+  const meta = row.id === "DIAG" || row.status === "inte-provat" ? row.result :`${row.result} · ${row.tempo}${mark}`;
+  return `
+    <li class="hp-ready-row hp-ready-${row.status}">
+      <div class="hp-ready-main">
+        <span class="hp-ready-name">${row.name}</span>
+        <span class="hp-ready-status"><span aria-hidden="true">${HP_READY_STATUS_ICON[row.status]}</span> ${HP_READY_STATUS_LABEL[row.status]}${row.reasonText ? ` · ${row.reasonText}` : ""}</span>
+        <span class="hp-ready-meta">${meta}</span>
+      </div>
+      <button class="hp-ready-go" ${hpReadyGoAttrs(row.id)} aria-label="Kör ${row.name}">Kör</button>
+    </li>`;
+}
+
+function renderHpReady(): string {
+  const { rows, diag } = hpReadyData();
+  const sum = summarizeReadiness(rows);
+  const countdown = readinessCountdown(hpPlanTodayKey());
+  const { plan } = hpPlanCompute();
+  let next = "";
+  if (plan.phase === "plan") {
+    const item = plan.items.find((i) => !i.done);
+    next = item
+      ? `<section class="hp-ready-next" aria-label="Nästa enligt planen">
+          <div class="hp-ready-next-text">
+            <span class="hp-ready-kicker">Nästa enligt planen</span>
+            <span class="hp-ready-next-title">${item.task.title}</span>
+          </div>
+          ${hpPlanGoButton(item).replace("hp-plan-go", "hp-plan-go hp-ready-next-go")}
+        </section>`
+      : `<section class="hp-ready-next"><p class="hp-plan-done">Klart för i dag ✓</p></section>`;
+  }
+  const list = sortReadiness([...rows, diag]).map(renderHpReadyRow).join("");
+  return `
+    <div class="hp-ready">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-ready-close">‹ Tillbaka till HP-hem</button>
+      </div>
+      <section class="hp-ready-summary" aria-label="Sammanfattning">
+        <p class="hp-ready-kicker">Är jag redo?</p>
+        <p class="hp-ready-headline">${sum.ready} av ${sum.total} redo · ${sum.notTried} inte ${sum.notTried === 1 ? "provad" : "provade"}</p>
+        <p class="hp-ready-countdown">${countdown}</p>
+      </section>
+      ${next}
+      <ul class="hp-ready-list">${list}</ul>
+      <p class="hp-ready-goal">Redo = minst 70 % utan hjälp i senaste passet och tempo inom målet.</p>
+      <button class="hp-plan-all-btn" data-action="hp-plan-all">Se hela planen</button>
+    </div>`;
+}
+
+/** Knappen på HP-hem, direkt under "I dag": en slim rad med mini-sammanfattning. */
+function renderHpReadyEntry(): string {
+  const sum = summarizeReadiness(hpReadyData().rows);
+  return `<button class="hp-ready-entry" data-action="hp-ready-open"><span class="hp-ready-entry-label">Är jag redo?</span><span class="hp-ready-entry-sum">${sum.ready}/${sum.total} redo ›</span></button>`;
 }
 
 function renderHpHome(): string {
@@ -3125,6 +3262,7 @@ function renderHpHome(): string {
         <p class="hp-countdown-sub">18 okt 2026</p>
       </div>
       ${activeResumeHtml ? "" : renderHpPlanSection(progress, hasWords)}
+      ${activeResumeHtml ? "" : renderHpReadyEntry()}
       ${activeResumeHtml}
       <div class="hp-progress-row">
         <div class="stat-widget">
@@ -4377,6 +4515,7 @@ function renderHp(): string {
     hpCardOpen = null;
     hpResourcesOpen = false;
     hpPlanAllOpen = false;
+    hpReadyOpen = false;
     hpPlanCardDelprov = null;
     return renderHpHome();
   }
@@ -4416,6 +4555,9 @@ function renderHp(): string {
   }
   if (hpSession) {
     return hpSession.currentIndex >= hpSession.items.length ? renderHpSummary() : renderHpQuestion();
+  }
+  if (hpReadyOpen) {
+    return renderHpReady();
   }
   return renderHpHome();
 }
@@ -6015,7 +6157,7 @@ app.addEventListener("click", (event) => {
   if (action === "hp-skip") {
     if (!hpSession) return;
     if (hpNavSkip(hpSession)) {
-      recordHpPassCompleted(hpSession.items.length - hpSession.unanswered);
+      hpOrdFinish();
     }
     render();
     return;
@@ -6507,6 +6649,20 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-plan-all") {
     hpPlanAllOpen = true;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ready-open") {
+    hpReadyOpen = true;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ready-close") {
+    hpReadyOpen = false;
     render();
     window.scrollTo(0, 0);
     return;

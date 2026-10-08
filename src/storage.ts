@@ -18,6 +18,7 @@ const HP_MEK_RESULT_KEY = "yh.hp-mek-result";
 const HP_MEK_REPEAT_KEY = "yh.hp-mek-repeat";
 const HP_MEK_SEEN_KEY = "yh.hp-mek-seen";
 const HP_PLAN_KEY = "yh.hp-plan";
+const HP_ORD_RESULT_KEY = "yh.hp-ord-result";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
 
@@ -222,6 +223,8 @@ export interface HpTwinResult {
   /** Rätt efter ledtråd eller andra försöket. */
   withHint?: number;
   total: number;
+  /** Summa svarstid över besvarade uppgifter, sekunder. Saknas i resultat sparade före 2026-10-08. */
+  seconds?: number;
   errorTags: Partial<Record<HpTwinErrorTag, number>>;
 }
 
@@ -369,6 +372,36 @@ export function removeHpLasRepeatText(textId: string, source: HpLasSource = "las
   const next = queue.filter((id) => id !== textId);
   if (next.length !== queue.length) {
     saveHpLasRepeatQueue(next, source);
+  }
+}
+
+// ── ORD: resultat per pass (för "Är jag redo?") ──
+
+/** Ett avslutat ORD-pass. correct = rätt på första svaret (ORD har ingen ledtrådstrappa). */
+export interface HpOrdResult {
+  completedAt: string;
+  correct: number;
+  total: number;
+  /** Snittid per besvarat ord, sekunder. */
+  avgSeconds: number;
+}
+
+/** De senaste ORD-passen (nyast sist). */
+export function loadHpOrdResults(): HpOrdResult[] {
+  try {
+    const list = safeParse<HpOrdResult[]>(localStorage.getItem(namespacedKey(HP_ORD_RESULT_KEY)), []);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveHpOrdResult(result: HpOrdResult): void {
+  try {
+    const list = [...loadHpOrdResults(), result].slice(-30);
+    localStorage.setItem(namespacedKey(HP_ORD_RESULT_KEY), JSON.stringify(list));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
   }
 }
 
