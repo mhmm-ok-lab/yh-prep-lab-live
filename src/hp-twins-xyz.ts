@@ -241,13 +241,13 @@ export const HP_TWINS_XYZ: HpTwin[] = [
       "(a + b) / (a + c)",
       "(c - a) / (b - a)",
       "(a · c) / (b · c)",
-      "(b + c) / (a + c)"
+      "(a + c) / (b + c)"
     ],
     correct: 1,
     hint:
       "Prova med konkreta tal som uppfyller 1 < a < b < c, till exempel 2, 3, 4. Jämför täljare och nämnare i varje alternativ.",
     solution:
-      "Eftersom c > b gäller c - a > b - a, och b - a > 0. Därför är (c - a) / (b - a) alltid större än 1, oavsett vilka värden a, b och c har så länge 1 < a < b < c.",
+      "Eftersom c > b gäller c - a > b - a, och b - a > 0. Därför är (c - a) / (b - a) alltid större än 1, oavsett vilka värden a, b och c har så länge 1 < a < b < c. De andra tre alternativen är alltid mindre än 1, eftersom täljaren där är mindre än nämnaren.",
     twinOf: {
       prov: "2018-10-21",
       provpass: 4,
@@ -437,9 +437,9 @@ export const HP_TWINS_XYZ: HpTwin[] = [
     ],
     correct: 1,
     hint:
-      "45 % = 45/100 = 9/20. För att få heltal måste x innehålla faktorn 20; vilka alternativ är delbara med 20?",
+      "Skriv 45 % som ett förkortat bråk. Vad måste x vara delbart med för att produkten ska bli ett heltal?",
     solution:
-      "0,45 · 20 = 9, vilket är ett heltal. 0,45 · 28 = 12,6, 0,45 · 36 = 16,2 och 0,45 · 50 = 22,5 är inte heltal.",
+      "45 % = 9/20, så x måste vara delbart med 20. 0,45 · 20 = 9, vilket är ett heltal. 0,45 · 28 = 12,6, 0,45 · 36 = 16,2 och 0,45 · 50 = 22,5 är inte heltal.",
     twinOf: {
       prov: "2019-10-20",
       provpass: 1,
