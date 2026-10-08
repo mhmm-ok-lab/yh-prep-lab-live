@@ -14,7 +14,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     solution:
       "Ökning: Almstad 79%, Björkvik 33%, Cedersund 22%, Dalholm 146%. Dalholm hade störst procentuell ökning (146 procent).",
     hint:
-      "Räkna ökningen per stad som (2023 minus 2010) delat med 2010, inte i antal. Överslag räcker: vilken stad har mer än fördubblat?",
+      "Räkna ökningen per stad som (2023 minus 2010) delat med 2010, inte i antal. Överslag räcker: jämför hur många gånger större 2023-värdet är än 2010-värdet.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 29, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
   },
   {
@@ -42,7 +42,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     options: ["5 100", "3 200", "6 100", "8 800"],
     correct: 0,
     solution:
-      "14 700 - 9 600 = 5 100 = 5 100.",
+      "14 700 − 9 600 = 5 100.",
     hint:
       "Det här är en skillnad, alltså en subtraktion. Läs kolumnen för 2023 och ta rätt år och rätt två städer.",
     twinOf: { prov: "2018-10-21", provpass: 2, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2018/" }
@@ -143,13 +143,13 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "jämförelse",
     prompt: "Studera antalet observationer över havet. Av vilken art gjordes nio gånger så många observationer 2022 jämfört med 2021?",
     table:
-      "| Art | Över havet 2021 | Över havet 2022 | På land 2022 |\n|---|---|---|---|\n| Dvärgpipistrell | 12 | 108 | 640 |\n| Vattenfladdermus | 30 | 45 | 210 |\n| Trollfladdermus | 4 | 36 | 95 |\n| Nordisk fladdermus | 60 | 66 | 480 |",
+      "| Art | Över havet 2021 | Över havet 2022 | På land 2022 |\n|---|---|---|---|\n| Dvärgpipistrell | 18 | 108 | 640 |\n| Vattenfladdermus | 30 | 45 | 210 |\n| Trollfladdermus | 4 | 36 | 95 |\n| Nordisk fladdermus | 60 | 66 | 480 |",
     options: ["Dvärgpipistrell", "Vattenfladdermus", "Trollfladdermus", "Nordisk fladdermus"],
-    correct: 0,
+    correct: 2,
     solution:
-      "Kvot 2022/2021 över havet: Dvärgpipistrell 9, Vattenfladdermus 1,5, Trollfladdermus 9, Nordisk fladdermus 1,1. Trollfladdermus hade 36/4 = 9 gånger så många.",
+      "Kvot 2022/2021 över havet: Dvärgpipistrell 108/18 = 6, Vattenfladdermus 45/30 = 1,5, Trollfladdermus 36/4 = 9, Nordisk fladdermus 66/60 = 1,1. Trollfladdermus hade nio gånger så många observationer.",
     hint:
-      "Titta bara på raderna för observationer över havet och jämför 2022 med 2021 per art. Leta efter den art där 2022 är ungefär nio gånger så stort.",
+      "Titta bara på de två kolumnerna för observationer över havet och dela 2022 med 2021 för varje art. Leta efter den art där kvoten blir nio.",
     twinOf: { prov: "2015-10-24", provpass: 5, uppgift: 32, url: "https://www.studera.nu/hogskoleprov/fpn/facit-provfragor-och-normering-hosten-2015/" }
   },
   {
@@ -158,7 +158,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "andel",
     prompt: "Hur stor andel av det sammanlagda antalet observationer av Nordisk fladdermus 2022 (över havet och på land) gjordes över havet?",
     table:
-      "| Art | Över havet 2021 | Över havet 2022 | På land 2022 |\n|---|---|---|---|\n| Dvärgpipistrell | 12 | 108 | 640 |\n| Vattenfladdermus | 30 | 45 | 210 |\n| Trollfladdermus | 4 | 36 | 95 |\n| Nordisk fladdermus | 60 | 66 | 480 |",
+      "| Art | Över havet 2021 | Över havet 2022 | På land 2022 |\n|---|---|---|---|\n| Dvärgpipistrell | 18 | 108 | 640 |\n| Vattenfladdermus | 30 | 45 | 210 |\n| Trollfladdermus | 4 | 36 | 95 |\n| Nordisk fladdermus | 60 | 66 | 480 |",
     options: ["12 procent", "8 procent", "18 procent", "24 procent"],
     correct: 0,
     solution:
@@ -173,11 +173,11 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "jämförelse",
     prompt: "Hur många fler observationer på land gjordes av dvärgpipistrell än av nordisk fladdermus 2022?",
     table:
-      "| Art | Över havet 2021 | Över havet 2022 | På land 2022 |\n|---|---|---|---|\n| Dvärgpipistrell | 12 | 108 | 640 |\n| Vattenfladdermus | 30 | 45 | 210 |\n| Trollfladdermus | 4 | 36 | 95 |\n| Nordisk fladdermus | 60 | 66 | 480 |",
+      "| Art | Över havet 2021 | Över havet 2022 | På land 2022 |\n|---|---|---|---|\n| Dvärgpipistrell | 18 | 108 | 640 |\n| Vattenfladdermus | 30 | 45 | 210 |\n| Trollfladdermus | 4 | 36 | 95 |\n| Nordisk fladdermus | 60 | 66 | 480 |",
     options: ["60", "110", "210", "160"],
     correct: 3,
     solution:
-      "640 - 480 = 160 = 160.",
+      "640 − 480 = 160.",
     hint:
       "Subtrahera: ta dvärgpipistrellens siffra på land minus nordisk fladdermus siffra på land, 2022. Se upp med att du läser kolumnen 'på land'.",
     twinOf: { prov: "2015-10-24", provpass: 5, uppgift: 34, url: "https://www.studera.nu/hogskoleprov/fpn/facit-provfragor-och-normering-hosten-2015/" }
@@ -306,13 +306,13 @@ export const HP_TWINS_DTK: HpTwin[] = [
     id: "dtk2-21",
     delprov: "DTK",
     area: "avläsning",
-    prompt: "Hur många transplantationer av de fyra organen gjordes sammanlagt 2013, i genomsnitt per organ?",
+    prompt: "Hur många transplantationer gjordes i genomsnitt per organ 2013, räknat på de fyra organen i tabellen?",
     table:
       "| Organ | 2005 | 2013 | Varav levande donator 2013 |\n|---|---|---|---|\n| Njure | 320 | 450 | 300 |\n| Lever | 110 | 160 | 40 |\n| Hjärta | 40 | 45 | 0 |\n| Lunga | 25 | 60 | 0 |",
     options: ["129", "179", "229", "279"],
     correct: 1,
     solution:
-      "(450+160+45+60)/4 = 715/4 = 179.",
+      "(450 + 160 + 45 + 60)/4 = 715/4 ≈ 179.",
     hint:
       "Summera de fyra organens antal för 2013 och dela med fyra. Kontrollera att du använder rätt år.",
     twinOf: { prov: "2020-10-25", provpass: 3, uppgift: 33, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
@@ -357,9 +357,9 @@ export const HP_TWINS_DTK: HpTwin[] = [
     options: ["1 500 miljoner kr", "2 000 miljoner kr", "3 000 miljoner kr", "2 500 miljoner kr"],
     correct: 3,
     solution:
-      "2015: 3 200+5 800=9 000. 2021: 4 100+7 400=11 500. Ökning: 2500 = 2 500 miljoner kr.",
+      "2015: 3 200 + 5 800 = 9 000. 2021: 4 100 + 7 400 = 11 500. Ökning: 11 500 − 9 000 = 2 500 miljoner kr.",
     hint:
-      "Beräkna total per år (investeringar plus löpande) för 2015 och 2021, och ta skillnaden i miljoner kronor. Fråga är absolut ökning, inte procent.",
+      "Beräkna total per år (investeringar plus löpande) för 2015 och 2021, och ta skillnaden i miljoner kronor. Frågan gäller ökningen i kronor, inte i procent.",
     twinOf: { prov: "2020-10-25", provpass: 5, uppgift: 32, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2020/" }
   },
   {
@@ -381,28 +381,28 @@ export const HP_TWINS_DTK: HpTwin[] = [
     id: "dtk2-26",
     delprov: "DTK",
     area: "jämförelse",
-    prompt: "Studera hur antalet fotbollsföreningar och antalet friidrottsföreningar förhöll sig till varandra 2023. Vilket svarsförslag anger storleksförhållandet mellan fotboll och friidrott (avrundat)?",
+    prompt: "Vilket svarsförslag anger storleksförhållandet mellan antalet fotbollsföreningar och antalet friidrottsföreningar 2023?",
     table:
       "| Idrott | 1990 | 2023 |\n|---|---|---|\n| Gymnastik | 1 400 | 560 |\n| Ridsport | 900 | 1 350 |\n| Fotboll | 3 200 | 3 100 |\n| Friidrott | 1 100 | 1 240 |",
     options: ["2:1", "3:1", "5:2", "3:2"],
-    correct: 1,
+    correct: 2,
     solution:
-      "3 100/1 240 ≈ 2,5, dvs ungefär 3:1.",
+      "3 100/1 240 = 2,5. Förhållandet är alltså 2,5:1, vilket är samma sak som 5:2.",
     hint:
-      "Ställ fotbollsföreningar mot friidrottsföreningar som en kvot för 2023 och avrunda. Skriv förhållandet som 'x till 1'.",
+      "Dela antalet fotbollsföreningar med antalet friidrottsföreningar 2023. Skriv sedan kvoten som ett förhållande mellan två heltal.",
     twinOf: { prov: "2019-04-06", provpass: 2, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
     id: "dtk2-27",
     delprov: "DTK",
     area: "avläsning",
-    prompt: "Hur många ridsportföreningar fanns det i genomsnitt om man räknar snittet av antalet 1990 och antalet 2023?",
+    prompt: "Vad blir medelvärdet av antalet ridsportföreningar 1990 och antalet ridsportföreningar 2023?",
     table:
       "| Idrott | 1990 | 2023 |\n|---|---|---|\n| Gymnastik | 1 400 | 560 |\n| Ridsport | 900 | 1 350 |\n| Fotboll | 3 200 | 3 100 |\n| Friidrott | 1 100 | 1 240 |",
     options: ["1 025", "1 125", "1 225", "1 325"],
     correct: 1,
     solution:
-      "(900+1350)/2 = 1125.",
+      "(900 + 1 350)/2 = 2 250/2 = 1 125.",
     hint:
       "Medelvärde av två tal: addera 1990 och 2023 för ridsport och dela med två. Kolla att du tar rätt idrott.",
     twinOf: { prov: "2019-04-06", provpass: 2, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
@@ -419,7 +419,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     solution:
       "160 000 - 110 000 = 50 000.",
     hint:
-      "Läs av raden för år 2000 och subtrahera utrikes från inrikes landningar, eller tvärtom enligt frågan. Titta på antal landningar, inte passagerare.",
+      "Läs av raden för år 2000 och subtrahera det mindre antalet landningar från det större. Lägg märke till att landningarna anges i tusental.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
@@ -456,22 +456,22 @@ export const HP_TWINS_DTK: HpTwin[] = [
     id: "dtk2-31",
     delprov: "DTK",
     area: "jämförelse",
-    prompt: "Jämför den totala kostnaden för flerbostadshus i Allmännyttan och i Bostadsrätt 2002. Hur stor var skillnaden?",
+    prompt: "Tabellen visar kostnader för flerbostadshus 2002. Jämför den totala kostnaden (kapitalkostnad plus driftkostnad) för Allmännyttan och Bostadsrätt. Hur stor var skillnaden?",
     table:
       "| Ägandeform | Kapitalkostnad 2002 (kr/m²) | Driftkostnad 2002 (kr/m²) |\n|---|---|---|\n| Allmännyttan | 260 | 480 |\n| Bostadsrätt | 190 | 410 |\n| Privat ägo | 310 | 450 |",
     options: ["70 kr/m²", "100 kr/m²", "140 kr/m²", "180 kr/m²"],
     correct: 2,
     solution:
-      "Allmännyttan: 260+480=740. Bostadsrätt: 190+410=600. Skillnad: 140 = 140 kr/m².",
+      "Allmännyttan: 260 + 480 = 740. Bostadsrätt: 190 + 410 = 600. Skillnad: 740 − 600 = 140 kr/m².",
     hint:
-      "Beräkna totalkostnaden för vardera ägarformen år 2002 och ta skillnaden. Se till att du håller dig till flerbostadshus och rätt år.",
+      "Beräkna totalkostnaden (kapitalkostnad plus driftkostnad) för var och en av de två ägandeformerna och ta skillnaden.",
     twinOf: { prov: "2019-04-06", provpass: 5, uppgift: 35, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-varen-2019/" }
   },
   {
     id: "dtk2-32",
     delprov: "DTK",
     area: "andel",
-    prompt: "Hur stor andel av den totala kostnaden för flerbostadshus i privat ägo 2002 utgjordes av kapitalkostnad?",
+    prompt: "Tabellen visar kostnader för flerbostadshus 2002. Hur stor andel av den totala kostnaden (kapitalkostnad plus driftkostnad) i privat ägo utgjordes av kapitalkostnad?",
     table:
       "| Ägandeform | Kapitalkostnad 2002 (kr/m²) | Driftkostnad 2002 (kr/m²) |\n|---|---|---|\n| Allmännyttan | 260 | 480 |\n| Bostadsrätt | 190 | 410 |\n| Privat ägo | 310 | 450 |",
     options: ["30 procent", "41 procent", "55 procent", "62 procent"],
@@ -488,7 +488,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "andel",
     prompt: "Hur stor andel av lärarna vid Uppsala universitet 1945 var professorer?",
     table:
-      "| Lärosäte | Studenter 1945 | Lärare 1945 | Professorer 1945 |\n|---|---|---|---|\n| Uppsala universitet | 3 200 | 210 | 60 |\n| Lunds universitet | 2 800 | 180 | 45 |\n| Karolinska institutet | 900 | 95 | 20 |\n| Stockholms högskola | 1 100 | 70 | 18 |",
+      "| Lärosäte | Studenter 1945 | Lärare 1945 | Varav professorer 1945 |\n|---|---|---|---|\n| Uppsala universitet | 3 200 | 210 | 60 |\n| Lunds universitet | 2 800 | 180 | 45 |\n| Karolinska institutet | 900 | 95 | 20 |\n| Stockholms högskola | 1 100 | 70 | 18 |",
     options: ["19 procent", "24 procent", "29 procent", "35 procent"],
     correct: 2,
     solution:
@@ -503,7 +503,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "kombinera två kolumner",
     prompt: "Vilket lärosäte hade minst antal studenter per lärare 1945?",
     table:
-      "| Lärosäte | Studenter 1945 | Lärare 1945 | Professorer 1945 |\n|---|---|---|---|\n| Uppsala universitet | 3 200 | 210 | 60 |\n| Lunds universitet | 2 800 | 180 | 45 |\n| Karolinska institutet | 900 | 95 | 20 |\n| Stockholms högskola | 1 100 | 70 | 18 |",
+      "| Lärosäte | Studenter 1945 | Lärare 1945 | Varav professorer 1945 |\n|---|---|---|---|\n| Uppsala universitet | 3 200 | 210 | 60 |\n| Lunds universitet | 2 800 | 180 | 45 |\n| Karolinska institutet | 900 | 95 | 20 |\n| Stockholms högskola | 1 100 | 70 | 18 |",
     options: ["Uppsala universitet", "Lunds universitet", "Karolinska institutet", "Stockholms högskola"],
     correct: 2,
     solution:
@@ -518,7 +518,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "avläsning",
     prompt: "Hur stort var det sammanlagda antalet studenter vid de fyra lärosätena 1945?",
     table:
-      "| Lärosäte | Studenter 1945 | Lärare 1945 | Professorer 1945 |\n|---|---|---|---|\n| Uppsala universitet | 3 200 | 210 | 60 |\n| Lunds universitet | 2 800 | 180 | 45 |\n| Karolinska institutet | 900 | 95 | 20 |\n| Stockholms högskola | 1 100 | 70 | 18 |",
+      "| Lärosäte | Studenter 1945 | Lärare 1945 | Varav professorer 1945 |\n|---|---|---|---|\n| Uppsala universitet | 3 200 | 210 | 60 |\n| Lunds universitet | 2 800 | 180 | 45 |\n| Karolinska institutet | 900 | 95 | 20 |\n| Stockholms högskola | 1 100 | 70 | 18 |",
     options: ["6 500", "7 000", "7 500", "8 000"],
     correct: 3,
     solution:
@@ -554,7 +554,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     solution:
       "Skillnad kursbetyg-provbetyg: 2005: 0,5, 2007: 2,5, 2009: 1,0. Ökningen var störst 2005–2007 (från 0,5 till 2,5 poäng).",
     hint:
-      "Räkna skillnaden provbetyg minus kursbetyg för varje år, och jämför sedan hur den ändras mellan åren. Du söker störst ökning av skillnaden.",
+      "Räkna skillnaden kursbetyg minus provbetyg för varje år och jämför sedan hur den ändras från period till period. Du söker den period då skillnaden ökade mest.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 37, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
@@ -591,13 +591,13 @@ export const HP_TWINS_DTK: HpTwin[] = [
     id: "dtk2-40",
     delprov: "DTK",
     area: "kombinera två kolumner",
-    prompt: "Till vilket ändamål gick sammanlagt 6,1 miljoner kronor åren 2021–2023?",
+    prompt: "Tabellen visar utbetalda bidrag per ändamål. Till vilket ändamål gick sammanlagt 6,1 miljoner kronor åren 2021–2023?",
     table:
       "| Ändamål | 2021 (tkr) | 2022 (tkr) | 2023 (tkr) |\n|---|---|---|---|\n| Sommarlov | 3 200 | 3 500 | 3 800 |\n| Kläder och skor | 2 100 | 2 400 | 2 600 |\n| Fritidsaktiviteter | 1 800 | 2 000 | 2 300 |\n| Övriga ändamål | 900 | 1 100 | 1 300 |",
     options: ["Sommarlov", "Kläder och skor", "Fritidsaktiviteter", "Övriga ändamål"],
     correct: 2,
     solution:
-      "Fritidsaktiviteter: 1 800+2 000+2 300 = 6 100 tkr = 6,1 miljoner kronor.",
+      "Summor 2021–2023: Sommarlov 10 500, Kläder och skor 7 100, Fritidsaktiviteter 1 800 + 2 000 + 2 300 = 6 100, Övriga ändamål 3 300 tkr. 6 100 tkr = 6,1 miljoner kronor, alltså Fritidsaktiviteter.",
     hint:
       "Summera 2021, 2022 och 2023 för varje ändamål och leta efter den summa som matchar. Räkna på alla ändamål om det behövs.",
     twinOf: { prov: "2019-10-20", provpass: 1, uppgift: 30, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
@@ -606,7 +606,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     id: "dtk2-41",
     delprov: "DTK",
     area: "andel",
-    prompt: "Hur stor andel av de utbetalda bidragen 2023 gick till sommarlov?",
+    prompt: "Tabellen visar utbetalda bidrag per ändamål. Hur stor andel av bidragen 2023 gick till sommarlov?",
     table:
       "| Ändamål | 2021 (tkr) | 2022 (tkr) | 2023 (tkr) |\n|---|---|---|---|\n| Sommarlov | 3 200 | 3 500 | 3 800 |\n| Kläder och skor | 2 100 | 2 400 | 2 600 |\n| Fritidsaktiviteter | 1 800 | 2 000 | 2 300 |\n| Övriga ändamål | 900 | 1 100 | 1 300 |",
     options: ["28 procent", "38 procent", "48 procent", "58 procent"],
@@ -653,11 +653,11 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "andel",
     prompt: "Vilken skademekanism stod för en femtedel av de rapporterade skadefallen?",
     table:
-      "| Skademekanism | Flickor | Pojkar | Totalt |\n|---|---|---|---|\n| Fall från låg höjd | 65 | 75 | 140 |\n| Fall från trappa | 30 | 30 | 60 |\n| Kontakt med person | 20 | 40 | 60 |\n| Hugg/skärning mot skarp kant | 15 | 25 | 40 |",
+      "| Skademekanism | Flickor | Pojkar | Totalt |\n|---|---|---|---|\n| Fall från låg höjd | 70 | 80 | 150 |\n| Fall från trappa | 25 | 25 | 50 |\n| Kontakt med person | 20 | 40 | 60 |\n| Hugg/skärning mot skarp kant | 15 | 25 | 40 |",
     options: ["Fall från låg höjd", "Fall från trappa", "Kontakt med person", "Hugg/skärning mot skarp kant"],
     correct: 2,
     solution:
-      "Totalt: 300. Kontakt med person: 60/300 = 20 procent = en femtedel.",
+      "Totalt: 150 + 50 + 60 + 40 = 300. Kontakt med person: 60/300 = 20 procent = en femtedel.",
     hint:
       "En femtedel är 20 procent. Räkna ut vilken andel av totalen varje skademekanism har och leta efter den som är ungefär 20 procent.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 33, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
@@ -668,7 +668,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "kombinera två kolumner",
     prompt: "Hur stor andel av skadefallen av typen hugg/skärning mot skarp kant drabbade flickor?",
     table:
-      "| Skademekanism | Flickor | Pojkar | Totalt |\n|---|---|---|---|\n| Fall från låg höjd | 65 | 75 | 140 |\n| Fall från trappa | 30 | 30 | 60 |\n| Kontakt med person | 20 | 40 | 60 |\n| Hugg/skärning mot skarp kant | 15 | 25 | 40 |",
+      "| Skademekanism | Flickor | Pojkar | Totalt |\n|---|---|---|---|\n| Fall från låg höjd | 70 | 80 | 150 |\n| Fall från trappa | 25 | 25 | 50 |\n| Kontakt med person | 20 | 40 | 60 |\n| Hugg/skärning mot skarp kant | 15 | 25 | 40 |",
     options: ["25 procent", "38 procent", "50 procent", "63 procent"],
     correct: 1,
     solution:
@@ -683,7 +683,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "jämförelse",
     prompt: "Hur stor är mängden mejeriprodukter som hamnar i avloppet per person och år jämfört med mängden övrigt flytande matavfall?",
     table:
-      "| Kategori | Kg/person och år | Ton/år |\n|---|---|---|\n| Mejeriprodukter | 4,5 | 41 000 |\n| Övrigt flytande matavfall | 1,5 | 13 500 |\n| Fast matavfall | 8,0 | 72 000 |\n| Sötsaker | 2,0 | 18 000 |",
+      "| Kategori | Kg/person och år | Ton/år |\n|---|---|---|\n| Mejeriprodukter | 4,5 | 40 500 |\n| Övrigt flytande matavfall | 1,5 | 13 500 |\n| Fast matavfall | 8,0 | 72 000 |\n| Sötsaker | 2,0 | 18 000 |",
     options: ["1,5 gånger så stor", "2 gånger så stor", "3 gånger så stor", "4 gånger så stor"],
     correct: 2,
     solution:
@@ -698,7 +698,7 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "avläsning",
     prompt: "Hur stor är den totala mängden av de fyra redovisade kategorierna mat och dryck som hamnar i avloppet per person och år?",
     table:
-      "| Kategori | Kg/person och år | Ton/år |\n|---|---|---|\n| Mejeriprodukter | 4,5 | 41 000 |\n| Övrigt flytande matavfall | 1,5 | 13 500 |\n| Fast matavfall | 8,0 | 72 000 |\n| Sötsaker | 2,0 | 18 000 |",
+      "| Kategori | Kg/person och år | Ton/år |\n|---|---|---|\n| Mejeriprodukter | 4,5 | 40 500 |\n| Övrigt flytande matavfall | 1,5 | 13 500 |\n| Fast matavfall | 8,0 | 72 000 |\n| Sötsaker | 2,0 | 18 000 |",
     options: ["12 kg", "14 kg", "16 kg", "18 kg"],
     correct: 2,
     solution:
@@ -713,13 +713,13 @@ export const HP_TWINS_DTK: HpTwin[] = [
     area: "kombinera två kolumner",
     prompt: "Ungefär hur mycket av dessa fyra kategorier mat och dryck hamnar i avloppet under en vecka, sammanlagt i landet?",
     table:
-      "| Kategori | Kg/person och år | Ton/år |\n|---|---|---|\n| Mejeriprodukter | 4,5 | 41 000 |\n| Övrigt flytande matavfall | 1,5 | 13 500 |\n| Fast matavfall | 8,0 | 72 000 |\n| Sötsaker | 2,0 | 18 000 |",
+      "| Kategori | Kg/person och år | Ton/år |\n|---|---|---|\n| Mejeriprodukter | 4,5 | 40 500 |\n| Övrigt flytande matavfall | 1,5 | 13 500 |\n| Fast matavfall | 8,0 | 72 000 |\n| Sötsaker | 2,0 | 18 000 |",
     options: ["1 400 ton", "2 200 ton", "2 800 ton", "3 500 ton"],
     correct: 2,
     solution:
-      "Totalt per år: 41 000+13 500+72 000+18 000 = 144 500 ton. Per vecka: 144 500/52 ≈ 2779 ton.",
+      "Totalt per år: 40 500 + 13 500 + 72 000 + 18 000 = 144 000 ton. Per vecka: 144 000/52 ≈ 2 770 ton, alltså ungefär 2 800 ton.",
     hint:
-      "Ta totalen per person och år, multiplicera med antal invånare och dela med 52 veckor. Avrunda tidigt, för det är ett överslag.",
+      "Använd kolumnen ton/år: summera de fyra kategorierna och dela med 52 veckor. Avrunda gärna, det är ett överslag.",
     twinOf: { prov: "2019-10-20", provpass: 4, uppgift: 31, url: "https://www.studera.nu/hogskoleprov/fpn/provfragor-och-facit-hosten-2019/" }
   },
   {
