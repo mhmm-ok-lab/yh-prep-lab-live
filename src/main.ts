@@ -72,6 +72,7 @@ import {
   saveHpFormulaState,
   loadHpOrdResults,
   loadHpPlanState,
+  loadHpProvlogg,
   loadHpProgress,
   loadHpRepeatQueue,
   loadHpTwinRepeatQueue,
@@ -89,10 +90,12 @@ import {
   saveHpMathResult,
   saveHpOrdResult,
   saveHpPlanState,
+  saveHpProvlogg,
   saveHpTwinResult,
   saveStudySession,
   setStorageNamespace
 } from "./storage";
+import { buildProvPass, PROV_DELPROV, PROV_MAX, provPercent, provTrend, sortProvPass, weakestDelprov, type ProvTyp } from "./hp-provlogg";
 import { HP_NAMES, hpAbbr, hpExpand, hpFull, hpShort } from "./hp-names";
 import { loadColorMode, saveColorMode } from "./storage";
 import type { ColorMode } from "./storage";
@@ -652,6 +655,9 @@ let hpGuideMode: "flashcards" | "page" | "cards" | null = null;
  *  ligger kvar orört i sina egna variabler, så "Tillbaka" återskapar exakt samma vy. */
 let hpCardOpen: string | null = null;
 let hpResourcesOpen = false;
+let hpProvloggOpen = false;
+let hpProvloggTyp: ProvTyp = "kvantitativt";
+let hpProvloggError = "";
 /** "Din plan" (beslut 2026-10-05 (9)): hela planen öppen, vilka "Varför?" som är öppna, och delprovet som
  *  startas från ett Lär om-kort som öppnades via planen. */
 let hpPlanAllOpen = false;
@@ -3714,6 +3720,7 @@ function renderHpHome(): string {
           ${hpSection("Matte", `${renderHpFormulaHomeCard(ready)}${renderHpTwinHomeSection(ready)}${renderHpDiagHomeCard(ready)}${lastMathHtml}`)}
           ${hpSection("Läsning och språk", `${renderHpLasHomeCard(ready)}${renderHpMekHomeCard(ready)}${renderHpElfHomeCard(ready)}`)}
           ${hpSection("Ord", renderHpOrdHomeCard(ready, progress.wordsCompleted, repeatCount))}
+          ${hpSection("Gamla prov", renderHpProvloggHomeCard())}
           ${hpSection("Guide och resurser", `${renderHpGuideHomeSection()}`)}
         `}
     </div>
@@ -4981,10 +4988,92 @@ function renderHpResources(): string {
   `;
 }
 
+// ── Provpass-logg ──
+
+const escapeHtml = (t: string): string => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function renderHpProvloggHomeCard(): string {
+  const list = loadHpProvlogg();
+  const weak = weakestDelprov(list);
+  const meta = list.length === 0 ? "Inga pass loggade än" : `${list.length} pass · svagast just nu: ${weak ? hpAbbr(weak.id) : "–"}`;
+  return renderHpStartCard('data-action="hp-provlogg-open"', "Provpass-logg", "Skriv in resultat från gamla prov och se vad du ska plugga mer", `<span class="hp-start-card-last">${meta}</span>`).replace("Starta ›", "Öppna ›");
+}
+
+function renderHpProvlogg(): string {
+  const list = loadHpProvlogg();
+  const weak = weakestDelprov(list);
+  const typ = hpProvloggTyp;
+  const today = new Date().toISOString().slice(0, 10);
+  const typBtn = (t: ProvTyp, label: string) =>
+    `<button class="hp-secondary-btn hp-prov-typ${t === typ ? " is-on" : ""}" data-action="hp-provlogg-typ" data-typ="${t}" aria-pressed="${t === typ}">${label}</button>`;
+  const fields = PROV_DELPROV[typ]
+    .map(
+      (id) => `
+      <label class="hp-prov-field">
+        <span class="hp-prov-field-name">${hpAbbr(id)}</span>
+        <span class="hp-prov-field-sub">${HP_NAMES[id].full} · av ${PROV_MAX[id]}</span>
+        <input class="hp-prov-input" type="number" inputmode="numeric" min="0" max="${PROV_MAX[id]}" data-prov-score="${id}" />
+      </label>`
+    )
+    .join("");
+  const bars = (Object.keys(PROV_MAX) as (keyof typeof PROV_MAX)[])
+    .map((id) => {
+      const t = provTrend(list, id);
+      if (t.length === 0) return "";
+      const isWeak = weak?.id === id;
+      const last = t[t.length - 1].percent;
+      return `
+        <li class="hp-prov-row${isWeak ? " is-weak" : ""}">
+          <span class="hp-prov-row-name">${hpAbbr(id)}</span>
+          <span class="hp-prov-row-sub">${HP_NAMES[id].full}${isWeak ? " · lägg mest tid här" : ""}</span>
+          <span class="hp-prov-bars" role="img" aria-label="Procent rätt per pass, äldst först: ${t.map((x) => x.percent + " %").join(", ")}">${t
+            .slice(-8)
+            .map((x) => `<span class="hp-prov-bar" style="height:${Math.max(x.percent, 4)}%"></span>`)
+            .join("")}</span>
+          <span class="hp-prov-row-pct">${last} %</span>
+        </li>`;
+    })
+    .join("");
+  const history = sortProvPass(list)
+    .slice(0, 10)
+    .map((p) => {
+      const parts = PROV_DELPROV[p.typ].map((id) => `${hpAbbr(id)} ${p.scores[id] ?? 0}/${PROV_MAX[id]} (${provPercent(id, p.scores[id] ?? 0)} %)`).join(" · ");
+      return `
+        <li class="hp-prov-pass">
+          <span class="hp-prov-pass-title">${escapeHtml(p.name)}</span>
+          <span class="hp-prov-pass-sub">${p.date} · ${p.typ === "verbalt" ? "Verbalt" : "Kvantitativt"}</span>
+          <span class="hp-prov-pass-sub">${parts}</span>
+          <button class="hp-secondary-btn hp-prov-del" data-action="hp-provlogg-delete" data-id="${escapeHtml(p.id)}">Ta bort</button>
+        </li>`;
+    })
+    .join("");
+  return `
+    <div class="hp-guide-page hp-prov">
+      <div class="hp-drill-top">
+        <button class="hp-drill-cancel" data-action="hp-provlogg-close">‹ Tillbaka till HP-hem</button>
+      </div>
+      <h2 class="hp-res-title">Provpass-logg</h2>
+      <p class="hp-res-checked">Antal rätt per delprov i gamla högskoleprov</p>
+      ${bars ? `<section class="hp-prov-section"><h3 class="hp-res-heading">Utveckling</h3><ul class="hp-prov-list">${bars}</ul></section>` : ""}
+      <section class="hp-prov-section">
+        <h3 class="hp-res-heading">Nytt pass</h3>
+        <div class="hp-prov-typrow">${typBtn("kvantitativt", "Kvantitativt")}${typBtn("verbalt", "Verbalt")}</div>
+        <label class="hp-prov-field"><span class="hp-prov-field-name">Prov</span><input class="hp-prov-input hp-prov-wide" type="text" maxlength="60" placeholder="t.ex. Vår 2024 pass 3" data-prov-name /></label>
+        <label class="hp-prov-field"><span class="hp-prov-field-name">Datum</span><input class="hp-prov-input hp-prov-wide" type="date" value="${today}" data-prov-date /></label>
+        <div class="hp-prov-fields">${fields}</div>
+        ${hpProvloggError ? `<p class="hp-prov-error" role="alert">${hpProvloggError}</p>` : ""}
+        <button class="hp-cta-btn" data-action="hp-provlogg-save">Spara pass</button>
+      </section>
+      ${history ? `<section class="hp-prov-section"><h3 class="hp-res-heading">Senaste passen</h3><ul class="hp-prov-list">${history}</ul></section>` : ""}
+    </div>
+  `;
+}
+
 function renderHp(): string {
   if (hpForceHome) {
     hpCardOpen = null;
     hpResourcesOpen = false;
+    hpProvloggOpen = false;
     hpPlanAllOpen = false;
     hpPlanCardDelprov = null;
     return renderHpHome();
@@ -4994,6 +5083,9 @@ function renderHp(): string {
   }
   if (hpResourcesOpen) {
     return renderHpResources();
+  }
+  if (hpProvloggOpen) {
+    return renderHpProvlogg();
   }
   const openCard = hpCardOpen ? HP_CARDS.find((c) => c.id === hpCardOpen) : undefined;
   if (openCard) {
@@ -7240,6 +7332,60 @@ app.addEventListener("click", (event) => {
     hpPlanAllOpen = false;
     render();
     window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-provlogg-open") {
+    hpForceHome = false;
+    hpProvloggOpen = true;
+    hpProvloggError = "";
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-provlogg-close") {
+    hpProvloggOpen = false;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-provlogg-typ") {
+    hpProvloggTyp = actionEl.dataset.typ === "verbalt" ? "verbalt" : "kvantitativt";
+    hpProvloggError = "";
+    render();
+    return;
+  }
+
+  if (action === "hp-provlogg-save") {
+    const scores: Record<string, string> = {};
+    app.querySelectorAll<HTMLInputElement>("[data-prov-score]").forEach((el) => {
+      scores[el.dataset.provScore ?? ""] = el.value;
+    });
+    const res = buildProvPass({
+      id: `${Date.now()}`,
+      date: app.querySelector<HTMLInputElement>("[data-prov-date]")?.value ?? "",
+      name: app.querySelector<HTMLInputElement>("[data-prov-name]")?.value ?? "",
+      typ: hpProvloggTyp,
+      scores
+    });
+    if (!res.ok) {
+      hpProvloggError = res.error;
+    } else {
+      saveHpProvlogg([...loadHpProvlogg(), res.pass]);
+      hpProvloggError = "";
+    }
+    render();
+    return;
+  }
+
+  if (action === "hp-provlogg-delete") {
+    const id = actionEl.dataset.id;
+    if (id && window.confirm("Ta bort det här passet?")) {
+      saveHpProvlogg(loadHpProvlogg().filter((p) => p.id !== id));
+      render();
+    }
     return;
   }
 

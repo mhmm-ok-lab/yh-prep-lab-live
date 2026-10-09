@@ -3,6 +3,18 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-09 — Provpass-logg: se var plugg-tiden gör mest nytta
+
+**Vad och varför.** Martin gör gamla högskoleprov (studera.nu) men fick inte ihop resultaten per delprov, så det var oklart vad han skulle plugga mer på. Nu skriver han in antal rätt per delprov och ser utvecklingen.
+
+**Före.** Inget ställe att samla provresultat. **Efter.** Kortet "Provpass-logg" på HP-hem (sektionen "Gamla prov", samma startkort som övriga). Vyn har: utveckling per delprov (förkortning som rubrik, förklaring under, små staplar, procent rätt) där det svagaste delprovet (lägst snitt de tre senaste passen) har varningsyta och texten "lägg mest tid här"; formulär (typ, prov som fritext, datum, antal rätt med max under varje fält, validering 0..max); senaste passen med "Ta bort" (med bekräftelse). Sparas i localStorage.
+
+**Stitch-princip.** Tonal Layering och No-Line: vita kort med skugga, varningsyta i stället för linje. Tre textstorlekar, pill 36 px, bara palett-tokens (mörkt läge via samma tokens).
+
+**UX-teori.** Feedback som styr handling (resultatet pekar ut nästa steg), recognition over recall (förkortning + förklaring, max synligt vid fältet), felförebyggande (validering mot max, bekräfta borttagning), Gestalt likhet (samma kort som övriga delprov).
+
+---
+
 ## 2026-10-09 — HP-hem: en vy med indikatorer i stället för parallella sidor
 
 **Vad och varför.** Martin: "för mycket text på trånga utrymmen" och "för många versioner av samma sak". HP-hem hade tre olika korttyper (mint, vit, halvbredd), åtta delprov spridda i fel ordning, en separat sida "Är jag redo?" som upprepade samma delprov och en versalstatus som skrek. Han hittade inte var man startar Kvantitativa resonemang (NOG).

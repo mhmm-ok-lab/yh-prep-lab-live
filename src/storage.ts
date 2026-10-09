@@ -1,5 +1,6 @@
 import type { HpMathArea } from "./hp-math";
 import { EMPTY_HP_FORMULA_STATE, type HpFormulaState } from "./hp-formulas";
+import type { ProvPass } from "./hp-provlogg";
 import type { HpPlanState } from "./hp-plan";
 import type { HpDelprov } from "./hp-twins";
 import type { SessionDraft, StudySession } from "./types";
@@ -20,6 +21,7 @@ const HP_MEK_REPEAT_KEY = "yh.hp-mek-repeat";
 const HP_MEK_SEEN_KEY = "yh.hp-mek-seen";
 const HP_PLAN_KEY = "yh.hp-plan";
 const HP_FORMULA_KEY = "yh.hp-formula";
+const HP_PROVLOGG_KEY = "yh.hp-provlogg";
 const HP_ORD_RESULT_KEY = "yh.hp-ord-result";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
@@ -553,6 +555,25 @@ export function loadHpFormulaState(): HpFormulaState {
 export function saveHpFormulaState(state: HpFormulaState): void {
   try {
     localStorage.setItem(namespacedKey(HP_FORMULA_KEY), JSON.stringify(state));
+  } catch {
+    // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+// ── Provpass-logg ──
+
+export function loadHpProvlogg(): ProvPass[] {
+  try {
+    const list = safeParse<ProvPass[]>(localStorage.getItem(namespacedKey(HP_PROVLOGG_KEY)), []);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveHpProvlogg(list: ProvPass[]): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_PROVLOGG_KEY), JSON.stringify(list.slice(-200)));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
   }
