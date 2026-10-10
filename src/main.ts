@@ -6117,6 +6117,32 @@ function renderPage(): string {
   }
 }
 
+// π saknas i Public Sans, så webbläsaren lånar tecknet från ett annat typsnitt utan sidluft
+// och det klistras ihop med r, · och siffror. Varje π får en egen span med lite luft (.math-sym).
+function spaceMathSymbols(root: HTMLElement): void {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) =>
+      n.nodeValue?.includes("π") && !n.parentElement?.closest("textarea, input, .math-sym")
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT,
+  });
+  const nodes: Text[] = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+  for (const node of nodes) {
+    const frag = document.createDocumentFragment();
+    node.nodeValue!.split(/(π)/).forEach((part) => {
+      if (part === "π") {
+        const span = document.createElement("span");
+        span.className = "math-sym";
+        span.textContent = "π";
+        frag.appendChild(span);
+      } else if (part) {
+        frag.appendChild(document.createTextNode(part));
+      }
+    });
+    node.replaceWith(frag);
+  }
+}
 
 function render(): void {
   const isSessionFocus = Boolean(activeSession);
@@ -6134,6 +6160,7 @@ function render(): void {
     </div>
     ${activeGlossaryTerm ? renderGlossaryOverlay(activeGlossaryTerm) : ""}
   `;
+  spaceMathSymbols(app);
 
   if (page === "hp" && hpSession && hpSession.currentIndex < hpSession.items.length && !hpSession.showFeedback && hpSession.reviewIndex === null) {
     startHpTempoInterval();

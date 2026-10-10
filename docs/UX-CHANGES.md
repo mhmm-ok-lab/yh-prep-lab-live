@@ -3,6 +3,18 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — π får egen luft i formler
+
+**Vad och varför.** Martin: π "klistras ihop" med r, gångerpunkten och siffror och är svårt att tyda. Orsak: Public Sans saknar π, så webbläsaren lånar tecknet från ett reservtypsnitt utan sidluft, och formelrutan var extra fet (800).
+
+**Före.** "A = π · r²", "π·3²" och "9π cm²" flöt ihop, särskilt i den feta formelrutan. **Efter.** Varje π läggs automatiskt i en span (`.math-sym`) med 0,12 em luft på sidorna och normal vikt, överallt i appen (formelträning, påminnelsekort, matteövningar). Formelrutan har vikt 700 i stället för 800.
+
+**Stitch-princip.** Fortfarande ett typsnitt och samma textstorlek, inget nytt token. Vi löste avståndet, inte typsnittet: minsta ändring som tar bort problemet.
+
+**UX-teori.** Läsbarhet (legibility): tecken som ska skiljas åt behöver mellanrum. Mindre visuellt brus minskar kognitiv belastning när man räknar i huvudet.
+
+---
+
 ## 2026-10-09 — Provpass-logg: se var plugg-tiden gör mest nytta
 
 **Vad och varför.** Martin gör gamla högskoleprov (studera.nu) men fick inte ihop resultaten per delprov, så det var oklart vad han skulle plugga mer på. Nu skriver han in antal rätt per delprov och ser utvecklingen.
