@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — Mobil: ny fråga börjar högst upp, smalare toppbar
+
+**Vad och varför.** Martin på iPhone: efter "Nästa" hamnade han långt ner (där förra frågans förklaring slutade) och fick scrolla upp. Toppbaren var för fet och tog för mycket höjd, så frågan fick mindre plats.
+
+**Före.** Scrollpositionen behölls mellan frågor. Toppbar 56 px, innehållet började 64 px + marginal ned, kontext-pill 32 px och 0,85 rem i fet stil på mobil. **Efter.** Nästa/Föregående/Hoppa över (alla HP-övningar och formelträningen) scrollar till toppen. Toppbar 44 px, innehållet börjar 48 px ned, kontext-pill 28 px (nav-pillens höjd enligt DESIGN.md), text-sm och vikt 600, hem- och användarknapp 32/28 px.
+
+**Stitch-princip.** Pill-höjd 28 px för nav enligt designsystemet (pillen var 32 px, alltså fel tidigare); textstorlek från skalan. **UX-teori.** Fittsavstånd och fokus: ny uppgift ska börja där blicken är; mer vertikal yta åt innehållet minskar scroll och kognitiv belastning.
+
+---
+
 ## 2026-10-10 — Verbalt på provnivå med synlig svårighetsgrad
 
 **Vad och varför.** Martin tyckte att MEK, LÄS och ELF var för korta och lätta jämfört med riktiga provet. Nya egna uppgifter i tre nivåer (ca 3 lätt, 4 medel, 3 svår per delprov), bl.a. en lång LÄS-text på ca 850 ord och MEK med två luckor som måste stämma med varandra.

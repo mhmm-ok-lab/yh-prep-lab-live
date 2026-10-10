@@ -6338,6 +6338,11 @@ app.addEventListener("click", (event) => {
     return;
   }
 
+  // Ny fråga börjar högst upp (2026-10-10): annars hamnar man på mobilen långt ner, där förra frågans förklaring slutade.
+  if (/^hp-([a-z]+-)?(next|prev|skip)$|^hp-formula-(known|unknown|learned|quick-next)$/.test(action)) {
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+  }
+
   if (action === "sync-connect") {
     void connectSync();
     return;

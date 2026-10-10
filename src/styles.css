@@ -3612,7 +3612,7 @@ details.hp-math-area-card {
   width: 100%;
   max-width: 560px;
   z-index: 200;
-  height: 56px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3624,20 +3624,21 @@ details.hp-math-area-card {
   box-shadow: 0 1px 0 rgba(22, 28, 36, 0.04);
 }
 
-/* Push main content below the fixed nav */
+/* Push main content below the fixed nav (44px nav + 4px luft, 2026-10-10: mer plats för frågan på mobil) */
 .app > main {
-  padding-top: 64px;
+  padding-top: 48px;
+  margin-top: 0;
 }
 
 /* Home button — 🧠 icon */
 .app-nav-home {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3655,8 +3656,8 @@ details.hp-math-area-card {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  height: 32px;
-  min-height: 32px;
+  height: 28px;
+  min-height: 28px;
   padding: 0 12px;
   border-radius: 999px;
   border: none;
@@ -3690,8 +3691,8 @@ details.hp-math-area-card {
 
 /* User avatar button — <details><summary> styled as circle */
 .app-nav-user {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
   background: var(--surface-container, #e9eef9);
@@ -3868,7 +3869,7 @@ details.app-nav-user-menu {
 /* Dropdown menu */
 .app-nav-menu {
   position: fixed;
-  top: 56px;
+  top: 44px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 210;
@@ -3976,7 +3977,8 @@ details.app-nav-user-menu {
 @media (max-width: 480px) {
   .app-nav-ctx {
     max-width: 160px;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
     padding: 0 10px;
   }
   .app-nav-menu {
