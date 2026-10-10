@@ -65,6 +65,8 @@ import {
   loadHpMekRepeatQueue,
   loadHpMekResults,
   loadHpMekSeen,
+  loadHpDtkHpSeen,
+  saveHpDtkHpSeen,
   loadHpLasResults,
   loadHpMathResult,
   loadHpFormulaState,
@@ -1496,8 +1498,16 @@ function buildHpTwinPass(delprov: HpDelprov): HpTwin[] {
     const key = t.table ?? t.figure ?? t.id;
     groups.set(key, [...(groups.get(key) ?? []), t]);
   }
-  const freshItems = [...groups.values()].sort(() => Math.random() - 0.5).flat();
+  // DTK på provnivå (har level) som inte setts än delas ut först, grupp för grupp.
+  const seen = new Set(delprov === "DTK" ? loadHpDtkHpSeen() : []);
+  const isNew = (g: HpTwin[]) => g.some((t) => t.level !== undefined && !seen.has(t.id));
+  const shuffledGroups = [...groups.values()].sort(() => Math.random() - 0.5);
+  const freshItems = [...shuffledGroups.filter(isNew), ...shuffledGroups.filter((g) => !isNew(g))].flat();
   const ordered = [...repeatItems, ...freshItems].slice(0, size);
+  if (delprov === "DTK") {
+    ordered.filter((t) => t.level !== undefined).forEach((t) => seen.add(t.id));
+    saveHpDtkHpSeen([...seen]);
+  }
   return hpTwinShufflesOptions(delprov) ? ordered.map(shuffleTwinOptions) : ordered;
 }
 
@@ -4427,7 +4437,7 @@ function renderHpTwinQuestion(): string {
         ${renderHpThinkBlock(item.hint)}
         ${renderHpCardLinks([item.area, item.delprov])}
         ${tagRowHtml}
-        <a class="hp-twin-original-link" href="${item.twinOf.url}" target="_blank" rel="noopener">Se originaluppgiften (${item.twinOf.prov}, provpass ${item.twinOf.provpass}, uppgift ${item.twinOf.uppgift}) ↗</a>
+        ${item.twinOf ? `<a class="hp-twin-original-link" href="${item.twinOf.url}" target="_blank" rel="noopener">Se originaluppgiften (${item.twinOf.prov}, provpass ${item.twinOf.provpass}, uppgift ${item.twinOf.uppgift}) ↗</a>` : ""}
         ${inReview ? "" : `<button class="hp-next-btn" data-action="hp-twin-next">Nästa</button>`}
       </div>`
     : "";
@@ -4439,8 +4449,9 @@ function renderHpTwinQuestion(): string {
         ${renderHpProgress(`${hpShort(delprov)} ${idx + 1}/${total}`, reviewIndex, !inReview && hpTwinSession.skippedIds.includes(item.id))}
         ${inReview ? "" : `<span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
-      ${renderHpDrillTitle(HP_DELPROV_NAMES[delprov])}
-      ${item.figure ? `<div class="hp-twin-figure${hpFigureZoom ? " hp-twin-figure--zoom" : ""}" data-action="hp-figure-zoom" role="button" aria-label="${hpFigureZoom ? "Förminska figuren" : "Förstora figuren"}">${item.figure}</div><p class="hp-twin-figure-hint">${hpFigureZoom ? "Tryck på figuren för att förminska" : "Tryck på figuren för att förstora"}</p>` : ""}
+      ${renderHpDrillTitle(HP_DELPROV_NAMES[delprov], item.level)}
+      ${item.figure && !item.figure.startsWith("<svg") ? `<div class="hp-twin-figure hp-twin-figure--sheet">${item.figure}</div>` : ""}
+      ${item.figure?.startsWith("<svg") ? `<div class="hp-twin-figure${hpFigureZoom ? " hp-twin-figure--zoom" : ""}" data-action="hp-figure-zoom" role="button" aria-label="${hpFigureZoom ? "Förminska figuren" : "Förstora figuren"}">${item.figure}</div><p class="hp-twin-figure-hint">${hpFigureZoom ? "Tryck på figuren för att förminska" : "Tryck på figuren för att förstora"}</p>` : ""}
       <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
       <div class="hp-options">${optionsHtml}</div>

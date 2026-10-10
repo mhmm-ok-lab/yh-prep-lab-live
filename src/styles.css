@@ -3511,6 +3511,51 @@ details.hp-math-area-card {
   margin: 0;
 }
 
+/* DTK på provnivå: tabell-underlag med rubrik och fotnoter (förstoras inte, tabellen scrollar i sidled). */
+.hp-twin-figure--sheet {
+  cursor: default;
+}
+
+.hp-dtk-sheet-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 0.5rem;
+}
+
+.hp-dtk-table th,
+.hp-dtk-table td {
+  padding: 0.4rem 0.5rem;
+}
+
+.hp-dtk-table td:not(:first-child) {
+  text-align: right;
+}
+
+/* Kommunkolumnen står kvar när tabellen scrollas i sidled. */
+.hp-dtk-table th:first-child,
+.hp-dtk-table td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  font-weight: 600;
+}
+
+.hp-dtk-table thead th:first-child {
+  background: var(--surface-container);
+}
+
+.hp-dtk-table tbody tr:nth-child(even) td:first-child {
+  background: var(--surface-low);
+}
+
+.hp-dtk-note {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0.5rem 0 0;
+}
+
 .hp-twin-table-wrap {
   overflow-x: auto;
   max-width: 100%;

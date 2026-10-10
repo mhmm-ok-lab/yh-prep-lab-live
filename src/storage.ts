@@ -19,6 +19,7 @@ const HP_ELF_REPEAT_KEY = "yh.hp-elf-repeat";
 const HP_MEK_RESULT_KEY = "yh.hp-mek-result";
 const HP_MEK_REPEAT_KEY = "yh.hp-mek-repeat";
 const HP_MEK_SEEN_KEY = "yh.hp-mek-seen";
+const HP_DTK_HP_SEEN_KEY = "yh.hp-dtk-hp-seen";
 const HP_PLAN_KEY = "yh.hp-plan";
 const HP_FORMULA_KEY = "yh.hp-formula";
 const HP_PROVLOGG_KEY = "yh.hp-provlogg";
@@ -482,6 +483,15 @@ export function loadHpMekSeen(): string[] {
 
 export function saveHpMekSeen(ids: string[]): void {
   saveIdList(HP_MEK_SEEN_KEY, ids);
+}
+
+/** DTK-uppgifter på provnivå som redan delats ut (de delas ut före de äldre tills alla setts). */
+export function loadHpDtkHpSeen(): string[] {
+  return loadIdList(HP_DTK_HP_SEEN_KEY);
+}
+
+export function saveHpDtkHpSeen(ids: string[]): void {
+  saveIdList(HP_DTK_HP_SEEN_KEY, ids);
 }
 
 export function exportStudyDataSnapshot(): StudyDataSnapshot {

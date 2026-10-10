@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — DTK på provnivå: täta underlag, flera frågor per figur
+
+**Vad och varför.** DTK i appen var för lätt: små tabeller där svaret syns direkt. På provet ligger svårigheten i att HITTA rätt uppgift i ett tätt underlag. 12 nya egna uppgifter (3 lätt, 3 medel, 6 svår) på fyra underlag med tre frågor vardera: staplar + linje med två y-axlar (höger axel i tusental, börjar på 40), en tabell med 10 kommuner, 6 kolumner och två fotnoter, en schematisk karta med klassindelad ton, och 100 %-staplar där totalerna bara står under diagrammet.
+
+**Före.** Små tabeller på ca 4 rader, enkla diagram, ingen nivå. **Efter.** Nivåetikett Lätt/Medel/Svår vid rubriken (samma mönster som MEK/LÄS/ELF). De nya underlagen delas ut först, grupp för grupp. Tabellunderlaget har rubrik och fotnoter i en ruta; kommunkolumnen står kvar när tabellen scrollas i sidled på mobilen. Felalternativen bygger på typiska misstag: fel axel, missad fotnot, fel bas för procent, andel i stället för mängd.
+
+**Stitch-princip.** Underlagen ritas med currentColor och palett-tokens (fungerar i mörkt läge), textstorlekar från skalan, inga avdelarlinjer, och tonade ytor i stället för ramar. **UX-teori.** Önskvärda svårigheter (Bjork): träning ska likna provets svårighet. Signaturen ”hitta i underlaget” tränas bara med täta underlag.
+
+---
+
 ## 2026-10-10 — Pausknapp i övningarna
 
 **Vad och varför.** Martin pluggar hemma och Juni (8) vill prata ibland. Utan paus räknades avbrottet som tid på frågan, så tempomätningen ("för långsamt") blev missvisande.

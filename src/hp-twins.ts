@@ -2,8 +2,10 @@ import { HP_TWINS_XYZ } from "./hp-twins-xyz";
 import { HP_TWINS_KVA } from "./hp-twins-kva";
 import { HP_TWINS_NOG } from "./hp-twins-nog";
 import { HP_TWINS_DTK } from "./hp-twins-dtk";
+import { HP_TWINS_DTK_HP } from "./hp-twins-dtk-hp";
 import { HP_TWINS_FIG } from "./hp-twins-fig";
 import { HP_TWINS_GEO } from "./hp-twins-geo";
+import type { HpLevel } from "./hp-las";
 
 // HP "tvillinguppgifter": egna uppgifter i högskoleprovets kvantitativa stil,
 // inspirerade av riktiga uppgifter ur UHR:s provhäften (studera.nu). Samma
@@ -29,7 +31,10 @@ export interface HpTwin {
   solution: string;
   /** Ledtråd som visas via ?-knappen FÖRE svar: metod/första steg, aldrig svaret. */
   hint?: string;
-  twinOf: {
+  /** Svårighetsgrad som på provet (DTK på provnivå). Saknas fältet visas ingen nivåetikett. */
+  level?: HpLevel;
+  /** Originaluppgiften hos UHR. Saknas för helt egna uppgifter (t.ex. DTK på provnivå). */
+  twinOf?: {
     prov: string;
     provpass: number;
     uppgift: number;
@@ -598,6 +603,7 @@ export const HP_TWINS: HpTwin[] = [
   ...HP_TWINS_XYZ,
   ...HP_TWINS_KVA,
   ...HP_TWINS_NOG,
+  ...HP_TWINS_DTK_HP,
   ...HP_TWINS_DTK,
   ...HP_TWINS_FIG,
   ...HP_TWINS_GEO,
