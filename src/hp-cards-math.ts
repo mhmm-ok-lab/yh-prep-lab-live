@@ -135,7 +135,7 @@ export const HP_CARDS_MATH: HpCard[] = [
       prompt: "Linjen går genom (1, 3) och (3, 7). Bestäm ekvationen.",
       steps: ["k = Δy / Δx = (7 − 3) / (3 − 1) = 4/2 = 2", "Sätt in en punkt: 3 = 2·1 + m → m = 1", "y = 2x + 1", "Kontroll med (3, 7): 2·3 + 1 = 7 ✓"]
     },
-    trap: "Att vända bråket (Δx/Δy) eller ta x-differensen i fel ordning, så tecknet på k blir fel. Ta samma punkt först i både täljare och nämnare.",
+    trap: "Att vända bråket (Δx/Δy) eller ta x-differensen i fel ordning, så tecknet på k blir fel. Ta samma punkt först i både täljare och nämnare. Engelska videor skriver y = mx + b: där är m lutningen (vårt k) och b skärningen med y-axeln (vårt m). På HP gäller y = kx + m.",
     link: { label: "Matteboken: Räta linjens ekvation (med video)", url: "https://www.matteboken.se/lektioner/matte-1/funktioner/rata-linjens-ekvation" },
     mnemonic: "k = Klättringen: hur många steg upp för varje steg åt höger (upp delat med bort). m = där linjen Möter y-axeln. Räta linjen är en funktion: y = kx + m är samma sak som f(x) = kx + m.",
     extraLinks: [{ label: "Testa själv: välj k och m och se linjen ändras (GeoGebra, Matematik 2, kapitel 1)", url: "https://mat.geogebra.org/m/cebyeeqp" }, { label: "Videor på engelska: slope-intercept form (OBS: där heter k \"m\" och m \"b\")", url: "https://www.youtube.com/results?search_query=slope+intercept+form+khan+academy" }]
