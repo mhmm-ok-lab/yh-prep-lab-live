@@ -6241,6 +6241,37 @@ function spaceMathSymbols(root: HTMLElement): void {
   }
 }
 
+// Paus (2026-10-10): Juni vill prata ibland. Tiden står still och frågan döljs; vid Fortsätt flyttas
+// starttiderna fram lika länge som pausen varade, så tempot per fråga blir rätt.
+let hpPausedAt: number | null = null;
+
+function hpDrillActive(): boolean {
+  return page === "hp" && !hpForceHome && Boolean(hpSession || hpMathSession || hpTwinSession || hpLasSession || hpMekSession || hpFormulaSession);
+}
+
+function resumeHpPause(): void {
+  if (hpPausedAt === null) return;
+  const delta = Date.now() - hpPausedAt;
+  const sessions = [hpSession, hpMathSession, hpTwinSession, hpLasSession, hpMekSession] as unknown as ({ questionStartedAt?: number; startedAt?: number } | null)[];
+  for (const s of sessions) {
+    if (!s) continue;
+    if (typeof s.questionStartedAt === "number") s.questionStartedAt += delta;
+    if (typeof s.startedAt === "number") s.startedAt += delta;
+  }
+  hpPausedAt = null;
+}
+
+function renderHpPause(): string {
+  if (hpPausedAt !== null) {
+    return `<div class="hp-pause-overlay" role="dialog" aria-label="Pausad">
+      <p class="hp-pause-title">Pausad</p>
+      <p class="hp-pause-sub">Tiden står still och frågan är dold.</p>
+      <button class="hp-cta-btn" data-action="hp-pause-resume">Fortsätt</button>
+    </div>`;
+  }
+  return hpDrillActive() ? `<button class="hp-pause-btn" data-action="hp-pause" aria-label="Pausa övningen">Paus</button>` : "";
+}
+
 function render(): void {
   const isSessionFocus = Boolean(activeSession);
   const showSessionCard = isSessionFocus;
@@ -6256,6 +6287,7 @@ function render(): void {
 
     </div>
     ${activeGlossaryTerm ? renderGlossaryOverlay(activeGlossaryTerm) : ""}
+    ${renderHpPause()}
   `;
   spaceMathSymbols(app);
 
@@ -7477,6 +7509,18 @@ app.addEventListener("click", (event) => {
     hpPlanAllOpen = false;
     render();
     window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-pause") {
+    hpPausedAt = Date.now();
+    render();
+    return;
+  }
+
+  if (action === "hp-pause-resume") {
+    resumeHpPause();
+    render();
     return;
   }
 

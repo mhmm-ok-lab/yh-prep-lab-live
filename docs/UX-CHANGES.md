@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — Pausknapp i övningarna
+
+**Vad och varför.** Martin pluggar hemma och Juni (8) vill prata ibland. Utan paus räknades avbrottet som tid på frågan, så tempomätningen ("för långsamt") blev missvisande.
+
+**Före.** Ingen paus; avbrott = förstörd tempomätning. **Efter.** En "Paus"-pill i toppbaren (vänster om användarknappen) när en HP-övning pågår. Paus visar en helskärm "Pausad – Tiden står still och frågan är dold" med "Fortsätt". Vid Fortsätt flyttas frågans och passets starttid fram lika länge som pausen, så tempot blir rätt. Frågan döljs så att pausen inte blir betänketid.
+
+**Stitch-princip.** Nav-pill 28 px, text-sm, palett-tokens; helskärmen på bakgrundsytan utan linjer. **UX-teori.** Designa för avbrott i verklig miljö (kontext i hemmet), och mätdata som speglar faktisk prestation.
+
+---
+
 ## 2026-10-10 — Mobil: ny fråga börjar högst upp, smalare toppbar
 
 **Vad och varför.** Martin på iPhone: efter "Nästa" hamnade han långt ner (där förra frågans förklaring slutade) och fick scrolla upp. Toppbaren var för fet och tog för mycket höjd, så frågan fick mindre plats.
