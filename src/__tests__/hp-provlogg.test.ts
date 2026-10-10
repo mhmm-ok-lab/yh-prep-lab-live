@@ -24,3 +24,15 @@ describe("hp-provlogg", () => {
     expect(weakestDelprov([])).toBeNull();
   });
 });
+
+describe("verbalt pass utan ELF", () => {
+  it("godtar tomt ELF och sparar bara ORD, LÄS och MEK", () => {
+    const r = buildProvPass({ id: "v", date: "2026-10-11", name: "HT 2025 pass 3", typ: "verbalt", scores: { ORD: "7", LÄS: "6", MEK: "8", ELF: "" } });
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.pass.scores).toEqual({ ORD: 7, LÄS: 6, MEK: 8 });
+  });
+  it("kräver fortfarande ORD", () => {
+    const r = buildProvPass({ id: "v", date: "2026-10-11", name: "", typ: "verbalt", scores: { ORD: "", LÄS: "6", MEK: "8", ELF: "" } });
+    expect(r.ok).toBe(false);
+  });
+});

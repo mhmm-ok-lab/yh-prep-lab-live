@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — Provpass-logg: ELF får lämnas tomt
+
+**Vad och varför.** Studera.nu publicerar de verbala passen utan ELF (upphovsrätt). Loggen krävde ändå ELF, så Martin hade tvingats skriva 0, och då hade ELF felaktigt pekats ut som svagaste delprov.
+
+**Före.** Alla fyra verbala fält obligatoriska. **Efter.** ELF får lämnas tomt, med texten "lämna tomt om passet saknar ELF" under fältet. Ett tomt ELF påverkar inte utvecklingen eller "lägg mest tid här".
+
+**Stitch-princip.** Ingen ny komponent, samma fält och textstorlek. **UX-teori.** Felförebyggande: designen ska inte tvinga fram data som förvränger feedbacken.
+
+---
+
 ## 2026-10-10 — π får egen luft i formler
 
 **Vad och varför.** Martin: π "klistras ihop" med r, gångerpunkten och siffror och är svårt att tyda. Orsak: Public Sans saknar π, så webbläsaren lånar tecknet från ett reservtypsnitt utan sidluft, och formelrutan var extra fet (800).

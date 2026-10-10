@@ -23,12 +23,14 @@ export interface ProvPass {
 
 export type ProvInputResult = { ok: true; pass: ProvPass } | { ok: false; error: string };
 
-/** Validerar inmatningen. Alla delprov för vald typ måste fyllas i som heltal 0..max. */
+/** Validerar inmatningen. Alla delprov för vald typ måste fyllas i som heltal 0..max, utom ELF som får lämnas tomt
+ * (studera.nu publicerar verbala pass utan ELF av upphovsrättsskäl). */
 export function buildProvPass(input: { id: string; date: string; name: string; typ: ProvTyp; scores: Record<string, string> }): ProvInputResult {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date)) return { ok: false, error: "Välj ett datum." };
   const scores: Partial<Record<HpNameId, number>> = {};
   for (const id of PROV_DELPROV[input.typ]) {
     const raw = (input.scores[id] ?? "").trim();
+    if (raw === "" && id === "ELF") continue;
     if (!/^\d+$/.test(raw)) return { ok: false, error: `Fyll i antal rätt för ${id}.` };
     const n = Number(raw);
     if (n > PROV_MAX[id]) return { ok: false, error: `${id} har högst ${PROV_MAX[id]} uppgifter.` };

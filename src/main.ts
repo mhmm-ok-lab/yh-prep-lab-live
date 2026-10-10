@@ -5011,7 +5011,7 @@ function renderHpProvlogg(): string {
       (id) => `
       <label class="hp-prov-field">
         <span class="hp-prov-field-name">${hpAbbr(id)}</span>
-        <span class="hp-prov-field-sub">${HP_NAMES[id].full} · av ${PROV_MAX[id]}</span>
+        <span class="hp-prov-field-sub">${HP_NAMES[id].full} · av ${PROV_MAX[id]}${id === "ELF" ? " · lämna tomt om passet saknar ELF" : ""}</span>
         <input class="hp-prov-input" type="number" inputmode="numeric" min="0" max="${PROV_MAX[id]}" data-prov-score="${id}" />
       </label>`
     )
