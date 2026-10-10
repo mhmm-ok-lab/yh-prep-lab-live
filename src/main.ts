@@ -1502,7 +1502,16 @@ function buildHpTwinPass(delprov: HpDelprov): HpTwin[] {
   const seen = new Set(delprov === "DTK" ? loadHpDtkHpSeen() : []);
   const isNew = (g: HpTwin[]) => g.some((t) => t.level !== undefined && !seen.has(t.id));
   const shuffledGroups = [...groups.values()].sort(() => Math.random() - 0.5);
-  const freshItems = [...shuffledGroups.filter(isNew), ...shuffledGroups.filter((g) => !isNew(g))].flat();
+  // Resten varvas diagram/karta och tabell (2026-10-10): banken har mest tabeller, så slumpen gav nästan bara tabeller.
+  const rest = shuffledGroups.filter((g) => !isNew(g));
+  const figGroups = rest.filter((g) => !g[0].table);
+  const tableGroups = rest.filter((g) => Boolean(g[0].table));
+  const mixed: HpTwin[][] = [];
+  for (let i = 0; i < Math.max(figGroups.length, tableGroups.length); i++) {
+    if (figGroups[i]) mixed.push(figGroups[i]);
+    if (tableGroups[i]) mixed.push(tableGroups[i]);
+  }
+  const freshItems = [...shuffledGroups.filter(isNew), ...mixed].flat();
   const ordered = [...repeatItems, ...freshItems].slice(0, size);
   if (delprov === "DTK") {
     ordered.filter((t) => t.level !== undefined).forEach((t) => seen.add(t.id));
