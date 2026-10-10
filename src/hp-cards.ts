@@ -24,6 +24,10 @@ export interface HpCard {
   trap: string;
   /** Extern fördjupning, helst med video. */
   link: { label: string; url: string };
+  /** Minnesregel, en eller två korta rader (2026-10-10). */
+  mnemonic?: string;
+  /** Fler länkar, t.ex. interaktiv övning. */
+  extraLinks?: { label: string; url: string }[];
 }
 
 export const HP_CARDS: HpCard[] = [...HP_CARDS_MATH, ...HP_CARDS_DELPROV];

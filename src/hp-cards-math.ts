@@ -116,7 +116,7 @@ export const HP_CARDS_MATH: HpCard[] = [
   {
     id: "kort-rata-linjen",
     title: "Räta linjens ekvation",
-    matches: ["rata-linjen", "räta linjen", "Räta linjen"],
+    matches: ["rata-linjen", "räta linjen", "Räta linjen", "räta linjen i koordinatsystem"],
     formula: "y = kx + m,   k = Δy / Δx,   m = där linjen skär y-axeln",
     svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Linjen y = 2x + 1 med trappsteg Δx = 1 och Δy = 2 samt m = 1">
 <g ${ST} stroke-width="1.2"><path d="M20 170H200M60 190V5"/></g>
@@ -136,7 +136,9 @@ export const HP_CARDS_MATH: HpCard[] = [
       steps: ["k = Δy / Δx = (7 − 3) / (3 − 1) = 4/2 = 2", "Sätt in en punkt: 3 = 2·1 + m → m = 1", "y = 2x + 1", "Kontroll med (3, 7): 2·3 + 1 = 7 ✓"]
     },
     trap: "Att vända bråket (Δx/Δy) eller ta x-differensen i fel ordning, så tecknet på k blir fel. Ta samma punkt först i både täljare och nämnare.",
-    link: { label: "Matteboken: Räta linjens ekvation (med video)", url: "https://www.matteboken.se/lektioner/matte-1/funktioner/rata-linjens-ekvation" }
+    link: { label: "Matteboken: Räta linjens ekvation (med video)", url: "https://www.matteboken.se/lektioner/matte-1/funktioner/rata-linjens-ekvation" },
+    mnemonic: "k = Klättringen: hur många steg upp för varje steg åt höger (upp delat med bort). m = där linjen Möter y-axeln. Räta linjen är en funktion: y = kx + m är samma sak som f(x) = kx + m.",
+    extraLinks: [{ label: "Testa själv: välj k och m och se linjen ändras (GeoGebra, Matematik 2, kapitel 1)", url: "https://mat.geogebra.org/m/cebyeeqp" }]
   },
   {
     id: "kort-geometri",
@@ -251,6 +253,11 @@ export const HP_CARDS_MATH: HpCard[] = [
       steps: ["f(3) = 3² − 1 = 8", "f(x) = 3 → x² − 1 = 3 → x² = 4", "x = 2 eller x = −2 (båda ger 3)"]
     },
     trap: "Att bara ge den positiva roten, eller blanda ihop f(x) och x: f(3) betyder 'sätt in x = 3', inte 'f gånger 3'.",
-    link: { label: "Matteboken: Funktionsbegreppet (med video)", url: "https://www.matteboken.se/lektioner/gymnasiet/matte-niva-1/funktioner/funktionsbegreppet" }
+    link: { label: "Matteboken: Funktionsbegreppet (med video)", url: "https://www.matteboken.se/lektioner/gymnasiet/matte-niva-1/funktioner/funktionsbegreppet" },
+    mnemonic: "f(x) är bara ett annat namn för y. f(3) = \"vad blir y när x är 3?\": byt ut varje x mot 3. f(x) = 3 = \"vilket x ger y = 3?\": lös ekvationen. Räta linjen f(x) = kx + m är en funktion som ritar ett rakt streck; har x en exponent (x²) blir grafen böjd.",
+    extraLinks: [
+      { label: "Matteboken: Räta linjens ekvation (en sorts funktion)", url: "https://www.matteboken.se/lektioner/matte-1/funktioner/rata-linjens-ekvation" },
+      { label: "Testa själv: välj k och m och se linjen ändras (GeoGebra, Matematik 2, kapitel 1)", url: "https://mat.geogebra.org/m/cebyeeqp" }
+    ]
   }
 ];

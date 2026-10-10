@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — Påminnelsekort: minnesregel och "testa själv"-länk
+
+**Vad och varför.** Martin fastnade på en XYZ-uppgift om funktioner och blandade ihop f(x) med räta linjens ekvation. Korten förklarade var för sig men inte kopplingen, och saknade något att minnas regeln med.
+
+**Före.** Varför, exempel, fälla, en Matteboken-länk. **Efter.** Nytt block "Minnesregel" (valfritt fält) och fler länkar. Räta linjen: "k = Klättringen, m = där linjen Möter y-axeln; y = kx + m är samma sak som f(x) = kx + m". Funktioner: "f(x) är ett annat namn för y; f(3) = byt x mot 3; f(x) = 3 = lös". Båda länkar till en GeoGebra-aktivitet där man väljer k och m. "räta linjen i koordinatsystem" matchar nu linjekortet.
+
+**Stitch-princip.** Samma kortblock och länkstil, inga nya tokens. **UX-teori.** Minnesregler (mnemonics, dual coding) och att explicit koppla ihop begrepp som förväxlas (interferens).
+
+---
+
 ## 2026-10-10 — DTK-rundor varvar diagram/karta och tabell
 
 **Vad och varför.** En testare (Martins systerson) upplevde att DTK "bara har tabeller". Banken har 60 tabelluppgifter mot 36 med diagram/karta, och grupperna slumpades, så de flesta rundor blev nästan bara tabeller, till skillnad från provet.

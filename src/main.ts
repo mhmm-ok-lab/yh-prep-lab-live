@@ -4374,7 +4374,9 @@ function renderHpCard(card: HpCard): string {
         <p class="hp-card-label">Fällan på provet</p>
         <p class="hp-card-text">${hpExpand(card.trap)}</p>
       </div>
+      ${card.mnemonic ? `<div class="hp-card-block"><p class="hp-card-label">Minnesregel</p><p class="hp-card-text">${hpExpand(card.mnemonic)}</p></div>` : ""}
       <a class="hp-card-extlink" href="${card.link.url}" target="_blank" rel="noopener">${hpExpand(card.link.label)} ↗</a>
+      ${(card.extraLinks ?? []).map((l) => `<a class="hp-card-extlink" href="${l.url}" target="_blank" rel="noopener">${hpExpand(l.label)} ↗</a>`).join("")}
       ${hpPlanCardDelprov ? `<button class="hp-cta-btn hp-plan-card-cta" data-action="hp-twin-start" data-delprov="${hpPlanCardDelprov}">Nu ett pass: ${HP_DELPROV_NAMES[hpPlanCardDelprov].toLowerCase()}</button>` : ""}
     </div>
   `;
