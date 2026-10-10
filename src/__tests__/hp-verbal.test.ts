@@ -3,6 +3,7 @@ import { HP_LAS_TEXTS } from "../hp-las";
 import { HP_LAS_TEXTS_HP } from "../hp-las-hp";
 import { HP_ELF_TEXTS } from "../hp-elf";
 import { HP_MEK_ITEMS } from "../hp-mek";
+import { HP_MEK_ITEMS_HP } from "../hp-mek-hp";
 
 const LEVELS = ["latt", "medel", "svar", undefined];
 
@@ -40,5 +41,6 @@ describe("verbala uppgifter", () => {
 
   it("provnivå-texterna delas ut först", () => {
     expect(HP_LAS_TEXTS[0].id).toBe(HP_LAS_TEXTS_HP[0].id);
+    expect(HP_MEK_ITEMS[0].id).toBe(HP_MEK_ITEMS_HP[0].id);
   });
 });

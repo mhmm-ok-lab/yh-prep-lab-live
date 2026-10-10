@@ -1,5 +1,6 @@
 // HP MEK-träning (meningskomplettering): egna korta texter med luckor (inga UHR-texter).
 import type { HpLevel } from "./hp-las";
+import { HP_MEK_ITEMS_HP } from "./hp-mek-hp";
 
 export interface HpMekOption {
   /** Ord för varje lucka i ordning, t.ex. ["dock", "förvånande"]. */
@@ -22,7 +23,7 @@ export interface HpMekItem {
   level?: HpLevel;
 }
 
-export const HP_MEK_ITEMS: HpMekItem[] = [
+const HP_MEK_ITEMS_BAS: HpMekItem[] = [
   {
     id: "mek-01",
     text: "Forskarna väntade sig en tydlig effekt, men resultaten var ___ svaga att de inte gick att skilja från slumpen.",
@@ -504,3 +505,6 @@ export const HP_MEK_ITEMS: HpMekItem[] = [
     hint: "Meningen inleds med 'ju' och slutar med en orsak.",
   },
 ];
+
+/** Provnivå-uppgifterna först, så de delas ut före de äldre (passet tar osedda i listans ordning). */
+export const HP_MEK_ITEMS: HpMekItem[] = [...HP_MEK_ITEMS_HP, ...HP_MEK_ITEMS_BAS];
