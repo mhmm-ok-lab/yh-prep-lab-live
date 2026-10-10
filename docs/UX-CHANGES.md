@@ -7,7 +7,7 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 **Vad och varför.** En testare (Martins systerson) upplevde att DTK "bara har tabeller". Banken har 60 tabelluppgifter mot 36 med diagram/karta, och grupperna slumpades, så de flesta rundor blev nästan bara tabeller, till skillnad från provet.
 
-**Före.** Slumpad ordning, i praktiken mest tabeller. **Efter.** Efter de osedda uppgifterna på provnivå varvas grupperna: diagram/karta, tabell, diagram/karta … så att varje runda blir ungefär hälften av varje. Övriga delprov påverkas inte.
+**Före.** Slumpad ordning, i praktiken mest tabeller. **Efter.** Efter de osedda uppgifterna på provnivå blandas grupperna som på provet: graf, graf, tabell, graf … (3 grafer per tabell). Kalibrerat mot HT 2025 pass 1, där DTK hade 4 underlag à 3 frågor: tabell med fotnot, stapeldiagram, karta, linjediagram. Övriga delprov påverkas inte.
 
 **Stitch-princip.** Ingen visuell ändring. **UX-teori.** Representativ träning (transfer): övningen ska spegla provets blandning av underlag.
 
