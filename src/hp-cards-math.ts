@@ -138,7 +138,7 @@ export const HP_CARDS_MATH: HpCard[] = [
     trap: "Att vända bråket (Δx/Δy) eller ta x-differensen i fel ordning, så tecknet på k blir fel. Ta samma punkt först i både täljare och nämnare.",
     link: { label: "Matteboken: Räta linjens ekvation (med video)", url: "https://www.matteboken.se/lektioner/matte-1/funktioner/rata-linjens-ekvation" },
     mnemonic: "k = Klättringen: hur många steg upp för varje steg åt höger (upp delat med bort). m = där linjen Möter y-axeln. Räta linjen är en funktion: y = kx + m är samma sak som f(x) = kx + m.",
-    extraLinks: [{ label: "Testa själv: välj k och m och se linjen ändras (GeoGebra, Matematik 2, kapitel 1)", url: "https://mat.geogebra.org/m/cebyeeqp" }]
+    extraLinks: [{ label: "Testa själv: välj k och m och se linjen ändras (GeoGebra, Matematik 2, kapitel 1)", url: "https://mat.geogebra.org/m/cebyeeqp" }, { label: "Videor på engelska: slope-intercept form (OBS: där heter k \"m\" och m \"b\")", url: "https://www.youtube.com/results?search_query=slope+intercept+form+khan+academy" }]
   },
   {
     id: "kort-geometri",
@@ -256,6 +256,7 @@ export const HP_CARDS_MATH: HpCard[] = [
     link: { label: "Matteboken: Funktionsbegreppet (med video)", url: "https://www.matteboken.se/lektioner/gymnasiet/matte-niva-1/funktioner/funktionsbegreppet" },
     mnemonic: "f(x) är bara ett annat namn för y. f(3) = \"vad blir y när x är 3?\": byt ut varje x mot 3. f(x) = 3 = \"vilket x ger y = 3?\": lös ekvationen. Räta linjen f(x) = kx + m är en funktion som ritar ett rakt streck; har x en exponent (x²) blir grafen böjd.",
     extraLinks: [
+      { label: "Video på engelska: What is a function? (Khan Academy)", url: "https://youtu.be/kvGsIo1TmsM" },
       { label: "Matteboken: Räta linjens ekvation (en sorts funktion)", url: "https://www.matteboken.se/lektioner/matte-1/funktioner/rata-linjens-ekvation" },
       { label: "Testa själv: välj k och m och se linjen ändras (GeoGebra, Matematik 2, kapitel 1)", url: "https://mat.geogebra.org/m/cebyeeqp" }
     ]
