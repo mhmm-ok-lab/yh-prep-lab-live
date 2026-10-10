@@ -3683,6 +3683,54 @@ function renderHpFormulaHomeCard(ready: HpReadyMap): string {
   return renderHpStartCard('data-action="hp-formula-start"', "Formelträning", "Formler du behöver kunna utantill · 5 min", hpReadyMeta(ready.FORM, dueText));
 }
 
+// ── Kopiera min status (2026-10-10): progress som text att klistra in i chatten med Claude ──
+let hpStatusCopied = false;
+
+function hpStatusText(): string {
+  const { rows, diag, formula } = hpReadyData();
+  const line = (r: HpReadyRow) =>
+    `- ${r.short} (${r.name}): ${HP_READY_STATUS_ICON[r.status]} ${HP_READY_STATUS_LABEL[r.status]} · ${r.result} · ${r.tempo}${r.reasonText ? ` · ${r.reasonText}` : ""}`;
+  const sum = summarizeReadiness(rows);
+  const passes = sortProvPass(loadHpProvlogg()).slice(0, 3);
+  const weak = weakestDelprov(loadHpProvlogg());
+  const passLines = passes.map(
+    (p) => `- ${p.date} ${p.name} (${p.typ}): ${Object.entries(p.scores).map(([id, n]) => `${id} ${n}/${PROV_MAX[id as keyof typeof PROV_MAX]}`).join(", ")}`
+  );
+  return [
+    `Min HP-status ${new Date().toISOString().slice(0, 10)} (user: ${currentUserId})`,
+    `${sum.ready} av ${sum.total} redo, ${sum.notTried} inte provade`,
+    "",
+    "Delprov (senaste resultat):",
+    ...rows.map(line),
+    line(formula),
+    line(diag),
+    "",
+    "Provpass-logg (senaste 3):",
+    ...(passLines.length ? passLines : ["- inga pass inmatade"]),
+    weak ? `Svagaste i loggen: ${weak.id} (${weak.percent} %)` : ""
+  ].join("\n").trim();
+}
+
+async function copyHpStatus(): Promise<void> {
+  const text = hpStatusText();
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.append(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  hpStatusCopied = true;
+  render();
+  setTimeout(() => {
+    hpStatusCopied = false;
+    render();
+  }, 2500);
+}
+
 // ── Är jag redo? (beslut 2026-10-08) ──
 
 function hpReadyData(): { rows: HpReadyRow[]; diag: HpReadyRow; formula: HpReadyRow } {
@@ -3759,7 +3807,8 @@ function renderHpHome(): string {
         <p class="hp-countdown-sub">18 okt 2026</p>
       </div>
       ${activeResumeHtml ? "" : renderHpPlanSection(progress, hasWords)}
-      ${activeResumeHtml ? "" : `<p class="hp-ready-summary-line">${sum.ready} av ${sum.total} redo · ${sum.notTried} inte ${sum.notTried === 1 ? "provad" : "provade"}</p>`}
+      ${activeResumeHtml ? "" : `<p class="hp-ready-summary-line">${sum.ready} av ${sum.total} redo · ${sum.notTried} inte ${sum.notTried === 1 ? "provad" : "provade"}</p>
+      <div class="hp-status-copy"><button class="hp-card-link" data-action="hp-copy-status">${hpStatusCopied ? "Kopierat ✓ klistra in i chatten" : "Kopiera min status för chatten"}</button></div>`}
       ${activeResumeHtml}
       ${activeResumeHtml
         ? ""
@@ -7422,6 +7471,11 @@ app.addEventListener("click", (event) => {
     hpPlanAllOpen = false;
     render();
     window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-copy-status") {
+    void copyHpStatus();
     return;
   }
 

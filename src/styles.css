@@ -6322,6 +6322,11 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   color: var(--ok-ink);
 }
 
+.hp-status-copy {
+  display: flex;
+  justify-content: center;
+}
+
 .hp-ready-summary-line {
   margin: 0;
   text-align: center;

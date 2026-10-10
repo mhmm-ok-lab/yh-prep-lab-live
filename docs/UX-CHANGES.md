@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — "Kopiera min status för chatten"
+
+**Vad och varför.** Martin pluggar på iPhone men diskuterar nästa steg med Claude på Macen, och progressen ligger bara lokalt i telefonen. Synk via GitHub-nyckel kändes för omständligt mitt i pluggandet.
+
+**Före.** Inget sätt att visa sin progress för chatten utan att beskriva den själv. **Efter.** En liten länkknapp under "X av 8 redo" på HP-hem kopierar en textsammanfattning (status, resultat och tempo per delprov, formler, mattediagnos, senaste tre provpassen, svagaste delprov). Knappen visar "Kopierat ✓ klistra in i chatten" i 2,5 s.
+
+**Stitch-princip.** Befintlig länk-pill (28 px), inga nya tokens eller storlekar. **UX-teori.** Minsta möjliga interaktionskostnad (ett tryck + klistra in) och att externalisera status så att samtalet utgår från data, inte från minnet.
+
+---
+
 ## 2026-10-10 — Provpass-logg: ELF får lämnas tomt
 
 **Vad och varför.** Studera.nu publicerar de verbala passen utan ELF (upphovsrätt). Loggen krävde ändå ELF, så Martin hade tvingats skriva 0, och då hade ELF felaktigt pekats ut som svagaste delprov.
