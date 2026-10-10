@@ -52,6 +52,7 @@ import {
   type HpReadyRow
 } from "./hp-readiness";
 import { createDailyPlan, getNextMockExam } from "./planner";
+import { createSync, installWriteHook, SYNC_TOKEN_URL } from "./sync";
 import { estimateDrillMinutes, filterQuestions, isAnswerCorrect, scoreAnswers } from "./question-bank";
 import {
   addHpLasRepeatText,
@@ -59,8 +60,6 @@ import {
   addHpRepeatWord,
   addHpTwinRepeatItem,
   clearActiveSession,
-  exportStudyDataSnapshot,
-  importStudyDataSnapshot,
   loadActiveSession,
   loadHpLasRepeatQueue,
   loadHpMekRepeatQueue,
@@ -535,6 +534,7 @@ function switchToUser(nextUserId: string): void {
   clearSessionTimers();
   startTimer();
   setStorageNotice(`Bytt till användare: ${formatUserLabel(nextUser)}`);
+  void sync.syncNow();
 }
 
 function loadTheme(): ThemeId {
@@ -2143,7 +2143,7 @@ function setStorageNotice(message: string): void {
 }
 
 function exportProgressSnapshot(): void {
-  const snapshot = exportStudyDataSnapshot();
+  const snapshot = sync.exportSnapshot();
   const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -2159,16 +2159,53 @@ function exportProgressSnapshot(): void {
 
 async function importProgressSnapshot(file: File): Promise<void> {
   try {
-    const raw = await file.text();
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
-    const result = importStudyDataSnapshot(parsed);
-    activeSession = loadActiveSession();
-    setStorageNotice(
-      `Import klar: ${result.importedSessions} pass, aktiv session ${result.restoredActiveSession ? "återställd" : "saknas"}.`
-    );
+    const parsed = JSON.parse(await file.text()) as unknown;
+    const changed = sync.importSnapshot(parsed);
+    reloadUserState();
+    setStorageNotice(`Import klar: ${changed} delar uppdaterade, inget gammalt har tagits bort.`);
   } catch {
     setStorageNotice("Import misslyckades. Kontrollera att filen är en giltig backup.");
   }
+}
+
+/** Läser om det som hålls i minnet efter att synk eller import ändrat lagringen. */
+function reloadUserState(): void {
+  activeSession = loadActiveSession();
+  studyProfile = loadStudyProfile(currentUserId);
+}
+
+const sync = createSync({
+  storage: localStorage,
+  fetchFn: (...args) => fetch(...args),
+  getUser: () => currentUserId,
+  onApplied: () => {
+    reloadUserState();
+    if (!hpSession && !activeSession) render();
+  },
+  onStatus: () => {
+    const el = document.getElementById("sync-status");
+    if (el) el.textContent = sync.statusText();
+  }
+});
+installWriteHook((key) => sync.noteWrite(key));
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" || document.visibilityState === "visible") {
+    void sync.syncNow();
+  }
+});
+void sync.syncNow();
+
+async function connectSync(): Promise<void> {
+  const input = document.getElementById("sync-token-input") as HTMLInputElement | null;
+  const token = input?.value.trim() ?? "";
+  if (!token) {
+    setStorageNotice("Klistra in nyckeln först.");
+    return;
+  }
+  const statusEl = document.getElementById("sync-status");
+  if (statusEl) statusEl.textContent = "Kopplar …";
+  const ok = await sync.connect(token);
+  setStorageNotice(ok ? "Kopplad. Din data synkas nu automatiskt." : "Kunde inte koppla. Kontrollera nyckeln (scope: gist).");
 }
 
 function registerServiceWorker(): void {
@@ -2949,6 +2986,16 @@ function renderAppNav(): string {
               <input type="file" accept="application/json" data-input="import-progress" style="display:none">
             </label>
           </div>
+          <p class="profile-q-label">Synk mellan enheter</p>
+          <p class="profile-sync-status" id="sync-status" aria-live="polite">${sync.statusText()}</p>
+          ${sync.isConnected() ? `
+            <button class="secondary" data-action="sync-now">Synka nu</button>
+            <button class="secondary" data-action="sync-disconnect">Koppla från</button>
+          ` : `
+            <p class="profile-sync-help">1. <a href="${SYNC_TOKEN_URL}" target="_blank" rel="noopener">Skapa nyckel</a> (scope gist är förvald, tryck Generate token). 2. Kopiera och klistra in här. Gör samma på alla enheter.</p>
+            <input class="profile-sync-input" id="sync-token-input" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Klistra in GitHub-nyckel">
+            <button class="secondary" data-action="sync-connect">Koppla</button>
+          `}
           ${storageNotice ? `<p class="success profile-notice">${storageNotice}</p>` : ""}
         </div>
       </details>
@@ -6238,6 +6285,22 @@ app.addEventListener("click", (event) => {
 
   const action = actionEl.dataset.action;
   if (!action) {
+    return;
+  }
+
+  if (action === "sync-connect") {
+    void connectSync();
+    return;
+  }
+
+  if (action === "sync-now") {
+    void sync.syncNow();
+    return;
+  }
+
+  if (action === "sync-disconnect") {
+    sync.disconnect();
+    setStorageNotice("Frånkopplad. Datan på den här enheten ligger kvar.");
     return;
   }
 

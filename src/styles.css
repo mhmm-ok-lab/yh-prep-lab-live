@@ -3827,6 +3827,30 @@ details.app-nav-user-menu {
   display: none;
 }
 
+.profile-sync-status {
+  font-size: 0.75rem;
+  margin: 0 0 0.35rem;
+  color: var(--text-muted);
+}
+
+.profile-sync-help {
+  font-size: 0.75rem;
+  margin: 0 0 0.35rem;
+  color: var(--text-muted);
+}
+
+.profile-sync-input {
+  width: 100%;
+  height: 32px;
+  font-size: 0.75rem;
+  padding: 0 0.5rem;
+  margin-bottom: 0.35rem;
+  border-radius: 6px;
+  border: 1px solid var(--surface-highest);
+  background: var(--surface-low);
+  color: var(--ink);
+}
+
 .profile-notice {
   font-size: 0.75rem;
   margin: 0.4rem 0 0;
