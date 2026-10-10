@@ -1,7 +1,14 @@
 // HP LÄS-träning: egna övningstexter i högskoleprovets stil (inga UHR-texter).
 // Varje svarsalternativ har en egen förklaring så att man förstår varför man valde fel.
 
+import { HP_LAS_TEXTS_HP } from "./hp-las-hp";
+
 export type HpLasQuestionType = "huvudtanke" | "detalj" | "slutsats" | "syfte" | "ordbetydelse";
+
+/** Svårighetsgrad som på provet. Saknas fältet räknas uppgiften som "latt" (de äldre uppgifterna). */
+export type HpLevel = "latt" | "medel" | "svar";
+
+export const HP_LEVEL_LABEL: Record<HpLevel, string> = { latt: "Lätt", medel: "Medel", svar: "Svår" };
 
 export interface HpLasOption {
   text: string;
@@ -19,6 +26,8 @@ export interface HpLasQuestion {
   correct: number;
   /** Vilket stycke (0-baserat index i paragraphs) svaret främst finns i. */
   paragraph: number;
+  /** Svårighetsgrad; saknas = "latt". */
+  level?: HpLevel;
 }
 
 export interface HpLasText {
@@ -31,7 +40,7 @@ export interface HpLasText {
   questions: HpLasQuestion[];
 }
 
-export const HP_LAS_TEXTS: HpLasText[] = [
+const HP_LAS_TEXTS_BAS: HpLasText[] = [
   {
     "id": "las-somn",
     "title": "Natten som arbetspass",
@@ -1107,3 +1116,6 @@ export const HP_LAS_TEXTS: HpLasText[] = [
     ]
   }
 ];
+
+/** Provnivå-texterna först, så de delas ut före de äldre. */
+export const HP_LAS_TEXTS: HpLasText[] = [...HP_LAS_TEXTS_HP, ...HP_LAS_TEXTS_BAS];

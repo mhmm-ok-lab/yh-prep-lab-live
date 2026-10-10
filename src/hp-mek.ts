@@ -1,4 +1,5 @@
 // HP MEK-träning (meningskomplettering): egna korta texter med luckor (inga UHR-texter).
+import type { HpLevel } from "./hp-las";
 
 export interface HpMekOption {
   /** Ord för varje lucka i ordning, t.ex. ["dock", "förvånande"]. */
@@ -17,6 +18,8 @@ export interface HpMekItem {
   correct: number;
   /** Ledtråd efter ett fel svar: vilket signalord/samband att titta på, aldrig svaret. */
   hint: string;
+  /** Svårighetsgrad; saknas = "latt". */
+  level?: HpLevel;
 }
 
 export const HP_MEK_ITEMS: HpMekItem[] = [

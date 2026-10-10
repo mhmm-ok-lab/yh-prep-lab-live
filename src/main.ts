@@ -6,7 +6,7 @@ import { HP_TWINS } from "./hp-twins";
 import type { HpDelprov, HpTwin } from "./hp-twins";
 import { HP_WORDS } from "./hp-words";
 import type { HpWord } from "./hp-words";
-import { HP_LAS_TEXTS } from "./hp-las";
+import { HP_LAS_TEXTS, HP_LEVEL_LABEL, type HpLevel } from "./hp-las";
 import { HP_ELF_TEXTS } from "./hp-elf";
 import { HP_MEK_ITEMS } from "./hp-mek";
 import type { HpMekItem } from "./hp-mek";
@@ -1347,7 +1347,8 @@ function buildHpMekPass(): HpMekItem[] {
   const usedIds = new Set(repeat.map((i) => i.id));
   const need = HP_MEK_PASS_SIZE - repeat.length;
   let nextSeen = new Set(loadHpMekSeen().filter((id) => byId.has(id)));
-  let pool = shuffled(HP_MEK_ITEMS.filter((i) => !usedIds.has(i.id) && !nextSeen.has(i.id)));
+  // Osedda i bankens ordning, så de nyare HP-nivå-uppgifterna (först i listan) delas ut före de äldre.
+  let pool = HP_MEK_ITEMS.filter((i) => !usedIds.has(i.id) && !nextSeen.has(i.id));
   if (pool.length < need) {
     // Alla uppgifter har setts: en ny runda börjar, de som återstod först.
     const rest = shuffled(HP_MEK_ITEMS.filter((i) => !usedIds.has(i.id) && !pool.includes(i)));
@@ -3979,8 +3980,8 @@ function renderHpHelpPanel(categoryId: "ord" | "las" | "mek" | "elf" | "xyz" | "
 }
 
 /** Rubrik under topraden: vilken övning och vilket delprov det är (Martins test 2026-10-05). */
-function renderHpDrillTitle(text: string): string {
-  return `<p class="hp-drill-title">${text}</p>`;
+function renderHpDrillTitle(text: string, level?: HpLevel): string {
+  return `<p class="hp-drill-title">${text}${level === undefined ? "" : ` <span class="hp-chip hp-chip-inte-provat hp-level">${HP_LEVEL_LABEL[level]}</span>`}</p>`;
 }
 
 /** Progress-text; en överhoppad fråga som kommit tillbaka märks med "(överhoppad)". */
@@ -4586,7 +4587,7 @@ function renderHpMekQuestion(): string {
         ${renderHpProgress(`${hpShort("MEK")} ${idx + 1}/${s.items.length}`, s.reviewIndex, !inReview && s.skippedIds.includes(item.id))}
         ${inReview ? "" : `<span class="hp-tempo" data-hp-mek-tempo>0s / ${HP_MEK_TEMPO_TARGET_SECONDS}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
-      ${renderHpDrillTitle(hpFull("MEK"))}
+      ${renderHpDrillTitle(hpFull("MEK"), item.level ?? "latt")}
       <p class="hp-mek-text" aria-live="polite">${textHtml}</p>
       <div class="hp-options">${optionsHtml}</div>
       ${!answered ? renderHpLadder("hp-mek", s, item.hint) : ""}
@@ -4690,7 +4691,7 @@ function renderHpLasBar(item: HpLasQuestion, idx: number): string {
         <span class="hp-tempo ${over ? "hp-tempo-over" : ""}" data-hp-las-tempo>${hpLasTempoText()}</span>
         ${inReview ? "" : renderHpHelpButton(hpHelpOpenFor === item.id)}
       </div>
-      ${textView ? "" : renderHpDrillTitle(hpLasHeading(s.source, s.text))}
+      ${textView ? "" : renderHpDrillTitle(hpLasHeading(s.source, s.text), item.level ?? "latt")}
       <div class="hp-las-switch" role="group" aria-label="Växla mellan fråga och text">${segQ}${segT}</div>
       ${textView ? `<p class="hp-las-reminder"><strong>Fråga ${idx + 1}:</strong> ${item.prompt}</p>` : ""}
       ${inReview ? "" : `<p class="hp-time-banner ${hpLasQuestionOver() ? "hp-time-banner-on" : ""}" data-hp-las-banner role="status">Tiden för frågan är slut – stryk det som är fel, gissa och gå vidare</p>`}

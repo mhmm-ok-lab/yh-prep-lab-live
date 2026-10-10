@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-10 — Verbalt på provnivå med synlig svårighetsgrad
+
+**Vad och varför.** Martin tyckte att MEK, LÄS och ELF var för korta och lätta jämfört med riktiga provet. Nya egna uppgifter i tre nivåer (ca 3 lätt, 4 medel, 3 svår per delprov), bl.a. en lång LÄS-text på ca 850 ord och MEK med två luckor som måste stämma med varandra.
+
+**Före.** Ingen nivåangivelse; alla uppgifter såg likadana ut. **Efter.** En diskret etikett "Lätt / Medel / Svår" bredvid övningens rubrik. Äldre uppgifter räknas som Lätt. De nya uppgifterna delas ut före de äldre.
+
+**Stitch-princip.** Befintlig `.hp-chip` i neutral ton (samma som "Inte provat"), ingen ny storlek eller färg. **UX-teori.** Kalibrering: att veta svårighetsgraden gör ett fel på en svår uppgift informativt i stället för nedslående (attribution), och liknar provets blandning.
+
+---
+
 ## 2026-10-10 — "Kopiera min status för chatten"
 
 **Vad och varför.** Martin pluggar på iPhone men diskuterar nästa steg med Claude på Macen, och progressen ligger bara lokalt i telefonen. Synk via GitHub-nyckel kändes för omständligt mitt i pluggandet.
