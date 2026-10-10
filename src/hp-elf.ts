@@ -1,10 +1,11 @@
 // HP ELF-träning: egna engelska övningstexter i högskoleprovets stil (inga UHR-texter).
 // Samma format som LÄS, så LÄS-träningens vy kan återanvändas.
 import type { HpLasText, HpLasOption } from "./hp-las";
+import { HP_ELF_TEXTS_HP } from "./hp-elf-hp";
 
 const o = (text: string, why: string): HpLasOption => ({ text, why });
 
-export const HP_ELF_TEXTS: HpLasText[] = [
+const HP_ELF_TEXTS_BAS: HpLasText[] = [
   {
     id: "elf-tulpan",
     title: "The Tulip Story We Like to Tell",
@@ -596,3 +597,6 @@ export const HP_ELF_TEXTS: HpLasText[] = [
     ],
   },
 ];
+
+/** Provnivå-texterna först, så de delas ut före de äldre. */
+export const HP_ELF_TEXTS: HpLasText[] = [...HP_ELF_TEXTS_HP, ...HP_ELF_TEXTS_BAS];
