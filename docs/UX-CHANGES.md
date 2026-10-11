@@ -3,6 +3,12 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-11 — DTK-tabellen får plats på mobil, tydliga fotnoter
+
+**Vad och varför.** Martin på iPhone: tabellen (6 kolumner) scrollade i sidled, den låsta kommunkolumnen täckte rubriker och siffror, och fotnotsmarkeringarna ¹ ² syntes knappt. **Före.** 680 px bred tabell, versala rubriker, små ¹/². **Efter.** Hela tabellen ryms i 343 px: rubriker radbryts utan versaler, text-xs, smalare celler. Fotnoterna är fet accentfärgad upphöjd siffra. **Stitch-princip.** Skalans text-xs, palett-token accent. **UX-teori.** Ingen dold information på liten skärm; fotnoten är provets fälla och måste synas.
+
+---
+
 ## 2026-10-10 — Påminnelsekort: minnesregel och "testa själv"-länk
 
 **Vad och varför.** Martin fastnade på en XYZ-uppgift om funktioner och blandade ihop f(x) med räta linjens ekvation. Korten förklarade var för sig men inte kopplingen, och saknade något att minnas regeln med.

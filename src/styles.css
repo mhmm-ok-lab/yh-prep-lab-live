@@ -3523,9 +3523,32 @@ details.hp-math-area-card {
   margin: 0 0 0.5rem;
 }
 
-.hp-dtk-table th,
-.hp-dtk-table td {
-  padding: 0.4rem 0.5rem;
+/* Provnivå-tabellen ska få plats på mobil utan sidscroll (2026-10-10): rubriker radbryts,
+   inga versaler, smalare celler. Vid scroll täckte den låsta kommunkolumnen rubriker. */
+.hp-twin-table.hp-dtk-table {
+  width: 100%;
+  min-width: 0;
+  font-size: var(--text-xs);
+}
+
+.hp-twin-table.hp-dtk-table th,
+.hp-twin-table.hp-dtk-table td {
+  padding: 0.35rem 0.25rem;
+}
+
+.hp-twin-table.hp-dtk-table thead th {
+  white-space: normal;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.25;
+  vertical-align: bottom;
+  text-align: right;
+}
+
+.hp-twin-table.hp-dtk-table thead th:first-child {
+  text-align: left;
 }
 
 .hp-dtk-table td:not(:first-child) {
@@ -3547,6 +3570,16 @@ details.hp-math-area-card {
 
 .hp-dtk-table tbody tr:nth-child(even) td:first-child {
   background: var(--surface-low);
+}
+
+/* Fotnotsmarkering: syns tydligt på mobil (tidigare ¹/² i samma lilla grad som texten). */
+.hp-dtk-fn {
+  font-size: 0.9em;
+  font-weight: 800;
+  color: var(--accent);
+  vertical-align: super;
+  line-height: 0;
+  padding-left: 1px;
 }
 
 .hp-dtk-note {
