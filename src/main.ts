@@ -3923,8 +3923,11 @@ function renderHpTwinTable(markdown: string): string {
       .replace(/\|$/, "")
       .split("|")
       .map((cell) => cell.trim());
-  const header = parseRow(lines[0]);
-  const dataRows = lines.slice(2).map(parseRow);
+  // **fet** blir <strong>; tusentalsmellanrum görs hårda så att "42 000" inte bryts över två rader.
+  const fmt = (cell: string) =>
+    cell.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(\d) (?=\d{3}(?!\d))/g, "$1\u00a0");
+  const header = parseRow(lines[0]).map(fmt);
+  const dataRows = lines.slice(2).map((l) => parseRow(l).map(fmt));
   return `
     <div class="hp-twin-table-wrap">
       <table class="hp-twin-table">

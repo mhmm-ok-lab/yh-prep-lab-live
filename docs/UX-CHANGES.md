@@ -3,6 +3,12 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-11 — Tillgänglighetskoll HP på mobil (375 px, ljust + mörkt)
+
+**Vad och varför.** Systematisk mätning av alla 376 HP-frågor, 115 SVG-figurer och alla övningsvyer i båda lägena: sidscroll, textstorlek, kontrast, träffytor, semantik. **Före.** 45 underlagstabeller (upp till 776 px) scrollade i sidled; tabellceller med \*\*fet\*\* visade asterisker och "42 000" bröts över två rader; valda-bort svarsalternativ efter svar hade 3,2:1 i ljust läge (opacity 0,5) och "Tryck för att fortsätta" 3,7:1 i mörkt; "Kopiera min status" hade klippt träffyta (overflow hidden åt upp ::after); guidens dragspelsrubriker var 22 px höga; figurernas inre marginal tog 8 px av bredden. **Efter.** Alla tabeller ryms i 343 px (radbrytande celler, text-xs, rubriker utan versaler, hårda tusentalsmellanrum, fet text renderas); övertonade alternativ opacity 0,8 och hint utan opacity (≥ 4,5:1 i båda lägen); träffyta 44 px på status-knappen och dragspelsrubrikerna; figurer 4 px smalare sidmarginal. Redan OK: kontrast på alla övriga texter, SVG-text ≥ 9,5 px, alla figurer har role="img" + aria-label, ingen sidscroll på sidnivå. **Stitch-princip.** Tokens och 3-storleksskalan; ingen ny färg. **UX-teori.** Ingen dold information (tabellkolumner utanför skärmen), WCAG 2.2 AA (1.4.3 kontrast, 2.5.8 målstorlek).
+
+---
+
 ## 2026-10-11 — Mattefrågor: frågan först, robust scroll till toppen
 
 **Vad och varför.** Martin på iPhone: vid ny fråga hamnade han fortfarande långt ner, och frågetexten låg under figuren/tabellen, utanför första vyn. **Före.** Figur → fråga → alternativ; scroll till toppen bara efter en frame. **Efter.** Fråga → figur → alternativ (man vet vad man letar efter innan man läser underlaget, som strategin "leta, läs inte"). Scroll till toppen körs efter nästa frame och igen efter 80 ms (iOS Safari kan återställa scrollen efter omritning), även vid tryck-för-att-gå-vidare i ORD. **Stitch-princip.** Ingen visuell ändring utöver ordningen. **UX-teori.** Första vyn ska bära uppgiften (above the fold), målstyrd läsning.

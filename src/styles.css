@@ -3072,7 +3072,7 @@ details:not(.mini-menu)[open] {
 }
 
 .hp-option-neutral {
-  opacity: 0.5;
+  opacity: 0.8; /* ≥ 4,5:1 i båda lägen (var 0,5 → 3,2:1 i ljust) */
 }
 
 .hp-feedback {
@@ -3120,7 +3120,6 @@ details:not(.mini-menu)[open] {
 .hp-feedback-hint {
   font-size: var(--text-xs);
   color: var(--text-muted);
-  opacity: 0.8;
   margin: 0.4rem 0 0;
   text-align: center;
 }
@@ -3483,7 +3482,7 @@ details.hp-math-area-card {
   color: var(--ink);
   background: var(--card);
   border-radius: var(--radius-card, 12px);
-  padding: 0.5rem;
+  padding: 0.5rem 0.25rem;
   overflow-x: auto;
   cursor: zoom-in;
   max-width: 100%;
@@ -3600,16 +3599,19 @@ details.hp-math-area-card {
 
 .hp-twin-table {
   border-collapse: collapse;
-  width: max-content;
-  min-width: 100%;
-  font-size: var(--text-sm);
+  width: 100%;
+  min-width: 0;
+  font-size: var(--text-xs);
 }
 
+/* Underlagstabeller ska rymmas på mobil utan sidscroll (2026-10-11): cellerna radbryts,
+   rubrikerna får bryta mitt i ord vid behov, tusentalsmellanrum är hårda (se renderHpTwinTable). */
 .hp-twin-table th,
 .hp-twin-table td {
-  padding: 0.45rem 0.65rem;
+  padding: 0.35rem 0.25rem;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
+  vertical-align: top;
   color: var(--ink);
 }
 
@@ -3618,8 +3620,10 @@ details.hp-math-area-card {
   font-weight: 700;
   color: var(--text-muted);
   font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  line-height: 1.25;
+  vertical-align: bottom;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .hp-twin-table tbody tr:nth-child(even) td {
@@ -4727,6 +4731,7 @@ details[open] .course-research-summary::after { transform: rotate(-180deg); }
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  min-height: 44px;
 }
 
 .hp-guide-section-summary::-webkit-details-marker { display: none; }
@@ -5441,8 +5446,6 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   cursor: pointer;
   max-width: 100%;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .hp-card-link::after {
