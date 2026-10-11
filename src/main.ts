@@ -4464,9 +4464,9 @@ function renderHpTwinQuestion(): string {
         ${inReview ? "" : `<span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
       ${renderHpDrillTitle(HP_DELPROV_NAMES[delprov], item.level)}
+      <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.figure && !item.figure.startsWith("<svg") ? `<div class="hp-twin-figure hp-twin-figure--sheet">${item.figure}</div>` : ""}
       ${item.figure?.startsWith("<svg") ? `<div class="hp-twin-figure${hpFigureZoom ? " hp-twin-figure--zoom" : ""}" data-action="hp-figure-zoom" role="button" aria-label="${hpFigureZoom ? "Förminska figuren" : "Förstora figuren"}">${item.figure}</div><p class="hp-twin-figure-hint">${hpFigureZoom ? "Tryck på figuren för att förminska" : "Tryck på figuren för att förstora"}</p>` : ""}
-      <p class="hp-twin-prompt">${item.prompt}</p>
       ${item.table ? renderHpTwinTable(item.table) : ""}
       <div class="hp-options">${optionsHtml}</div>
       ${!answered ? renderHpLadder("hp-twin", hpTwinSession, item.hint ?? HP_NO_HINT) : ""}
@@ -6396,8 +6396,14 @@ app.addEventListener("click", (event) => {
   }
 
   // Ny fråga börjar högst upp (2026-10-10): annars hamnar man på mobilen långt ner, där förra frågans förklaring slutade.
-  if (/^hp-([a-z]+-)?(next|prev|skip)$|^hp-formula-(known|unknown|learned|quick-next)$/.test(action)) {
-    requestAnimationFrame(() => window.scrollTo(0, 0));
+  // iOS Safari kan återställa scrollen efter omritningen, så vi scrollar både efter nästa frame och lite senare.
+  if (/^hp-([a-z]+-)?(next|prev|skip)$|^hp-formula-(known|unknown|learned|quick-next)$|^hp-tap-advance$/.test(action)) {
+    const toTop = () => {
+      window.scrollTo(0, 0);
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    };
+    requestAnimationFrame(toTop);
+    setTimeout(toTop, 80);
   }
 
   if (action === "sync-connect") {

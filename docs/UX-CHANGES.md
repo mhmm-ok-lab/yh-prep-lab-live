@@ -3,6 +3,12 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-11 — Mattefrågor: frågan först, robust scroll till toppen
+
+**Vad och varför.** Martin på iPhone: vid ny fråga hamnade han fortfarande långt ner, och frågetexten låg under figuren/tabellen, utanför första vyn. **Före.** Figur → fråga → alternativ; scroll till toppen bara efter en frame. **Efter.** Fråga → figur → alternativ (man vet vad man letar efter innan man läser underlaget, som strategin "leta, läs inte"). Scroll till toppen körs efter nästa frame och igen efter 80 ms (iOS Safari kan återställa scrollen efter omritning), även vid tryck-för-att-gå-vidare i ORD. **Stitch-princip.** Ingen visuell ändring utöver ordningen. **UX-teori.** Första vyn ska bära uppgiften (above the fold), målstyrd läsning.
+
+---
+
 ## 2026-10-11 — DTK-tabellen får plats på mobil, tydliga fotnoter
 
 **Vad och varför.** Martin på iPhone: tabellen (6 kolumner) scrollade i sidled, den låsta kommunkolumnen täckte rubriker och siffror, och fotnotsmarkeringarna ¹ ² syntes knappt. **Före.** 680 px bred tabell, versala rubriker, små ¹/². **Efter.** Hela tabellen ryms i 343 px: rubriker radbryts utan versaler, text-xs, smalare celler. Fotnoterna är fet accentfärgad upphöjd siffra. **Stitch-princip.** Skalans text-xs, palett-token accent. **UX-teori.** Ingen dold information på liten skärm; fotnoten är provets fälla och måste synas.
