@@ -114,6 +114,13 @@ card-gap: 0.75rem (gap-3)
 - Ghost border vid tillgänglighetskrav: `outline-variant (#bdc9c6) @ 10% opacity`
 - Shadow: ambient — `0 1px 3px rgba(22,28,36,0.06), 0 4px 16px rgba(22,28,36,0.04)`
 
+### Första vyn (övningar, mobil 375 × 812) — beslut 2026-10-11
+Strävan: hela uppgiften i en vy utan scroll — fråga, underlag och svarsalternativ. Går det inte (en stor tabell kan ta en hel vy) prioriteras ordningen **fråga → underlag → alternativ**, så att det man ska leta efter alltid syns först.
+- Ny fråga börjar alltid högst upp (scroll till toppen).
+- Inget innehåll får kräva sidscroll; tabeller och figurer anpassas till bredden.
+- Träffytor får växa (padding, min-height på små kontroller), men synliga knappar och mellanrum ska inte göras större om det trycker ner uppgiften ur vyn.
+- Toppbaren hålls smal (44 px); ingen dekoration ovanför frågan.
+
 ---
 
 ## 5. Komponenter
