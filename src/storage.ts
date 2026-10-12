@@ -1,6 +1,7 @@
 import type { HpMathArea } from "./hp-math";
 import { EMPTY_HP_FORMULA_STATE, type HpFormulaState } from "./hp-formulas";
 import type { ProvPass } from "./hp-provlogg";
+import { EMPTY_ORDLED_STATE, type OrdledState } from "./hp-ordled";
 import type { HpPlanState } from "./hp-plan";
 import type { HpDelprov } from "./hp-twins";
 import type { SessionDraft, StudySession } from "./types";
@@ -23,6 +24,7 @@ const HP_DTK_HP_SEEN_KEY = "yh.hp-dtk-hp-seen";
 const HP_PLAN_KEY = "yh.hp-plan";
 const HP_FORMULA_KEY = "yh.hp-formula";
 const HP_PROVLOGG_KEY = "yh.hp-provlogg";
+const HP_ORDLED_KEY = "yh.hp-ordled";
 const HP_ORD_RESULT_KEY = "yh.hp-ord-result";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
@@ -567,6 +569,25 @@ export function saveHpFormulaState(state: HpFormulaState): void {
     localStorage.setItem(namespacedKey(HP_FORMULA_KEY), JSON.stringify(state));
   } catch {
     // localStorage kan vara otillgängligt (privat läge, full disk) — tyst fallback
+  }
+}
+
+// ── Ordbyggen (orddelar) ──
+
+export function loadHpOrdledState(): OrdledState {
+  try {
+    const stored = safeParse<Partial<OrdledState> | null>(localStorage.getItem(namespacedKey(HP_ORDLED_KEY)), null);
+    return { cards: stored && typeof stored.cards === "object" && stored.cards ? stored.cards : {} };
+  } catch {
+    return { ...EMPTY_ORDLED_STATE, cards: {} };
+  }
+}
+
+export function saveHpOrdledState(state: OrdledState): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_ORDLED_KEY), JSON.stringify(state));
+  } catch {
+    // localStorage kan vara otillgängligt — tyst fallback
   }
 }
 

@@ -3,6 +3,16 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-12 — Ordbyggen: orddelar i stället för fler ord
+
+**Vad och varför.** Martin vill inte plugga fler ORD-ord utan förstå hur ord är byggda, så att han kan gissa okända ord (som i "allmän språkkunskap" på gymnasiet). En analys av 822 riktiga ORD-frågor 2006–2021 (Språkbanken, SweSAT Synonyms, CC BY 4.0) visade att förled och slutled går igen mycket oftare än enskilda stammar.
+
+**Före.** ORD bestod bara av drill på 300 provord. **Efter.** Nytt kort "Ordbyggen" under Ord på HP-hem: (1) flashcards med 64 delar (del → betydelse, anteckning/fälla, exempel; HP-märkta exempel har funnits på provet), Leitner med tre lådor; (2) "Knäck HP-ord": 24 riktiga provord, knappen "Dela upp ordet" visar delarna, fyra egna blandade alternativ och förklaring; (3) lista med alla delar för snabb överblick.
+
+**Stitch-princip.** Samma startkort, kort och knappar som formelträningen; text i skalan; palett-tokens; första vyn utan utfyllnad. **UX-teori.** Morfologisk medvetenhet som överförbar strategi (generativ kunskap i stället för memorering), Leitner/spaced repetition, recognition före recall via "Dela upp ordet".
+
+---
+
 ## 2026-10-11 — Tillgänglighetskoll HP på mobil (375 px, ljust + mörkt)
 
 **Vad och varför.** Systematisk mätning av alla 376 HP-frågor, 115 SVG-figurer och alla övningsvyer i båda lägena: sidscroll, textstorlek, kontrast, träffytor, semantik. **Före.** 45 underlagstabeller (upp till 776 px) scrollade i sidled; tabellceller med \*\*fet\*\* visade asterisker och "42 000" bröts över två rader; valda-bort svarsalternativ efter svar hade 3,2:1 i ljust läge (opacity 0,5) och "Tryck för att fortsätta" 3,7:1 i mörkt; "Kopiera min status" hade klippt träffyta (overflow hidden åt upp ::after); guidens dragspelsrubriker var 22 px höga; figurernas inre marginal tog 8 px av bredden. **Efter.** Alla tabeller ryms i 343 px (radbrytande celler, text-xs, rubriker utan versaler, hårda tusentalsmellanrum, fet text renderas); övertonade alternativ opacity 0,8 och hint utan opacity (≥ 4,5:1 i båda lägen); träffyta 44 px på status-knappen och dragspelsrubrikerna; figurer 4 px smalare sidmarginal. Redan OK: kontrast på alla övriga texter, SVG-text ≥ 9,5 px, alla figurer har role="img" + aria-label, ingen sidscroll på sidnivå. **Stitch-princip.** Tokens och 3-storleksskalan; ingen ny färg. **UX-teori.** Ingen dold information (tabellkolumner utanför skärmen), WCAG 2.2 AA (1.4.3 kontrast, 2.5.8 målstorlek).

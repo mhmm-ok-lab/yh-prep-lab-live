@@ -74,6 +74,8 @@ import {
   loadHpOrdResults,
   loadHpPlanState,
   loadHpProvlogg,
+  loadHpOrdledState,
+  saveHpOrdledState,
   loadHpProgress,
   loadHpRepeatQueue,
   loadHpTwinRepeatQueue,
@@ -96,6 +98,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
+import { ORD_PARTS, gradeOrdled, ordledKnownCount, planKnackPass, planOrdledPass, type OrdKnack } from "./hp-ordled";
 import { buildProvPass, PROV_DELPROV, PROV_MAX, provPercent, provTrend, sortProvPass, weakestDelprov, type ProvTyp } from "./hp-provlogg";
 import { HP_NAMES, hpAbbr, hpExpand, hpFull, hpShort } from "./hp-names";
 import { loadColorMode, saveColorMode } from "./storage";
@@ -658,6 +661,13 @@ let hpGuideMode: "flashcards" | "page" | "cards" | null = null;
 let hpCardOpen: string | null = null;
 let hpResourcesOpen = false;
 let hpProvloggOpen = false;
+// Ordbyggen (2026-10-12): orddelar för ORD. mode = meny, flashcards, knäck ordet eller lista.
+type HpOrdledView =
+  | { mode: "menu" }
+  | { mode: "list" }
+  | { mode: "cards"; ids: string[]; index: number; flipped: boolean; knew: number }
+  | { mode: "knack"; items: OrdKnack[]; index: number; pick: number | null; splitOpen: boolean; right: number };
+let hpOrdled: HpOrdledView | null = null;
 let hpProvloggTyp: ProvTyp = "kvantitativt";
 let hpProvloggError = "";
 /** "Din plan" (beslut 2026-10-05 (9)): hela planen öppen, vilka "Varför?" som är öppna, och delprovet som
@@ -3838,7 +3848,7 @@ function renderHpHome(): string {
         : `
           ${hpSection("Matte", `${renderHpFormulaHomeCard(ready)}${renderHpTwinHomeSection(ready)}${renderHpDiagHomeCard(ready)}${lastMathHtml}`)}
           ${hpSection("Läsning och språk", `${renderHpLasHomeCard(ready)}${renderHpMekHomeCard(ready)}${renderHpElfHomeCard(ready)}`)}
-          ${hpSection("Ord", renderHpOrdHomeCard(ready, progress.wordsCompleted, repeatCount))}
+          ${hpSection("Ord", renderHpOrdHomeCard(ready, progress.wordsCompleted, repeatCount) + renderHpOrdledHomeCard())}
           ${hpSection("Gamla prov", renderHpProvloggHomeCard())}
           ${hpSection("Guide och resurser", `${renderHpGuideHomeSection()}`)}
         `}
@@ -5194,11 +5204,99 @@ function renderHpProvlogg(): string {
   `;
 }
 
+// ── Ordbyggen ──
+
+function renderHpOrdledHomeCard(): string {
+  const known = ordledKnownCount(loadHpOrdledState());
+  return renderHpStartCard('data-action="hp-ordled-open"', "Ordbyggen", "Förled, slutled och stammar: gissa vad okända ord betyder", `<span class="hp-start-card-last">${known} av ${ORD_PARTS.length} delar sitter</span>`).replace("Starta ›", "Öppna ›");
+}
+
+const ORDLED_KIND_LABEL = { förled: "Förled", slutled: "Slutled", stam: "Stam" } as const;
+
+function renderHpOrdled(v: HpOrdledView): string {
+  const top = (label: string, back = "hp-ordled-menu") => `
+    <div class="hp-drill-top">
+      <button class="hp-drill-cancel" data-action="${back}">${back === "hp-ordled-close" ? "‹ HP-hem" : "‹ Ordbyggen"}</button>
+      <span class="hp-drill-progress">${label}</span>
+    </div>`;
+  if (v.mode === "menu") {
+    const state = loadHpOrdledState();
+    return `
+      <div class="hp-drill hp-ordled">
+        ${top("Ordbyggen", "hp-ordled-close")}
+        <h2 class="hp-drill-title">Ordbyggen</h2>
+        <p class="hp-ordled-lead">Många ORD-ord är byggda av delar. Känner du delarna kan du gissa ungefär vad ordet betyder och stryka fel alternativ. ${ordledKnownCount(state)} av ${ORD_PARTS.length} delar sitter.</p>
+        <button class="hp-cta-btn hp-fm-wide" data-action="hp-ordled-cards">Lär dig delarna · 10 kort</button>
+        <button class="hp-cta-btn hp-fm-wide" data-action="hp-ordled-knack">Knäck HP-ord · 8 ord</button>
+        <button class="hp-secondary-btn hp-fm-wide" data-action="hp-ordled-list">Alla delar som lista</button>
+        <p class="hp-ordled-src">Urvalet bygger på 822 riktiga ORD-frågor 2006–2021 (Språkbanken, SweSAT Synonyms, CC BY 4.0).</p>
+      </div>`;
+  }
+  if (v.mode === "list") {
+    const group = (kind: "förled" | "slutled" | "stam") =>
+      `<section class="hp-section"><h3 class="hp-section-title">${ORDLED_KIND_LABEL[kind]}</h3><ul class="hp-ordled-list">${ORD_PARTS.filter((p) => p.kind === kind)
+        .map((p) => `<li><strong>${p.part}</strong> <span>${p.meaning}</span> <em>${p.examples[0].word}</em></li>`)
+        .join("")}</ul></section>`;
+    return `<div class="hp-drill hp-ordled">${top("Alla delar")}${group("förled")}${group("slutled")}${group("stam")}</div>`;
+  }
+  if (v.mode === "cards") {
+    if (v.index >= v.ids.length) {
+      return `<div class="hp-drill hp-ordled">${top("Klart")}
+        <h2 class="hp-drill-title">Bra jobbat</h2>
+        <p class="hp-ordled-lead">Du kunde ${v.knew} av ${v.ids.length}. Delar du kan flyttas fram och kommer tillbaka mer sällan.</p>
+        <button class="hp-cta-btn hp-fm-wide" data-action="hp-ordled-knack">Knäck HP-ord · 8 ord</button>
+        <button class="hp-secondary-btn hp-fm-wide" data-action="hp-ordled-menu">Till Ordbyggen</button></div>`;
+    }
+    const p = ORD_PARTS.find((x) => x.id === v.ids[v.index])!;
+    const back = v.flipped
+      ? `<div class="hp-ordled-back">
+          <p class="hp-ordled-meaning">${p.meaning}</p>
+          ${p.note ? `<p class="hp-ordled-note">${p.note}</p>` : ""}
+          <ul class="hp-ordled-examples">${p.examples
+            .map((e) => `<li><strong>${e.word}</strong>${e.hp ? ' <span class="hp-ordled-hp">HP</span>' : ""}<br><span>${e.split}</span><br><em>${e.meaning}</em></li>`)
+            .join("")}</ul>
+        </div>
+        <div class="hp-fm-actions">
+          <button class="hp-secondary-btn" data-action="hp-ordled-grade" data-knew="0">Kunde inte</button>
+          <button class="hp-cta-btn" data-action="hp-ordled-grade" data-knew="1">Kunde</button>
+        </div>`
+      : `<button class="hp-cta-btn hp-fm-wide" data-action="hp-ordled-flip">Vänd kortet</button>`;
+    return `<div class="hp-drill hp-ordled">${top(`Kort ${v.index + 1}/${v.ids.length}`)}
+      <div class="hp-fm-card">
+        <p class="hp-fm-label">${ORDLED_KIND_LABEL[p.kind]} · ${p.origin}</p>
+        <p class="hp-ordled-part">${p.part}</p>
+        ${v.flipped ? "" : `<p class="hp-ordled-cue">Vad betyder det? Tänk på ett ord du känner som har delen.</p>`}
+        ${back}
+      </div></div>`;
+  }
+  // knack
+  if (v.index >= v.items.length) {
+    return `<div class="hp-drill hp-ordled">${top("Klart")}
+      <h2 class="hp-drill-title">${v.right} av ${v.items.length} rätt</h2>
+      <p class="hp-ordled-lead">Tre steg på provet: hitta delarna, gissa grovt vad ordet betyder, stryk alternativ som inte passar.</p>
+      <button class="hp-cta-btn hp-fm-wide" data-action="hp-ordled-knack">Åtta nya ord</button>
+      <button class="hp-secondary-btn hp-fm-wide" data-action="hp-ordled-menu">Till Ordbyggen</button></div>`;
+  }
+  const k = v.items[v.index];
+  const answered = v.pick !== null;
+  const opts = k.options
+    .map((o, i) => `<button class="${hpOptionClass("hp-option-btn", i, k.correct, answered, answered ? [v.pick as number] : [])}" data-action="hp-ordled-pick" data-index="${i}" ${answered ? "disabled" : ""}>${o}</button>`)
+    .join("");
+  const last = v.index + 1 >= v.items.length;
+  return `<div class="hp-drill hp-ordled">${top(`Ord ${v.index + 1}/${v.items.length}`)}
+    <p class="hp-ordled-word">${k.word}</p>
+    ${v.splitOpen || answered ? `<p class="hp-ordled-split">${k.split}</p>` : `<button class="hp-card-link" data-action="hp-ordled-split">Dela upp ordet</button>`}
+    <div class="hp-options">${opts}</div>
+    ${answered ? `<div class="hp-feedback ${v.pick === k.correct ? "hp-feedback-ok" : "hp-feedback-wrong"}"><p class="hp-feedback-meaning">${v.pick === k.correct ? "Rätt." : `Rätt svar: ${k.options[k.correct]}.`}</p><p class="hp-feedback-explanation">${k.why}</p><button class="hp-next-btn" data-action="hp-ordled-next">${last ? "Se resultat" : "Nästa"}</button></div>` : ""}
+  </div>`;
+}
+
 function renderHp(): string {
   if (hpForceHome) {
     hpCardOpen = null;
     hpResourcesOpen = false;
     hpProvloggOpen = false;
+    hpOrdled = null;
     hpPlanAllOpen = false;
     hpPlanCardDelprov = null;
     return renderHpHome();
@@ -5211,6 +5309,9 @@ function renderHp(): string {
   }
   if (hpProvloggOpen) {
     return renderHpProvlogg();
+  }
+  if (hpOrdled) {
+    return renderHpOrdled(hpOrdled);
   }
   const openCard = hpCardOpen ? HP_CARDS.find((c) => c.id === hpCardOpen) : undefined;
   if (openCard) {
@@ -7554,6 +7655,77 @@ app.addEventListener("click", (event) => {
 
   if (action === "hp-pause-resume") {
     resumeHpPause();
+    render();
+    return;
+  }
+
+  if (action === "hp-ordled-open" || action === "hp-ordled-menu") {
+    hpForceHome = false;
+    hpOrdled = { mode: "menu" };
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ordled-close") {
+    hpOrdled = null;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ordled-list") {
+    hpOrdled = { mode: "list" };
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ordled-cards") {
+    const ids = planOrdledPass(loadHpOrdledState(), hpFormulaDate());
+    hpOrdled = ids.length ? { mode: "cards", ids, index: 0, flipped: false, knew: 0 } : { mode: "list" };
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ordled-flip" && hpOrdled?.mode === "cards") {
+    hpOrdled.flipped = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-ordled-grade" && hpOrdled?.mode === "cards") {
+    const knew = actionEl.dataset.knew === "1";
+    saveHpOrdledState(gradeOrdled(loadHpOrdledState(), hpOrdled.ids[hpOrdled.index], knew, hpFormulaDate()));
+    hpOrdled = { ...hpOrdled, index: hpOrdled.index + 1, flipped: false, knew: hpOrdled.knew + (knew ? 1 : 0) };
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ordled-knack") {
+    hpOrdled = { mode: "knack", items: planKnackPass(), index: 0, pick: null, splitOpen: false, right: 0 };
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-ordled-split" && hpOrdled?.mode === "knack") {
+    hpOrdled.splitOpen = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-ordled-pick" && hpOrdled?.mode === "knack" && hpOrdled.pick === null) {
+    const pick = Number(actionEl.dataset.index);
+    hpOrdled = { ...hpOrdled, pick, right: hpOrdled.right + (pick === hpOrdled.items[hpOrdled.index].correct ? 1 : 0) };
+    render();
+    return;
+  }
+
+  if (action === "hp-ordled-next" && hpOrdled?.mode === "knack") {
+    hpOrdled = { ...hpOrdled, index: hpOrdled.index + 1, pick: null, splitOpen: false };
     render();
     return;
   }
