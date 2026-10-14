@@ -63,9 +63,10 @@ describe("hp-formulas: successive relearning", () => {
   it("nya formler: högst 5 per pass, i katalogens ordning, fler pass samma dag ger nästa fem", () => {
     const ids = newFormulaIds(HP_FORMULAS, fresh(), "2026-10-08");
     expect(ids).toHaveLength(HP_FORMULA_NEW_PER_DAY);
-    expect(ids).toEqual(HP_FORMULAS.slice(0, 5).map((f) => f.id));
+    const N = HP_FORMULA_NEW_PER_DAY;
+    expect(ids).toEqual(HP_FORMULAS.slice(0, N).map((f) => f.id));
     const after = introduceFormulas(fresh(), ids, "2026-10-08");
-    expect(newFormulaIds(HP_FORMULAS, after, "2026-10-08")).toEqual(HP_FORMULAS.slice(5, 10).map((f) => f.id));
+    expect(newFormulaIds(HP_FORMULAS, after, "2026-10-08")).toEqual(HP_FORMULAS.slice(N, 2 * N).map((f) => f.id));
   });
 
   it("inlärda formler kommer tillbaka dagen efter, inte samma dag", () => {
@@ -100,9 +101,14 @@ describe("hp-formulas: successive relearning", () => {
     const ids = HP_FORMULAS.slice(0, 20).map((f) => f.id);
     st = introduceFormulas(st, ids, "2026-10-01");
     const plan = planFormulaPass(HP_FORMULAS, st, "2026-10-08");
-    expect(plan.learn).toHaveLength(5);
-    expect(plan.due).toHaveLength(HP_FORMULA_PASS_MAX - 5);
+    // 20 förfallna = för många fel: inga nya förrän de repeterats.
+    expect(plan.learn).toEqual([]);
+    expect(plan.due).toHaveLength(HP_FORMULA_PASS_MAX);
     expect(plan.due.every((id) => ids.includes(id))).toBe(true);
+    const few = introduceFormulas(fresh(), HP_FORMULAS.slice(0, 2).map((f) => f.id), "2026-10-01");
+    const fewPlan = planFormulaPass(HP_FORMULAS, few, "2026-10-08");
+    expect(fewPlan.due).toHaveLength(2);
+    expect(fewPlan.learn).toHaveLength(HP_FORMULA_NEW_PER_DAY);
     const quiet = planFormulaPass(HP_FORMULAS, introduceFormulas(st, HP_FORMULAS.map((f) => f.id), "2026-10-01"), "2026-10-08");
     expect(quiet.learn).toEqual([]);
     expect(quiet.due).toHaveLength(HP_FORMULA_PASS_MAX);

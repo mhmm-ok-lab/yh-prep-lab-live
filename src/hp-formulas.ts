@@ -1446,9 +1446,9 @@ export const HP_FORMULAS: HpFormula[] = [
 /** Klar när formeln klarats på första försöket i så här många pass på olika dagar (2026-10-14: 3 → 2, provet är om fyra dagar). */
 export const HP_FORMULA_GOAL = 2;
 /** Högst så här många kort per pass (förfallna repetitioner + nya). */
-export const HP_FORMULA_PASS_MAX = 10;
+export const HP_FORMULA_PASS_MAX = 15;
 /** Högst så här många nya formler per pass (2026-10-14: tidigare per dag; nu kan man köra fler pass samma dag). */
-export const HP_FORMULA_NEW_PER_DAY = 5;
+export const HP_FORMULA_NEW_PER_DAY = 10;
 /** Grön i "Är jag redo?" när minst så här stor andel är klar (eller på 2 av 3). */
 export const HP_FORMULA_GREEN_SHARE = 0.8;
 
@@ -1490,8 +1490,12 @@ export function newFormulaIds(formulas: HpFormula[], state: HpFormulaState, _tod
 }
 
 /** Dagens pass: förfallna först (flashcards), sedan nya (Lär in + snabbtest). Högst 10 kort. */
+/** Har man så här många missade/förfallna formler kommer inga nya förrän de repeterats (för många fel). */
+export const HP_FORMULA_MAX_DUE_FOR_NEW = 5;
+
 export function planFormulaPass(formulas: HpFormula[], state: HpFormulaState, today: string): { due: string[]; learn: string[] } {
-  const learn = newFormulaIds(formulas, state, today);
+  const dueAll = dueFormulaIds(formulas, state, today);
+  const learn = dueAll.length >= HP_FORMULA_MAX_DUE_FOR_NEW ? [] : newFormulaIds(formulas, state, today);
   const due = dueFormulaIds(formulas, state, today).slice(0, Math.max(0, HP_FORMULA_PASS_MAX - learn.length));
   return { due, learn };
 }

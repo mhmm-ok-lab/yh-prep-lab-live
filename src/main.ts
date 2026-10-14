@@ -3370,6 +3370,23 @@ function hpFormulaDrawsFor(ids: string[], lastTask: Record<string, number>): HpF
   });
 }
 
+/** "Testa alla" (2026-10-14): snabbtest på alla formler i slumpad ordning. Sparar inget. */
+function hpFormulaStartAll(): void {
+  hpFormulaStart(true);
+  const s = hpFormulaSession;
+  if (!s) return;
+  s.queue = [];
+  s.total = 0;
+  s.learnIds = [];
+  s.quick = HP_FORMULAS.map((f) => {
+    const taskIdx = pickFormulaTaskIndex(null);
+    const o = formulaChoice(f.id, taskIdx);
+    return { id: f.id, taskIdx, options: o.options, correct: o.correct };
+  }).sort(() => Math.random() - 0.5);
+  s.phase = "quick";
+  render();
+}
+
 function hpFormulaStart(practice = false): void {
   hpForceHome = false;
   hpCardOpen = null;
@@ -3659,7 +3676,10 @@ function renderHpFormulaSummary(s: HpFormulaSession): string {
     })
     .join("");
   const redoBtn = s.missed.length > 0 && !s.redoDone ? `<button class="hp-cta-btn hp-fm-wide" data-action="hp-formula-redo">Kör repetitionen (1 min)</button>` : "";
-  const quick = s.quick.length > 0 ? `<p class="hp-fm-sum-line">Snabbtest: ${s.quickRight} av ${s.quick.length} rätt. Nya formler kommer tillbaka i morgon.</p>` : "";
+  const quick = s.quick.length > 0 ? `<p class="hp-fm-sum-line">Snabbtest: ${s.quickRight} av ${s.quick.length} rätt.${s.practice ? "" : " Nya formler kommer tillbaka i morgon."}</p>` : "";
+  const nextPlan = planFormulaPass(HP_FORMULAS, loadHpFormulaState(), hpFormulaDate());
+  const nextBtn = `<button class="hp-cta-btn hp-fm-wide" data-action="hp-formula-start">${nextPlan.learn.length > 0 ? `Nästa pass · ${nextPlan.learn.length} nya` : nextPlan.due.length > 0 ? "Repetera missade först" : "Nästa pass"}</button>`;
+  const allBtn = `<button class="hp-secondary-btn hp-fm-wide" data-action="hp-formula-all">Testa alla ${HP_FORMULAS.length} (räknas inte)</button>`;
   return `
     <div class="hp-summary hp-fm">
       <p class="hp-summary-heading">${s.practice ? "Extra övning klar" : "Passet klart"}</p>
@@ -3674,7 +3694,9 @@ function renderHpFormulaSummary(s: HpFormulaSession): string {
       }
       ${s.redoDone ? `<p class="hp-fm-sum-line">Repetitionen är klar.</p>` : ""}
       ${redoBtn}
-      <button class="${redoBtn ? "hp-drill-cancel" : "hp-cta-btn hp-fm-wide"}" data-action="hp-formula-close">${redoBtn ? "Klart för idag" : "Klart"}</button>
+      ${redoBtn ? "" : nextBtn}
+      ${allBtn}
+      <button class="hp-drill-cancel" data-action="hp-formula-close">Klart för idag</button>
     </div>`;
 }
 
@@ -3688,6 +3710,7 @@ function renderHpFormulaIdle(): string {
       <p class="hp-fm-count">${p.done} klara · ${p.left} kvar</p>
       <p class="hp-fm-sum-line">${allDone ? "Du har klarat varje formel på första försöket två dagar." : "Bra! Kör ett pass till för fem nya formler. De du lärt in i dag kommer tillbaka i morgon."}</p>
       ${p.started > 0 ? `<button class="hp-secondary-btn hp-fm-wide" data-action="hp-formula-practice">Öva extra (räknas inte)</button>` : ""}
+      <button class="hp-secondary-btn hp-fm-wide" data-action="hp-formula-all">Testa alla ${HP_FORMULAS.length} (räknas inte)</button>
       <button class="hp-drill-cancel" data-action="hp-formula-close">Tillbaka</button>
     </div>`;
 }
@@ -7687,6 +7710,10 @@ app.addEventListener("click", (event) => {
   }
   if (action === "hp-formula-practice") {
     hpFormulaStart(true);
+    return;
+  }
+  if (action === "hp-formula-all") {
+    hpFormulaStartAll();
     return;
   }
   if (action === "hp-formula-flip") {

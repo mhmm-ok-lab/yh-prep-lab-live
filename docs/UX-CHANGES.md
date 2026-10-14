@@ -3,6 +3,12 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-14 — Formelträning: fortsätt öva, 10 nya per pass, testa alla
+
+**Vad och varför.** Martin: "5 är lite", vill kunna fortsätta efter ett pass och kunna köra alla formler. **Före.** Passet slutade med "Klart", 5 nya per pass. **Efter.** 10 nya per pass (max 15 kort). Sammanfattningen har "Nästa pass · N nya" direkt. Har man 5 eller fler missade/förfallna formler kommer inga nya förrän de repeterats (knappen säger "Repetera missade först"). Ny knapp "Testa alla 52 (räknas inte)": snabbtest på alla formler i slumpad ordning. **UX-teori.** Användaren styr tempot (autonomi), men systemet skyddar inlärningen genom att stoppa nya kort vid många fel.
+
+---
+
 ## 2026-10-14 — Mattetermer: skanna, sortera, slå upp i frågan
 
 **Vad och varför.** Martin har inte räknat matte på länge och fastnar på ordvalet innan han ens börjat räkna ("kvoten", "procentenhet", "minst"). Han vill inte bläddra i en mattebok utan snabbt se vilka ord han kan. **Före.** Inget stöd för termerna; en okänd term i frågan betydde att lämna appen och googla. **Efter.** (1) Kortet "Mattetermer" under Matte på HP-hem med status ("5 osäkra kvar · 3 kan"). (2) Snabbskanning: 54 termer i sex grupper, bara namnet och två pills Kan/Osäker (28 px synligt, 44 px tryckyta), inga förklaringar, ca 2 min. Valet sparas direkt utan omritning, så listan hoppar inte. (3) Flipcards bara på de osäkra: framsidan visar termen och en riktig mening ur appens HP-frågor där den används; baksidan förklaring på enkel svenska, mini-exempel med siffror, "Förväxla inte" och verifierad länk till Matteboken. "Kunde" två olika dagar → Kan; missar man ett kort kommer det tillbaka sist i passet och räknas inte den dagen. (4) I XYZ/KVA/NOG/DTK och mattediagnosen markeras första förekomsten av varje term man inte redan kan med prickad understrykning; tryck öppnar en overlay med samma förklaring. Overlayn läggs ovanpå utan omritning, så frågan, timern och scrollen står still (uppmätt: samma position före/efter). Aldrig i figurer, tabeller eller svarsalternativ. **Stitch-princip.** Startkortsmönstret, tre textstorlekar, palett-tokens (mint = Kan, honey = Osäker), raderna skiljs med tonskifte i stället för linjer (No-Line). **UX-teori.** Metakognitiv kalibrering först (judgment of learning: sortera innan man lär), sedan successive relearning bara på luckorna; just-in-time-hjälp i kontexten minskar extraneous cognitive load utan att lämna uppgiften.
