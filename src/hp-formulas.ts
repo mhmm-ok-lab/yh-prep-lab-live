@@ -1553,6 +1553,58 @@ export function findFormula(id: string): HpFormula | undefined {
   return HP_FORMULAS.find((f) => f.id === id);
 }
 
+/** Formler för förväxlingsnamn som inte är egna formler i banken (används bara som felalternativ). */
+const EXTRA_DISTRACTOR_FORMULAS: Record<string, string> = {
+  "Addera bråk": "a/b + c/d = (a·d + b·c) / (b·d)",
+  "Multiplicera bråk": "a/b · c/d = (a·c) / (b·d)",
+  "Begränsningsarean av ett rätblock": "A = 2 · (l·b + l·h + b·h)",
+  "Distributiva lagen": "a · (b + c) = a·b + a·c",
+  "Likformighet": "a / a′ = b / b′ = c / c′",
+  "Omkretsen av en kvadrat": "O = 4 · s",
+  "Omkretsen av en triangel": "O = a + b + c",
+  "Omkretsen av ett parallelltrapets": "O = a + b + c + d",
+  "Omvandla cm ↔ m": "1 m = 100 cm",
+  "Variationsbredd": "variationsbredd = största − minsta värdet",
+  "Volymen av en pyramid": "V = B · h / 3",
+  "Ytan av ett klot": "A = 4 · π · r²",
+  'Sannolikhet för "eller" (addera)': "P(A eller B) = P(A) + P(B)"
+};
+
+/** Formler som betyder samma sak: får aldrig stå som felalternativ till varandra. */
+const SAME_MEANING: string[][] = [
+  ["rektangel-area", "parallellogram-area"],
+  ["ratblock-volym", "prisma-volym", "cylinder-volym"]
+];
+
+/**
+ * Snabbtestets alternativ (2026-10-14): själva formlerna, inte namnen (namnet framgår ofta av uppgiften).
+ * Felalternativ som saknar formel eller betyder samma sak som rätt formel byts mot andra formler.
+ */
+export function formulaChoice(formulaId: string, taskIdx: number, rand: () => number = Math.random): { options: string[]; correct: number } {
+  const f = findFormula(formulaId)!;
+  const task = f.tasks[taskIdx];
+  const group = SAME_MEANING.find((g) => g.includes(formulaId)) ?? [formulaId];
+  const formulaOf = (name: string): string | undefined => {
+    const hit = HP_FORMULAS.find((x) => x.name === name);
+    if (hit) return group.includes(hit.id) && hit.id !== formulaId ? undefined : hit.formula;
+    return EXTRA_DISTRACTOR_FORMULAS[name];
+  };
+  const wrong: string[] = [];
+  task.names.forEach((n, i) => {
+    if (i === task.nameCorrect) return;
+    const fx = formulaOf(n);
+    if (fx && fx !== f.formula && !wrong.includes(fx)) wrong.push(fx);
+  });
+  const pool = shuffled(HP_FORMULAS.filter((x) => !group.includes(x.id) && x.area === f.area), rand)
+    .concat(shuffled(HP_FORMULAS.filter((x) => !group.includes(x.id) && x.area !== f.area), rand));
+  for (const x of pool) {
+    if (wrong.length >= 3) break;
+    if (!wrong.includes(x.formula)) wrong.push(x.formula);
+  }
+  const options = shuffled([f.formula, ...wrong.slice(0, 3)], rand);
+  return { options, correct: options.indexOf(f.formula) };
+}
+
 function shuffled<T>(list: T[], rand: () => number): T[] {
   const a = [...list];
   for (let i = a.length - 1; i > 0; i--) {

@@ -17,6 +17,7 @@ import {
   HP_FORMULA_GOAL,
   HP_FORMULA_PASS_MAX,
   findFormula,
+  formulaChoice,
   formulaProgress,
   introduceFormulas,
   pickFormulaTaskIndex,
@@ -3482,8 +3483,7 @@ function hpFormulaLearned(): void {
     s.quick = s.learnIds
       .map((id) => {
         const taskIdx = pickFormulaTaskIndex(null);
-        const task = findFormula(id)!.tasks[taskIdx];
-        const o = shuffleOptions(task.names, task.nameCorrect);
+        const o = formulaChoice(id, taskIdx);
         return { id, taskIdx, options: o.options, correct: o.correct };
       })
       .sort(() => Math.random() - 0.5);
@@ -3631,10 +3631,10 @@ function renderHpFormulaQuick(s: HpFormulaSession): string {
   return `
     <div class="hp-drill hp-fm">
       ${renderHpFormulaTop(`Snabbtest ${s.quickIndex + 1}/${s.quick.length}`)}
-      <p class="hp-fm-cue">Vilken formel behövs?</p>
+      <p class="hp-fm-cue">Vilken formel ska du använda?</p>
       <p class="hp-fm-stem">${task.stem}</p>
       <div class="hp-options hp-fm-options">${options}</div>
-      ${answered ? `<p class="hp-feedback-hint">${s.quickPick === q.correct ? "Rätt." : "Fel."} Formeln: ${formula.formula}</p><button class="hp-next-btn" data-action="hp-formula-quick-next">${last ? "Se resultat" : "Nästa"}</button>` : ""}
+      ${answered ? `<p class="hp-feedback-hint">${s.quickPick === q.correct ? "Rätt." : "Fel."} ${formula.name}: ${formula.formula}</p><button class="hp-next-btn" data-action="hp-formula-quick-next">${last ? "Se resultat" : "Nästa"}</button>` : ""}
     </div>`;
 }
 

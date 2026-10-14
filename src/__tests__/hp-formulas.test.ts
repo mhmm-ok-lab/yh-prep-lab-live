@@ -1,5 +1,6 @@
 import { findHpCard } from "../hp-cards";
 import {
+  formulaChoice,
   EMPTY_HP_FORMULA_STATE,
   HP_FORMULAS,
   HP_FORMULA_NEW_PER_DAY,
@@ -136,5 +137,25 @@ describe("hp-formulas: blandning", () => {
     expect(pickFormulaTaskIndex(0)).toBe(1);
     expect(pickFormulaTaskIndex(1)).toBe(0);
     expect([0, 1]).toContain(pickFormulaTaskIndex(null));
+  });
+});
+
+describe("formulaChoice (snabbtest med formler som alternativ)", () => {
+  it("ger fyra unika formler med rätt formel för varje uppgift", () => {
+    for (const f of HP_FORMULAS) {
+      f.tasks.forEach((_, i) => {
+        const c = formulaChoice(f.id, i);
+        expect(c.options.length).toBe(4);
+        expect(new Set(c.options).size).toBe(4);
+        expect(c.options[c.correct]).toBe(f.formula);
+      });
+    }
+  });
+  it("blandar aldrig ihop formler som betyder samma sak", () => {
+    const rect = HP_FORMULAS.find((f) => f.id === "rektangel-area")!.formula;
+    const para = HP_FORMULAS.find((f) => f.id === "parallellogram-area")!;
+    para.tasks.forEach((_, i) => {
+      for (let n = 0; n < 20; n++) expect(formulaChoice(para.id, i).options).not.toContain(rect);
+    });
   });
 });
