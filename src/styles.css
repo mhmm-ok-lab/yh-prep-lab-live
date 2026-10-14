@@ -6597,3 +6597,16 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   border-radius: 999px;
   padding: 0 6px;
 }
+
+/* Formelfigur (2026-10-14): liten bild av formen ovanför formeln. */
+.hp-fm-figure {
+  max-width: 220px;
+  margin: 0 auto;
+  color: var(--ink);
+}
+
+.hp-fm-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}

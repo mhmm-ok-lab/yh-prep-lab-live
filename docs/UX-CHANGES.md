@@ -3,6 +3,12 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-14 — Figurer i formelträningen
+
+**Vad och varför.** Martin ville se formen, inte bara läsa den: vad är b, h, r, v i formeln? **Före.** Bara text. **Efter.** 19 enkla figurer (rektangel, triangel, parallellogram, trapets, cirkel, sektor, båge, rätblock, prisma, cylinder, kon, klot, Pythagoras, vinkelsummor, yttervinkeln) visas ovanför formeln i Lär in, på kortets baksida och i snabbtestet. Inline SVG med currentColor (mörkt läge), max 220 px bred. **Stitch-princip.** Inga nya färger; figuren ligger i befintligt kort. **UX-teori.** Dual coding (Paivio): bild + formel ger två minnesspår och kopplar bokstäverna till delarna av formen.
+
+---
+
 ## 2026-10-14 — Formelträningens snabbtest: alternativen är formler, inte namn
 
 **Vad och varför.** Martin: alternativen var formelnamn ("Arean av en triangel"), men namnet framgår ofta av uppgiften, så testet mätte läsning i stället för om man kan formeln. **Före.** Fyra formelnamn. **Efter.** Fyra formler (t.ex. "A = b · h / 2"); efter svar visas namn + formel. Felalternativ som betyder samma sak som rätt formel (rektangel/parallellogram, rätblock/prisma/cylinder) används aldrig, och förväxlingsnamn utan egen formel har fått en. Frågan heter nu "Vilken formel ska du använda?". **Stitch-princip.** Samma knappar och kort. **UX-teori.** Testet ska kräva målbeteendet (recall av formeln), inte ledtrådar i frågetexten (construct validity).

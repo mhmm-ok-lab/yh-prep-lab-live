@@ -99,6 +99,7 @@ import {
   saveStudySession,
   setStorageNamespace
 } from "./storage";
+import { FORMULA_FIGURES } from "./hp-formula-figures";
 import { ORD_PARTS, gradeOrdled, ordledKnownCount, planKnackPass, planOrdledPass, type OrdKnack } from "./hp-ordled";
 import { buildProvPass, PROV_DELPROV, PROV_MAX, provPercent, provTrend, sortProvPass, weakestDelprov, type ProvTyp } from "./hp-provlogg";
 import { HP_NAMES, hpAbbr, hpExpand, hpFull, hpShort } from "./hp-names";
@@ -3577,6 +3578,7 @@ function renderHpFormulaCards(s: HpFormulaSession): string {
       <div class="hp-fm-card">
         <p class="hp-fm-label">Formeln · klarad ${clean} av ${HP_FORMULA_GOAL}</p>
         <h2 class="hp-fm-name">${formula.name}</h2>
+        ${FORMULA_FIGURES[formula.id] ? `<div class="hp-fm-figure">${FORMULA_FIGURES[formula.id]}</div>` : ""}
         <p class="hp-fm-formula">${formula.formula}</p>
         <p class="hp-fm-line"><strong>I huvudet:</strong> ${formula.headTip}</p>
         <button class="hp-fm-paper-btn" data-action="hp-formula-paper" aria-expanded="${s.paperOpen}"><strong>På papper</strong> <span aria-hidden="true">${s.paperOpen ? "▾" : "▸"}</span></button>
@@ -3605,6 +3607,7 @@ function renderHpFormulaLearn(s: HpFormulaSession): string {
       <div class="hp-fm-card">
         <p class="hp-fm-label">Ny formel</p>
         <h2 class="hp-fm-name">${formula.name}</h2>
+        ${FORMULA_FIGURES[formula.id] ? `<div class="hp-fm-figure">${FORMULA_FIGURES[formula.id]}</div>` : ""}
         <p class="hp-fm-formula">${formula.formula}</p>
         <p class="hp-fm-line"><strong>Varför:</strong> ${formula.why}</p>
         <p class="hp-fm-line"><strong>I huvudet:</strong> ${formula.headTip}</p>
@@ -3632,6 +3635,7 @@ function renderHpFormulaQuick(s: HpFormulaSession): string {
     <div class="hp-drill hp-fm">
       ${renderHpFormulaTop(`Snabbtest ${s.quickIndex + 1}/${s.quick.length}`)}
       <p class="hp-fm-cue">Vilken formel ska du använda?</p>
+      ${FORMULA_FIGURES[formula.id] ? `<div class="hp-fm-figure">${FORMULA_FIGURES[formula.id]}</div>` : ""}
       <p class="hp-fm-stem">${task.stem}</p>
       <div class="hp-options hp-fm-options">${options}</div>
       ${answered ? `<p class="hp-feedback-hint">${s.quickPick === q.correct ? "Rätt." : "Fel."} ${formula.name}: ${formula.formula}</p><button class="hp-next-btn" data-action="hp-formula-quick-next">${last ? "Se resultat" : "Nästa"}</button>` : ""}
