@@ -1,7 +1,7 @@
 // Formelträning (beslut 2026-10-08): ca 50 formler på HP:s matte (XYZ/KVA/NOG/DTK), Matte 1–2-nivå.
 // Innehållet är genererat och kontrollräknat i Python (varje svar räknas fram från samma tal som står i texten).
 // Pass: förfallna repetitioner (flashcards) först, sedan högst 5 nya formler att lära in (Lär in + snabbtest).
-// Successive relearning: en formel är klar när den klarats på första försöket i 3 pass på olika dagar.
+// Successive relearning: en formel är klar när den klarats på första försöket på 2 olika dagar (ändrat från 3 den 2026-10-14).
 // Rena funktioner, ingen localStorage eller DOM, så allt går att testa.
 import { addDays } from "./hp-plan";
 
@@ -1443,11 +1443,11 @@ export const HP_FORMULAS: HpFormula[] = [
 
 // ── Successive relearning ──
 
-/** Klar när formeln klarats på första försöket i så här många pass på olika dagar. */
-export const HP_FORMULA_GOAL = 3;
+/** Klar när formeln klarats på första försöket i så här många pass på olika dagar (2026-10-14: 3 → 2, provet är om fyra dagar). */
+export const HP_FORMULA_GOAL = 2;
 /** Högst så här många kort per pass (förfallna repetitioner + nya). */
 export const HP_FORMULA_PASS_MAX = 10;
-/** Högst så här många nya formler per dag. */
+/** Högst så här många nya formler per pass (2026-10-14: tidigare per dag; nu kan man köra fler pass samma dag). */
 export const HP_FORMULA_NEW_PER_DAY = 5;
 /** Grön i "Är jag redo?" när minst så här stor andel är klar (eller på 2 av 3). */
 export const HP_FORMULA_GREEN_SHARE = 0.8;
@@ -1484,11 +1484,9 @@ export function dueFormulaIds(formulas: HpFormula[], state: HpFormulaState, toda
     .map((x) => x.id);
 }
 
-/** Nya formler att lära in i dag: ej inlärda, i katalogens ordning, högst 5 per dag totalt. */
-export function newFormulaIds(formulas: HpFormula[], state: HpFormulaState, today: string): string[] {
-  const learnedToday = Object.values(state.cards).filter((c) => c.introduced === today).length;
-  const room = Math.max(0, HP_FORMULA_NEW_PER_DAY - learnedToday);
-  return formulas.filter((f) => !state.cards[f.id]).slice(0, room).map((f) => f.id);
+/** Nya formler att lära in: ej inlärda, i katalogens ordning, högst 5 per pass (fler pass samma dag går bra). */
+export function newFormulaIds(formulas: HpFormula[], state: HpFormulaState, _today: string): string[] {
+  return formulas.filter((f) => !state.cards[f.id]).slice(0, HP_FORMULA_NEW_PER_DAY).map((f) => f.id);
 }
 
 /** Dagens pass: förfallna först (flashcards), sedan nya (Lär in + snabbtest). Högst 10 kort. */
@@ -1526,11 +1524,11 @@ export function recordFormulaPass(state: HpFormulaState, completedAtIso: string)
 
 export interface HpFormulaProgress {
   total: number;
-  /** Klara: klarade på första försöket i 3 pass på olika dagar. */
+  /** Klara: klarade på första försöket på HP_FORMULA_GOAL olika dagar. */
   done: number;
   /** Inlärda (påbörjade). */
   started: number;
-  /** Minst 2 av 3. */
+  /** Minst ett steg från klar (HP_FORMULA_GOAL − 1). */
   almost: number;
   left: number;
 }

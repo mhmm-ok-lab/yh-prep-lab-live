@@ -193,7 +193,7 @@ export function hpMathAreaLabel(area: HpMathArea): string {
 
 // ── Uppgifter ──
 
-const WHY_FORMLER = "På provet får du ingen formelsamling. Fem minuter om dagen räcker om formlerna kommer tillbaka på olika dagar: en formel är klar först när du klarat den på första försöket tre dagar.";
+const WHY_FORMLER = "På provet får du ingen formelsamling. Fem minuter om dagen räcker om formlerna kommer tillbaka på olika dagar: en formel är klar när du klarat den på första försöket två olika dagar. Kör gärna flera pass samma dag för fler nya formler.";
 const WHY_LAS = "Läsförståelse är din svåraste del. Du läser långsamt, så målet är inte att läsa fort utan att leta smart: ett nyckelord, sökläs, två eller tre meningar runt stället. En text om dagen, växelvis svensk och engelsk, bygger vanan.";
 
 const WHY_MEK = "Meningskomplettering är det snabbaste verbala delprovet att förbättra: samma fem, sex samband återkommer hela tiden. Tio uppgifter varannan dag tränar dig att läsa hela meningen innan du väljer.";

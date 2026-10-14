@@ -3,6 +3,12 @@ _För Martin Hammarbergs UX-portfolio. Dokumenterar designbeslut och motiveringa
 
 ---
 
+## 2026-10-14 — Formelträning anpassad till fyra dagar kvar
+
+**Vad och varför.** Martin fick samma fem formler om och om igen och "0/52 klara". Logiken var byggd för veckor: högst 5 nya formler per dag och klar först efter 3 olika dagar, vilket gör det omöjligt att bli klar före provet. **Före.** 5 nya/dag, mål 3 dagar. **Efter.** 5 nya per pass (fler pass samma dag ger nästa fem), mål 2 olika dagar. Sammanfattningen säger "Kör ett pass till för fem nya formler". **UX-teori.** Successive relearning behålls (minst två dagar), men tempot anpassas efter användarens faktiska tidshorisont.
+
+---
+
 ## 2026-10-14 — Figurer i formelträningen
 
 **Vad och varför.** Martin ville se formen, inte bara läsa den: vad är b, h, r, v i formeln? **Före.** Bara text. **Efter.** 19 enkla figurer (rektangel, triangel, parallellogram, trapets, cirkel, sektor, båge, rätblock, prisma, cylinder, kon, klot, Pythagoras, vinkelsummor, yttervinkeln) visas ovanför formeln i Lär in, på kortets baksida och i snabbtestet. Inline SVG med currentColor (mörkt läge), max 220 px bred. **Stitch-princip.** Inga nya färger; figuren ligger i befintligt kort. **UX-teori.** Dual coding (Paivio): bild + formel ger två minnesspår och kopplar bokstäverna till delarna av formen.

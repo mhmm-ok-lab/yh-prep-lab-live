@@ -60,13 +60,12 @@ describe("hp-formulas: innehåll", () => {
 });
 
 describe("hp-formulas: successive relearning", () => {
-  it("nya formler: högst 5 per dag, i katalogens ordning", () => {
+  it("nya formler: högst 5 per pass, i katalogens ordning, fler pass samma dag ger nästa fem", () => {
     const ids = newFormulaIds(HP_FORMULAS, fresh(), "2026-10-08");
     expect(ids).toHaveLength(HP_FORMULA_NEW_PER_DAY);
     expect(ids).toEqual(HP_FORMULAS.slice(0, 5).map((f) => f.id));
     const after = introduceFormulas(fresh(), ids, "2026-10-08");
-    expect(newFormulaIds(HP_FORMULAS, after, "2026-10-08")).toEqual([]);
-    expect(newFormulaIds(HP_FORMULAS, after, "2026-10-09")).toHaveLength(5);
+    expect(newFormulaIds(HP_FORMULAS, after, "2026-10-08")).toEqual(HP_FORMULAS.slice(5, 10).map((f) => f.id));
   });
 
   it("inlärda formler kommer tillbaka dagen efter, inte samma dag", () => {
@@ -75,16 +74,15 @@ describe("hp-formulas: successive relearning", () => {
     expect(dueFormulaIds([{ id: "a" } as never], st, "2026-10-09")).toEqual(["a"]);
   });
 
-  it("klar efter 3 olika dagar på första försöket, inte efter 3 pass samma dag", () => {
+  it("klar efter 2 olika dagar på första försöket, inte efter flera pass samma dag", () => {
     let st = introduceFormulas(fresh(), ["a"], "2026-10-08");
     st = recordFirstTry(st, "a", true, "2026-10-09");
     st = recordFirstTry(st, "a", true, "2026-10-09");
     st = recordFirstTry(st, "a", true, "2026-10-09");
     expect(st.cards.a.clean).toBe(1);
-    st = recordFirstTry(st, "a", true, "2026-10-10");
     expect(formulaProgress([{ id: "a" } as never], st).done).toBe(0);
-    st = recordFirstTry(st, "a", true, "2026-10-12");
-    expect(st.cards.a.clean).toBe(3);
+    st = recordFirstTry(st, "a", true, "2026-10-10");
+    expect(st.cards.a.clean).toBe(2);
     expect(formulaProgress([{ id: "a" } as never], st).done).toBe(1);
     expect(dueFormulaIds([{ id: "a" } as never], st, "2026-10-20")).toEqual([]);
   });
@@ -110,10 +108,10 @@ describe("hp-formulas: successive relearning", () => {
     expect(quiet.due).toHaveLength(HP_FORMULA_PASS_MAX);
   });
 
-  it("framsteg: klara, påbörjade och minst 2 av 3", () => {
+  it("framsteg: klara, påbörjade och minst 1 av 2", () => {
     let st = introduceFormulas(fresh(), ["a", "b", "c"], "2026-10-01");
-    for (const d of ["2026-10-02", "2026-10-03", "2026-10-04"]) st = recordFirstTry(st, "a", true, d);
-    for (const d of ["2026-10-02", "2026-10-03"]) st = recordFirstTry(st, "b", true, d);
+    for (const d of ["2026-10-02", "2026-10-03"]) st = recordFirstTry(st, "a", true, d);
+    for (const d of ["2026-10-02"]) st = recordFirstTry(st, "b", true, d);
     const p = formulaProgress([{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }] as never, st);
     expect(p).toMatchObject({ total: 4, done: 1, started: 3, almost: 2, left: 3 });
   });

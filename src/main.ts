@@ -3678,7 +3678,7 @@ function renderHpFormulaIdle(): string {
       ${renderHpFormulaTop("Formelträning")}
       <p class="hp-summary-heading">${allDone ? "Alla formler klara" : "Klart för i dag"}</p>
       <p class="hp-fm-count">${p.done} klara · ${p.left} kvar</p>
-      <p class="hp-fm-sum-line">${allDone ? "Du har klarat varje formel på första försöket tre dagar." : "Inga repetitioner är förfallna och dagens fem nya formler är inlärda. Kom tillbaka i morgon, då kommer de tillbaka."}</p>
+      <p class="hp-fm-sum-line">${allDone ? "Du har klarat varje formel på första försöket två dagar." : "Bra! Kör ett pass till för fem nya formler. De du lärt in i dag kommer tillbaka i morgon."}</p>
       ${p.started > 0 ? `<button class="hp-secondary-btn hp-fm-wide" data-action="hp-formula-practice">Öva extra (räknas inte)</button>` : ""}
       <button class="hp-drill-cancel" data-action="hp-formula-close">Tillbaka</button>
     </div>`;
