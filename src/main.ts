@@ -77,6 +77,8 @@ import {
   loadHpProvlogg,
   loadHpOrdledState,
   saveHpOrdledState,
+  loadHpTermsState,
+  saveHpTermsState,
   loadHpProgress,
   loadHpRepeatQueue,
   loadHpTwinRepeatQueue,
@@ -100,6 +102,7 @@ import {
   setStorageNamespace
 } from "./storage";
 import { FORMULA_FIGURES } from "./hp-formula-figures";
+import { MATH_TERMS, TERM_DAYS_TO_KNOW, TERM_GROUPS, findTerm, findTermUsage, gradeTerm, markTerm, markTermsInHtml, planTermCards, termCounts, type MathTerm, type TermStatus } from "./hp-terms";
 import { ORD_PARTS, gradeOrdled, ordledKnownCount, planKnackPass, planOrdledPass, type OrdKnack } from "./hp-ordled";
 import { buildProvPass, PROV_DELPROV, PROV_MAX, provPercent, provTrend, sortProvPass, weakestDelprov, type ProvTyp } from "./hp-provlogg";
 import { HP_NAMES, hpAbbr, hpExpand, hpFull, hpShort } from "./hp-names";
@@ -670,6 +673,11 @@ type HpOrdledView =
   | { mode: "cards"; ids: string[]; index: number; flipped: boolean; knew: number }
   | { mode: "knack"; items: OrdKnack[]; index: number; pick: number | null; splitOpen: boolean; right: number };
 let hpOrdled: HpOrdledView | null = null;
+// Mattetermer (2026-10-14): snabbskanning Kan/Osäker → flipcards på de osäkra. ids = passets kort, again = kort som redan lagts sist en gång.
+type HpTermsView =
+  | { mode: "scan" }
+  | { mode: "cards"; ids: string[]; index: number; flipped: boolean; knew: number; again: string[] };
+let hpTerms: HpTermsView | null = null;
 let hpProvloggTyp: ProvTyp = "kvantitativt";
 let hpProvloggError = "";
 /** "Din plan" (beslut 2026-10-05 (9)): hela planen öppen, vilka "Varför?" som är öppna, och delprovet som
@@ -3850,7 +3858,7 @@ function renderHpHome(): string {
       ${activeResumeHtml
         ? ""
         : `
-          ${hpSection("Matte", `${renderHpFormulaHomeCard(ready)}${renderHpTwinHomeSection(ready)}${renderHpDiagHomeCard(ready)}${lastMathHtml}`)}
+          ${hpSection("Matte", `${renderHpFormulaHomeCard(ready)}${renderHpTermsHomeCard()}${renderHpTwinHomeSection(ready)}${renderHpDiagHomeCard(ready)}${lastMathHtml}`)}
           ${hpSection("Läsning och språk", `${renderHpLasHomeCard(ready)}${renderHpMekHomeCard(ready)}${renderHpElfHomeCard(ready)}`)}
           ${hpSection("Ord", renderHpOrdHomeCard(ready, progress.wordsCompleted, repeatCount) + renderHpOrdledHomeCard())}
           ${hpSection("Gamla prov", renderHpProvloggHomeCard())}
@@ -4206,7 +4214,7 @@ function renderHpMathQuestion(): string {
       </div>
       ${renderHpDrillTitle("Mattediagnos")}
       <p class="hp-math-area-label">${hpMathAreaLabel(item.area)}</p>
-      <p class="hp-word hp-math-prompt">${item.prompt}</p>
+      <p class="hp-word hp-math-prompt">${hpMarkTerms(item.prompt)}</p>
       <div class="hp-options">${optionsHtml}</div>
       ${!answered ? renderHpLadder("hp-math", hpMathSession, item.hint ?? HP_NO_HINT) : ""}
       ${renderHpNavRow("hp-math", hpMathSession)}
@@ -4481,7 +4489,7 @@ function renderHpTwinQuestion(): string {
         ${inReview ? "" : `<span class="hp-tempo" data-hp-twin-tempo>0s / ${target}s mål</span>${renderHpHelpButton(hpHelpOpenFor === item.id)}`}
       </div>
       ${renderHpDrillTitle(HP_DELPROV_NAMES[delprov], item.level)}
-      <p class="hp-twin-prompt">${item.prompt}</p>
+      <p class="hp-twin-prompt">${hpMarkTerms(item.prompt)}</p>
       ${item.figure && !item.figure.startsWith("<svg") ? `<div class="hp-twin-figure hp-twin-figure--sheet">${item.figure}</div>` : ""}
       ${item.figure?.startsWith("<svg") ? `<div class="hp-twin-figure${hpFigureZoom ? " hp-twin-figure--zoom" : ""}" data-action="hp-figure-zoom" role="button" aria-label="${hpFigureZoom ? "Förminska figuren" : "Förstora figuren"}">${item.figure}</div><p class="hp-twin-figure-hint">${hpFigureZoom ? "Tryck på figuren för att förminska" : "Tryck på figuren för att förstora"}</p>` : ""}
       ${item.table ? renderHpTwinTable(item.table) : ""}
@@ -5295,12 +5303,145 @@ function renderHpOrdled(v: HpOrdledView): string {
   </div>`;
 }
 
+// ── Mattetermer ──
+
+function renderHpTermsHomeCard(): string {
+  const c = termCounts(loadHpTermsState());
+  const meta =
+    c.kan + c.osaker === 0
+      ? `${MATH_TERMS.length} termer att skanna`
+      : [`${c.osaker} osäkra kvar`, `${c.kan} kan`, c.unmarked ? `${c.unmarked} oskannade` : ""].filter(Boolean).join(" · ");
+  return renderHpStartCard('data-action="hp-terms-open"', "Mattetermer", "Kvot, nämnare, procentenhet: sortera vilka ord du kan · 2 min", `<span class="hp-start-card-last">${meta}</span>`);
+}
+
+/** Alla frågetexter i matteövningarna, för "så här står det på provet" på kortets framsida. */
+let hpTermPrompts: string[] | null = null;
+function hpTermUsage(id: string): string | null {
+  hpTermPrompts ??= [...HP_TWINS.map((t) => t.prompt), ...HP_MATH_QUESTIONS.map((q) => q.prompt)];
+  return findTermUsage(id, hpTermPrompts);
+}
+
+/** Markerar första förekomsten av varje term man inte redan kan. Bara frågetexten, aldrig figur, tabell eller alternativ. */
+function hpMarkTerms(prompt: string): string {
+  const state = loadHpTermsState();
+  const known = new Set(MATH_TERMS.filter((t) => state.terms[t.id]?.status === "kan").map((t) => t.id));
+  return markTermsInHtml(prompt, known);
+}
+
+function renderHpTermBack(t: MathTerm): string {
+  return `
+    <p class="hp-terms-explain">${t.explain}</p>
+    <p class="hp-terms-example">${t.example}</p>
+    ${t.confuse ? `<p class="hp-terms-confuse"><strong>Förväxla inte:</strong> ${t.confuse}</p>` : ""}
+    ${t.url ? `<a class="hp-terms-link" href="${t.url}" target="_blank" rel="noopener">Se bild och förklaring på Matteboken ↗</a>` : ""}`;
+}
+
+function renderHpTermsScanRow(t: MathTerm, status: TermStatus | undefined): string {
+  const pill = (s: TermStatus, label: string) =>
+    `<button class="hp-terms-pick" data-action="hp-terms-mark" data-id="${t.id}" data-status="${s}" aria-pressed="${status === s}"><span class="hp-terms-pill hp-terms-pill--${s}">${label}</span></button>`;
+  return `<li class="hp-terms-row" data-term-row="${t.id}"><span class="hp-terms-name">${t.name}</span><span class="hp-terms-picks">${pill("kan", "Kan")}${pill("osaker", "Osäker")}</span></li>`;
+}
+
+function hpTermsCtaLabel(osaker: number): string {
+  return osaker ? `Klar – öva på osäkra (${osaker})` : "Klar";
+}
+
+function renderHpTerms(v: HpTermsView): string {
+  const top = (label: string, back: "hp-terms-close" | "hp-terms-open") => `
+    <div class="hp-drill-top">
+      <button class="hp-drill-cancel" data-action="${back}">${back === "hp-terms-close" ? "‹ HP-hem" : "‹ Termlistan"}</button>
+      <span class="hp-drill-progress">${label}</span>
+    </div>`;
+  const state = loadHpTermsState();
+  if (v.mode === "scan") {
+    const c = termCounts(state);
+    const groups = TERM_GROUPS.map(
+      (g) => `<section class="hp-section"><h3 class="hp-section-title">${g}</h3><ul class="hp-terms-list">${MATH_TERMS.filter((t) => t.group === g)
+        .map((t) => renderHpTermsScanRow(t, state.terms[t.id]?.status))
+        .join("")}</ul></section>`
+    ).join("");
+    return `
+      <div class="hp-drill hp-terms">
+        ${top(`${MATH_TERMS.length} termer`, "hp-terms-close")}
+        <h2 class="hp-drill-title">Mattetermer</h2>
+        <p class="hp-terms-lead">Tryck Kan eller Osäker på varje ord. Inga förklaringar här, bara sortera. De osäkra övar du på sedan.</p>
+        ${groups}
+        <button class="hp-cta-btn hp-fm-wide" data-action="hp-terms-cards" data-terms-cta>${hpTermsCtaLabel(c.osaker)}</button>
+      </div>`;
+  }
+  if (v.index >= v.ids.length) {
+    const c = termCounts(state);
+    return `<div class="hp-drill hp-terms">${top("Klart", "hp-terms-open")}
+      <h2 class="hp-drill-title">Du kunde ${v.knew} av ${new Set(v.ids).size}</h2>
+      <p class="hp-terms-lead">En term flyttas till Kan när du kunnat den ${TERM_DAYS_TO_KNOW} olika dagar. Nu: ${c.osaker} osäkra kvar, ${c.kan} kan.</p>
+      ${c.osaker ? `<button class="hp-cta-btn hp-fm-wide" data-action="hp-terms-cards">Ett pass till</button>` : ""}
+      <button class="hp-secondary-btn hp-fm-wide" data-action="hp-terms-open">Till termlistan</button></div>`;
+  }
+  const t = findTerm(v.ids[v.index])!;
+  const usage = v.flipped ? null : hpTermUsage(t.id);
+  const body = v.flipped
+    ? `${renderHpTermBack(t)}
+      <div class="hp-fm-actions">
+        <button class="hp-secondary-btn" data-action="hp-terms-grade" data-knew="0">Kunde inte</button>
+        <button class="hp-cta-btn" data-action="hp-terms-grade" data-knew="1">Kunde</button>
+      </div>`
+    : `${usage ? `<p class="hp-terms-usage">På provet: ”${usage}”</p>` : ""}
+      <p class="hp-terms-cue">Vad betyder ordet? Säg det tyst för dig själv, vänd sedan.</p>
+      <button class="hp-cta-btn hp-fm-wide" data-action="hp-terms-flip">Vänd kortet</button>`;
+  return `<div class="hp-drill hp-terms">${top(`Kort ${v.index + 1}/${v.ids.length}`, "hp-terms-open")}
+    <div class="hp-fm-card">
+      <p class="hp-fm-label">${t.group}</p>
+      <p class="hp-terms-word">${t.name}</p>
+      ${body}
+    </div></div>`;
+}
+
+/** Overlay för en term i frågetexten. Läggs direkt i <body> utan omritning, så frågan, timern och scrollen står still. */
+function openHpTermOverlay(id: string): void {
+  const t = findTerm(id);
+  if (!t) return;
+  closeHpTermOverlay();
+  const el = document.createElement("div");
+  el.className = "glossary-overlay hp-term-overlay";
+  el.dataset.hpTermOverlay = "";
+  el.innerHTML = `
+    <div class="glossary-card hp-term-card" role="dialog" aria-modal="true" aria-label="Matteterm: ${t.name}">
+      <p class="hp-fm-label">${t.group}</p>
+      <p class="hp-terms-word">${t.name}</p>
+      ${renderHpTermBack(t)}
+      <button class="hp-secondary-btn hp-fm-wide" data-term-close>Stäng</button>
+    </div>`;
+  el.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("[data-term-close]") || !target.closest(".hp-term-card")) closeHpTermOverlay();
+  });
+  document.body.appendChild(el);
+  el.querySelector<HTMLElement>("[data-term-close]")?.focus({ preventScroll: true });
+}
+
+function closeHpTermOverlay(): void {
+  document.querySelectorAll("[data-hp-term-overlay]").forEach((n) => n.remove());
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeHpTermOverlay();
+    return;
+  }
+  const el = event.target as HTMLElement | null;
+  if ((event.key === "Enter" || event.key === " ") && el?.classList?.contains("hp-term") && el.dataset.term) {
+    event.preventDefault();
+    openHpTermOverlay(el.dataset.term);
+  }
+});
+
 function renderHp(): string {
   if (hpForceHome) {
     hpCardOpen = null;
     hpResourcesOpen = false;
     hpProvloggOpen = false;
     hpOrdled = null;
+    hpTerms = null;
     hpPlanAllOpen = false;
     hpPlanCardDelprov = null;
     return renderHpHome();
@@ -5316,6 +5457,9 @@ function renderHp(): string {
   }
   if (hpOrdled) {
     return renderHpOrdled(hpOrdled);
+  }
+  if (hpTerms) {
+    return renderHpTerms(hpTerms);
   }
   const openCard = hpCardOpen ? HP_CARDS.find((c) => c.id === hpCardOpen) : undefined;
   if (openCard) {
@@ -7660,6 +7804,79 @@ app.addEventListener("click", (event) => {
   if (action === "hp-pause-resume") {
     resumeHpPause();
     render();
+    return;
+  }
+
+  if (action === "hp-term-open") {
+    if (actionEl.dataset.term) openHpTermOverlay(actionEl.dataset.term);
+    return;
+  }
+
+  if (action === "hp-terms-open") {
+    hpForceHome = false;
+    hpTerms = { mode: "scan" };
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-terms-close") {
+    hpTerms = null;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-terms-mark" && hpTerms?.mode === "scan") {
+    // Ritas om lokalt i raden (ingen render), så listan inte hoppar när man sorterar snabbt.
+    const id = actionEl.dataset.id!;
+    const status = actionEl.dataset.status as TermStatus;
+    const next = markTerm(loadHpTermsState(), id, status);
+    saveHpTermsState(next);
+    actionEl.closest("[data-term-row]")?.querySelectorAll<HTMLElement>("[data-action='hp-terms-mark']").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.status === status));
+    });
+    const cta = app.querySelector<HTMLElement>("[data-terms-cta]");
+    if (cta) cta.textContent = hpTermsCtaLabel(termCounts(next).osaker);
+    return;
+  }
+
+  if (action === "hp-terms-cards") {
+    const ids = planTermCards(loadHpTermsState(), hpFormulaDate());
+    if (!ids.length) {
+      hpTerms = null;
+      hpForceHome = true;
+    } else {
+      hpTerms = { mode: "cards", ids, index: 0, flipped: false, knew: 0, again: [] };
+    }
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (action === "hp-terms-flip" && hpTerms?.mode === "cards") {
+    hpTerms.flipped = true;
+    render();
+    return;
+  }
+
+  if (action === "hp-terms-grade" && hpTerms?.mode === "cards") {
+    const knew = actionEl.dataset.knew === "1";
+    const id = hpTerms.ids[hpTerms.index];
+    saveHpTermsState(gradeTerm(loadHpTermsState(), id, knew, hpFormulaDate()));
+    // Kunde inte: kortet kommer en gång till sist i passet (successive relearning), räknas inte två gånger.
+    const requeue = !knew && !hpTerms.again.includes(id);
+    const firstTime = !hpTerms.again.includes(id);
+    hpTerms = {
+      ...hpTerms,
+      ids: requeue ? [...hpTerms.ids, id] : hpTerms.ids,
+      again: requeue ? [...hpTerms.again, id] : hpTerms.again,
+      index: hpTerms.index + 1,
+      flipped: false,
+      knew: hpTerms.knew + (knew && firstTime ? 1 : 0)
+    };
+    render();
+    window.scrollTo(0, 0);
     return;
   }
 

@@ -2,6 +2,7 @@ import type { HpMathArea } from "./hp-math";
 import { EMPTY_HP_FORMULA_STATE, type HpFormulaState } from "./hp-formulas";
 import type { ProvPass } from "./hp-provlogg";
 import { EMPTY_ORDLED_STATE, type OrdledState } from "./hp-ordled";
+import type { TermsState } from "./hp-terms";
 import type { HpPlanState } from "./hp-plan";
 import type { HpDelprov } from "./hp-twins";
 import type { SessionDraft, StudySession } from "./types";
@@ -25,6 +26,7 @@ const HP_PLAN_KEY = "yh.hp-plan";
 const HP_FORMULA_KEY = "yh.hp-formula";
 const HP_PROVLOGG_KEY = "yh.hp-provlogg";
 const HP_ORDLED_KEY = "yh.hp-ordled";
+const HP_TERMS_KEY = "yh.hp-terms";
 const HP_ORD_RESULT_KEY = "yh.hp-ord-result";
 const SNAPSHOT_VERSION = 1;
 let storageNamespace = "default";
@@ -586,6 +588,25 @@ export function loadHpOrdledState(): OrdledState {
 export function saveHpOrdledState(state: OrdledState): void {
   try {
     localStorage.setItem(namespacedKey(HP_ORDLED_KEY), JSON.stringify(state));
+  } catch {
+    // localStorage kan vara otillgängligt — tyst fallback
+  }
+}
+
+// ── Mattetermer ──
+
+export function loadHpTermsState(): TermsState {
+  try {
+    const stored = safeParse<Partial<TermsState> | null>(localStorage.getItem(namespacedKey(HP_TERMS_KEY)), null);
+    return { terms: stored && typeof stored.terms === "object" && stored.terms ? stored.terms : {} };
+  } catch {
+    return { terms: {} };
+  }
+}
+
+export function saveHpTermsState(state: TermsState): void {
+  try {
+    localStorage.setItem(namespacedKey(HP_TERMS_KEY), JSON.stringify(state));
   } catch {
     // localStorage kan vara otillgängligt — tyst fallback
   }

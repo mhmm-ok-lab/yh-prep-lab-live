@@ -6610,3 +6610,165 @@ details[open] > .hp-guide-section-summary::after { transform: rotate(-180deg); }
   width: 100%;
   height: auto;
 }
+
+/* Mattetermer (2026-10-14): skanna Kan/Osäker, flipcards på de osäkra, klickbara termer i frågetexten. */
+.hp-terms {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.hp-terms-lead,
+.hp-terms-explain {
+  margin: 0;
+  font-size: var(--text-md);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.hp-terms-explain {
+  font-weight: 700;
+}
+
+.hp-terms-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Raderna skiljs med tonskifte, inte linjer (Stitch No-Line). */
+.hp-terms-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.25rem 0 1rem;
+  min-height: 44px;
+}
+
+.hp-terms-row:nth-child(even) {
+  background: var(--surface-low);
+}
+
+.hp-terms-name {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.hp-terms-picks {
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* Knappen är 44 px hög tryckyta, pillen inuti är 28 px. */
+.hp-terms-pick {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.25rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.hp-terms-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  min-height: 28px;
+  min-width: 4.2rem;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--surface-container);
+  color: var(--text-muted);
+}
+
+.hp-terms-pick[aria-pressed="true"] .hp-terms-pill--kan {
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+}
+
+.hp-terms-pick[aria-pressed="true"] .hp-terms-pill--osaker {
+  background: var(--honey);
+  color: var(--honey-ink);
+}
+
+.hp-terms-word {
+  margin: 0.25rem 0;
+  font-size: var(--text-hero);
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.hp-terms-usage,
+.hp-terms-cue {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.hp-terms-usage {
+  font-style: italic;
+}
+
+.hp-terms-example {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background: var(--surface-low);
+  font-size: var(--text-md);
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.hp-terms-confuse {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-btn);
+  background: var(--honey);
+  color: var(--honey-ink);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.hp-terms-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Term i frågetexten: bara färg + prickad understrykning, ingen padding eller ram, så raderna står still. */
+.hp-term {
+  color: inherit;
+  text-decoration: underline dotted var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hp-term:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+
+.hp-term-card {
+  display: grid;
+  gap: 0.6rem;
+}
